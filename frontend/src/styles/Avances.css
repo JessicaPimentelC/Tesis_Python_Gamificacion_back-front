@@ -1,0 +1,125 @@
+.desafios-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto; /* Centrado horizontalmente */
+    font-family: Arial, sans-serif;
+    
+     
+    /* Ajuste para colocar más arriba */
+    height: 100vh; /* 100% de la altura de la ventana */
+    margin-top: 50px; /* Ajusta este valor para subirlo o bajarlo */
+  
+}
+  
+  .tiempo-restante {
+    display: flex;
+    align-items: center;
+  }
+  
+  .tiempo-restante img {
+    width: 25px;
+    margin-right: 5px;
+  }
+  
+  .desafio {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .desafio .icono {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+  }
+  
+  .desafio .icono img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .contenido {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .titulo {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .progreso {
+    flex-grow: 1;
+    margin: 0 10px;
+  }
+  
+  .barra {
+    width: 100%;
+    height: 15px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .progreso-barra {
+    height: 100%;
+    background-color: #ffc107;
+    border-radius: 10px;
+    width: 60%; /* Porcentaje de progreso */
+  }
+  
+  .avance-85 {
+    width: 85%; /* Progreso personalizado */
+  }
+  
+  .puntos {
+    font-size: 12px;
+    color: #000;
+  }
+  
+  .cofre img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .bloqueado {
+    background-color: #e0e0e0;
+    border: 2px solid #ccc;
+  }
+  
+  .bloqueado .icono img {
+    width: 50px;
+  }
+  
+  .bloqueado .contenido {
+    justify-content: center;
+  }
+  
+  .bloqueado-texto {
+    font-size: 16px;
+    color: #999;
+    font-weight: bold;
+  }
+  .ver-avances-btn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 50px; /* Ajusta este valor para subirlo o bajarlo */
+
+    align-self: center; /* Centra el botón horizontalmente */
+}
+
+.ver-avances-btn:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,163 @@
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    padding: 100px;
+    box-sizing: border-box;
+    background-color: #ff6b6b; /* Agregamos el color de fondo */
+}
+.sidebar {
+    background-color: #ff6b6b;
+    width: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.sidebar-button {
+    background-color: #fff;
+    color: #ff6b6b;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 0 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-info {
+    flex-grow: 10;
+}
+
+.edit-button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-stats, .profile-achievements {
+    margin-bottom: 20px;
+}
+
+.stats-boxes, .achievement-boxes {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.stat-box, .achievement-box {
+    width: 30%;
+    text-align: center;
+}
+
+.stat-box img, .achievement-box img {
+    width: 50px; /* Ajusta este tamaño según sea necesario */
+    height: 50px; /* Ajusta este tamaño según sea necesario */
+}
+
+.achievement-progress {
+    background-color: #ddd;
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.achievement-bar {
+    height: 100%;
+    background-color: #ff6b6b;
+}
+
+.stat-box {
+    border: 2px solid #000; /* Color y grosor del borde */
+    border-radius: 5px; /* Radio de borde para suavizar las esquinas */
+    padding: 5px; /* Espacio alrededor del icono */
+    margin: 5px; /* Margen entre los iconos */
+}
+.achievement-box {
+    display: flex; /* Utilizamos flexbox para controlar la disposición */
+    align-items: center; /* Centramos verticalmente los elementos */
+    margin-bottom: 10px; /* Margen inferior entre cajas de logros */
+    border: 2px solid #000; /* Color y grosor del borde */
+    border-radius: 5px; /* Radio de borde para suavizar las esquinas */
+    padding: 5px; /* Espacio alrededor del icono */
+    margin: 5px; /* Margen entre los iconos */
+}
+
+.achievement-box img {
+    margin-right: 10px; /* Margen a la derecha del icono del logro */
+}
+
+.achievement-progress {
+    flex-grow: 1; /* La barra de progreso ocupa todo el espacio restante */
+    background-color: #ddd; /* Color de fondo de la barra de progreso */
+    height: 20px; /* Altura de la barra de progreso */
+    border-radius: 10px; /* Radio de borde para suavizar las esquinas */
+    overflow: hidden; /* Ocultamos cualquier contenido que se desborde */
+}
+
+.achievement-bar {
+    background-color: #007bff; /* Color de la barra de progreso */
+    height: 100%; /* La barra de progreso ocupa toda la altura */
+}
+.stat-box {
+    cursor: pointer; /* Cambiamos el cursor al estilo de puntero */
+    transition: transform 0.3s; /* Agregamos una transición suave */
+}
+
+.stat-box:hover {
+    transform: scale(1.1); /* Hacemos que los iconos se agranden ligeramente al pasar el mouse sobre ellos */
+}
+
+.stat-box:active {
+    transform: scale(0.9); /* Reducimos ligeramente el tamaño de los iconos cuando se hace clic */
+}
+.achievement-box {
+    cursor: pointer; /* Cambiamos el cursor al estilo de puntero */
+    transition: transform 0.3s; /* Agregamos una transición suave */
+}
+
+.achievement-box:hover {
+    transform: scale(1.1); /* Hacemos que los iconos de logros se agranden ligeramente al pasar el mouse sobre ellos */
+}
+
+.achievement-box:active {
+    transform: scale(0.9); /* Reducimos ligeramente el tamaño de los iconos de logros cuando se hace clic */
+}
+

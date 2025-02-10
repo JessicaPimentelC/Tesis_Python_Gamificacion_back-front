@@ -1,0 +1,34 @@
+/* LoadingIndicator.css */
+
+/* Contenedor de la barra */
+.barra-contenedor {
+    width: 100px; /* Ajusta el ancho como desees */
+    height: 400px; /* Ajusta la altura como desees */
+    border-radius: 50px;
+    border: 2px solid #000; /* Borde negro */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    background-color: #f0f0f0;
+  }
+  
+  /* Barra de carga */
+  .barra-carga {
+    background-color: #000; /* Color negro */
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    transition: height 0.05s ease-in-out;
+  }
+  
+  /* Texto del porcentaje */
+  .porcentaje {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    z-index: 1;
+  }
+  

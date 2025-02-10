@@ -1,0 +1,14 @@
+/* LoadingBar.css */
+.loading-bar-container {
+    width: 50%; /* Cambia el ancho de la barra de progreso aquí */
+    height: 20px;
+    background-color: #ddd;
+  }
+  
+  .loading-bar {
+    height: 20px;
+    background-color: #000000;
+    width: 0;
+    transition: width 0.3s ease;
+  }
+  

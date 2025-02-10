@@ -1,0 +1,84 @@
+.dashboard-container {
+    display: flex;
+  }
+  
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .main-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+  }
+  
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .main-content {
+      margin-left: 0;
+    }
+  }
+  /* Botón para abrir el menú en móviles */
+.menu-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #333;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1100;
+    display: none; /* Oculto en pantallas grandes */
+  }
+  
+  /* Muestra el botón ☰ solo en pantallas pequeñas */
+  @media (max-width: 768px) {
+    .menu-btn {
+      display: block;
+    }
+  }
+  

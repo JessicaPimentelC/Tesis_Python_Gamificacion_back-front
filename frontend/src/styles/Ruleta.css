@@ -1,0 +1,137 @@
+/* Ruleta.css */
+
+:root {
+--top: 20px;
+--left: 20px;
+--tamano: 350px;
+--grados: 45deg;
+--rotacion: 0deg;
+--color-impar: turquoise;
+--color-par: yellow;
+--color-borde: #000;
+--color-flecha: black;
+--color-centro: red;
+--color-divisor: #449;
+}
+
+#triangulo {
+position: absolute;
+top: calc(var(--top) + var(--tamano)/30);
+left: calc(var(--left) + var(--tamano)/30);
+width: 0;
+height: 0; 
+border-left: calc(var(--tamano)/15) solid transparent;
+border-right: calc(var(--tamano)/15) solid transparent;
+border-bottom: calc(var(--tamano)/5) solid var(--color-flecha);
+transform: translate(calc(var(--tamano)/2), calc(var(--tamano)/2)) translate(-50%, -104.5%);
+}
+
+#triangulo:after {
+position: absolute;
+width: calc(var(--tamano)/15);
+height: calc(var(--tamano)/15);
+top: 100%;
+left: 0%;
+transform: translate(-50%, 260%);
+content: "";
+background-color: var(--color-centro);
+border-radius: 50%;
+box-shadow: 0px 0px calc(var(--tamano)/20) black;
+}
+
+#ruleta {
+position: absolute;
+top: var(--top);
+left: var(--left);
+width: var(--tamano);
+height: var(--tamano);
+background-color: red;
+border-radius: 50%;
+border: calc(var(--tamano)/30) solid var(--color-borde);
+will-change: transform;
+transition: transform 10s cubic-bezier(0,0,0.3,1);
+transform: rotate(var(--rotacion));
+box-shadow: 0px 0px calc(var(--tamano)/20) black;
+}
+
+#ruleta:hover {
+--rotacion: 4000deg;
+}
+
+#ruleta:after {
+position: absolute;
+width: calc(var(--tamano)/7.5);
+height: calc(var(--tamano)/7.5);
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+content: "";
+background-color: var(--color-flecha);
+border-radius: 50%;
+box-shadow: 0px 0px calc(var(--tamano)/20) black;
+}
+
+#caras div {
+position: absolute;
+top: calc(var(--tamano)/2);
+left: calc(var(--tamano)/2);
+width: calc(var(--tamano)/6);
+height: calc(var(--tamano)/6);
+background-color: blueviolet;
+border-radius: 50%; 
+transform-origin: 0 0;
+transform: rotate(calc(var(--grados) * var(--posicion))) translate(0, calc(-1 * var(--tamano) / 2.7)) translate(-50%, -50%);
+}
+
+#divisores div {
+position: absolute;
+top: calc(var(--tamano)/2);
+left: calc(var(--tamano)/2);
+width: calc(var(--tamano)/40);
+height: calc(var(--tamano)/2);
+background-color: var(--color-divisor);
+transform-origin: 0 0;
+transform: rotate(calc(var(--grados) / 2 + var(--grados) * var(--posicion))) translate(-50%, -100%);
+}
+
+#sectores {
+position: absolute;
+width: var(--tamano);
+height: var(--tamano);
+border-radius: 50%;
+overflow: hidden;
+}
+
+#sectores div {
+position: absolute;
+top: 0%;
+left: 50%;
+width: calc(var(--tamano)/2);
+height: calc(var(--tamano)/2);
+transform-origin: 0% 100%;
+transform: rotate(calc(-90deg + var(--grados) / 2 + var(--grados) * var(--posicion))) skew(calc((90deg - var(--grados)) * -1));
+}
+
+#sectores div::before {
+position: absolute;
+width: inherit;
+height: inherit;
+border-radius: 0 100% 0 0;
+background-image: linear-gradient(45deg, var(--color-impar), black);
+content: "";
+transform-origin: 0% 100%;
+transform: skew(90deg - var(--grados));
+}
+
+#ruleta div:nth-child(even)::before {
+background-image: linear-gradient(45deg, var(--color-par), black);
+}
+
+div:nth-child(1) { --posicion: 0; }
+div:nth-child(2) { --posicion: 1; }
+div:nth-child(3) { --posicion: 2; }
+div:nth-child(4) { --posicion: 3; }
+div:nth-child(5) { --posicion: 4; }
+div:nth-child(6) { --posicion: 5; }
+div:nth-child(7) { --posicion: 6; }
+div:nth-child(8) { --posicion: 7; }

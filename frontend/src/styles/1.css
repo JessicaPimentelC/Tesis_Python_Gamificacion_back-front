@@ -1,0 +1,695 @@
+/* Contenedor principal del Nivel1 */
+.nivel1-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+  /* Barra lateral colapsada */
+  .sidebar.collapsed {
+      width: 60px; /* Ancho cuando está colapsada */
+  }
+  /* Logo en la barra lateral */
+  .logo {
+      width: 80px;
+      margin-bottom: 20px;
+  }
+  
+  /* Botones en la barra lateral */
+  .sidebar-button {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      margin: 10px 0;
+      cursor: pointer;
+  }
+  
+  /* Iconos en la barra lateral */
+  .sidebar-button img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+  }
+  /* Fondo blanco en el área de contenido */
+/* Fondo blanco en el área de contenido */
+.white-background {
+  background-color: #fff; /* Color blanco */
+  padding: 20px;
+  border: 1px solid #ccc; /* Borde opcional */
+  border-radius: 5px;
+  width: 80%; /* Limita el ancho */
+  max-width: 600px; /* Evita que sea demasiado grande */
+  text-align: center; /* Centra el texto dentro */
+}
+  
+  /* Botón de icono en el encabezado */
+  .icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+  }
+  .icon-button-mapa {
+      background: none;
+      border: none;
+      cursor: pointer;
+  }
+  
+  /* Título del encabezado */
+  .header-title {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #FF5733;
+  }
+  
+  /* Estado del encabezado */
+  .header-status {
+      display: flex;
+      align-items: center;
+  }
+
+  /* Cuadro de información en la parte superior */
+  .info-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      background-color: #ffab9b;
+      color: #000000;
+      border-radius: 50px;
+      margin-bottom: 25px;
+      width: 100%; /* Asegura que el cuadro ocupe el 100% del contenedor */
+      max-width: 100%; /* Limita el ancho máximo para que no desborde */
+      box-sizing: border-box; /* Incluye el padding y el borde dentro del ancho total */
+      margin-left: 0; /* Elimina cualquier margen a la izquierda */
+      margin-right: 0; /* Elimina cualquier margen a la derecha */
+  }
+  
+  .content {
+      position: relative;
+      width: calc(100% - 500px); /* Ajusta el ancho para que tome el espacio restante */
+      padding: 20px;
+      box-sizing: border-box; /* Asegura que el padding esté dentro del ancho total */
+      background-color: white; /* Fondo blanco */
+      min-height: 100vh; /* Asegura que cubra toda la altura de la pantalla */
+      display: flex; /* Flexbox para organizar el contenido */
+      flex-direction: column; /* Los elementos hijos se apilan verticalmente */
+      align-items: center; /* Centra los elementos hijos horizontalmente */
+      justify-content: flex-start; /* Empieza los hijos desde el inicio */
+  }
+  
+  
+  /* Elemento individual en el cuadro de información */
+  .info-item {
+      flex-basis: 22%; /* Ajusta el ancho de cada elemento */
+  }
+  .mapa{
+      position: absolute;
+      right: 1300px; /* Ajusta este valor para controlar la posición horizontal */
+      
+  }
+  
+  .modal-mapa {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000; /* Asegura que el modal esté sobre otros elementos */
+    }
+    
+    .modal-content-mapa {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      width: 80%; /* Ajusta el ancho del modal */
+      max-width: 400px; /* Máximo ancho */
+      height: 80%; /* Ajusta la altura del modal */
+   /*   overflow: auto;  Permite scroll si el contenido es más grande que el modal */
+  }
+  
+  .circle-nivel1 {
+    background-color: rgba(30, 145, 30, 0.3) !important;
+    border: 2px solid rgb(22, 143, 28); /* Borde rojo */
+   
+  }
+  
+  .circle-nivel2 {
+    background-color: rgba(47, 62, 146, 0.3) !important;
+    border: 2px solid rgb(11, 25, 88); /* Borde rojo */
+   
+  }
+  .circle-nivel3 {
+    background-color: rgba(228, 197, 61, 0.3) !important;
+    border: 2px solid rgb(221, 120, 37); /* Borde rojo */
+   
+  }
+  
+  .circles-container-mapa{
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Ajusta para que los elementos se distribuyan en filas */
+  gap: 10px; /* Espacio entre los íconos */
+  background-color: #f5f5f5; /* Fondo del contenedor del mapa */
+  padding: 20px; /* Espaciado interno */
+  }
+  /* Iconos en el cuadro de información */
+  .info-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+  }
+  
+  
+  .nivel1-card {
+    background-color: #F8C4B4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.7s ease-out;
+    position: relative;
+    z-index: 2; /* Asegura que la tarjeta esté por encima del fondo blanco */
+  }
+  /* Encabezado de la tarjeta de Nivel1 */
+  .nivel1-card-header {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000; /* Restaurado el color de las letras a negro */
+      margin-bottom: 10px;
+  }
+  
+  /* Cuerpo de la tarjeta de Nivel1 */
+  .nivel1-card-body-ejer1 {
+      font-family: Helvetica;
+      font-size: 16px;
+      color: #000000; /* Restaurado el color de las letras a negro */
+      text-align: justify;
+  }
+  
+  .code-box {
+    background-color: #282c34; /* Color oscuro para el fondo del código */
+    border-radius: 8px; /* Bordes redondeados */
+    margin: 20px 0;
+    padding: 20px; /* Padding para el espacio interior */
+    color: #dcdcdc; /* Color del texto */
+    font-family: 'Courier New', Courier, monospace; /* Fuente del código */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  }
+  /* Encabezado del cuadro de código */
+  .code-header {
+    background-color: #1e1e1e; /* Fondo oscuro para el encabezado */
+    padding: 10px;
+    border-radius: 8px 8px 0 0; /* Bordes redondeados en la parte superior */
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #61dafb; /* Color del texto del encabezado */
+  }
+  /* Contenido del código */
+  .code-content {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 18px;
+      color: #ffffff;
+  }
+  
+  /* Opciones de arrastre */
+.drag-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea */
+  gap: 5px; /* Espacio mínimo entre elementos */
+  margin-bottom: 20px;
+}
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 600px) {
+  .drag-option {
+      padding: 8px 15px; /* Reduce tamaño en móviles */
+      font-size: 14px;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas (ejemplo: 400px o menos) */
+@media (max-width: 400px) {
+  .drag-container {
+      flex-direction: column; /* Apila los elementos en móviles */
+      align-items: center; /* Centra los elementos */
+  }
+  .drag-option {
+      width: 80%; /* Ocupa más espacio en pantalla */
+      text-align: center;
+  }
+}
+ /* Opciones arrastrables */
+ .drag-option {
+  background-color: #ffb23f;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: grab;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+  
+}
+
+/* Cambios en la opción arrastrable al pasar el ratón por encima */
+.drag-option:hover {
+  background-color: #5c3700;
+  transform: scale(1.05);
+}
+ /* Zona de drop */
+
+ .drop-zone {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #e3e3e3;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+}
+
+  
+  /* Botón de la tarjeta de Nivel1 */
+  .nivel1-card-button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  
+  /* Contenedor para los botones */
+  .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 20px;
+  }
+  
+  /* Botón de siguiente (oculto inicialmente) */
+  .next-button {
+      display: none;
+  }
+  
+  /* Muestra el botón de siguiente cuando se cumple la condición */
+  .show {
+      display: inline-block;
+  }
+    /* Texto del resultado */
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+  
+  /* Contenedor del resultado */
+  .result-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  /* Mensaje de resultado correcto */
+  .result.correct {
+      color: green;
+      font-weight: bold;
+  }
+  
+  /* Mensaje de resultado incorrecto */
+  .result.incorrect {
+      color: red;
+      font-weight: bold;
+  }
+  /* Cuadro de ejercicio (cuadro amarillo) */
+  .exercise-box {
+      width: 100%;
+      padding: 20px;
+      background-color: #FFC107; /* Amarillo */
+      border-radius: 10px;
+      box-sizing: border-box; /* Incluye padding en el ancho total */
+      margin: 0 auto; /* Centra el cuadro */
+      max-width: 800px; /* Ancho máximo para evitar que se expanda demasiado */
+  }
+  /* Iconos en la parte superior */
+  .info-container img {
+      width: 40px; /* Ajusta el tamaño según sea necesario */
+      height: 40px; /* Ajusta el tamaño según sea necesario */
+      margin-right: 10px; /* Añade espacio entre los iconos y el texto */
+  }
+  /* Contenedor general de las insignias */
+  .icons-container {
+      display: flex;
+      justify-content: center; /* Alinea los íconos hacia la izquierda */
+      gap: 10px; /* Espacio entre los íconos */
+      margin-left: 20px; /* Ajusta el margen izquierdo para que no queden tan pegados */
+      align-items: center;
+    }
+  
+  /* 1.css */
+  .circular-icon {
+      width: 50px; /* Tamaño del botón circular, ajusta según lo necesites */
+      height: 50px; /* Tamaño del botón circular, ajusta según lo necesites */
+      border-radius: 50%; /* Hace el botón circular */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden; /* Asegura que el contenido no se desborde del círculo */
+      background-color: #f0f0f0; /* Ajusta el color de fondo si es necesario */
+      border: 2px solid #ddd; /* Ajusta el borde si es necesario */
+      position: relative;
+    }
+    
+    .circular-icon img {
+      max-width: 120%; /* Tamaño máximo del GIF dentro del botón circular */
+      max-height: 200%; /* Tamaño máximo del GIF dentro del botón circular */
+      width: auto; /* Mantiene el tamaño original de la imagen */
+      height: auto; /* Mantiene el tamaño original de la imagen */
+      display: flex; /* Elimina el espacio adicional debajo de la imagen */
+    }
+    
+    
+  
+  .circular-icon:hover {
+    transform: scale(1.1);
+    background-color: #e0e0e0;
+  }
+  /* Icono del pingüino */
+  .sidebar-button .sidebar-icon {
+      width: 40px;
+      height: 40px;
+    }
+    /* Contenedor para el pingüino */
+  /* Contenedor del pingüino */
+  .penguin-container {
+      position: fixed; /* Fija el contenedor al viewport */
+      right: 0; /* Alinea a la derecha */
+      top: 50%; /* Alinea verticalmente al centro */
+      transform: translateY(-50%) translateX(-150px); /* Ajusta el centro verticalmente y mueve a la izquierda */
+      z-index: 1000; /* Asegúrate de que esté encima de otros elementos */
+    }
+    
+  /* Estilos para el pingüino */
+  .penguin {
+      position: relative;
+      width: 120px;
+      height: 160px;
+      background-color: #2c3e50;
+      border-radius: 50% 50% 40% 40%;
+      animation: bounce 2s infinite;
+  }
+  
+  /* Vientre del pingüino */
+  .penguin::before {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 120px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      border-radius: 50%;
+  }
+  
+  /* Ojos */
+  .eye {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background-color: black;
+      border-radius: 50%;
+      top: 30px;
+  }
+  .eye.left {
+      left: 35px;
+  }
+  .eye.right {
+      right: 35px;
+  }
+  
+  /* Pico */
+  .beak {
+      position: absolute;
+      width: 20px;
+      height: 12px;
+      background-color: #f1c40f;
+      border-radius: 0 0 50% 50%;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+  
+  /* Pies */
+  .foot {
+      position: absolute;
+      width: 20px;
+      height: 10px;
+      background-color: #f1c40f;
+      border-radius: 50%;
+      bottom: -10px;
+  }
+  .foot.left {
+      left: 20px;
+  }
+  .foot.right {
+      right: 20px;
+  }
+  
+  /* Animación del pingüino */
+  @keyframes bounce {
+      0%, 100% {
+          transform: translateY(0);
+      }
+      50% {
+          transform: translateY(-20px);
+      }
+  }
+
+  /* Estilos para el modal */
+  .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+  
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    
+    .modal-content button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #9dd8ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .modal-icons {
+      display: flex;
+      justify-content: space-around;
+      padding: 1px;
+    }
+    
+    .modal-icon-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .modal-icon-button:hover {
+      transform: scale(1.2);
+    }
+    
+    .modal-icon {
+      width: 50px; /* Ajusta el tamaño de los iconos según sea necesario */
+      height: 50px;
+    }
+  
+    
+    .loading-indicator-container {
+      display: flex;
+      align-items: center; /* Centra verticalmente la barra de carga dentro del contenedor */
+      margin-right: 20px; /* Espacio entre la barra de carga y el contenido principal */
+  }
+  
+  
+  /* Otros estilos existentes */
+  .nivel1-page {
+  height: 100vh; /* Asegura que la página ocupa el 100% de la ventana */
+  display: flex;
+    flex-direction: row; /* Mantiene la barra lateral alineada */}
+  
+    /* Contenedor de la barra de carga */
+  /* Contenedor de la barra de carga */
+  .loading-indicator-outer {
+      position: fixed; /* Fija la posición de la barra de carga en la pantalla */
+      left: 400px; /* Mueve la barra de carga más a la derecha desde el borde izquierdo de la pantalla */
+      top: 450px; /* Mueve la barra de carga hacia abajo desde el borde superior de la pantalla */
+      padding: 0; /* Elimina el padding alrededor de la barra de carga */
+      z-index: 100; /* Asegura que la barra de carga esté por encima de otros elementos */
+  }
+  
+  
+    
+    .hovered-insignia {
+      position: absolute; /* Asegúrate de que esté posicionado correctamente */
+      background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+      border-radius: 5px;
+      padding: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+    }
+    
+  
+  .circles-container {
+      position: absolute;
+      bottom: 700px; /* Ajusta la posición vertical según sea necesario */
+      left: 50%;
+      transform: translateX(-60%); /* Centra los círculos horizontalmente */
+      display: flex;
+      justify-content: space-around; /* Espacio uniforme entre círculos */
+      width: 80%; /* Ajusta según el diseño deseado */
+  }
+  
+  .circle {
+      width: 50px;
+      height: 50px;
+      background-color: rgb(158, 158, 158);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      transition: transform 0.3s ease, background-color 0.3s ease; /* Agrega transiciones */
+  }
+  
+  .circle:hover {
+      transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+      background-color: darkgray; /* Cambia el color de fondo al pasar el mouse */
+  }
+  
+  .circle img {
+      width: 30px; /* Tamaño del ícono */
+      height: 30px; /* Tamaño del ícono */
+      transition: transform 0.3s ease; /* Agrega transiciones al ícono */
+  }
+  
+  .circle:hover img {
+      transform: rotate(360deg); /* Rota el ícono al pasar el mouse */
+  }
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+  
+  /* Contenedor del puntaje */
+  .score-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  /* Estilo para el título */
+  .score-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3em;
+    color: #1f1f1f; /* Color similar al del SVG */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    animation: pulse 1.5s infinite alternate;
+  }
+  
+  /* Estilo para el puntaje */
+  /* Estilo para el puntaje */
+  .score-value {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.5em;
+    color: #E9F1DF; /* Color base */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    animation: celebrate 1s ease forwards; /* Añadido para la animación de celebración */
+  }
+  
+  /* Definición de la animación de celebración */
+  @keyframes celebrate {
+    0% {
+      transform: scale(1); /* Tamaño original */
+      opacity: 1; /* Totalmente visible */
+    }
+    25% {
+      transform: scale(1.2); /* Aumenta el tamaño */
+      opacity: 0.8; /* Disminuye la opacidad para un efecto de parpadeo */
+    }
+    50% {
+      transform: scale(1.3); /* Aumenta más el tamaño */
+      opacity: 1; /* Regresa a la opacidad total */
+    }
+    75% {
+      transform: scale(1.2); /* Disminuye el tamaño un poco */
+      opacity: 0.8; /* De nuevo disminuye la opacidad */
+    }
+    100% {
+      transform: scale(1); /* Regresa al tamaño original */
+      opacity: 1; /* Totalmente visible */
+    }
+  }
+  
+  
+  /* Animación de pulso */
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+  
+  /* Otras configuraciones globales */
+  html, body {
+    height: 100%;
+  }
+  .score-container {
+    width: 150px;
+    background-color: #f8c4b4; /* Fondo azul */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+  }
+  
+   
+  .icon-text {
+    text-align: center;
+  }
+  
+  .info-icon {
+    width: 60px; /* Tamaño del icono */
+    height: 60px;
+    margin-right: 20px; /* Espacio entre los iconos (ajústalo según lo necesites) */
+  }
+  .score-value {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 5px; /* Ajuste de espacio entre el ícono y el puntaje */
+  }
+  

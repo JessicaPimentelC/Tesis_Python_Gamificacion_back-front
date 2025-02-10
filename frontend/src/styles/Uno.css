@@ -1,0 +1,23 @@
+/* Contenedor principal */
+.contenedor {
+  display: flex;
+  height: 100vh;
+}
+
+/* Contenedor del contenido */
+.contenido {
+  flex-grow: 1; /* Hace que el contenido ocupe el espacio restante */
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+  .contenedor {
+    flex-direction: column; /* Hace que el sidebar se mueva arriba */
+  }
+
+  .contenido {
+    width: 100%;
+  }
+}

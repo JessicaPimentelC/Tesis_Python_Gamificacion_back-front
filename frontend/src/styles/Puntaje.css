@@ -1,0 +1,236 @@
+.player-info {
+  position: absolute; 
+  transform: scale(0.8); /* Reduce el tamaño al 80% */
+  top: 100px; /* Ajusta la posición vertical dentro de content */
+  right: 100px; /* Ajusta la posición horizontal dentro de content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: white;
+  padding: 15px;
+
+}
+.dropdown-menu {
+  position: absolute;
+  top: 50px; /* Ajusta según la posición deseada */
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.dropdown-menu p {
+  margin: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.dropdown-menu p:hover {
+  background: #f8c4b4;
+}
+/* Cuando el menú está visible */
+.menu-visible {
+  display: block;
+}
+  .icon-background {
+    background-color: #F8C4B4; /* Color del fondo del círculo */
+    padding: 20px; /* Ajusta este valor según el tamaño del círculo */
+    border-radius: 100%; /* Esto hace que sea un círculo perfecto */
+    width: 100px; /* Ajusta el ancho del círculo */
+    height: 100px; /* Ajusta la altura del círculo para que sea igual al ancho */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease; /* Transición suave */
+  }
+    
+  .icon-background-mapa {
+    background-color: #F8C4B4; /* Color del fondo del círculo */
+    padding: 20px; /* Ajusta este valor según el tamaño del círculo */
+    border-radius: 100%; /* Esto hace que sea un círculo perfecto */
+    width: 100px; /* Ajusta el ancho del círculo */
+    height: 100px; /* Ajusta la altura del círculo para que sea igual al ancho */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease; /* Transición suave */
+  }
+
+      
+  .info-icon {
+    width: 50px; /* Ajusta el tamaño del ícono según sea necesario */
+    height: 50px;
+    transition: transform 0.5s ease; /* Añadir transición para una animación suave */
+  }
+  
+  /* Efecto al pasar el mouse */
+  .icon-background:hover {
+    transform: rotate(360deg); /* Rotación completa del círculo */
+  }
+  
+  /* Animación del ícono al hacer hover */
+  .icon-background:hover .info-icon {
+    transform: rotate(-360deg); /* Rotación inversa del ícono */
+  }
+  .text-content h3 {
+    margin: 10px 0 0;
+    font-size: 16px; /* Ajusta el tamaño de la fuente según sea necesario */
+    color: #333;
+  }
+  
+  .text-content p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .text-content p strong {
+    font-weight: bold;
+  }
+  
+  /* Contenedor del puntaje */
+  .score-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  /* Estilo para el título */
+  .score-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3em;
+    color: #1f1f1f; /* Color similar al del SVG */
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    animation: pulse 1.5s infinite alternate;
+  }
+  
+  /* Estilo para el puntaje */
+  /* Estilo para el puntaje */
+  .score-value {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.5em;
+    color: #E9F1DF; /* Color base */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    animation: celebrate 1s ease forwards; /* Añadido para la animación de celebración */
+  }
+  
+  /* Definición de la animación de celebración */
+  @keyframes celebrate {
+    0% {
+      transform: scale(1); /* Tamaño original */
+      opacity: 1; /* Totalmente visible */
+    }
+    25% {
+      transform: scale(1.2); /* Aumenta el tamaño */
+      opacity: 0.8; /* Disminuye la opacidad para un efecto de parpadeo */
+    }
+    50% {
+      transform: scale(1.3); /* Aumenta más el tamaño */
+      opacity: 1; /* Regresa a la opacidad total */
+    }
+    75% {
+      transform: scale(1.2); /* Disminuye el tamaño un poco */
+      opacity: 0.8; /* De nuevo disminuye la opacidad */
+    }
+    100% {
+      transform: scale(1); /* Regresa al tamaño original */
+      opacity: 1; /* Totalmente visible */
+    }
+  }
+  
+  
+  /* Animación de pulso */
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+  .score-header {
+    background-color: #ff9900; /* Fondo naranja */
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    text-align: center;
+  }
+  
+  .score-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #020202; /* Texto negro */
+  }
+  
+  .score-content {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  .icon-text {
+    text-align: center;
+  }
+/* Ajustes Responsivos */
+@media (max-width: 768px) {
+.player-info {
+  position: static; /* Evita que se salga en pantallas pequeñas */
+  transform: scale(1);
+  margin: 20px auto;
+  width: 90%;
+}
+
+.icon-background {
+  width: 60px;
+  height: 60px;
+}
+
+.info-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.score-title {
+  font-size: 1.5em;
+}
+
+.score-value {
+  font-size: 1.8rem;
+}
+
+.score-content {
+  flex-direction: column; /* Apila los elementos en móviles */
+  gap: 10px;
+}
+}
+
+@media (max-width: 480px) {
+.player-info {
+  padding: 10px;
+}
+
+.icon-background {
+  width: 50px;
+  height: 50px;
+}
+
+.info-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.score-title {
+  font-size: 1.2em;
+}
+
+.score-value {
+  font-size: 1.5rem;
+}
+}
+

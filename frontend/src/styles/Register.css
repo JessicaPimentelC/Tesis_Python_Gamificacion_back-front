@@ -1,0 +1,124 @@
+/* Estilos para el contenedor del registro */
+.register-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(to right, #f2709c, #ff9472); /* Fondo degradado */
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Estilos para la caja de registro */
+.register-box {
+  background-color: white; /* Fondo blanco para la caja */
+  padding: 40px;
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Sombra de caja */
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Estilo del logo del registro */
+.register-logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+/* Título del formulario de registro */
+.register-title {
+  margin-bottom: 20px;
+  color: #333; /* Color del texto */
+}
+
+/* Estilos para el formulario de registro */
+.register-form .form-group {
+  margin-bottom: 15px;
+}
+
+/* Estilos para los inputs del formulario */
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Estilo del botón de registro */
+.register-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6161; /* Color del botón */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Hover del botón de registro */
+.register-button:hover {
+  background-color: #ff4c4c;
+}
+
+/* Estilos para el registro social */
+.social-register {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Estilo de los botones sociales en el registro */
+.social-register button {
+  margin: 0 10px;
+  background-color: #4267B2; /* Color del botón social */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Hover del botón social en el registro */
+.social-register button:hover {
+  background-color: #365899;
+}
+
+/* Botón para cambiar a la página de login */
+.toggle-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+/* Hover del botón para cambiar a la página de login */
+.toggle-button:hover {
+  text-decoration: none;
+}
+
+/* Términos y política de privacidad */
+.terms {
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+/* Enlaces de términos y política de privacidad */
+.terms a {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Hover del enlace de términos y política de privacidad */
+.terms a:hover {
+  text-decoration: none;
+}
