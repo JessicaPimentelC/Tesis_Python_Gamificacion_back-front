@@ -103,6 +103,7 @@ const Treintasiete = () => {
             <div className="header-title">
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
+              </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
@@ -172,7 +173,6 @@ const Treintasiete = () => {
           </div>
         </div>
       <Puntaje></Puntaje>
-      </div>
     </div>
     </div>
   );

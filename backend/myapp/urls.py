@@ -25,6 +25,9 @@ urlpatterns = [
     path("insignias/", views.obtener_insignias, name="insignias-usuario"),
     path("insigniasPrueba/", views.otorgar_insignia_20_ejercicios, name="insignias-usuario"),
 
+    path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
+    path('intentos/<int:usuario_id>/', views.obtener_intentos, name="obtener_intentos"),
+
     path('intento/', views.intento, name='intento'),
     path('score/<int:user_id>/', views.get_score, name='get_score'),
     path('run_code/', views.run_code, name='run_code'),

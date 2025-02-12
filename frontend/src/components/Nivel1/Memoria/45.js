@@ -122,7 +122,7 @@ const Cuarentacinco = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         litros = input("Introduce la cantidad en litros: "){"\n"}

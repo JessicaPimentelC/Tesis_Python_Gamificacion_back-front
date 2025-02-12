@@ -124,7 +124,7 @@ const Cuarenta = () => {
                 <p>Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejerccio sea el correcto .</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         num1 ___ int(input("Ingrese el primer número ")){"\n"}

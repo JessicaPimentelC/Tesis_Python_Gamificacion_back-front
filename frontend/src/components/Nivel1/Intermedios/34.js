@@ -115,13 +115,14 @@ const Treintacuatro = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         capital_inicial = float(input("Ingresa el capital inicial: ")) {"\n"}
                         tasa_interes = float(input("Ingresa la tasa de interés anual (en %): ")) / 100 {"\n"}
                         años = int(input("Ingresa el número de años: ")) {"\n"}
                         capital_final = capital_inicial ___ (1 + tasa_interes) ___ años {"\n"}
+                        <br></br>
                         print("El capital final es:", capital_final)
                       </code>
                     </pre>

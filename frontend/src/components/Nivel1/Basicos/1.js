@@ -6,7 +6,6 @@ import axios from "axios";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
 import {verificarYOtorgarInsignia,obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
-import SidebarToggle from "../../SidebarToggle";
 import Sidebar from "../../Sidebar";
 
 const Uno = () => {
@@ -87,14 +86,55 @@ const Uno = () => {
     };
   }, []);
 
+  //FUNCIONES PARA OBTENER EL EJERCICIO Y GUARDAR EL INTENTO
+  const obtenerEjercicioId = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/myapp/ejercicio/");
+      if (response.status === 200 && response.data.length > 0) {
+        // Suponiendo que queremos el primer ejercicio
+        return response.data[0].id_ejercicio;
+      }
+    } catch (error) {
+      console.error("Error al obtener los ejercicios:", error);
+    }
+    return null;
+  };
   const handleVerify = async () => {
+    if (!droppedItem) {
+      alert("Por favor, selecciona una palabra antes de verificar.");
+      return;
+    }
+    const ejercicio_id = await obtenerEjercicioId();
+      if (!ejercicio_id) {
+        console.error("No se pudo obtener el ejercicio_id");
+        return;
+      }
+
     const isCorrectAnswer = droppedItem === "Mundo";
     setIsCorrect(isCorrectAnswer);
 
     try {
+          const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+        withCredentials: true, // Incluir cookies en la petición
+      });
+      console.log("respuesta",userResponse.data.username
+      );
+      const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
+      const ejercicio_id = await obtenerEjercicioId();
+      if (!ejercicio_id) {
+        console.error("No se pudo obtener el ejercicio_id");
+        return;
+      }
+      
+      if (!usuario_id) {
+        alert("Error: Usuario no identificado.");
+        return;
+      }
+  
       const requestData = {
-        usuario_id: 1,
-        ejercicio_id: 1,
+      
+        usuario_id,
+        ejercicio_id,
         fecha: new Date().toISOString().split("T")[0], // Fecha actual en formato 'YYYY-MM-DD'
         resultado: isCorrectAnswer, // True o False dependiendo si es correcto
         errores: isCorrectAnswer ? 0 : errores + 1, // Incrementar errores si la respuesta es incorrecta
@@ -102,7 +142,7 @@ const Uno = () => {
 
       // Realizar la petición POST con axios
       const response = await axios.post(
-        "http://localhost:8000/myapp/intento/",
+        "http://localhost:8000/myapp/guardar-intento/",
         requestData
       );
 
@@ -126,7 +166,61 @@ const Uno = () => {
       );
     }
   };
-
+  /*
+  const handleVerify = async () => {
+    if (!droppedItem) {
+      alert("Por favor, selecciona una palabra antes de verificar.");
+      return;
+    }
+  
+    const isCorrectAnswer = droppedItem === "Mundo";
+    setIsCorrect(isCorrectAnswer);
+  
+    try {
+      // Obtener usuario autenticado desde el backend
+      const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+        withCredentials: true, // Incluir cookies en la petición
+      });
+      console.log("respuesta",userResponse.data.username
+      );
+      const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
+      if (!usuario_id) {
+        alert("Error: Usuario no identificado.");
+        return;
+      }
+  
+      const requestData = {
+        usuario_id,
+        ejercicio_id: 1, // Asegúrate de que sea el ID correcto del ejercicio
+        fecha: new Date().toISOString().split("T")[0], // Formato 'YYYY-MM-DD'
+        resultado: isCorrectAnswer,
+        errores: isCorrectAnswer ? 0 : errores + 1,
+      };
+  
+      const response = await axios.post("http://localhost:8000/myapp/guardar-intento/", requestData, {
+        withCredentials: true, // Incluir cookies en la petición
+      });
+  
+      if (response.status === 201) {
+        if (isCorrectAnswer) {
+          setShowNextButton(true);
+          setScore((prevScore) => prevScore + 10);
+          new Audio("/ganar.mp3").play();
+        } else {
+          setShowNextButton(false);
+          new Audio("/perder.mp3").play();
+        }
+      } else {
+        console.error("Error en la respuesta de la API:", response.data);
+        alert("Hubo un problema al guardar tu intento. Intenta de nuevo.");
+      }
+    } catch (error) {
+      console.error("Error al obtener usuario o guardar intento:", error.response ? error.response.data : error.message);
+      alert("No se pudo conectar con el servidor.");
+    }
+  };
+  */
+  
   // Función para redirigir a la página de insignias
   const handleInsigniaClick = () => {
     navigate("/insignias");
@@ -190,7 +284,7 @@ const Uno = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>print("Hola, ________!")</code>
                     </pre>

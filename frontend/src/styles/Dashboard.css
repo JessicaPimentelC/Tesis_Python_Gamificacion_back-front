@@ -1,7 +1,7 @@
 .dashboard-content {
   border: none;
   display: flex;
-  flex-direction: row;
+  flex-direction: col;
   justify-content: space-around;
   align-items: flex-start;
   margin-left: 100px;
@@ -10,6 +10,13 @@
   flex-grow: 1;
   width: 100%;
   gap: 30px;
+}
+.dashboard-nivel {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos estén en columna */
+  align-items: center; /* Centra los elementos */
+  width: 100%;
+  padding: 20px; /* Agrega espacio entre los elementos */
 }
 .icon{
   height: 40px;
@@ -20,6 +27,7 @@
   flex-direction: column;
   align-items: center;
   width: 20%;
+  margin-top: 80px;
 }
 
 .dashboard-right {
@@ -28,6 +36,7 @@
   left: 0;
   width: 200px;
   height: 100px;
+  margin-top: 80px; /* Ajusta según la altura del header */
 }
 
 .dashboard-container {

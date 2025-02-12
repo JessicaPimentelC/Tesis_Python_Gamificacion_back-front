@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
+import PinguinoModal from './PinguinoModal';
 
 const Header = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -12,7 +13,11 @@ const Header = () => {
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [searchText, setSearchText] = useState("");
-
+    const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
+    const openModalPinguino = () => {
+        setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
+        console.log("clikeado pinguino", isModalOpenPinguino);
+    };
     const handleForoIconClick = () => {
         navigate("/foro");
     };
@@ -77,8 +82,11 @@ const Header = () => {
     return (
         <div className="dashboard-header">
         <div className="icon-group">
-            <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
-            <img src="informacion.png" alt="Icon 2" className="header-icon" />
+        <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
+        <button className="icon-button-mapa" onClick={openModalPinguino}>
+            <img src="/muñeco.png" alt="Icono Moneda" />
+        </button>
+        {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
             <img src="mensaje.png" alt="Icon 3" className="header-icon" onClick={handleForoIconClick} />
             <img
                 src="/AYUDA.jpeg"

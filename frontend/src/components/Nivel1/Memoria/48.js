@@ -122,7 +122,7 @@ const Cuarentaocho = () => {
                 <p>Encuentra la pareja relacionada.</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         base = input("Introduce la base del rectángulo: "){"\n"}

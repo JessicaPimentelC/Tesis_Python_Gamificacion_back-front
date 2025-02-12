@@ -9,7 +9,6 @@ import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../.
 
 const Dos = () => {
   const [input1, setInput1] = useState('');
-  const [input2, setInput2] = useState('');
   const [result, setResult] = useState(null);
   const [showNext, setShowNext] = useState(false);
   const navigate = useNavigate();

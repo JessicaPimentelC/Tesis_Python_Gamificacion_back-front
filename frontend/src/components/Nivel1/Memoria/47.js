@@ -123,7 +123,7 @@ const Cuarentasiete = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                       lado = input("Introduce la longitud del lado del cuadrado: ") {"\n"}

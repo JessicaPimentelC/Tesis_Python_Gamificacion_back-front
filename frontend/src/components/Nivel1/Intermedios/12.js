@@ -81,7 +81,7 @@ const Doce = () => {
             <div className="nivel1-card-body">
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
                     nombre ={' '}
                     <input

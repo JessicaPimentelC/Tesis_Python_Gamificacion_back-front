@@ -7,9 +7,23 @@
     background-color: #F8C4B4; /* Ajusta según tu diseño */
     border-bottom: 1px solid #ccc;
     width: 100vw;
-
+    z-index: 1; /* Mantiene el header por debajo del botón */
+    position: absolute;
   }
-  
+  .icon-button-mapa {
+    width: 50px; /* Ajusta el ancho */
+    height: 50px; /* Ajusta la altura */
+    padding: 5px; /* Espaciado interno */
+    border: none; /* Elimina el borde */
+    background: none; /* Sin fondo */
+    cursor: pointer; /* Cursor de mano */
+}
+
+.icon-button-mapa img {
+    width: 100%; /* Hace que la imagen se ajuste al botón */
+    height: auto; /* Mantiene la proporción */
+}
+
   .icon-group {
     display: flex;
     gap: 15px; /* Espacio entre los íconos */

@@ -100,10 +100,14 @@ const Treinta = () => {
         <div className="content">
           <div className="white-background">
             <HeaderBody></HeaderBody>
+            <div className="header-title">
+            <h1>NIVEL 1</h1>
+            <HeaderInfo></HeaderInfo>
+            </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>NIVEL 1</span>
-                <HeaderInfo></HeaderInfo>
+              <span>EJERCICIO #30</span>
+
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>

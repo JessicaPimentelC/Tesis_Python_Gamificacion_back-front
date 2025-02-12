@@ -87,7 +87,7 @@ const Trece = () => {
               <p>Llena los espacios en blanco para completar el código que realiza una suma básica en Python.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
                     num1 = {' '}
                     <input

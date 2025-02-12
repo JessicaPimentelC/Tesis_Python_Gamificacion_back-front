@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, InsigniaSerializer,InsigniaConFechaSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia
+from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio
 import subprocess
 from django.db.models import Sum
 from .utils import evaluar_insignias
@@ -54,7 +54,7 @@ def Registro(request):
 def obtenerUsuario(request):
     if request.user.is_authenticated:
         usuario = request.user
-        return Response({'username': usuario.username, 'email': usuario.email , 'last_login':usuario.last_login}, status=status.HTTP_200_OK)
+        return Response({'id': usuario.id,  'username': usuario.username, 'email': usuario.email , 'last_login':usuario.last_login}, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -166,7 +166,7 @@ def ejercicio_python(request):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 @api_view(['GET', 'POST'])
-def intento(request):
+def guardar_intento(request):
     if request.method == 'POST':
         serializer = IntentoSerializer(data=request.data)
         if serializer.is_valid():
@@ -287,6 +287,49 @@ def otorgar_insignia_20_ejercicios(request):
             return Response({"message": f"¡Insignias otorgadas: {', '.join(insignias_otorgadas)}!"}, status=status.HTTP_201_CREATED)
         
     return Response({"message": "No se han cumplido los requisitos para otorgar insignias."}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def intento(request):
+    data = request.data
+    usuario_id = data.get('usuario_id')
+    ejercicio_id = data.get('ejercicio_id')
+    respuesta_usuario = data.get('respuesta_usuario')
+
+    try:
+        ejercicio = Ejercicio.objects.get(id_ejercicio=ejercicio_id)
+        es_correcto = ejercicio.salida_esperada.strip().lower() == respuesta_usuario.strip().lower()
+
+        # Guardar el intento del usuario
+        intento = IntentoEjercicio.objects.create(
+            usuario_id=usuario_id,
+            ejercicio=ejercicio,
+            respuesta_usuario=respuesta_usuario,
+            es_correcto=es_correcto
+        )
+
+        return Response({
+            "correcto": es_correcto,
+            "mensaje": "¡Correcto!" if es_correcto else "Inténtalo de nuevo",
+            "puntos": ejercicio.puntos if es_correcto else 0
+        })
+    except Ejercicio.DoesNotExist:
+        return Response({"error": "Ejercicio no encontrado"}, status=404)
+
+
+@api_view(['GET'])
+def obtener_intentos(request, usuario_id):
+    intentos = IntentoEjercicio.objects.filter(usuario_id=usuario_id).order_by('-fecha')
+    data = [
+        {
+            "ejercicio": intento.ejercicio.titulo,
+            "respuesta_usuario": intento.respuesta_usuario,
+            "es_correcto": intento.es_correcto,
+            "fecha": intento.fecha.strftime('%Y-%m-%d %H:%M')
+        }
+        for intento in intentos
+    ]
+    return Response(data)
+
 
 @api_view(['POST'])
 def run_code(request):

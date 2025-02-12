@@ -122,7 +122,7 @@ const Cuarentacuatro = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         numero1 = int(_____(“Ingrese un primer numero1”)){"\n"}

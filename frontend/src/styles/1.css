@@ -193,7 +193,44 @@
       color: #000000; /* Restaurado el color de las letras a negro */
       text-align: justify;
   }
-  
+   /* Cuerpo de la tarjeta de Nivel1 */
+   .nivel1-card-body {
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #000000; /* Restaurado el color de las letras a negro */
+    text-align: justify;
+}
+    /* Animación de desvanecimiento */
+    @keyframes fadeOut {
+      from {
+          opacity: 1;
+      }
+      to {
+          opacity: 0;
+      }
+    }
+    
+    /* Animación de aparición */
+    @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+    }
+    
+    /* Animación de deslizamiento */
+    @keyframes slideIn {
+      from {
+          transform: translateY(-20px);
+          opacity: 0;
+      }
+      to {
+          transform: translateY(0);
+          opacity: 1;
+      }
+    }
   .code-box {
     background-color: #282c34; /* Color oscuro para el fondo del código */
     border-radius: 8px; /* Bordes redondeados */
@@ -213,13 +250,104 @@
     text-align: center;
     color: #61dafb; /* Color del texto del encabezado */
   }
-  /* Contenido del código */
-  .code-content {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 18px;
-      color: #ffffff;
+
+/* Estilos base */
+.code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  color: #ffffff;
+  word-wrap: break-word; /* Asegura que el texto no se desborde */
+  overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+}
+.draggable-words {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten a diferentes tamaños de pantalla */
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px; /* Agrega un pequeño padding para mejorar la apariencia en móviles */
+}
+
+.draggable-word {
+  background-color:  #ffb23f; /* Color azul más vibrante */
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: move;
+  user-select: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.draggable-word:active {
+  transform: scale(1.1); /* Efecto al arrastrar */
+}
+
+.matching-game {
+    text-align: center;
+    margin: 20px;
   }
   
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    width: 100px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    perspective: 1000px;
+  }
+  
+
+
+/* Media queries para mejorar la responsividad */
+@media (max-width: 768px) {
+  .draggable-words {
+    gap: 5px; /* Reduce el espacio en pantallas pequeñas */
+  }
+
+  .draggable-word {
+    font-size: 14px; /* Reduce el tamaño de fuente */
+    padding: 8px 12px; /* Ajusta el tamaño de los elementos */
+  }
+}
+
+@media (max-width: 480px) {
+  .draggable-words {
+    justify-content: space-around; /* Distribuye mejor en pantallas pequeñas */
+  }
+
+  .draggable-word {
+    font-size: 12px; /* Reduce aún más el tamaño en móviles */
+    padding: 6px 10px;
+  }
+}
+
+/* Ajustes para pantallas medianas */
+@media screen and (max-width: 768px) {
+  .code {
+      font-size: 16px;
+  }
+}
+
+/* Ajustes para pantallas pequeñas */
+@media screen and (max-width: 480px) {
+  .code {
+      font-size: 14px;
+  }
+}
+
   /* Opciones de arrastre */
 .drag-container {
   display: flex;
@@ -228,6 +356,40 @@
   gap: 5px; /* Espacio mínimo entre elementos */
   margin-bottom: 20px;
 }
+.options {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+  gap: 10px; /* Espacio entre los elementos */
+  align-items: center; /* Centra los elementos horizontalmente */
+  width: 100%; /* Asegura que ocupe el ancho del contenedor */
+}
+
+.option {
+  background-color: #ffb23f;
+  padding: 15px 40px; /* Aumenta el tamaño del padding */
+  border-radius: 5px;
+  cursor: grab;
+  font-size: 18px; /* Tamaño de fuente más grande */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s, transform 0.3s;
+  width: 80%; /* Ajusta el ancho para que sea más grande */
+  text-align: center; /* Centra el texto dentro de la opción */
+  max-width: 300px; /* Limita el ancho en pantallas grandes */
+}
+
+/* Efecto al presionar */
+.option:active {
+  transform: scale(1.05);
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+  .option {
+    width: 90%; /* En móviles, las opciones ocupan casi todo el ancho */
+    font-size: 16px; /* Reduce ligeramente el tamaño de fuente */
+  }
+}
+
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 600px) {
   .drag-option {
@@ -279,13 +441,14 @@
 
   
   /* Botón de la tarjeta de Nivel1 */
-  .nivel1-card-button {
+  .nivel1-card-button {/*prueba*/
       background-color: #007bff;
       color: #fff;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      text-align: center;
   }
   
   /* Contenedor para los botones */

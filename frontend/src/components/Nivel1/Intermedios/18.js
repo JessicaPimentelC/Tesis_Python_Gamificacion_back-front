@@ -83,7 +83,7 @@ const Dieciocho = () => {
               </ul>
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
                     lado = float(input("Ingresa la longitud del lado del cuadrado: "))<br />
                     <input

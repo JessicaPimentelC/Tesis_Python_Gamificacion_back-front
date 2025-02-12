@@ -92,7 +92,7 @@ const Veintiocho = () => {
                 <p>En este ejercicio, debes arrastrar el signo correcto para completar el siguiente código:</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         variable1 = "Hola mundo"{"\n"}

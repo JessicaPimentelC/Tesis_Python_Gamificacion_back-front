@@ -46,7 +46,7 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 5px;
-    z-index: 1200; /* Asegura que esté por encima del sidebar */
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
     display: none; /* Oculto en escritorio */
 }
 

@@ -85,12 +85,13 @@ const Quince = () => {
           <div className="nivel1-card">
             <div className="nivel1-card-header">
               <span>Ejercicio de Conversión de Unidades</span>
-              <p>Llena los espacios en blanco para completar el código que convierte centímetros a metros.</p>
             </div>
             <div className="nivel1-card-body">
+            <p>Llena los espacios en blanco para completar el código que convierte centímetros a metros.</p>
+
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
                     centimetros = <input
                       type="text"

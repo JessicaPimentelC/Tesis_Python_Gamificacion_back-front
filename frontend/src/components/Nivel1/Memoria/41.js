@@ -122,7 +122,7 @@ const Cuarentauno = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         cadena1 = input(“hola”) {"\n"}

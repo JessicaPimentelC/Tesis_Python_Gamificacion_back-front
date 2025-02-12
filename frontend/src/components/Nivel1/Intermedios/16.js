@@ -74,7 +74,7 @@ const Dieciséis = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {'from datetime '}
                     <input

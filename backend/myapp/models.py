@@ -41,9 +41,7 @@ class Ejercicio(models.Model):
     nivel_id = models.ForeignKey(Nivel, on_delete=models.CASCADE, related_name='ejercicios')
     codigo = models.TextField()  
     salida_esperada = models.TextField(blank=True, null=True)  
-    terminado = models.BooleanField(default=False)  
     puntos = models.IntegerField()
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ejercicios_usuario')
 
 class UsuarioEjercicioInsignia(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -95,7 +93,17 @@ class Intento(models.Model):
     fecha = models.DateField()
     resultado = models.BooleanField()
     errores = models.IntegerField()
-    
+
+class IntentoEjercicio(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='intentos')
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos')
+    respuesta_usuario = models.TextField()  # Respuesta ingresada por el usuario
+    es_correcto = models.BooleanField(default=False)  # Si la respuesta fue correcta o no
+    fecha = models.DateTimeField(auto_now_add=True)  # Fecha del intento
+
+    def __str__(self):
+        return f"Intento de {self.usuario.username} en {self.ejercicio.titulo}"
+
 class Usuario_insignia(models.Model):
     id_usuario_insignia = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     usuario_id = models.IntegerField()
