@@ -93,7 +93,7 @@ const Treintaocho = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  Completa el código arrastrando la palabra clave <code>math</code> para calcular la hipotenusa del triángulo rectángulo.
+                  Completa el código arrastrando la palabra clave para calcular la hipotenusa del triángulo rectángulo.
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

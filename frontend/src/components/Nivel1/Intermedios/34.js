@@ -111,7 +111,7 @@ const Treintacuatro = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  En este ejercicio, debes arrastrar el operador correcto (`*`) para completar el cálculo del capital final con interés compuesto.
+                  En este ejercicio, debes arrastrar el operador correcto para completar el cálculo del capital final con interés compuesto.
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

@@ -113,12 +113,13 @@ const Treintaseis = () => {
                     Operadores                </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
-                      a = input("Ingresa el primer valor: ") b ={"\n"}
-                        input("Ingresa el segundo valor: ") a, b = b, a{"\n"}
-                        print("Después de intercambiar:") print("Primer valor:",a){"\n"} 
+                      a = input("Ingresa el primer valor: "){"\n"}b =
+                        input("Ingresa el segundo valor: "){"\n"}a, b = b, a
+                        print("Después de intercambiar:"){"\n"}
+                        print("Primer valor:",a){"\n"} 
                         print___"Segundo valor:", b___{"\n"}
                       </code>
                     </pre>

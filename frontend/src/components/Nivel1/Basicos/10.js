@@ -75,7 +75,7 @@ const Diez = () => {
             <h2>EJERCICIO #10</h2>
             </div>
             <div className="nivel1-card-body">
-              <p>Ingrese el nombre "EDUARDO" en el campo de abajo y presione "Print".</p>
+              <p>Ingrese el nombre "Python" en el campo de abajo y presione "Print".</p>
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
                 <div className="code-content">

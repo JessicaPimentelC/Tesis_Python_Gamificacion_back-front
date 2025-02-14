@@ -110,7 +110,7 @@ const Treintacinco = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  En este ejercicio, debes arrastrar la función correcta (`print`) para mostrar el número en binario y en hexadecimal.
+                  En este ejercicio, debes arrastrar la función correcta para mostrar el número en binario y en hexadecimal.
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

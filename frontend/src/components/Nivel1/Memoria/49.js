@@ -115,10 +115,7 @@ const Cuarentanueve = () => {
             <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>Cálculo del Área Total de un Cilindro en Python
-
-
-
-</span>
+                </span>
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>Encuentra la pareja relacionada.</p>
@@ -128,7 +125,7 @@ const Cuarentanueve = () => {
                     <pre>
                       <code>
 
-                    import ____
+                    import ____{"\n"}
                     radio = input("Introduce el radio del cilindro: "){"\n"} 
                     altura = input("Introduce la altura del cilindro: "){"\n"}
                     area_total = 2 * math.pi * float(radio) * (float(radio) + float(altura)){"\n"}

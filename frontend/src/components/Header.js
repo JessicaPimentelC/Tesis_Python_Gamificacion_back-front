@@ -14,6 +14,7 @@ const Header = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
+    
     const openModalPinguino = () => {
         setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
         console.log("clikeado pinguino", isModalOpenPinguino);
@@ -74,6 +75,9 @@ const Header = () => {
         setIsResponseModalOpen(true);
     };
 
+    const closePinguino = () => {
+        setIsModalOpenPinguino(false);
+    };
 
     const closeModal = () => {
         setIsModalOpen(false);

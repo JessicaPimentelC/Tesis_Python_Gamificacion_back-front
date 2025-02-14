@@ -116,12 +116,12 @@ const Treinta = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         variable1 ___ "Hola mundo"{"\n"}
                         variable2 ___ 100{"\n"}
-                        Print(variable1, variable2)
+                        print(variable1, variable2)
                       </code>
                     </pre>
                   </div>

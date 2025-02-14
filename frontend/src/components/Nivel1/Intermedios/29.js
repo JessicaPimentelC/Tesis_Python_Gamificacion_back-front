@@ -49,7 +49,7 @@ const Veintiocho = () => {
   const navigate = useNavigate();
   
   const handleVerify = () => {
-    if (droppedItem === "=") {
+    if (droppedItem === ",") {
       setIsCorrect(true);
       setShowNextButton(true);
     } else {
@@ -89,7 +89,7 @@ const Veintiocho = () => {
                 <span>EJERCICIO #1</span>
               </div>
               <div className="nivel1-card-body-ejer1">
-                <p>En este ejercicio, debes arrastrar el signo correcto para completar el siguiente código:</p>
+                <p>En este ejercicio, debes arrastrar el signo correcto para imprimir las dos variables</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
                   <div className="code">
@@ -97,7 +97,7 @@ const Veintiocho = () => {
                       <code>
                         variable1 = "Hola mundo"{"\n"}
                         variable2 = 100{"\n"}
-                        ______(variable1, variable2)
+                        print(variable1, variable2)
                       </code>
                     </pre>
                   </div>
