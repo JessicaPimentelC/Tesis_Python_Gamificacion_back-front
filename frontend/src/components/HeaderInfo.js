@@ -3,7 +3,6 @@ import "../styles/HeaderInfo.css";
 import { useNavigate } from "react-router-dom";
 import Mapa from "./Mapa";
 import PinguinoModal from "./PinguinoModal";
-import axios from "axios";
 
 const HeaderInfo = () => {
     const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);

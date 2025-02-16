@@ -107,6 +107,7 @@ def eliminarRegistroForo(request, id_foro):
     except Foro.DoesNotExist:
         return Response({'error': 'Pregunta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
 
+@csrf_exempt
 @api_view(['GET', 'POST'])
 def ParticipacionForo(request):
     if request.method == 'POST':

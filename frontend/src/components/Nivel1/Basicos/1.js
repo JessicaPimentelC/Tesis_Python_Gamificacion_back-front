@@ -25,6 +25,8 @@ const Uno = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const handleNext = () => {
@@ -60,17 +62,18 @@ const Uno = () => {
     setDroppedItem(draggedItem);
   };
   useEffect(() => {
-    const fetchScore = async () => {
+    const fetchUsuario = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/myapp/score/1"
-        ); // Reemplaza "1" con el ID del usuario actual
-        setScore(response.data.score);
+        const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+          withCredentials: true,
+        });
+        setUserInfo(response.data);
+        console.log("Usuario recibido:", response.data);
       } catch (error) {
-        console.error("Error al obtener score:", error);
+        console.error("Error al obtener el usuario:", error.response?.data || error.message);
       }
     };
-    fetchScore();
+    fetchUsuario();
 
     const handleClickOutside = (event) => {
       // Si se hace clic fuera de los iconos, se oculta el nombre

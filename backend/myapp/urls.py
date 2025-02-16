@@ -16,6 +16,8 @@ urlpatterns = [
     path('registroParti_foro/', views.ParticipacionForo, name='registroParti_foro'),    
     path('eliminarParti_foro/<int:id_participacion_foro>/', views.eliminarPartiForo, name='eliminarParti_foro'),
     path('eliminarRegistro_foro/<int:id_foro>/', views.eliminarRegistroForo, name='eliminarRegistroForo'),    
+    path("participaciones/", views.ParticipacionForo, name="participaciones"),
+
     path('login/', views.Login, name='login'),
     path('usuario/<username>/', views.obtenerUsuario, name='usuario'),    
     #path('accounts/', include('django.contrib.auth.urls')),

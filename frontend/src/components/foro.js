@@ -19,6 +19,7 @@ const Foro = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [participaciones, setParticipaciones] = useState([]);
+    const [userInfo, setUserInfo] = useState(null);
 
     const fetchQuestions = async () => {
         try {
@@ -112,17 +113,17 @@ const Foro = () => {
         }
     };
 
+    const fetchParticipaciones = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/myapp/participaciones/');
+            setParticipaciones(response.data);
+        } catch (error) {
+            console.error('Error al obtener las participaciones:', error);
+        }
+    };
+
 
     useEffect(() => {
-        const fetchParticipaciones = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/myapp/participaciones/');
-                setParticipaciones(response.data);
-            } catch (error) {
-                console.error('Error al obtener las participaciones:', error);
-            }
-        };
-
         fetchParticipaciones();
     }, []);
 
@@ -134,33 +135,38 @@ const Foro = () => {
             );
 
             console.log('Success:', response.data);
+            fetchQuestions();
         } catch (error) {
             console.error('Error:', error);
             alert('Ocurrió un error al registrar el foro. Por favor, intenta de nuevo.');
         }
     };
-
-    const fetchUserIdByUsername = async (username) => {
+    const fetchUsuario = async () => {
         try {
-            console.log(username, responseUsername)
-//            const response = await axios.get(`http://localhost:8000/myapp/usuario/${username}/`);            
-            const response = await axios.get(`http://localhost:8000/myapp/usuario/usuario1/`);            
-
-            console.log("Datos de la respuesta:", response.data);  
-            console.log("id:", response.data.id);  
-            return response.data.id;
+            const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                withCredentials: true, // Incluir cookies en la petición
+            });
             
+            console.log("Usuario:", userResponse.data.username);
+            const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
+            
+            if (!usuario_id) {
+                alert("Error: Usuario no identificado.");
+                return;
+            }
+            return userResponse.data.id;
+            // Llamar a fetchScore con el usuario_id
 
         } catch (error) {
-            console.error('Error obteniendo el usuario_id:', error);
-            return null;
+            console.error("Error al obtener usuario:", error);
         }
     };
+
     const handleRegistroRespuestaForo = async () => {
         try {
             console.log('responseUsername:', responseUsername);  
-            const userId = await fetchUserIdByUsername(responseUsername);
-            console.log("userId",userId)
+            const userId = await fetchUsuario(responseUsername);
+            console.log("id",userId)
 
         if (!userId) {
             alert('Usuario no encontrado.');
@@ -181,15 +187,8 @@ const Foro = () => {
             console.log('Success:', response.data);
     
             // Actualizar el estado para reflejar la nueva respuesta
-            const updatedQuestions = [...questions];
-            updatedQuestions[currentQuestionIndex].answers = updatedQuestions[currentQuestionIndex].answers || [];
-            updatedQuestions[currentQuestionIndex].answers.push({
-                user: responseUsername,
-                time: new Date().toLocaleTimeString(),
-                text: responseText,
-            });
-            setQuestions(updatedQuestions);
-    
+            
+            fetchParticipaciones();
             // Resetea los campos y cierra el modal
             setResponseUsername('');
             setResponseText('');
@@ -209,25 +208,30 @@ const Foro = () => {
 
     const handleDeletePregunta = async (id_foro, index) => {
         try {
-            const response = await axios.delete('http://localhost:8000/myapp/eliminarRegistro_foro/${id_foro}');
+            const response = await axios.delete(`http://localhost:8000/myapp/eliminarRegistro_foro/${id_foro}`);
             if (response.status === 200) {
                 // Actualiza el estado en el frontend
                 setQuestions(questions.filter((_, i) => i !== index));
-                alert('Respuesta eliminada exitosamente');
+                alert('Pregunta eliminada exitosamente');
             }
+            fetchParticipaciones();
+
         } catch (error) {
-            console.error('Error al eliminar la respuesta:', error);
-            alert('Hubo un error al eliminar la respuesta');
+            console.error('Error al eliminar la pregunta:', error);
+            alert('Hubo un error al eliminar la pregunta');
         }
     };
     const handleDeleteRespuesta = async (id_participacion_foro, index) => {
         try {
-            const response = await axios.delete('http://localhost:8000/myapp/eliminarParti_foro/${id_participacion_foro}');
+            const response = await axios.delete(`http://localhost:8000/myapp/eliminarParti_foro/${id_participacion_foro}/`);            console.log('Eliminar:', response.data);
+
             if (response.status === 200) {
                 // Actualiza el estado en el frontend
                 setQuestions(questions.filter((_, i) => i !== index));
                 alert('Respuesta eliminada exitosamente');
             }
+            fetchParticipaciones();
+
         } catch (error) {
             console.error('Error al eliminar la respuesta:', error);
             alert('Hubo un error al eliminar la respuesta');
@@ -283,7 +287,7 @@ const Foro = () => {
         )}
         <div className="foro-questions">
             {filteredQuestions.map((q, index) => (
-                <div className="question" key={q.id_foro}>
+                    <div className="question" key={q.id_foro || `question-${index}`}>                    
                     <div className="question-header">
                         <p className="question-info">
                             Tema: {q.tema} | Fecha: {q.fecha_creacion}
@@ -292,9 +296,8 @@ const Foro = () => {
                     <p className="question-text">{q.descripcion}</p>
                     <button className='new-question' onClick={() => openResponseModal(index)}>Responder</button>
                     <div className="answers">
-                        {q.participaciones_foro && q.participaciones_foro.map((a, id_participacion_foro) => (
-                            <div className="answer" key={a.id}>
-                                <div className="answer-header">
+                    {q.participaciones_foro && q.participaciones_foro.map((a, id_participacion_foro) => (
+    <div className="answer" key={a.id_participacion_foro || `answer-${q.id_foro}-${id_participacion_foro}`}>                                    <div className="answer-header">
                                     <p className="answer-info">
                                         Respuesta de {a.usuario} en {a.fecha_participacion}
                                     </p>
@@ -322,8 +325,8 @@ const Foro = () => {
                                             src="eliminar.png"
                                             alt="Eliminar"
                                             className="action-icon"
-                                            onClick={() => handleDeleteRespuesta(index)}
-                                        />
+                                            onClick={() => handleDeleteRespuesta(a.id_participacion_foro, index)}                                            
+                                            />
                                         <img
                                             src="correo.png"
                                             alt="Correo"

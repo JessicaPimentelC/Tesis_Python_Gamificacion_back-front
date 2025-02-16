@@ -36,7 +36,7 @@ class ParticipacionForoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Participacion_foro
-        fields = ['id_participacion_foro', 'usuario', 'foro', 'fecha_participacion', 'comentario', 'resultado']
+        fields = '__all__'
 
 class ForoSerializer(serializers.ModelSerializer):
     participaciones_foro = ParticipacionForoSerializer(many=True, read_only=True)  # Asegúrate de que el nombre aquí es el correcto
