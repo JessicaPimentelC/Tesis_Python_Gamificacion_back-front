@@ -78,6 +78,3 @@ export const verificarYOtorgarInsignia = async (numerosUsados, usuarioId) => {
         }
     }
 };
-
-
-

@@ -1,51 +1,86 @@
 import { useNavigate } from "react-router-dom";
-import { redirigirAEnunciado,obtenerEjerciciosDesdeBD } from "../utils/utils";
+import { redirigirAEnunciado } from "../utils/utils";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const Mapa = ({ usuario_id }) => {
+const Mapa = () => {
     const navigate = useNavigate();
     const [ejercicios, setEjercicios] = useState([]);
+    const [userInfo, setUserInfo] = useState(null);
 
+    // Cargar usuario
     useEffect(() => {
-        const obtenerEjerciciosDesdeBD = async () => {
+        const fetchUsuario = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/myapp/ejercicios_usuario/${usuario_id}/`);
-                setEjercicios(response.data.ejercicios);
+                const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                    withCredentials: true,
+                });
+                setUserInfo(response.data);
+                console.log("Usuario recibido:", response.data);
             } catch (error) {
-                console.error("Error al obtener ejercicios:", error);
+                console.error("Error al obtener el usuario:", error.response?.data || error.message);
             }
         };
 
-        obtenerEjerciciosDesdeBD();
-    }, [usuario_id]);
+        fetchUsuario();
+    }, []); // Se ejecuta solo una vez al montar el componente
 
-    const positions = [
+    // Cargar ejercicios cuando userInfo esté disponible
+    useEffect(() => {
+        if (userInfo) {
+            const obtenerEjerciciosDesdeBD = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8000/myapp/ejercicios_usuario/${userInfo.id}/`);
+                    setEjercicios(response.data.ejercicios);
+                } catch (error) {
+                    console.error("Error al obtener ejercicios:", error);
+                }
+            };
+
+            obtenerEjerciciosDesdeBD();
+        }
+    }, [userInfo]); // Se ejecuta cuando userInfo cambia
+
+   /* const positions = [
         { top: 50, left: 50, icon: "/colombia.png" },
-        { top: 50, left: 100, icon: "/cohetee.png" },
-        { top: 50, left: 150, icon: "/empresario.png" },
-        { top: 50, left: 200, icon: "/tres.png" },
-        { top: 50, left: 250, icon: "/libero.png" },
-        { top: 100, left: 250, icon: "/ed.png" },
-        { top: 150, left: 250, icon: "/geometrico.png" },
-        { top: 200, left: 250, icon: "/41.png" },
-        { top: 250, left: 250, icon: "/42.png" },
-        { top: 250, left: 50, icon: "/43.png" },
-        { top: 250, left: 100, icon: "/44.png" },
-        { top: 250, left: 150, icon: "/45.png" },
-        { top: 250, left: 200, icon: "/46.png" },
-    ];
-
+        { top: 50, left: 110, icon: "/cohetee.png" },
+        { top: 50, left: 170, icon: "/empresario.png" },
+        { top: 50, left: 230, icon: "/tres.png" },
+        { top: 50, left: 290, icon: "/libero.png" },
+        { top: 110, left: 290, icon: "/ed.png" },
+        { top: 170, left: 290, icon: "/geometrico.png" },
+        { top: 230, left: 290, icon: "/41.png" },
+        { top: 290, left: 290, icon: "/42.png" },
+        { top: 290, left: 50, icon: "/43.png" },
+        { top: 290, left: 110, icon: "/44.png" },
+        { top: 290, left: 170, icon: "/45.png" },
+        { top: 290, left: 230, icon: "/46.png" },
+    ];*/
+    const generarEspiralVertical = (numElementos, centroX, centroY, radioInicial, factorExp) => {
+        return Array.from({ length: numElementos }, (_, i) => {
+            const angle = i * 0.6; // Ajuste del ángulo para separación horizontal
+            const radio = radioInicial + factorExp * i; // Expansión radial
+    
+            return {
+                top: centroY + i * 70, // Incremento uniforme en la vertical
+                left: centroX + Math.sin(angle) * 100, // Mayor amplitud horizontal
+                icon: `/mapa/${(i % 10) + 1}.png`
+            };
+        });
+    };
+    
+    const positions = generarEspiralVertical(20, 100, 50, 20, 15);
+    
     return (
         <div className="circles-container-mapa" style={{ textAlign: "center" }}>
             {positions.map((pos, index) => {
-                const ejercicio = ejercicios[index]; // Asigna un ejercicio a cada posición
+                const ejercicio = ejercicios[index] || null;
                 return (
                     <div
                         key={index}
                         className={`circle ${
-                            index <= 7 ? "circle-nivel1" :
-                            index <= 13 ? "circle-nivel2" :
+                            index <= 20 ? "circle-nivel1" :
+                            index <= 21 ? "circle-nivel2" :
                             "circle-nivel3"
                         }`}
                         style={{
@@ -61,12 +96,12 @@ const Mapa = ({ usuario_id }) => {
                             }
                         }}
                     >
-                        <img src={pos.icon} alt={`Icon ${index}`} />
-                        <p>{ejercicio ? `Ejercicio ${ejercicio}` : "No asignado"}</p>
+                    <img src={pos.icon} alt={`Icon ${index}`} />                    
+                    <p>{ejercicio ? `Ejercicio ${ejercicio}` : "No asignado"}</p>
                     </div>
                 );
             })}
-        </div>
+        </div>    
     );
 };
 
