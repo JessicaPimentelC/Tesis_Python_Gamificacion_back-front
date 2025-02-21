@@ -5,11 +5,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, InsigniaSerializer,InsigniaConFechaSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio
+from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado
 import subprocess
 from django.db.models import Sum
 from .utils import evaluar_insignias
 from django.shortcuts import get_object_or_404
+import json
+from django.http import JsonResponse
+from django.utils.timezone import now
+
 
 User = get_user_model()
 
@@ -374,3 +378,53 @@ def votar_respuesta(request):
         })
     except Participacion_foro.DoesNotExist:
         return Response({'success': False, 'error': 'Participación no encontrada'}, status=404)
+
+@csrf_exempt
+def guardar_ejercicio(request):
+    if request.method == "POST":
+        try:
+            # Obtener los datos del cuerpo de la solicitud
+            data = json.loads(request.body)
+            usuario_id = data.get("usuario_id")
+            ejercicio_id = data.get("ejercicio_id")
+
+            if not usuario_id or not ejercicio_id:
+                return JsonResponse({"error": "Datos incompletos"}, status=400)
+
+            usuario = User.objects.get(id=usuario_id)  # Recuperar usuario
+            print(f"Tipo de usuario obtenido: {type(usuario)}")
+            print(f"Es instancia de User: {isinstance(usuario, User)}")
+            ejercicio = Ejercicio.objects.get(id_ejercicio=ejercicio_id)
+
+            ejercicio_asignado = EjercicioAsignado(
+                usuario=usuario,
+                ejercicio=ejercicio,
+                fecha_asignacion=now(),
+            )
+
+            ejercicio_asignado.save()  # Guardar en la base de datos
+
+            return JsonResponse({"mensaje": "Ejercicio guardado correctamente", "id": ejercicio_asignado.id})
+        except User.DoesNotExist:
+            return JsonResponse({"error": "Usuario no encontrado"}, status=404)
+        except Ejercicio.DoesNotExist:
+            return JsonResponse({"error": "Ejercicio no encontrado"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+@csrf_exempt
+def obtener_ejercicios_usuario(request, usuario_id):
+    ejercicios = EjercicioAsignado.objects.filter(usuario_id=usuario_id).values_list("ejercicio_id", flat=True)
+    return JsonResponse({"ejercicios": list(ejercicios)})
+
+def obtener_ejercicios_usuario(request, usuario_id):
+    try:
+        # Obtener los ejercicios asignados al usuario
+        ejercicios_asignados = EjercicioAsignado.objects.filter(usuario_id=usuario_id)
+        
+        # Crear una lista con los IDs de los ejercicios asignados
+        ejercicios = [ea.ejercicio.id_ejercicio for ea in ejercicios_asignados]
+        
+        return JsonResponse({"ejercicios": ejercicios})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

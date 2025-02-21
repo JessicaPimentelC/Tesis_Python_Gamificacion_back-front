@@ -32,7 +32,6 @@ export const obtenerEjerciciosAleatorios = (cantidad = 20) => {
 
 // Lista de 20 ejercicios preseleccionados
 let ejerciciosPreseleccionados = obtenerEjerciciosAleatorios();
-console.log("hola",ejerciciosPreseleccionados.length)
 let indiceEjercicio = 0;
 
 export const obtenerEjercicioAleatorioEnunciado = () => {
@@ -58,7 +57,6 @@ export const redirigirAEnunciado = (ejercicio, navigate) => {
     navigate(`/enunciado${ejercicio}`);
 };
 
-
 export const verificarYOtorgarInsignia = async (numerosUsados, usuarioId) => {
     if (numerosUsados.length >= 20) {
         console.log("¡Felicidades! Has completado 20 ejercicios y ganaste una insignia 🎖️");
@@ -80,3 +78,6 @@ export const verificarYOtorgarInsignia = async (numerosUsados, usuarioId) => {
         }
     }
 };
+
+
+

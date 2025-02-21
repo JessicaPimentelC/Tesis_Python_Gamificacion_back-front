@@ -127,24 +127,6 @@
   margin-top: 15px;
 }
 
-/* Botón en la tarjeta del nivel 1 */
-.nivel1-card-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  /* Animación de desaparición para cuando el botón se oculta */
-  animation: fadeOut 0.5s ease-out;
-}
-
-/* Cambios en el botón al pasar el ratón por encima */
-.nivel1-card-button:hover {
-  background-color: #0056b3;
-}
-
 /* Sección siguiente del nivel 1 */
 .nivel1-next-section {
   margin-top: 20px;
