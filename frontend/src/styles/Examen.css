@@ -42,18 +42,6 @@ body {
   width: 24px;
 }
 
-.header {
-  width: 85%;
-  height: 60px;
-  background-color: #FF6F6F;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 20px;
-  color: black;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  margin-left: 60px; /* Ajusta el margen para mover la barra más a la derecha */
-}
 /* Nueva clase específica para el módulo Examen */
 .header-examen {
   margin-left: 200px; /* Ajusta el margen para el módulo Examen */
