@@ -33,6 +33,9 @@ urlpatterns = [
     path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),
     path("ejercicios_usuario/<int:usuario_id>/", views.obtener_ejercicios_usuario, name="obtener_ejercicios_usuario"),
 
+    path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
+
+
     path('intento/', views.intento, name='intento'),
     path('score/<int:user_id>/', views.get_score, name='get_score'),
     path('run_code/', views.run_code, name='run_code'),

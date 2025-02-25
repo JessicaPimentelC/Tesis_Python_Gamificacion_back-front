@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
-from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, InsigniaSerializer,InsigniaConFechaSerializer
+from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,InsigniaConFechaSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado
+from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro
 import subprocess
 from django.db.models import Sum
 from .utils import evaluar_insignias
@@ -428,3 +428,15 @@ def obtener_ejercicios_usuario(request, usuario_id):
         return JsonResponse({"ejercicios": ejercicios})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+@api_view(['GET'])
+def obtener_logros_usuario(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "No estás autenticado"}, status=401)
+
+    usuario_id = request.user.id  
+    logros_obtenidos = Usuario_logro.objects.filter(usuario_id=usuario_id).select_related('logro_id')  # ✅ Usar 'logro' en lugar de 'logro_id'
+    serializer = UsuarioLogroSerializer(logros_obtenidos, many=True)
+    
+    return Response(serializer.data)
+

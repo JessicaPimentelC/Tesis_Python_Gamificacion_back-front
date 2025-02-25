@@ -51,7 +51,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
   try {
     console.log("Enviando a la BD:", { usuario_id, ejercicio_id }); // <-- Verifica en la consola
 
-    const response = await axios.post("http://localhost:8000/myapp/guardar_ejercicio/", {
+    const response = await axios.post("http://localhost/myapp/guardar_ejercicio/", {
       usuario_id,
       ejercicio_id,  // <-- Solo un ID
     });

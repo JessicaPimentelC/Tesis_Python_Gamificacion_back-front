@@ -257,7 +257,7 @@ const Foro = () => {
 <div className="foro-container">
     <div className="foro-header">
         <button onClick={handleBackClick} className="back-button">
-            <img src="atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
+            <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
         </button>
         <input
             type="text"
@@ -267,10 +267,10 @@ const Foro = () => {
             onChange={handleSearchChange}
         />
         <div className="icon-group">
-            <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
-            <img src="informacion.png" alt="Icon 2" className="header-icon" />
-            <img src="mensaje.png" alt="Icon 3" className="header-icon" />
-            <img src="AYUDA.jpeg" alt="Profile" className="header-icon" />
+            <img src="/ubicacion.png" alt="Icon 1" className="header-icon" />
+            <img src="/informacion.png" alt="Icon 2" className="header-icon" />
+            <img src="/mensaje.png" alt="Icon 3" className="header-icon" />
+            <img src="/AYUDA.jpeg" alt="Profile" className="header-icon" />
         </div>
     </div>
     <div className="foro-content">
@@ -306,14 +306,14 @@ const Foro = () => {
                                 <div className="actions">
                                     <div className="like-dislike">
                                         <img
-                                            src="like.png"
+                                            src="/like.png"
                                             alt="Like"
                                             className="like-icon"
                                             onClick={() => handleVote(a.id, 'like')}
                                             style={{ cursor: 'pointer' }}
                                         />
                                         <img
-                                            src="dislike.png"
+                                            src="/dislike.png"
                                             alt="Dislike"
                                             className="dislike-icon"
                                             onClick={() => handleVote(a.id, 'dislike')}
@@ -322,13 +322,13 @@ const Foro = () => {
                                     </div>
                                     <div className="additional-actions">
                                         <img
-                                            src="eliminar.png"
+                                            src="/eliminar.png"
                                             alt="Eliminar"
                                             className="action-icon"
                                             onClick={() => handleDeleteRespuesta(a.id_participacion_foro, index)}                                            
                                             />
                                         <img
-                                            src="correo.png"
+                                            src="/correo.png"
                                             alt="Correo"
                                             className="action-icon"
                                             onClick={() => openResponseModal(index)}
@@ -341,13 +341,13 @@ const Foro = () => {
                     <div className="actions">
                         <div className="additional-actions">
                             <img
-                                src="eliminar.png"
+                                src="/eliminar.png"
                                 alt="Eliminar"
                                 className="action-icon"
                                 onClick={() => handleDeletePregunta(index)}
                             />
                             <img
-                                src="correo.png"
+                                src="/correo.png"
                                 alt="Correo"
                                 className="action-icon"
                                 onClick={() => openResponseModal(index)}

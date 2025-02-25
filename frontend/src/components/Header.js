@@ -22,6 +22,9 @@ const Header = () => {
     const handleForoIconClick = () => {
         navigate("/foro");
     };
+    const handleInsigniasIconClick = () => {
+        navigate("/insignias");
+    };
     const handleMouseLeave = () => {
         setDropdownOpen(false);
     };
@@ -87,6 +90,9 @@ const Header = () => {
         <div className="dashboard-header">
         <div className="icon-group">
         <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
+        <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
+            <img src="/bandera.png" alt="Icono Insignias" />
+        </button>
         <button className="icon-button-mapa" onClick={openModalPinguino}>
             <img src="/muñeco.png" alt="Icono Moneda" />
         </button>

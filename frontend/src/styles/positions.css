@@ -34,21 +34,6 @@
     gap: 30px;
   }
   
-  .dashboard-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20%;
-  }
-  
-  .dashboard-right {
-    display: flex;
-    width: 120;
-    flex-direction: column;
-    gap: 20px; /* Espacio entre las cajas */
-    align-items: flex-end; /* Alinea las cajas a la derecha */
-  }
-  
   .button-route {
     display: flex;
     flex-direction: column;
