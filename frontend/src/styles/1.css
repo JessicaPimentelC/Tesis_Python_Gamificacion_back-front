@@ -200,6 +200,23 @@
     color: #000000; /* Restaurado el color de las letras a negro */
     text-align: justify;
 }
+.nivel1-card-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  flex: none;
+}
+
+/* Cambios en el botón al pasar el ratón por encima */
+.nivel1-card-button:hover {
+  background-color: #0056b3;
+}
+
     /* Animación de desvanecimiento */
     @keyframes fadeOut {
       from {
@@ -440,33 +457,25 @@
 }
 
   
-  /* Botón de la tarjeta de Nivel1 */
-  .nivel1-card-button {/*prueba*/
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-  }
-  
   /* Contenedor para los botones */
   .button-container {
       display: flex;
       justify-content: center;
-      gap: 0;
+      gap: 10px;
       margin-bottom: 20px;
   }
   
   /* Botón de siguiente (oculto inicialmente) */
   .next-button {
+    visibility: hidden; /* Oculto pero mantiene su espacio */
+    position: absolute; /* Alternativamente, puede quitar espacio */
       display: none;
   }
   
   /* Muestra el botón de siguiente cuando se cumple la condición */
   .show {
       display: inline-block;
+      visibility: visible; /* Lo muestra cuando debe aparecer */
   }
     /* Texto del resultado */
     .result {
@@ -728,39 +737,39 @@
     }
     
   
-  .circles-container {
+    .circle {
       position: absolute;
-      bottom: 700px; /* Ajusta la posición vertical según sea necesario */
-      left: 50%;
-      transform: translateX(-60%); /* Centra los círculos horizontalmente */
-      display: flex;
-      justify-content: space-around; /* Espacio uniforme entre círculos */
-      width: 80%; /* Ajusta según el diseño deseado */
-  }
-  
-  .circle {
-      width: 50px;
+      width: 50px; 
       height: 50px;
-      background-color: rgb(158, 158, 158);
       border-radius: 50%;
+      background-color: #a3d977;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      position: relative;
-      transition: transform 0.3s ease, background-color 0.3s ease; /* Agrega transiciones */
+      justify-content: center;
+      text-align: center;
+      padding: 5px;
+      transition: transform 0.3s ease-in-out;
   }
   
   .circle:hover {
-      transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
-      background-color: darkgray; /* Cambia el color de fondo al pasar el mouse */
+      transform: scale(1.2) rotate(360deg);
+      background-color: darkgray;
   }
   
   .circle img {
-      width: 30px; /* Tamaño del ícono */
-      height: 30px; /* Tamaño del ícono */
-      transition: transform 0.3s ease; /* Agrega transiciones al ícono */
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
   }
   
+  .circle p {
+      font-size: 12px;
+      color: red;
+      margin: 0;
+  }
+  
+      
   .circle:hover img {
       transform: rotate(360deg); /* Rota el ícono al pasar el mouse */
   }

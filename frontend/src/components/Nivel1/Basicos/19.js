@@ -83,13 +83,15 @@ const Diecinueve = () => {
             <div className="header-title">
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
+              </div>
           </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
               <span>Conversión de Temperatura</span>
-              <p>En este ejercicio, debes completar el código para convertir una temperatura de grados Celsius a Fahrenheit. Completa el campo con la función correcta para imprimir el resultado.</p>
             </div>
             <div className="nivel1-card-body">
+            <p>En este ejercicio, debes completar el código para convertir una temperatura de grados Celsius a Fahrenheit. Completa el campo con la función correcta para imprimir el resultado.</p>
+
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
                 <div className="code-content">
@@ -138,7 +140,6 @@ const Diecinueve = () => {
           </div>
         </div>
         <Puntaje></Puntaje>
-      </div>
       </div>
 
       {/* Modal */}

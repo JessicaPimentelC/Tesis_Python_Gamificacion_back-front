@@ -110,12 +110,12 @@ const Treintados = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  En este ejercicio, debes arrastrar el tipo de dato correcto (`float`) para completar el código
+                  En este ejercicio, debes arrastrar el tipo de dato correcto para completar el código
                   que calcula el precio final de un producto después de aplicar un descuento.
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         precio = ______(input("Ingresa el precio del producto: ")) {"\n"}

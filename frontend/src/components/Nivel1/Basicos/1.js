@@ -7,6 +7,7 @@ import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
 import {verificarYOtorgarInsignia,obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
 import Sidebar from "../../Sidebar";
+export { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado };
 
 const Uno = () => {
   const [draggedItem, setDraggedItem] = useState(null);
@@ -25,9 +26,11 @@ const Uno = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const handleNext = () => {
+ /**  const handleNext = () => {
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado();
 
     if (proximoEjercicio) {
@@ -41,8 +44,25 @@ const Uno = () => {
     } else {
         console.log('No quedan ejercicios disponibles.');
     }
+};**/
+// Modificar handleNext para guardar ejercicios en la BD antes de avanzar
+// Función para guardar un ejercicio en la base de datos
+const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
+  try {
+    console.log("Enviando a la BD:", { usuario_id, ejercicio_id }); // <-- Verifica en la consola
+
+    const response = await axios.post("http://localhost/myapp/guardar_ejercicio/", {
+      usuario_id,
+      ejercicio_id,  // <-- Solo un ID
+    });
+
+    console.log("Ejercicio guardado:", response.data);
+  } catch (error) {
+    console.error("Error al guardar ejercicio:", error.response?.data || error.message);
+  }
 };
-  const options = ["Mundo", "Hola", "Eduardo"];
+
+const options = ["Mundo", "Hola", "Print"];
 
   const handleDragStart = (e, item) => {
     setDraggedItem(item);
@@ -60,17 +80,18 @@ const Uno = () => {
     setDroppedItem(draggedItem);
   };
   useEffect(() => {
-    const fetchScore = async () => {
+    const fetchUsuario = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/myapp/score/1"
-        ); // Reemplaza "1" con el ID del usuario actual
-        setScore(response.data.score);
+        const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+          withCredentials: true,
+        });
+        setUserInfo(response.data);
+        console.log("Usuario recibido:", response.data);
       } catch (error) {
-        console.error("Error al obtener score:", error);
+        console.error("Error al obtener el usuario:", error.response?.data || error.message);
       }
     };
-    fetchScore();
+    fetchUsuario();
 
     const handleClickOutside = (event) => {
       // Si se hace clic fuera de los iconos, se oculta el nombre
@@ -90,15 +111,47 @@ const Uno = () => {
   const obtenerEjercicioId = async () => {
     try {
       const response = await axios.get("http://localhost:8000/myapp/ejercicio/");
-      if (response.status === 200 && response.data.length > 0) {
-        // Suponiendo que queremos el primer ejercicio
-        return response.data[0].id_ejercicio;
+      console.log("Datos completos recibidos:", response.data);
+  
+      if (response.status === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        return response.data.data[0].id_ejercicio; 
+      } else {
+        console.error("El array de ejercicios está vacío o no tiene la estructura esperada.");
       }
     } catch (error) {
       console.error("Error al obtener los ejercicios:", error);
     }
     return null;
   };
+  const handleNext = async () => {
+    if (!userInfo || !userInfo.id) {
+      console.error("No se encontró el ID del usuario");
+      return;
+    }
+  
+    const usuario_id = userInfo.id;  // <-- Obtener el usuario_id del estado
+    const proximoEjercicio = obtenerEjercicioAleatorioEnunciado();
+  
+    if (proximoEjercicio) {
+      try {
+        // Guardar el ejercicio en la BD antes de avanzar
+        await guardarEjercicioEnBD(usuario_id, proximoEjercicio);
+  
+        // Actualizar el estado
+        setNumerosUsados([...numerosUsados, proximoEjercicio]);
+        setShowModal(false);
+  
+        // Redirigir al enunciado del próximo ejercicio
+        redirigirAEnunciado(proximoEjercicio, navigate);
+        verificarYOtorgarInsignia([...numerosUsados, proximoEjercicio], setInsignias);
+      } catch (error) {
+        console.error("Error al avanzar al siguiente ejercicio:", error);
+      }
+    } else {
+      console.log("No quedan ejercicios disponibles.");
+    }
+  };
+  
   const handleVerify = async () => {
     if (!droppedItem) {
       alert("Por favor, selecciona una palabra antes de verificar.");
@@ -166,75 +219,7 @@ const Uno = () => {
       );
     }
   };
-  /*
-  const handleVerify = async () => {
-    if (!droppedItem) {
-      alert("Por favor, selecciona una palabra antes de verificar.");
-      return;
-    }
   
-    const isCorrectAnswer = droppedItem === "Mundo";
-    setIsCorrect(isCorrectAnswer);
-  
-    try {
-      // Obtener usuario autenticado desde el backend
-      const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
-        withCredentials: true, // Incluir cookies en la petición
-      });
-      console.log("respuesta",userResponse.data.username
-      );
-      const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
-      if (!usuario_id) {
-        alert("Error: Usuario no identificado.");
-        return;
-      }
-  
-      const requestData = {
-        usuario_id,
-        ejercicio_id: 1, // Asegúrate de que sea el ID correcto del ejercicio
-        fecha: new Date().toISOString().split("T")[0], // Formato 'YYYY-MM-DD'
-        resultado: isCorrectAnswer,
-        errores: isCorrectAnswer ? 0 : errores + 1,
-      };
-  
-      const response = await axios.post("http://localhost:8000/myapp/guardar-intento/", requestData, {
-        withCredentials: true, // Incluir cookies en la petición
-      });
-  
-      if (response.status === 201) {
-        if (isCorrectAnswer) {
-          setShowNextButton(true);
-          setScore((prevScore) => prevScore + 10);
-          new Audio("/ganar.mp3").play();
-        } else {
-          setShowNextButton(false);
-          new Audio("/perder.mp3").play();
-        }
-      } else {
-        console.error("Error en la respuesta de la API:", response.data);
-        alert("Hubo un problema al guardar tu intento. Intenta de nuevo.");
-      }
-    } catch (error) {
-      console.error("Error al obtener usuario o guardar intento:", error.response ? error.response.data : error.message);
-      alert("No se pudo conectar con el servidor.");
-    }
-  };
-  */
-  
-  // Función para redirigir a la página de insignias
-  const handleInsigniaClick = () => {
-    navigate("/insignias");
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false); // Cerrar el modal
-  };
-  const closeModalPinguino = () => {
-    setIsModalOpenPinguino(false); // Cerrar el modal
-  };
-  const handleMouseEnter = (name) => {
-    setHoveredInsignia(name); // Establece el nombre inmediatamente
-  };
 
   const handleMouseLeave = () => {
     // No hacemos nada aquí para evitar el parpadeo
@@ -317,7 +302,7 @@ const Uno = () => {
                   </button>
                   {showNextButton && (
                     <button
-                      className={`nivel1-card-button next-button show`}
+                      className={"nivel1-card-button next-button show"}
                       onClick={handleNext}
                     >
                       Siguiente

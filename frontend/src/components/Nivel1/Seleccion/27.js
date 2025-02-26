@@ -77,9 +77,9 @@ const Veintisiete = () => {
   };
 
   return (
-    <div className="level21-page">
+    <div className="nivel1-page">
       <Sidebar />
-      <div className="level21-container">
+      <div className="nivel1-container">
         <div className="content">
           <div className="white-background">
             <HeaderBody></HeaderBody>
@@ -96,6 +96,8 @@ const Veintisiete = () => {
 
                 <div className="code-box">
                   <div className="code-header">Python</div>
+                  <div className="code">
+
                   <pre>
               import _______ {"\n"}
               numero = int(input("numero:")) {"\n"}
@@ -103,7 +105,7 @@ const Veintisiete = () => {
               print("La potencia es:", potencia){"\n"}
             </pre>
                 </div>
-
+                </div>
                 {/* Opciones de respuesta */}
         <div className="options">
           {["math", "cmath", "random", "os"].map((option) => (

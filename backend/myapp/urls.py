@@ -16,6 +16,8 @@ urlpatterns = [
     path('registroParti_foro/', views.ParticipacionForo, name='registroParti_foro'),    
     path('eliminarParti_foro/<int:id_participacion_foro>/', views.eliminarPartiForo, name='eliminarParti_foro'),
     path('eliminarRegistro_foro/<int:id_foro>/', views.eliminarRegistroForo, name='eliminarRegistroForo'),    
+    path("participaciones/", views.ParticipacionForo, name="participaciones"),
+
     path('login/', views.Login, name='login'),
     path('usuario/<username>/', views.obtenerUsuario, name='usuario'),    
     #path('accounts/', include('django.contrib.auth.urls')),
@@ -27,6 +29,12 @@ urlpatterns = [
 
     path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
     path('intentos/<int:usuario_id>/', views.obtener_intentos, name="obtener_intentos"),
+
+    path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),
+    path("ejercicios_usuario/<int:usuario_id>/", views.obtener_ejercicios_usuario, name="obtener_ejercicios_usuario"),
+
+    path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
+    path('editar-usuario/', views.editar_usuario, name='actualizar-user'),
 
     path('intento/', views.intento, name='intento'),
     path('score/<int:user_id>/', views.get_score, name='get_score'),

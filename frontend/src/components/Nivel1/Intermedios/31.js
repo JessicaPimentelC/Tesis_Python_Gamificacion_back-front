@@ -115,7 +115,7 @@ const Trientauno= () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         año_nacimiento = int(input____"¿En qué año naciste? "_____){"\n"}

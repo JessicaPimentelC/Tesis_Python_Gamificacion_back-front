@@ -75,9 +75,9 @@ const Veintidos = () => {
   };
 
   return (
-    <div className="level21-page">
+    <div className="nivel1-page">
       <Sidebar />
-      <div className="level21-container">
+      <div className="nivel1-container">
       <div className="content">
       <div className="white-background">
           <HeaderBody></HeaderBody>
@@ -85,15 +85,16 @@ const Veintidos = () => {
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>
-            <div className="level21-card">
+            <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>Ejercicio de Promedio de Números</span>
-                <p>¿Cuál es la palabra que falta para que el código imprima el promedio correctamente?</p>
                 </div>
-              <div className="level21-card-body">
+              <div className="nivel1-card-body">
+              <p>¿Cuál es la palabra que falta para que el código imprima el promedio correctamente?</p>
+
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                   <pre>
               primerNum = ______(input("Ingrese el primer número")) {"\n"}
               segundoNum = ______(input("Ingrese el segundo número")) {"\n"}
@@ -134,8 +135,8 @@ const Veintidos = () => {
               </div>
             </div>
           </div>
+          <Puntaje></Puntaje>
         </div>
-        <Puntaje></Puntaje>
       </div>
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>

@@ -1,7 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import User, Foro, Participacion_foro, Ejercicio, Intento, Insignia, UsuarioEjercicioInsignia
+from .models import User, Foro, Participacion_foro, Ejercicio, Intento, Insignia, UsuarioEjercicioInsignia, Usuario_logro, Logro
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,6 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+class UsuarioEditarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email'] 
 
 class ParticipacionForoSerializer(serializers.ModelSerializer):
     usuario = serializers.StringRelatedField()  # O usa serializers.PrimaryKeyRelatedField() si prefieres el ID
@@ -36,7 +40,7 @@ class ParticipacionForoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Participacion_foro
-        fields = ['id_participacion_foro', 'usuario', 'foro', 'fecha_participacion', 'comentario', 'resultado']
+        fields = '__all__'
 
 class ForoSerializer(serializers.ModelSerializer):
     participaciones_foro = ParticipacionForoSerializer(many=True, read_only=True)  # Asegúrate de que el nombre aquí es el correcto
@@ -69,3 +73,14 @@ class InsigniaConFechaSerializer(serializers.ModelSerializer):
         model = UsuarioEjercicioInsignia
         fields = ['insignia', 'fecha_obtenida']  # Incluimos la insignia y la fecha obtenida
         depth = 1  # Para incluir automáticamente los detalles de la insignia
+
+class LogroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logro
+        fields = '__all__'
+
+class UsuarioLogroSerializer(serializers.ModelSerializer):
+    logro = LogroSerializer(source='logro_id', read_only=True)  
+    class Meta:
+        model = Usuario_logro
+        fields = '__all__'

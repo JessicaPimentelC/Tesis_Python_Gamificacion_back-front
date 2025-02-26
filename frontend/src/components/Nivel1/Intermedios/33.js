@@ -111,7 +111,7 @@ const Treintatres = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  En este ejercicio, debes arrastrar el tipo de dato correcto (`int`) para completar el código
+                  En este ejercicio, debes arrastrar el tipo de dato correcto para completar el código
                   que convierte las horas en minutos y segundos.
                 </p>
                 <div className="code-box">

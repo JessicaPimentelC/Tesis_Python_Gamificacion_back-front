@@ -1,46 +1,47 @@
 import React, { useState } from 'react';
 import '../styles/PinguinoModal.css';
-import { useNavigate } from 'react-router-dom';
 
 const PinguinoModal = () => {
-    const navigate = useNavigate(); // Hook para la redirección
-    const [showPenguinModal, setShowPenguinModal] = useState(false); // Estado para controlar el modal
+    const [showPenguinModal, setShowPenguinModal] = useState(false);
+    const [showPengui, setShowPenguin] = useState(false);
+
 
     const handlePenguinClick = () => {
-        setShowPenguinModal((prevState) => !prevState); 
-
+        setShowPenguinModal(true); // Al hacer clic, se muestra el modal y se oculta el pingüino
     };
 
-    const closeModal = () => {
-        setShowPenguinModal(false); 
-    };
+    const closeShowPinguino = () => {
+        setShowPenguinModal(false); // Al cerrar el modal, vuelve a aparecer el pingüino
+    };    
     const closePinguino = () => {
-        setShowPenguinModal(false); 
+        setShowPenguinModal(false); // Al cerrar el modal, vuelve a aparecer el pingüino
     };
+    console.log("estado pinguino", showPenguinModal)
     return (
         <div className="penguin-content">
-            <div className="penguin-container" onClick={handlePenguinClick}>
-                <div className="penguin" >
-                    
-                    <div className="eye left"></div>
-                    <div className="eye right"></div>
-                    <div className="beak"></div>
-                    <div className="foot left"></div>
-                    <div className="foot right"></div>
+            {/* Renderiza el pingüino solo si el modal está cerrado */}
+            {!showPenguinModal && (
+                <div className="penguin-container" onClick={handlePenguinClick}>
+                    <div className="penguin">
+                        <div className="eye left"></div>
+                        <div className="eye right"></div>
+                        <div className="beak"></div>
+                        <div className="foot left"></div>
+                        <div className="foot right"></div>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {showPenguinModal && (
-                <div className="modal-overlay" onClick={closeModal}>
+                <div className="modal-overlay" onClick={closePinguino}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2>¡Hola, soy pingui!</h2>
+                        <h2>¡Hola, soy Pingui!</h2>
                         <p>Aquí podrás encontrar todas las ayudas que necesites para completar los ejercicios. ¡No dudes en consultarlo cuando lo necesites!</p>
                         
                         <div className="nivel1-card-header">
                             <p>Seleccione una Ayuda:</p>
                         </div>
                         
-                        {/* Contenedor de los iconos en forma vertical */}
                         <div className="modal-icons">
                             <button className="modal-icon-button" onClick={() => alert('Ayuda 1: Idea')}>
                                 <img src="/idea.gif" alt="Icono 1" className="modal-icon" />
@@ -55,7 +56,7 @@ const PinguinoModal = () => {
                             </button>
                         </div>
 
-                        <button onClick={closeModal}>Cerrar</button>
+                        <button onClick={closePinguino}>Cerrar</button>
                     </div>
                 </div>
             )}

@@ -81,7 +81,7 @@ const Veintiuno = () => {
                 <p>¿Cuál es la palabra que falta para que el código imprima el área correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       base = _____(input("Ingresa la base del rectángulo: ")){"\n"}
                       altura = ______(input("Ingresa la altura del rectángulo: ")){"\n"}

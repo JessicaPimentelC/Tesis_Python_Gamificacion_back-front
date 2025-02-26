@@ -110,11 +110,11 @@ const Treintasiete = () => {
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>
-                  En este ejercicio, debes arrastrar la palabra clave `import` al inicio para poder utilizar el módulo `math`.
+                  En este ejercicio, debes arrastrar la palabra clave al inicio para poder utilizar el módulo `math`.
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       <code>
                         _____ math {"\n"}
@@ -144,7 +144,7 @@ const Treintasiete = () => {
                 >
                   {droppedItem
                     ? `${droppedItem} math`
-                    : "Arrastra aquí la palabra clave 'import'"}
+                    : "Arrastra aquí la palabra clave"}
                 </div>
                 <div className="button-container">
                   <button className="nivel1-card-button" onClick={handleVerify}>

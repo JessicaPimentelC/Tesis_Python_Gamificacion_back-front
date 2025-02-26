@@ -142,91 +142,140 @@ const Dashboard = () => {
         <Header />
 
         <div className="dashboard-content">
-          <div className="dashboard">
             {showWelcomeMessage && (
               <div className="welcome-message">
                 <p>Hola Usuario, Bienvenido a nuestra app</p>
               </div>
             )}
-          </div>
-            <div className="dashboard-nivel" >
-          <div 
-            className="dashboard-left"
-            onClick={() => navigate("/lecciones")}
-          >
-            <button className="info-box-lesson lesson-box">
-              <h1>NIVEL 1</h1>
-              Programa tu futuro hoy mismo
-            </button>
-            <div className="button-route">
-              <button
-                className={`route-button ${currentStep === 0 ? "active" : ""}`}
-                onClick={handlePythonIconClick}
-              >
-                <img src="python1.png" alt="Python Icon" className="icon-img" />
+            <div className="dashboard-niveles">
+            <div
+              className="dashboard-left"
+              onClick={() => navigate("/lecciones")}
+            >
+              <button className="info-box-lesson lesson-box">
+                <h1>NIVEL 1</h1>
+                Programa tu futuro hoy mismo
               </button>
-              <button
-                className={`route-button ${currentStep === 1 ? "active" : ""}`}
-              >
-                <img src="libero.png" alt="Book Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 2 ? "active" : ""}`}
-              >
-                <img src="bombillo.png" alt="Star Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 3 ? "active" : ""}`}
-              >
-                <img src="cohetee.png" alt="Rocket Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 4 ? "active" : ""}`}
-              >
-                <img src="cofre.png" alt="Treasure Icon" className="icon-img" />
-              </button>
+              <div className="button-route">
+                <button
+                  className={`route-button ${
+                    currentStep === 0 ? "active" : ""
+                  }`}
+                  onClick={handlePythonIconClick}
+                >
+                  <img
+                    src="python1.png"
+                    alt="Python Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 1 ? "active" : ""
+                  }`}
+                >
+                  <img src="libero.png" alt="Book Icon" className="icon-img" />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 2 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="bombillo.png"
+                    alt="Star Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 3 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cohetee.png"
+                    alt="Rocket Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 4 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cofre.png"
+                    alt="Treasure Icon"
+                    className="icon-img"
+                  />
+                </button>
+              </div>
             </div>
-          </div>
-
-          <div
-            className="dashboard-left"
-            onClick={() => navigate("/lecciones")}
-          >
-            <button className="info-box-lesson lesson-box">
-              <h1>NIVEL 2</h1>
-              Programa tu futuro hoy mismo
-            </button>
-            <div className="button-route">
-              <button
-                className={`route-button ${currentStep === 0 ? "active" : ""}`}
-                onClick={handlePythonIconClick}
-              >
-                <img src="python1.png" alt="Python Icon" className="icon-img" />
+            <div
+              className="dashboard-left"
+              onClick={() => navigate("/lecciones")}
+            >
+              <button className="info-box-lesson lesson-box">
+                <h1>NIVEL 2</h1>
+                Programa tu futuro hoy mismo
               </button>
-              <button
-                className={`route-button ${currentStep === 1 ? "active" : ""}`}
-              >
-                <img src="libero.png" alt="Book Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 2 ? "active" : ""}`}
-              >
-                <img src="bombillo.png" alt="Star Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 3 ? "active" : ""}`}
-              >
-                <img src="cohetee.png" alt="Rocket Icon" className="icon-img" />
-              </button>
-              <button
-                className={`route-button ${currentStep === 4 ? "active" : ""}`}
-              >
-                <img src="cofre.png" alt="Treasure Icon" className="icon-img" />
-              </button>
+              <div className="button-route">
+                <button
+                  className={`route-button ${
+                    currentStep === 0 ? "active" : ""
+                  }`}
+                  onClick={handlePythonIconClick}
+                >
+                  <img
+                    src="python1.png"
+                    alt="Python Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 1 ? "active" : ""
+                  }`}
+                >
+                  <img src="libero.png" alt="Book Icon" className="icon-img" />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 2 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="bombillo.png"
+                    alt="Star Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 3 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cohetee.png"
+                    alt="Rocket Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 4 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cofre.png"
+                    alt="Treasure Icon"
+                    className="icon-img"
+                  />
+                </button>
+              </div>
             </div>
-          </div>
-          </div>
-          <div className="dashboard-right">
+            </div>
+            <div className="dashboard-right">
             <button
               className="info-box-lesson lesson-box"
               onClick={handlePositionsClick}
@@ -243,9 +292,10 @@ const Dashboard = () => {
               <ProgressBar />
             </button>
 
-            <Ruleta></Ruleta>
+          {/* <Ruleta></Ruleta>*/}
           </div>
         </div>
+          
 
         {showModal && (
           <div className="modal-overlay" onClick={handleCancelCerrarSesion}>

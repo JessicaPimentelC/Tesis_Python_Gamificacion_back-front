@@ -78,9 +78,9 @@ const Veinticuatro = () => {
   };
 
   return (
-    <div className="level21-page">
+    <div className="nivel1-page">
       <Sidebar />
-      <div className="level21-container">
+      <div className="nivel1-container">
         <div className="content">
           <div className="white-background">
             <HeaderBody></HeaderBody>
@@ -88,7 +88,7 @@ const Veinticuatro = () => {
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>
-            <div className="level21-card">
+            <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>Ejercicio de Potencia de Números</span>
               </div>

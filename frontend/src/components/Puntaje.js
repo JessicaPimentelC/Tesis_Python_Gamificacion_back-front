@@ -13,32 +13,40 @@ const Puntaje = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchScore = async () => {
+        const fetchUsuario = async () => {
             try {
-                const response = await axios.get(
-                "http://localhost:8000/myapp/score/1"
-                ); // Reemplaza "1" con el ID del usuario actual
+                const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                    withCredentials: true, // Incluir cookies en la petición
+                });
+                
+                console.log("Usuario:", userResponse.data.username);
+                const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
+                
+                if (!usuario_id) {
+                    alert("Error: Usuario no identificado.");
+                    return;
+                }
+                setUserInfo(userResponse.data); 
+                // Llamar a fetchScore con el usuario_id
+                fetchScore(usuario_id);
+    
+            } catch (error) {
+                console.error("Error al obtener usuario:", error);
+            }
+        };
+    
+        const fetchScore = async (usuario_id) => {
+            try {
+                const response = await axios.get(`http://localhost:8000/myapp/score/${usuario_id}`);
                 setScore(response.data.score);
             } catch (error) {
                 console.error("Error al obtener score:", error);
             }
         };
-        fetchScore();
-        const fetchUsuario = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/myapp/usuario-info/', {
-                    withCredentials: true, // Asegura que las cookies se incluyan en las solicitudes
-                });
-                setUserInfo(response.data); 
-                console.log("Usuario recibido:", response.data);
-            } catch (error) {
-                console.error('Error al obtener el usuario:', error.response?.data || error.message);
-            }
-        };
-                
+    
         fetchUsuario();
-
-    }, [username]);   
+    }, []); // Eliminamos `username` de las dependencias porque no lo usas directamente
+    
     if (error) {
         return <div className="text-content"><p>{error}</p></div>;
     } 

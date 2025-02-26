@@ -59,15 +59,15 @@ const Enunciado20 = () => {
           <div className="nivel1-card">
             <div className="nivel1-card-header">
               <span>Ejercicio de Conversión de Temperatura</span>
-              <p>Ingresa la temperatura en Celsius para convertirla a Fahrenheit.</p>
             </div>
             <div className="nivel1-card-body">
+            <p>Ingresa la temperatura en Celsius para convertirla a Fahrenheit.</p>
+
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
-                    celsius = 25
-                    fahrenheit = (celsius * 9/5) + 32
+                    fahrenheit = (celsius * 9/5) + 32 <br></br>
                     print(fahrenheit)
                   </pre>
                 </div>

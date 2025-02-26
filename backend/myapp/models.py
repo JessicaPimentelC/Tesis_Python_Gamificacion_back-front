@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
@@ -42,6 +43,11 @@ class Ejercicio(models.Model):
     codigo = models.TextField()  
     salida_esperada = models.TextField(blank=True, null=True)  
     puntos = models.IntegerField()
+
+class EjercicioAsignado(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)  # Relacionado con el ejercicio
+    fecha_asignacion = models.DateTimeField(auto_now_add=True)  # Fecha de asignación
 
 class UsuarioEjercicioInsignia(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -121,3 +127,4 @@ class Usuario_recompensa(models.Model):
     usuario_id = models.IntegerField()
     recompensa_id = models.ForeignKey(Recompensa, on_delete=models.CASCADE, related_name='recompensas')
     fecha_otorgada = models.DateField()
+

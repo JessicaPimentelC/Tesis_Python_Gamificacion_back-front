@@ -78,9 +78,9 @@ const Veintiocho = () => {
   };
 
   return (
-    <div className="level21-page">
+    <div className="nivel1-page">
       <Sidebar />
-      <div className="level21-container">
+      <div className="nivel1-container">
         <div className="content">
           <div className="white-background">
             <HeaderBody></HeaderBody>
@@ -100,6 +100,8 @@ const Veintiocho = () => {
 
                 <div className="code-box">
                   <div className="code-header">Python</div>
+                  <div className="code">
+
                   <pre>
               import math {"\n"}
               _______ = int(input("numero:")) {"\n"}
@@ -107,7 +109,7 @@ const Veintiocho = () => {
               print("La raíz cuadrada es:", raiz){"\n"}
             </pre>
                 </div>
-
+              </div>
                 {/* Opciones de respuesta */}
         <div className="options">
           {["numero", "valor", "input", "variable"].map((option) => (

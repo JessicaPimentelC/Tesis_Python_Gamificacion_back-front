@@ -82,15 +82,16 @@ const Veintidos = () => {
             <div className="header-title">
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
-            <div className="level21-card">
+              </div>
+            <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>Ejercicio de Conversión de Metros a Kilómetros</span>
-                <p>Ingresa el valor en metros para calcular su equivalente en kilómetros.</p>
               </div>
-              <div className="level21-card-body">
-                <div className="code-box">
+              <div className="nivel-card-body">
+              <p>¿Cuál es la palabra que falta para que el código imprima el área correctamente?</p>
+              <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
               metros = float(input("Ingresa el valor en metros: ")){"\n"}
               ________ = metros / 1000 {"\n"}
@@ -133,7 +134,6 @@ const Veintidos = () => {
               </div>
             </div>
           </div>
-        </div>
         <Puntaje></Puntaje>
       </div>
       </div>

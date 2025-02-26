@@ -80,9 +80,9 @@ const Veinticuatro = () => {
   };
 
   return (
-    <div className="level21-page">
+    <div className="nivel1-page">
       <Sidebar></Sidebar>
-      <div className="level21-container">
+      <div className="nivel1-container">
         <div className="content">
           <div className="white-background">
             <HeaderBody></HeaderBody>
@@ -90,18 +90,18 @@ const Veinticuatro = () => {
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>
-            <div className="level21-card">
+            <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>Ejercicio de Promedio de Números</span>
-                <p>
+                <span>Ejercicio de cambio de moneda</span>
+              </div>
+              <div className="nivel1-card-body">
+              <p>
                   ¿Cuál es la palabra que falta para que el código realice
                   correctamente la conversión?
                 </p>
-              </div>
-              <div className="level21-card-body">
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       tasa_cambio = float(_______("Ingrese la tasa de cambio
                       (moneda local por dólar): ")) {"\n"}

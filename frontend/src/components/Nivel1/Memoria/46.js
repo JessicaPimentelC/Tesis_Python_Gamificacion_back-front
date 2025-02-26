@@ -128,7 +128,7 @@ const Cuarentaseis = () => {
                     <pre>
                       <code>
                         minutos = int(input("Ingresa el número de horas: ")) {"\n"}
-                        horas = ______ = int(minutos) // 60{"\n"} 
+                        ______ = int(minutos) // 60{"\n"} 
                         print(minutos “son: ”, horas){"\n"}
                         
                         

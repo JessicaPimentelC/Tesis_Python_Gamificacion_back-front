@@ -1,56 +1,107 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/1.css"; // Asegúrate de que la ruta sea correcta
-import React from 'react';
+import { redirigirAEnunciado } from "../utils/utils";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
 const Mapa = () => {
-    const navigate = useNavigate(); // Hook para la redirección
+    const navigate = useNavigate();
+    const [ejercicios, setEjercicios] = useState([]);
+    const [userInfo, setUserInfo] = useState(null);
 
-    const positions = [
-        { top: 50, left: 50, icon: "/colombia.png" }, // Posición 1
-        { top: 50, left: 100, icon: "/cohetee.png" }, // Posición 2
-        { top: 50, left: 150, icon: "/empresario.png" }, // Posición 3
-        { top: 50, left: 200, icon: "/tres.png" }, // Posición 4
-        { top: 50, left: 250, icon: "/libero.png" }, // Posición 5
-        { top: 100, left: 250, icon: "/ed.png" }, // Posición 6
-        { top: 150, left: 250, icon: "/geometrico.png" }, // Posición 7
-        { top: 200, left: 250, icon: "/41.png" }, // Posición 8
-        { top: 250, left: 250, icon: "/42.png" }, // Posición 9
-        { top: 250, left: 50, icon: "/43.png" }, // Posición 10
-        { top: 250, left: 100, icon: "/44.png" }, // Posición 11
-        { top: 250, left: 150, icon: "/45.png" }, // Posición 12
-        { top: 250, left: 200, icon: "/46.png" }, // Posición 13
+    // Cargar usuario
+    useEffect(() => {
+        const fetchUsuario = async () => {
+            try {
+                const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                    withCredentials: true,
+                });
+                setUserInfo(response.data);
+                console.log("Usuario recibido:", response.data);
+            } catch (error) {
+                console.error("Error al obtener el usuario:", error.response?.data || error.message);
+            }
+        };
 
-    ];
+        fetchUsuario();
+    }, []); // Se ejecuta solo una vez al montar el componente
+
+    // Cargar ejercicios cuando userInfo esté disponible
+    useEffect(() => {
+        if (userInfo) {
+            const obtenerEjerciciosDesdeBD = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8000/myapp/ejercicios_usuario/${userInfo.id}/`);
+                    setEjercicios(response.data.ejercicios);
+                } catch (error) {
+                    console.error("Error al obtener ejercicios:", error);
+                }
+            };
+
+            obtenerEjerciciosDesdeBD();
+        }
+    }, [userInfo]); // Se ejecuta cuando userInfo cambia
+
+   /* const positions = [
+        { top: 50, left: 50, icon: "/colombia.png" },
+        { top: 50, left: 110, icon: "/cohetee.png" },
+        { top: 50, left: 170, icon: "/empresario.png" },
+        { top: 50, left: 230, icon: "/tres.png" },
+        { top: 50, left: 290, icon: "/libero.png" },
+        { top: 110, left: 290, icon: "/ed.png" },
+        { top: 170, left: 290, icon: "/geometrico.png" },
+        { top: 230, left: 290, icon: "/41.png" },
+        { top: 290, left: 290, icon: "/42.png" },
+        { top: 290, left: 50, icon: "/43.png" },
+        { top: 290, left: 110, icon: "/44.png" },
+        { top: 290, left: 170, icon: "/45.png" },
+        { top: 290, left: 230, icon: "/46.png" },
+    ];*/
+    const generarEspiralVertical = (numElementos, centroX, centroY, radioInicial, factorExp) => {
+        return Array.from({ length: numElementos }, (_, i) => {
+            const angle = i * 0.6; // Ajuste del ángulo para separación horizontal
+            const radio = radioInicial + factorExp * i; // Expansión radial
+    
+            return {
+                top: centroY + i * 70, // Incremento uniforme en la vertical
+                left: centroX + Math.sin(angle) * 100, // Mayor amplitud horizontal
+                icon: `/mapa/${(i % 10) + 1}.png`
+            };
+        });
+    };
+    
+    const positions = generarEspiralVertical(20, 100, 50, 20, 15);
+    
     return (
         <div className="circles-container-mapa" style={{ textAlign: "center" }}>
-        {positions.map((pos, index) => (
-            <div
-            key={index}
-            className={`circle ${
-                index <= 7
-                ? "circle-nivel1"
-                : index <= 13
-                ? "circle-nivel2"
-                : "circle-nivel3"
-            }`}
-            style={{
-                position: "absolute",
-                top: `${pos.top}px`,
-                left: `${pos.left}px`,
-            }}
-            onClick={() => {
-                if (index === 0) {
-                navigate('/nivel1'); 
-                }
-                if (index === 8){
-                navigate('/nivel2');
-
-                }
-            }}
-            >
-            <img src={pos.icon} alt={`Icon ${index}`} />
-            </div>
-        ))}
-        </div>
+            {positions.map((pos, index) => {
+                const ejercicio = ejercicios[index] || null;
+                return (
+                    <div
+                        key={index}
+                        className={`circle ${
+                            index <= 20 ? "circle-nivel1" :
+                            index <= 21 ? "circle-nivel2" :
+                            "circle-nivel3"
+                        }`}
+                        style={{
+                            position: "absolute",
+                            top: `${pos.top}px`,
+                            left: `${pos.left}px`,
+                        }}
+                        onClick={() => {
+                            if (ejercicio) {
+                                redirigirAEnunciado(ejercicio, navigate);
+                            } else {
+                                console.log("No hay ejercicio asignado a esta posición.");
+                            }
+                        }}
+                    >
+                    <img src={pos.icon} alt={`Icon ${index}`} />                    
+                    <p>{ejercicio ? `Ejercicio ${ejercicio}` : "No asignado"}</p>
+                    </div>
+                );
+            })}
+        </div>    
     );
 };
 

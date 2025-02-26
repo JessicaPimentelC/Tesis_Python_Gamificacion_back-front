@@ -30,11 +30,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #ff6f61;
+  background-color: #F8C4B4;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra */
 }
-
+.back-button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px; /* Ajusta el espacio entre el botón de retroceso y la barra de búsqueda */
+  margin-bottom: 0%;
+}
 /* Cuadro que contiene el nombre y el icono */
 .profile-box {
   display: flex;
