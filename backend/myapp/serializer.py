@@ -29,6 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+class UsuarioEditarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email'] 
 
 class ParticipacionForoSerializer(serializers.ModelSerializer):
     usuario = serializers.StringRelatedField()  # O usa serializers.PrimaryKeyRelatedField() si prefieres el ID

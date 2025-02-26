@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../styles/Perfil.css"; // Archivo CSS mejorado
 import axios from "axios";
 import Sidebar from "./Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [logros, setLogros] = useState(null);
+  const navigate = useNavigate(); // Hook para la redirección
 
   useEffect(() => {
     const fetchUsuario = async () => {
@@ -59,11 +61,16 @@ const Perfil = () => {
       timeZone: "America/Argentina/Buenos_Aires",
     });
   };
-
+  const handleBackClick = () => {
+    navigate("/dashboard");
+  };
   return (
     <div className="perfil-container">
       <Sidebar />
       <div className="perfil-content">
+      <button onClick={handleBackClick} className="back-button">
+        <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
+      </button>
         <div className="perfil-header">
           <h2>Perfil de Usuario</h2>
         </div>
@@ -94,35 +101,23 @@ const Perfil = () => {
             )}
           </div>
         </div>
-
-        <div className="perfil-stats">
-          <h3>📊 Estadísticas</h3>
-          <div className="perfil-stats-table">
-            {/* Aquí van las estadísticas con iconos */}
-            <div className="stat-box">🔥 10 ejercicios completados</div>
-            <div className="stat-box">🏆 3 logros desbloqueados</div>
-            <div className="stat-box">⏳ 5h de estudio</div>
-          </div>
-        </div>
         <h3>🏅 Logros</h3>
-
         <div className="perfil-logros">
-          <div className="perfil-logros">
             {logros &&
               logros.map((item, index) =>
                 item.logro ? ( // ✅ Verifica que 'logro' no sea undefined
-                  <div key={index} className="insignia-item">
-                    <div className="insignia-icon">
+                  <div key={index} className="perfil-stats-table">
+                    <div className="stat-box">
                       <img
                         src={`/logros/${item.logro.id_logro}.png`} // Usa el ID del logro
                         alt={item.logro.nombre}
                       />
+                      <div className="insignia-nombre">{item.logro.nombre}</div>
+
                     </div>
-                    <div className="insignia-nombre">{item.logro.nombre}</div>
                   </div>
                 ) : null
               )}
-          </div>
         </div>
       </div>
     </div>

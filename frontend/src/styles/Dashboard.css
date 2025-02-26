@@ -99,19 +99,16 @@
 }
 
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 0;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  width: 200px;
-  padding: 10px 0;
+  position: absolute; /* Posición absoluta respecto al contenedor padre */
+  top: 100%; /* Aparece debajo de la imagen de perfil */
+  right: 0; /* Alineado a la derecha */
+  background-color: white; /* Fondo blanco */
+  border: 1px solid #ccc; /* Borde */
+  border-radius: 4px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  display: block; /* Asegura que se muestre */
 }
-
 .user-profile:hover .dropdown-menu {
   display: block;
 }

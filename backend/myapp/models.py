@@ -127,3 +127,4 @@ class Usuario_recompensa(models.Model):
     usuario_id = models.IntegerField()
     recompensa_id = models.ForeignKey(Recompensa, on_delete=models.CASCADE, related_name='recompensas')
     fecha_otorgada = models.DateField()
+
