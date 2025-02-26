@@ -24,7 +24,7 @@ const Enunciado3Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/1');
+    navigate('/Nivel2/basicos/3');
   };
 
   return (
@@ -51,13 +51,16 @@ const Enunciado3Nivel2 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-numero = -100
-if("numero > 0"):
-print ("El numero es mayor a cero")
-elif ("numero == 10):
-print ("El numero es igual a cero )
-else:
-print ("El numero es menor a cero )
+nota1 = float(input("Ingresa la nota 1: ")) 
+nota2 = float(input("Ingresa la nota 2: ")) 
+nota3 = float(input("Ingresa la nota 3: ")) 
+
+promedio = (nota1+nota2+nota3)/3
+
+if promedio >= 3.0: 
+print("Pasaste la materia, tu promedio es:", promedio) 
+else: 
+print("No pasaste la materia, tu promedio es:", promedio)
 `} </code>
                 </pre>
               </div>

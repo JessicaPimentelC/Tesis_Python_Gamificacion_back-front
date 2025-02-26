@@ -24,7 +24,7 @@ const Enunciado5Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/5');
   };
 
   return (
@@ -41,28 +41,22 @@ const Enunciado5Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span> Estructuras de Decisión en Python: Comparación de Cadenas</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              Los operadores son símbolos que indican al intérprete que realice una operación específica. En este caso, el operador a trabajar sera "==", 
-              el cual compara los valores para ver si son iguales
+              En programación, a menudo necesitamos tomar decisiones basadas en ciertas condiciones. En Python, esto se hace mediante las estructuras de decisión como if-else.
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-valor = obtener_valor()  #valor dinámico
-
-if valor == condicion_1:
-    print("La primera condición es verdadera")
-elif valor == condicion_2:
-    print("La segunda condición es verdadera")
-elif valor == condicion_3:
-    print("La tercera condición es verdadera")
+propuesto = "python"
+texto = input("Ingresa el texto: ")
+if (texto == propuesto):
+    print("Las cadenas de texto son iguales ")
 else:
-    print("Ninguna condición se cumplió, ejecutando el else")
-
+    print("No son iguales:",propuesto,"es diferente a",texto)
 
 `} </code>
                 </pre>

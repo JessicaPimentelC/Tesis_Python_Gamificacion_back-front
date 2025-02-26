@@ -24,7 +24,7 @@ const Enunciado13Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/13');
   };
 
   return (
@@ -41,20 +41,25 @@ const Enunciado13Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>Determinación del estado físico del agua según la temperatura
+</span>
             </div>
             <div className="nivel1-card-body">
             <p>
-  El operador "{">"}" se usa para comprobar si un valor es manor a otro.
+            En este ejercicio, vamos a escribir un programa que le pida al usuario que ingrese la temperatura del agua en grados Celsius. 
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if variable > valor:
-    print("La variable es mayor que", valor)
+temperatura = float(input("Ingresa la temperatura Celsius: "))
+
+if temperatura <= 0:
+    print("El agua está en estado sólido (hielo).")
+elif temperatura < 100:
+    print("El agua está en estado líquido.")
 else:
-    print("La variable es menor que", valor)
+    print("El agua está en estado gaseoso (vapor).")
 
 `} </code>
                 </pre>

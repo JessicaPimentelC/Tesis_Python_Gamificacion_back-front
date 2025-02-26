@@ -24,7 +24,7 @@ const Enunciado2Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/1');
+    navigate('/Nivel2/basicos/2');
   };
 
   return (

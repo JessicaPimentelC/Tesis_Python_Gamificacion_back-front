@@ -180,7 +180,7 @@ const TresNivel2 = () => {
             </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>EJERCICIO #1</span>
+                <span>EJERCICIO 3</span>
               </div>
               <div className="nivel1-card-body-ejer1">
                 <p>

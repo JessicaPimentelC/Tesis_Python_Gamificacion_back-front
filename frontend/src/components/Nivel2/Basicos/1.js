@@ -137,6 +137,8 @@ const UnoNivel2 = () => {
                       Siguiente
                     </button>
                   )}
+
+                  
                 </div>
                 <div className="result-container">
                   {isCorrect !== null && (

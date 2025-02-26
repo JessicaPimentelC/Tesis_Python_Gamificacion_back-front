@@ -124,20 +124,113 @@ import DosNivel2 from './components/Nivel2/Basicos/2'
 import TresNivel2 from './components/Nivel2/Basicos/3'
 import CuatroNivel2 from './components/Nivel2/Basicos/4'
 import CincoNivel2 from './components/Nivel2/Basicos/5'
+import SeisNivel2 from './components/Nivel2/Basicos/6'
+import SieteNivel2 from './components/Nivel2/Basicos/7'
+import OchoNivel2 from './components/Nivel2/Basicos/8'
+import NueveNivel2 from './components/Nivel2/Basicos/9'
+import DiezNivel2 from './components/Nivel2/Basicos/10'
+import OnceNivel2 from './components/Nivel2/Basicos/11'
+import DoceNivel2 from './components/Nivel2/Basicos/12'
+import TreceNivel2 from './components/Nivel2/Basicos/13'
+import CatorceNivel2 from './components/Nivel2/Basicos/14'
+import QuinceNivel2 from './components/Nivel2/Basicos/15'
+
+import DieciséisNivel2 from './components/Nivel2/Intermedios/16';
+import DiecisieteNivel2 from './components/Nivel2/Intermedios/17';
+import DieciochoNivel2 from './components/Nivel2/Intermedios/18';
+import DiecinueveNivel2 from './components/Nivel2/Intermedios/19';
+import VeinteNivel2 from './components/Nivel2/Intermedios/20';
+import VeintiunoNivel2 from './components/Nivel2/Intermedios/21';
+import VeintidosNivel2  from './components/Nivel2/Intermedios/22';
+import VeintitresNivel2 from './components/Nivel2/Intermedios/23';
+import VeinticuatroNivel2 from './components/Nivel2/Intermedios/24';
+import VeinticincoNivel2 from './components/Nivel2/Intermedios/25';
+import VeintiseisNivel2 from './components/Nivel2/Intermedios/26';
+import VeintisieteNivel2 from './components/Nivel2/Intermedios/27';
+import VeintiochoNivel2 from './components/Nivel2/Intermedios/28';
+import VeintinueveNivel2 from './components/Nivel2/Intermedios/29';
+import TreintaNivel2 from './components/Nivel2/Intermedios/30';
+
+import TreintaunoNivel2 from './components/Nivel2/Seleccion/31';
+import TreintadosNivel2 from './components/Nivel2/Seleccion/32';
+import TreintatresNivel2 from './components/Nivel2/Seleccion/33';
+import TreintacuatroNivel2 from './components/Nivel2/Seleccion/34';
+import TreintacincoNivel2 from './components/Nivel2/Seleccion/35';
+import TreintaseisNivel2 from './components/Nivel2/Seleccion/36';
+import TreintasieteNivel2 from './components/Nivel2/Seleccion/37';
+import TreintaochoNivel2 from './components/Nivel2/Seleccion/38';
+import TreintanueveNivel2 from './components/Nivel2/Seleccion/39';
+import CuarentaNivel2 from './components/Nivel2/Seleccion/40';
+
+import CuarentaUnoNivel2 from './components/Nivel2/Memoria/41';
+import CuarentaDosNivel2 from './components/Nivel2/Memoria/42';
+import CuarentaTresNivel2 from './components/Nivel2/Memoria/43';
+import CuarentaCuatroNivel2 from './components/Nivel2/Memoria/44';
+import CuarentaCincoNivel2 from './components/Nivel2/Memoria/45';
+import CuarentaSeisNivel2 from './components/Nivel2/Memoria/46';
+import CuarentaSieteNivel2 from './components/Nivel2/Memoria/47';
+import CuarentaOchoNivel2 from './components/Nivel2/Memoria/48';
+import CuarentaNueveNivel2 from './components/Nivel2/Memoria/49';
+import CincuentaNivel2 from './components/Nivel2/Memoria/50';
+
+
 
 import Enunciado1Nivel2 from './components/Nivel2/Enunciados/enunciado1';
 import Enunciado2Nivel2 from './components/Nivel2/Enunciados/enunciado2';
 import Enunciado3Nivel2 from './components/Nivel2/Enunciados/enunciado3';
 import Enunciado4Nivel2 from './components/Nivel2/Enunciados/enunciado4';
 import Enunciado5Nivel2 from './components/Nivel2/Enunciados/enunciado5';
-import Enunciado6Nivel2 from './components/Nivel2/Enunciados/enunciado7';
-import Enunciado7Nivel2 from './components/Nivel2/Enunciados/enunciado8';
-import Enunciado8Nivel2 from './components/Nivel2/Enunciados/enunciado9';
-import Enunciado9Nivel2 from './components/Nivel2/Enunciados/enunciado6';
+import Enunciado6Nivel2 from './components/Nivel2/Enunciados/enunciado6';
+import Enunciado7Nivel2 from './components/Nivel2/Enunciados/enunciado7';
+import Enunciado8Nivel2 from './components/Nivel2/Enunciados/enunciado8';
+import Enunciado9Nivel2 from './components/Nivel2/Enunciados/enunciado9';
 import Enunciado10Nivel2 from './components/Nivel2/Enunciados/enunciado10';
 import Enunciado11Nivel2 from './components/Nivel2/Enunciados/enunciado11';
 import Enunciado12Nivel2 from './components/Nivel2/Enunciados/enunciado12';
 import Enunciado13Nivel2 from './components/Nivel2/Enunciados/enunciado13';
+import Enunciado14Nivel2 from './components/Nivel2/Enunciados/enunciado14';
+import Enunciado15Nivel2 from './components/Nivel2/Enunciados/enunciado15';
+
+
+import Enunciado16Nivel2 from './components/Nivel2/Enunciados/enunciado16';
+import Enunciado17Nivel2 from './components/Nivel2/Enunciados/enunciado17';
+import Enunciado18Nivel2 from './components/Nivel2/Enunciados/enunciado18';
+import Enunciado19Nivel2 from './components/Nivel2/Enunciados/enunciado19';
+import Enunciado20Nivel2 from './components/Nivel2/Enunciados/enunciado20';
+import Enunciado21Nivel2 from './components/Nivel2/Enunciados/enunciado21';
+import Enunciado22Nivel2 from './components/Nivel2/Enunciados/enunciado22';
+import Enunciado23Nivel2 from './components/Nivel2/Enunciados/enunciado23';
+import Enunciado24Nivel2 from './components/Nivel2/Enunciados/enunciado24';
+import Enunciado25Nivel2 from './components/Nivel2/Enunciados/enunciado25';
+import Enunciado26Nivel2 from './components/Nivel2/Enunciados/enunciado26';
+import Enunciado27Nivel2 from './components/Nivel2/Enunciados/enunciado27';
+import Enunciado28Nivel2 from './components/Nivel2/Enunciados/enunciado28';
+import Enunciado29Nivel2 from './components/Nivel2/Enunciados/enunciado29';
+import Enunciado30Nivel2 from './components/Nivel2/Enunciados/enunciado30';
+
+
+import Enunciado31Nivel2 from './components/Nivel2/Enunciados/enunciado31';
+import Enunciado32Nivel2 from './components/Nivel2/Enunciados/enunciado32';
+import Enunciado33Nivel2 from './components/Nivel2/Enunciados/enunciado33';
+import Enunciado34Nivel2 from './components/Nivel2/Enunciados/enunciado34';
+import Enunciado35Nivel2 from './components/Nivel2/Enunciados/enunciado35';
+import Enunciado36Nivel2 from './components/Nivel2/Enunciados/enunciado36';
+import Enunciado37Nivel2 from './components/Nivel2/Enunciados/enunciado37';
+import Enunciado38Nivel2 from './components/Nivel2/Enunciados/enunciado38';
+import Enunciado39Nivel2 from './components/Nivel2/Enunciados/enunciado39';
+import Enunciado40Nivel2 from './components/Nivel2/Enunciados/enunciado40';
+
+import Enunciado41Nivel2 from './components/Nivel2/Enunciados/enunciado41';
+import Enunciado42Nivel2 from './components/Nivel2/Enunciados/enunciado42';
+import Enunciado43Nivel2 from './components/Nivel2/Enunciados/enunciado43';
+import Enunciado44Nivel2 from './components/Nivel2/Enunciados/enunciado44';
+import Enunciado45Nivel2 from './components/Nivel2/Enunciados/enunciado45';
+import Enunciado46Nivel2 from './components/Nivel2/Enunciados/enunciado46';
+import Enunciado47Nivel2 from './components/Nivel2/Enunciados/enunciado47';
+import Enunciado48Nivel2 from './components/Nivel2/Enunciados/enunciado48';
+import Enunciado49Nivel2 from './components/Nivel2/Enunciados/enunciado49';
+import Enunciado50Nivel2 from './components/Nivel2/Enunciados/enunciado50';
+
 import Sidebar from './components/Sidebar';
 import Treinta from './components/Nivel1/Intermedios/30';
 import Perfil from './components/Perfil';
@@ -213,6 +306,54 @@ const App = () => {
         <Route path="/Nivel2/basicos/3" element={<TresNivel2 />} />
         <Route path="/Nivel2/basicos/4" element={<CuatroNivel2 />} />
         <Route path="/Nivel2/basicos/5" element={<CincoNivel2 />} />
+        <Route path="/Nivel2/basicos/6" element={<SeisNivel2 />} />
+        <Route path="/Nivel2/basicos/7" element={<SieteNivel2 />} />
+        <Route path="/Nivel2/basicos/8" element={<OchoNivel2 />} />
+        <Route path="/Nivel2/basicos/9" element={<NueveNivel2 />} />
+        <Route path="/Nivel2/basicos/10" element={<DiezNivel2 />} />
+        <Route path="/Nivel2/basicos/11" element={<OnceNivel2 />} />
+        <Route path="/Nivel2/basicos/12" element={<DoceNivel2 />} />
+        <Route path="/Nivel2/basicos/13" element={<TreceNivel2 />} />
+        <Route path="/Nivel2/basicos/14" element={<CatorceNivel2 />} />
+        <Route path="/Nivel2/basicos/15" element={<QuinceNivel2 />} />
+
+        <Route path="/Nivel2/intermedios/16" element={<DieciséisNivel2 />} />
+        <Route path="/Nivel2/intermedios/17" element={<DiecisieteNivel2 />} />
+        <Route path="/Nivel2/intermedios/18" element={<DieciochoNivel2 />} />
+        <Route path="/Nivel2/intermedios/19" element={<DiecinueveNivel2 />} />
+        <Route path="/Nivel2/intermedios/20" element={<VeinteNivel2 />} />
+        <Route path="/Nivel2/intermedios/21" element={<VeintiunoNivel2 />} />
+        <Route path="/Nivel2/intermedios/22" element={<VeintidosNivel2 />} />
+        <Route path="/Nivel2/intermedios/23" element={<VeintitresNivel2/>} />
+        <Route path="/Nivel2/intermedios/24" element={<VeinticuatroNivel2/>} />
+        <Route path="/Nivel2/intermedios/25" element={<VeinticincoNivel2/>} />
+        <Route path="/Nivel2/intermedios/26" element={<VeintiseisNivel2/>} />
+        <Route path="/Nivel2/intermedios/27" element={<VeintisieteNivel2/>} />
+        <Route path="/Nivel2/intermedios/28" element={<VeintiochoNivel2/>} />
+        <Route path="/Nivel2/intermedios/29" element={<VeintinueveNivel2/>} />
+        <Route path="/Nivel2/intermedios/30" element={<TreintaNivel2/>} />
+
+        <Route path="/Nivel2/seleccion/31" element={<TreintaunoNivel2/>} />
+        <Route path="/Nivel2/seleccion/32" element={<TreintadosNivel2/>} />
+        <Route path="/Nivel2/seleccion/33" element={<TreintatresNivel2/>} />
+        <Route path="/Nivel2/seleccion/34" element={<TreintacuatroNivel2/>} />
+        <Route path="/Nivel2/seleccion/35" element={<TreintacincoNivel2/>} />
+        <Route path="/Nivel2/seleccion/36" element={<TreintaseisNivel2/>} />
+        <Route path="/Nivel2/seleccion/37" element={<TreintasieteNivel2/>} />
+        <Route path="/Nivel2/seleccion/38" element={<TreintaochoNivel2/>} />
+        <Route path="/Nivel2/seleccion/39" element={<TreintanueveNivel2/>} />
+        <Route path="/Nivel2/seleccion/40" element={<CuarentaNivel2/>} />
+        <Route path="/Nivel2/memoria/41" element={<CuarentaUnoNivel2 />} />
+        <Route path="/Nivel2/memoria/42" element={<CuarentaDosNivel2 />} />
+        <Route path="/Nivel2/memoria/43" element={<CuarentaTresNivel2 />} />
+        <Route path="/Nivel2/memoria/44" element={<CuarentaCuatroNivel2 />} />
+        <Route path="/Nivel2/memoria/45" element={<CuarentaCincoNivel2 />} />
+        <Route path="/Nivel2/memoria/46" element={<CuarentaSeisNivel2 />} />
+        <Route path="/Nivel2/memoria/47" element={<CuarentaSieteNivel2 />} />
+        <Route path="/Nivel2/memoria/48" element={<CuarentaOchoNivel2 />} />
+        <Route path="/Nivel2/memoria/49" element={<CuarentaNueveNivel2 />} />
+        <Route path="/Nivel2/memoria/50" element={<CincuentaNivel2 />} />
+
         <Route path="/prueba" element={<Unotest />} />
 
     (/*Nivel2-enunciados*/)
@@ -229,6 +370,43 @@ const App = () => {
         <Route path="/Nivel2/enunciado/11" element={<Enunciado11Nivel2 />} />
         <Route path="/Nivel2/enunciado/12" element={<Enunciado12Nivel2 />} />
         <Route path="/Nivel2/enunciado/13" element={<Enunciado13Nivel2 />} />
+        <Route path="/Nivel2/enunciado/14" element={<Enunciado14Nivel2 />} />
+        <Route path="/Nivel2/enunciado/15" element={<Enunciado15Nivel2 />} />
+        <Route path="/Nivel2/enunciado/16" element={<Enunciado16Nivel2 />} />
+        <Route path="/Nivel2/enunciado/17" element={<Enunciado17Nivel2 />} />
+        <Route path="/Nivel2/enunciado/18" element={<Enunciado18Nivel2 />} />
+        <Route path="/Nivel2/enunciado/19" element={<Enunciado19Nivel2 />} />
+        <Route path="/Nivel2/enunciado/20" element={<Enunciado20Nivel2 />} />
+        <Route path="/Nivel2/enunciado/21" element={<Enunciado21Nivel2 />} />
+        <Route path="/Nivel2/enunciado/22" element={<Enunciado22Nivel2 />} />
+        <Route path="/Nivel2/enunciado/23" element={<Enunciado23Nivel2 />} />
+        <Route path="/Nivel2/enunciado/24" element={<Enunciado24Nivel2 />} />
+        <Route path="/Nivel2/enunciado/25" element={<Enunciado25Nivel2 />} />
+        <Route path="/Nivel2/enunciado/26" element={<Enunciado26Nivel2 />} />
+        <Route path="/Nivel2/enunciado/27" element={<Enunciado27Nivel2 />} />
+        <Route path="/Nivel2/enunciado/28" element={<Enunciado28Nivel2 />} />
+        <Route path="/Nivel2/enunciado/29" element={<Enunciado29Nivel2 />} />
+        <Route path="/Nivel2/enunciado/30" element={<Enunciado30Nivel2 />} />
+        <Route path="/Nivel2/enunciado/31" element={<Enunciado31Nivel2 />} />
+        <Route path="/Nivel2/enunciado/32" element={<Enunciado32Nivel2 />} />
+        <Route path="/Nivel2/enunciado/33" element={<Enunciado33Nivel2 />} />
+        <Route path="/Nivel2/enunciado/34" element={<Enunciado34Nivel2 />} />
+        <Route path="/Nivel2/enunciado/35" element={<Enunciado35Nivel2 />} />
+        <Route path="/Nivel2/enunciado/36" element={<Enunciado36Nivel2 />} />
+        <Route path="/Nivel2/enunciado/37" element={<Enunciado37Nivel2 />} />
+        <Route path="/Nivel2/enunciado/38" element={<Enunciado38Nivel2 />} />
+        <Route path="/Nivel2/enunciado/39" element={<Enunciado39Nivel2 />} />
+        <Route path="/Nivel2/enunciado/40" element={<Enunciado40Nivel2 />} />
+        <Route path="/Nivel2/enunciado/41" element={<Enunciado41Nivel2 />} />
+        <Route path="/Nivel2/enunciado/42" element={<Enunciado42Nivel2 />} />
+        <Route path="/Nivel2/enunciado/43" element={<Enunciado43Nivel2 />} />
+        <Route path="/Nivel2/enunciado/44" element={<Enunciado44Nivel2 />} />
+        <Route path="/Nivel2/enunciado/45" element={<Enunciado45Nivel2 />} />
+        <Route path="/Nivel2/enunciado/46" element={<Enunciado46Nivel2 />} />
+        <Route path="/Nivel2/enunciado/47" element={<Enunciado47Nivel2 />} />
+        <Route path="/Nivel2/enunciado/48" element={<Enunciado48Nivel2 />} />
+        <Route path="/Nivel2/enunciado/49" element={<Enunciado49Nivel2 />} />
+        <Route path="/Nivel2/enunciado/50" element={<Enunciado50Nivel2 />} />
 
         <Route path="/examen" element={<Examen />} />
         <Route path="/examennivel1" element={<Examennivel1 />} />

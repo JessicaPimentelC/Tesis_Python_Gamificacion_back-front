@@ -24,7 +24,7 @@ const Enunciado11Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/11');
   };
 
   return (
@@ -41,20 +41,23 @@ const Enunciado11Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>Identificación de Vocales en Python 🔤
+</span>
             </div>
             <div className="nivel1-card-body">
             <p>
-  El operador "{">="}" se usa para comprobar si un valor es mayor o igual a otro.
+            El programa pedirá al usuario que ingrese una letra y verificará si es una vocal o no. Si la letra ingresada es "a", "e", "i", "o" o "u", el programa mostrará un mensaje indicando que es una vocal.
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if variable >= valor:
-    print("La variable es mayor o igual a", valor)
+letra = input("Ingrese una letra: ")
+
+if letra in ('a', 'e', 'i', 'o', 'u'):
+    print(letra, "es una vocal.")
 else:
-    print("La variable es menor que", valor)
+    print(letra, "no es una vocal.")
 
 `} </code>
                 </pre>

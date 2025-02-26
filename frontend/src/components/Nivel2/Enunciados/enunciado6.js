@@ -24,7 +24,7 @@ const Enunciado6Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/6');
   };
 
   return (
@@ -41,20 +41,25 @@ const Enunciado6Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span> Estructuras de Decisión en Python: Comprobando Divisibilidad</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              El operador y simbolo "!=" compara los valores para ver si son distintos
+              El programa solicitará al usuario dos números enteros y verificará si el primero es divisible por el segundo. Para ello, usaremos el operador módulo (%), que nos permite obtener el residuo de una división.
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if variable != valor:
-    print("La variable es diferente de", valor)
-else:
-    print("La variable es igual a", valor)
+
+
+num = int(input("Ingresa un número entero: ")) 
+numDivisible = int(input("Ingresa otro número entero: ")) 
+if num % numDivisible == 0: 
+    print(num, "es divisible por",numDivisible)
+else: 
+    print(num, "no es divisible por",numDivisible)
+
 `} </code>
                 </pre>
               </div>

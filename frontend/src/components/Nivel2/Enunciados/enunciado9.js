@@ -24,7 +24,7 @@ const Enunciado9Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/9');
   };
 
   return (
@@ -41,20 +41,32 @@ const Enunciado9Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>🧑‍🎓 Estructuras de Decisión en Python: Clasificación por Edad
+
+</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              El operador "not" devuelve el valor contrario al valor booleano
+              El programa pedirá al usuario que ingrese su edad y mostrará una clasificación según el rango correspondiente.
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if not condicion:
-    print("La condición es falsa")
+edad = int(input("Ingrese su edad: "))
+if edad < 0:
+   print("Edad inválida.")
+elif edad < 3:
+   print("Bebé")
+elif edad < 13:
+   print("Niño")
+elif edad < 20:
+   print("Adolescente")
+elif edad < 65:
+   print("Adulto")
 else:
-    print("La condición es verdadera")
+   print("Adulto mayor")
+
 `} </code>
                 </pre>
               </div>

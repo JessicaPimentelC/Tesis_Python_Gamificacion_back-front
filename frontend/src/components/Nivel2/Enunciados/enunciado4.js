@@ -24,7 +24,7 @@ const Enunciado4Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/4');
   };
 
   return (
@@ -41,24 +41,24 @@ const Enunciado4Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LAS CONDICIONES EN PYTHON?</span>
+              <span>Uso de Variables y Condiciones en Python</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              Es cualquier expresión que evalúe un valor booleano (Verdadero o Falso)
+              Este ejercicio nos ayuda a entender cómo manejar variables, tipos de datos y condicionales en Python. 
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if condicion_1:
-    print("Condición 1 es verdadera")
-elif condicion_2:
-    print("Condición 2 es verdadera")
-elif condicion_3:
-    print("Condición 3 es verdadera")
-else:
-    print("Ninguna condición es verdadera, se ejecuta el else")
+precio = float(input("Ingresa el precio del producto: ")) 
+if precio >= 50.000: 
+  descuento = precio * 0.1 
+  precioDescuento = precio - descuento 
+  
+print("El precio con descuento es:",precioDescuento) 
+else: 
+print("No aplica el descuento:", precio)
 
 `} </code>
                 </pre>

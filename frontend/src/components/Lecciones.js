@@ -34,14 +34,11 @@ const Lecciones = () => {
     navigate('/nivel1');
     setIsLevel1Complete(true); // Marcar el nivel 1 como completo (esto debería hacerse al completar realmente el nivel)
   };
-
   const handleLevel2Click = () => {
-    if (isLevel1Complete) {
-      navigate('/nivel2');
-    } else {
-      showFloatingMessage('¡Whoa, vaquero! 🤠 Completa el nivel 1 antes de ser el ninja Python.');
-    }
-  };
+    navigate('/Nivel2/enunciado/1'); // Asegúrate de que coincida con la ruta de <Route>
+    setIsLevel1Complete(true);
+};
+
 
   const handleLevel3Click = () => {
     if (isLevel1Complete) {

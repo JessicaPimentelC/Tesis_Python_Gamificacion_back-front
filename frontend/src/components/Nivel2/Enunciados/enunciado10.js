@@ -24,7 +24,7 @@ const Enunciado10Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/10');
   };
 
   return (
@@ -41,20 +41,25 @@ const Enunciado10Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>🔐 Verificación de Contraseña en Python
+
+</span>
             </div>
             <div className="nivel1-card-body">
             <p>
-  El operador "{"<="}" se usa para comprobar si un valor es menor o igual a otro.
+            El programa pedirá al usuario que ingrese una contraseña y verificará si es correcta o incorrecta. Si la contraseña ingresada coincide con la establecida, se mostrará un mensaje indicando que el acceso está permitido.
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if variable <= valor:
-    print("La variable es menor o igual a", valor)
+contrasena_correcta = "1994*"
+contrasena = input("Ingrese la contraseña: ")
+if contrasena == contrasena_correcta:
+    print("Contraseña correcta. Acceso permitido.")
 else:
-    print("La variable es mayor que", valor)
+    print("Contraseña incorrecta. Acceso denegado.")
+
 
 `} </code>
                 </pre>

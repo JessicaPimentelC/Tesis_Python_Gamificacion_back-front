@@ -24,7 +24,7 @@ const Enunciado1Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/1');
+    navigate('/Nivel2/basicos/1');
   };
 
   return (
@@ -57,6 +57,13 @@ const Enunciado1Nivel2 = () => {
                   <code>{`                  
 if("condición"):
     Bloque a ejecutar
+EJEMPLO 
+
+edad = int(input("Ingresa la edad: ")) 
+if edad >= 18: 
+print("Es mayor de edad") 
+else: 
+print("Es menor de edad")
 `} </code>
                 </pre>
               </div>

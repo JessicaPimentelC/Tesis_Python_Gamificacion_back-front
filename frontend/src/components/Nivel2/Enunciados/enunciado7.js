@@ -24,7 +24,7 @@ const Enunciado7Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/Basicos/7');
   };
 
   return (
@@ -41,27 +41,34 @@ const Enunciado7Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>📚 Estructuras de Decisión en Python: Conversión de Calificaciones
+
+</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              El operador "and" comprueba que todas las condiciones de un if se cumplan, es decir el resultado sera un valor booleano true" 
+              En este ejercicio, aprenderemos a utilizar estructuras de decisión (if-elif-else) para convertir una calificación numérica en una calificación en letra, de acuerdo con el siguiente criterio:
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-valor1 = obtener_valor1()
-valor2 = obtener_valor2()
 
-if valor1 == condicion_1 and valor2 == condicion_2:
-    print("Ambas condiciones son verdaderas")
-elif valor1 == condicion_3 and valor2 == condicion_4:
-    print("Otra combinación de condiciones es verdadera")
-elif valor1 == condicion_5 and valor2 == condicion_6:
-    print("Una tercera combinación de condiciones es verdadera")
+Nota = int(input("Ingresa la calificación numérica: "))
+
+if 90 <= Nota <= 100:
+    letra = "A"
+elif 80 <= Nota <= 89:
+    letra = "B"
+elif 70 <= Nota <= 79:
+    letra = "C"
+elif 60 <= Nota <= 69:
+    letra = "D"
 else:
-    print("Ninguna combinación de condiciones se cumplió")
+    letra = "F"
+
+
+print("La calificación en letra es:", letra)
 
 
 `} </code>

@@ -24,7 +24,7 @@ const Enunciado8Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/Basicos/8');
   };
 
   return (
@@ -41,20 +41,26 @@ const Enunciado8Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>🎓 Estructuras de Decisión en Python: Evaluando Aprobación de Examen
+
+</span>
             </div>
             <div className="nivel1-card-body">
               <p>
-              El operador "or" comprueba que una o mas de las condiciones de un if se cumpla, es decir el resultado sera un valor booleano true" 
-              </p>
+              El programa pedirá al usuario que ingrese su calificación numérica y mostrará un mensaje indicando si ha aprobado o reprobado.
+
+</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if condicion_1 or condicion_2:
-    print("Al menos una de las condiciones es verdadera")
+calificación = float(input("Ingresa tu calificación: "))
+if calificacion >= 70:
+  print("¡Felicidades! Has aprobado el examen.")
 else:
-    print("Ninguna condición es verdadera, se ejecuta el else")
+  
+print("Lo siento, has reprobado el examen. ¡No te desanimes!")
+
 
 `} </code>
                 </pre>

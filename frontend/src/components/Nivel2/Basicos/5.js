@@ -1,125 +1,305 @@
-import React, { useState } from 'react';
-import '../../../styles/1.css'; // Asegúrate de que la ruta sea correcta
-//import '../../../styles/8.css'; // Asegúrate de que la ruta sea correcta
-import { useNavigate } from 'react-router-dom';
-import Puntaje from '../../Puntaje';
-import Sidebar from '../../Sidebar';
-import HeaderBody from '../../HeaderBody';
-import HeaderInfo from '../../HeaderInfo';
-import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import React, { useState, useEffect } from "react";
+import "../../../styles/1.css";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../../Sidebar";
+import HeaderBody from "../../HeaderBody";
+import axios from "axios";
+import HeaderInfo from "../../HeaderInfo";
+import Puntaje from "../../Puntaje";
+import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
 
 const CincoNivel2 = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [inputValue2, setInputValue2] = useState('');
-  const [result, setResult] = useState(null);
-  const [showNext, setShowNext] = useState(false);
-  const [output, setOutput] = useState('');
-  const [score, setScore] = useState(0); // Estado para el puntaje
-  const [currentTime] = useState(new Date().toLocaleString()); // Hora y Fecha actual
-  const navigate = useNavigate(); // Hook para la redirección
-  const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
-  const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
+  const [draggedItem, setDraggedItem] = useState(null);
+  const [droppedItem, setDroppedItem] = useState("");
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [showNextButton, setShowNextButton] = useState(false);
+  const [score, setScore] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
+  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
+  const [isOpen, setIsOpen] = useState(false); // Estado para la barra lateral
+  const [hoveredInsignia, setHoveredInsignia] = useState(null); // Estado para mostrar los nombres al hacer hover
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
+  const [errores, setErrores] = useState(0);
+  const [insignias, setInsignias] = useState([]); // Insignias dinámicas
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [numerosUsados, setNumerosUsados] = useState([]);
 
   const handleNext = () => {
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado(numerosUsados);
 
     if (proximoEjercicio) {
-        // Actualiza el estado
         setNumerosUsados([...numerosUsados, proximoEjercicio]);
         setShowModal(false);
-
-        // Redirige al enunciado del próximo ejercicio
         redirigirAEnunciado(proximoEjercicio, navigate);
     } else {
         console.log('No quedan ejercicios disponibles.');
     }
-};
+  };
 
-  const checkAnswer = () => {
-    // Compara si el texto ingresado es "programacion"
-    if (inputValue === 'python') {
-      setResult('correct');
-      setShowNext(true); // Muestra el botón "Siguiente"
-      setOutput(inputValue); // Muestra el valor ingresado en la salida
-      setScore(score + 10); // Incrementa el puntaje cuando sea correcto
-    } else {
-      setResult('incorrect');
-      setShowNext(false); // Oculta el botón "Siguiente"
-      setOutput(''); // Limpia la salida si la respuesta es incorrecta
+  const options = ["work", "if", "const"];
+
+  const handleDragStart = (e, item) => {
+    setDraggedItem(item);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const openModalPinguino = () => {
+    setIsModalOpenPinguino(true);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDroppedItem(draggedItem);
+  };
+
+  useEffect(() => {
+    const fetchScore = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/myapp/score/1"
+        );
+        setScore(response.data.score);
+      } catch (error) {
+        console.error("Error al obtener score:", error);
+      }
+    };
+    fetchScore();
+
+    const fetchInsignias = async () => {
+      try {
+        const email = "usuario1@gmail.com";
+        const response = await axios.get(
+          `http://localhost:8000/myapp/insignias/?email=${email}`
+        );
+        setInsignias(response.data);
+      } catch (error) {
+        console.error("Error al obtener las insignias:", error);
+      }
+    };
+
+    fetchInsignias();
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".circular-icon-container")) {
+        setHoveredInsignia(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleVerify = async () => {
+    const isCorrectAnswer =
+      (droppedItem === "if" && draggedItem === "if")
+    setIsCorrect(isCorrectAnswer);
+
+    try {
+      const requestData = {
+        usuario_id: 1,
+        ejercicio_id: 1,
+        fecha: new Date().toISOString().split("T")[0],
+        resultado: isCorrectAnswer,
+        errores: isCorrectAnswer ? 0 : errores + 1,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/myapp/intento/",
+        requestData
+      );
+
+      if (response.status === 201) {
+        if (isCorrectAnswer) {
+          setShowNextButton(true);
+          setScore(score + 10);
+          new Audio("/ganar.mp3").play();
+        } else {
+          setShowNextButton(false);
+          new Audio("/perder.mp3").play();
+        }
+      } else {
+        console.error("Error en la respuesta de la API:", response.data);
+      }
+    } catch (error) {
+      console.error(
+        "Error al guardar el intento:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   const handleInsigniaClick = () => {
-    navigate('/insignias'); // Redirige a la página de insignias
+    navigate("/insignias");
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const closeModalPinguino = () => {
+    setIsModalOpenPinguino(false);
+  };
+  const handleMouseEnter = (name) => {
+    setHoveredInsignia(name);
+  };
+
+  const handleMouseLeave = () => {
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date().toLocaleString());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handlePythonIconClick = () => {
+    setIsModalOpenPinguino((prevState) => !prevState);
   };
 
   return (
     <div className="nivel1-page">
       <Sidebar></Sidebar>
-        <div className="nivel1-container">
-      {/* Contenedor principal con el cuadro de información y el contenido principal */}
-      <div className="content">
-        {/* Contenedor de información */}
-        <div className="white-background">
-          <HeaderBody></HeaderBody>
+      <div className="nivel1-container">
+        <div className="content">
+          <div className="white-background">
+            <HeaderBody></HeaderBody>
             <div className="header-title">
               <h2>NIVEL 2</h2>
               <HeaderInfo></HeaderInfo>
             </div>
-          <div className="nivel1-card">
-            <div className="nivel1-card-header">
-            <h2>EJERCICIO #8</h2>
-            </div>
-            <div className="nivel1-card-body">
-              <p>Complete el espacio en blanco para que el codigo ejecute el if</p>
-            </div>
-            <div className="nivel1-card-body">
-              <div className="code-box">
-                <div className="code-header">PYTHON</div>
-                <div className="code-area">
-                  <pre>
-                    
-                    <code>{`texto = "python"
-if (texto ==`} </code><input
-                      type="text"
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      className="code-input-inline"
-                      placeholder="Ingrese la palabra"
-                    />):{"\n"}
-<code>{`    print("Las cadenas de texto son iguales ")
+            <div className="nivel1-card">
+              <div className="nivel1-card-header">
+                <span>EJERCICIO 5</span>
+              </div>
+              <div className="nivel1-card-body-ejer1">
+                <p>
+                  
+                  <br />
+             
+                  Arrastra la opción correcta al espacio en blanco _______ en el siguiente código:
+                                  </p>
+                <div className="code-box">
+                  <div className="code-header">Python</div>
+                  <div className="code-area">
+  <pre>
+    <code>
+{`propuesto = "python"
+texto = input("Ingresa el texto: ")
+_______ (texto == propuesto):
+    print("Las cadenas de texto son iguales ")
 else:
-    print("No son iguales:",propuesto,"es diferente a", texto)`}
-</code>
+    print("No son iguales:",propuesto,"es diferente a",texto)
 
-                  </pre>
+`}
+    </code>
+  </pre>
+</div>                </div>
+                <div className="drag-container">
+                  {options.map((option) => (
+                    <div
+                      key={option}
+                      className="drag-option"
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
                 </div>
-              </div>
-              <div className="nivel1-card-button-container">
-                <button className="nivel1-card-button" onClick={checkAnswer}>
-                  Verificar
-                </button>
-                {showNext && (
-                  <button
-                    className="nivel1-card-button"
-                    onClick={handleNext} // Ajusta el número de vista siguiente si es necesario
-                  >
-                    Siguiente
+                <div
+                  className="drop-zone"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={handleDrop}
+                >
+                  {droppedItem
+                    ? `El operador es ${droppedItem}`
+                    : "Arrastra aquí la palabra correcta"}
+                </div>
+                <div className="button-container">
+                  <button className="nivel1-card-button" onClick={handleVerify}>
+                    Verificar
                   </button>
-                )}
-              </div>
-              {result && (
-                <div className={`result ${result}`}>
-                  {result === 'correct' ? 'Correcto' : 'Inténtalo de nuevo'}
+                  {showNextButton && (
+                    <button
+                      className={`nivel1-card-button next-button show`}
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  )}
                 </div>
-              )}
-              
+                <div className="result-container">
+                  {isCorrect !== null && (
+                    <p
+                      className={`result ${
+                        isCorrect ? "correct" : "incorrecto"
+                      }`}
+                    >
+                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
+
+          <Puntaje></Puntaje>
         </div>
       </div>
-      <Puntaje></Puntaje>
-    </div>
+      {showModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>¡Hola, soy pingui jessica!</h2>
+            <p>
+              Aquí podrás encontrar todas las ayudas que necesites para
+              completar los ejercicios. ¡No dudes en consultarlo cuando lo
+              necesites!
+            </p>
+
+            <div className="nivel1-card-header">
+              <p>Seleccione una Ayuda:</p>
+            </div>
+
+            {/* Contenedor de los iconos en forma vertical */}
+            <div className="modal-icons">
+              <button
+                className="modal-icon-button"
+                onClick={() => alert("Ayuda 1: Idea")}
+              >
+                <img src="idea.gif" alt="Icono 1" className="modal-icon" />
+              </button>
+
+              <button
+                className="modal-icon-button"
+                onClick={() => alert("Ayuda 2: Apoyo")}
+              >
+                <img src="apoyo.gif" alt="Icono 2" className="modal-icon" />
+              </button>
+
+              <button
+                className="modal-icon-button"
+                onClick={() => alert("Ayuda 3: Cuaderno")}
+              >
+                <img src="cuaderno.gif" alt="Icono 3" className="modal-icon" />
+              </button>
+            </div>
+
+            <button onClick={closeModal}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

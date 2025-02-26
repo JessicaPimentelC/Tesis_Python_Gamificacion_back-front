@@ -24,7 +24,7 @@ const Enunciado12Nivel2 = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate('/basicos/4');
+    navigate('/Nivel2/basicos/12');
   };
 
   return (
@@ -41,20 +41,29 @@ const Enunciado12Nivel2 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>¿CÓMO FUNCIONAN LOS OPERADORES EN PYTHON?</span>
+              <span>Verificación de Divisibilidad en Python 🔢
+              </span>
             </div>
             <div className="nivel1-card-body">
             <p>
-  El operador "{"<"}" se usa para comprobar si un valor es menor a otro.
+            El programa pedirá al usuario que ingrese un número y verificará si es divisible por 3, por 5 o por ambos. Si el número es divisible por 3 y 5 al mismo tiempo, mostrará un mensaje indicando esta condición. 
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
                 <pre className="code-area">
                   <code>{`
-if variable < valor:
-    print("La variable es menor que", valor)
+num = int(input("Ingrese un número: "))
+
+if num % 3 == 0 and num % 5 == 0:
+    print("El número es divisible por 3 y 5.")
+elif num % 3 == 0:
+    print("El número es divisible por 3.")
+elif num % 5 == 0:
+    print("El número es divisible por 5.")
 else:
-    print("La variable es mayor que", valor)
+    print("El número no es divisible por 3 ni por 5.")
+
+
 
 `} </code>
                 </pre>
