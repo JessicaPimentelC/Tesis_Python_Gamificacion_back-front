@@ -2,6 +2,7 @@ import React, { useState, useEffect  } from 'react';
 import '../styles/foro.css';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
+import Header from './Header';
 
 const Foro = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -254,31 +255,14 @@ const Foro = () => {
 
     return (
 
-<div className="foro-container">
-    <div className="foro-header">
-        <button onClick={handleBackClick} className="back-button">
-            <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
-        </button>
-        <input
-            type="text"
-            placeholder="Buscar por tema o descripción..."
-            className="search-bar"
-            value={searchText}
-            onChange={handleSearchChange}
-        />
-        <div className="icon-group">
-            <img src="/ubicacion.png" alt="Icon 1" className="header-icon" />
-            <img src="/informacion.png" alt="Icon 2" className="header-icon" />
-            <img src="/mensaje.png" alt="Icon 3" className="header-icon" />
-            <img src="/AYUDA.jpeg" alt="Profile" className="header-icon" />
-        </div>
-    </div>
-    <div className="foro-content">
-        <div className="foro-subheader">
-            <button className="new-question" onClick={openModal}>
-                Nueva Pregunta
-            </button>
-        </div>
+        <div className="foro-container">
+            <Header></Header>
+        <div className="foro-content">
+            <div className="foro-subheader">
+                <button className="new-question" onClick={openModal}>
+                    Nueva Pregunta
+                </button>
+            </div>
         <div className="foro-title">
             Únete a la conversación en nuestro foro
         </div>

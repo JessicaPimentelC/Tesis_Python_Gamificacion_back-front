@@ -88,13 +88,17 @@ const Header = () => {
 
     return (
         <div className="dashboard-header">
+            <button onClick={handleBackClick} className="back-button">
+                <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
+            </button>
             <div className="icon-group-header">
+
                 <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
                 <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
-                    <img src="/bandera.png" alt="Icono Insignias" />
+                    <img src="/bandera.png" alt="Icono Insignias" className="header-icon" />
                 </button>
                 <button className="icon-button-mapa" onClick={openModalPinguino}>
-                    <img src="/muñeco.png" alt="Icono Moneda" />
+                    <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
                 </button>
                 {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
                 <button className="icon-button-mapa" onClick={handleForoIconClick}>

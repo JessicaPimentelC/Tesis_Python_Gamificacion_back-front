@@ -8,6 +8,11 @@ const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [logros, setLogros] = useState(null);
   const navigate = useNavigate(); // Hook para la redirección
+  const [insignias, setInsignias] = useState([]); // Insignias dinámicas
+  // Función para manejar el click en una insignia (si necesitas alguna acción)
+  const handleInsigniaClick = (insigniaNombre) => {
+    console.log(`Insignia clickeada: ${insigniaNombre}`);
+  };
 
   useEffect(() => {
     const fetchUsuario = async () => {
@@ -64,6 +69,23 @@ const Perfil = () => {
   const handleBackClick = () => {
     navigate("/dashboard");
   };
+  useEffect(() => {
+    const fetchInsignias = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/myapp/insignias/",
+          {
+            withCredentials: true, // Para incluir cookies si las usas
+          }
+        );
+        console.log("insignias obtenidas", response.data);
+        setInsignias(response.data);
+      } catch (error) {
+        console.error("Error al obtener las insignias:", error);
+      }
+    };
+    fetchInsignias();
+  }, []);
   return (
     <div className="perfil-container">
       <Sidebar />
@@ -118,6 +140,25 @@ const Perfil = () => {
                   </div>
                 ) : null
               )}
+        </div>
+        <h3>🏅 Insignias</h3>
+        <div className="perfil-logros">
+        {insignias.map((item, index) => (
+            <div
+              key={index}
+              className="perfil-stats-table"
+              onClick={() => handleInsigniaClick(item.insignia.nombre)}
+              >
+              <div className="stat-box">
+                <img
+                  src={`/insignias/${item.insignia.nombre.toLowerCase()}.png`}
+                  alt={item.insignia.nombre}
+                />{" "}
+                <div className="insignia-nombre">{item.insignia.nombre}</div>
+
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

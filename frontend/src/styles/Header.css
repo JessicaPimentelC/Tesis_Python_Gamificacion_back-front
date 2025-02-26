@@ -1,52 +1,86 @@
-
 .dashboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Alinea los íconos a la izquierda */
-    padding: 10px 20px;
-    background-color: #F8C4B4; /* Ajusta según tu diseño */
-    border-bottom: 1px solid #ccc;
-    width: 100vw;
-    z-index: 1; /* Mantiene el header por debajo del botón */
-    position: absolute;
-  }
-  .icon-button-mapa {
-    width: 50px; /* Ajusta el ancho */
-    height: 50px; /* Ajusta la altura */
-    padding: 5px; /* Espaciado interno */
-    border: none; /* Elimina el borde */
-    background: none; /* Sin fondo */
-    cursor: pointer; /* Cursor de mano */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Distribuye los elementos */
+  padding: 10px 20px;
+  background-color: #F8C4B4;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  z-index: 1000;
+  position: fixed; /* Fija el header */
+  top: 0;
+  left: 0;
 }
 
-.icon-button-mapa img {
-    width: 100%; /* Hace que la imagen se ajuste al botón */
-    height: auto; /* Mantiene la proporción */
+/* Contenedor de los íconos */
+.icon-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 50px;
+  justify-content: flex-end; /* Asegura que siempre estén a la derecha */
 }
+
+/* Ajustes de tamaño para los íconos */
+.header-icon,
+.profile-picture{
+  width: 40px;
+  height: 40px;
+}
+
+/* 📌 Para tablets (pantallas medianas) */
+@media (max-width: 1024px) {
+  .dashboard-header {
+      padding: 10px; /* Reduce el padding */
+  }
 
   .icon-group-header {
-    align-items: center;
-    display: flex;
-    gap: 10px; /* Espacio entre los íconos */
-    margin-right: 50px; /* Ajusta el espacio entre la barra de búsqueda y los íconos */
-
-
+      gap: 5px; /* Reduce el espacio entre íconos */
+      margin-right: 20px; /* Reduce el margen derecho */
   }
-  
-  .header-icon {
-    width: 40px; /* Tamaño uniforme */
-    height: 40px;
-    object-fit: contain; /* Asegura que la imagen se ajuste sin distorsión */
-  }
-  
-  /*HEADER*/
+
+  .header-icon,
   .profile-picture {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #FF7E79;
-    cursor: pointer;
+      width: 35px;
+      height: 35px; /* Reduce el tamaño de los íconos */
   }
-  
+}
 
+/* 📌 Para móviles (pantallas pequeñas) */
+@media (max-width: 768px) {
+  .dashboard-header {
+      flex-direction: column; /* Pone los elementos en columna */
+      align-items: center;
+      padding: 10px;
+  }
+
+  .icon-group-header {
+      margin-right: 0; /* Centra los íconos */
+      gap: 8px;
+  }
+
+  .header-icon,
+  .profile-picture {
+      width: 30px;
+      height: 30px;
+  }
+}
+
+/* 📌 Para móviles muy pequeños (menos de 480px) */
+@media (max-width: 480px) {
+  .dashboard-header {
+      padding: 5px;
+  }
+
+  .icon-group-header {
+      flex-wrap: wrap; /* Permite que los íconos se ajusten en varias filas si es necesario */
+      justify-content: center;
+      gap: 5px;
+  }
+
+  .header-icon,
+  .profile-picture {
+      width: 25px;
+      height: 25px;
+  }
+}

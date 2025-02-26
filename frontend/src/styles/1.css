@@ -54,6 +54,8 @@
       background: none;
       border: none;
       cursor: pointer;
+      width: 40px;
+      height: 40px;
   }
   
   /* Título del encabezado */
@@ -325,7 +327,28 @@
     cursor: pointer;
     perspective: 1000px;
   }
-  
+
+
+/* 3 columnas en pantallas grandes */
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 2 columnas en pantallas medianas */
+@media (max-width: 767px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 columna en pantallas pequeñas */
+@media (max-width: 480px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 
 /* Media queries para mejorar la responsividad */
@@ -398,7 +421,27 @@
 .option:active {
   transform: scale(1.05);
 }
+/* 📌 Para tablets (pantallas medianas) */
+@media (max-width: 1023px) and (min-width: 601px) {
+  .option {
+    font-size: 16px; /* Reduce un poco el tamaño del texto */
+    padding: 12px 30px; /* Reduce el padding */
+  }
+}
 
+/* 📌 Para móviles (pantallas pequeñas) */
+@media (max-width: 600px) {
+  .options {
+    width: 90%; /* Ajusta el ancho del contenedor */
+  }
+
+  .option {
+    width: 100%; /* Ocupar todo el ancho disponible */
+    max-width: 250px; /* Reduce el ancho máximo */
+    font-size: 14px; /* Texto más pequeño */
+    padding: 10px 20px; /* Reduce el padding */
+  }
+}
 /* Responsividad */
 @media (max-width: 600px) {
   .option {

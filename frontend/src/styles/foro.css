@@ -34,9 +34,10 @@
 }
 
 .icon-group {
+  align-items: end;
   display: flex;
   gap: 10px;
-  margin-left: 20px; /* Ajusta el espacio entre la barra de búsqueda y los íconos */
+  margin-left: 50px; /* Ajusta el espacio entre la barra de búsqueda y los íconos */
 }
 
   
@@ -57,6 +58,7 @@
 }
 
 .foro-content {
+  margin-top: 50px;
   width: 100%; /* Ajustado para ocupar todo el ancho disponible */
   padding: 20px;
   background-color: #f4f4f4;
