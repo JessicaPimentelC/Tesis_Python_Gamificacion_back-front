@@ -1,0 +1,136 @@
+/* Estilos generales */
+.editar-container {
+display: flex;
+margin-left: 100px;/*prueba*/
+min-height: 100vh;
+background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+padding: 20px;
+}
+
+/* Contenedor del perfil */
+.editar-content {
+position: relative; /* Añade esto */
+flex: 1;
+margin-left: 100px;/*prueba*/
+background: #F8C4B4;
+border-radius: 12px;
+padding: 20px;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+text-align: center;
+}
+
+/* Cabecera */
+.editar-header h2 {
+font-size: 24px;
+font-weight: bold;
+color: #333;
+margin-bottom: 20px;
+}
+
+.back-button {
+position: absolute; /* Posiciona el botón de manera absoluta */
+top: 20px; /* Distancia desde la parte superior */
+left: 20px; /* Distancia desde la izquierda */
+background: none;
+border: none;
+cursor: pointer;
+padding: 0;
+z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+.text-content p {
+text-align: justify;
+font-size: 16px;
+color: #000000;
+margin: 5px 0;
+}
+
+.perfil-stats h3 {
+font-size: 20px;
+margin-bottom: 10px;
+}
+
+.perfil-stats-table {
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+.formulario {
+    margin-top: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Para centrar y limitar el tamaño */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+/* Estilos para cada campo de entrada */
+.formulario div {
+    margin-bottom: 15px;
+}
+
+.formulario label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.formulario input {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.formulario input:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+}
+
+/* Botón de guardar cambios */
+.formulario button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.formulario button:hover {
+    background-color: #007bff;
+    box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.3);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 90%;
+        padding: 15px;
+    }
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+.editar-container {
+    flex-direction: column;
+    align-items: center;
+}
+
+.editar-content {
+    width: 100%;
+    padding: 15px;
+}
+
+}

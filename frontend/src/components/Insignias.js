@@ -84,6 +84,9 @@ const Insignias = () => {
     <div className="container">
       <Sidebar></Sidebar>
       <div className="profile-container">
+      <button onClick={handleBackClick} className="back-button-insignias">
+        <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
+      </button>
         {/* Cuadro alrededor del nombre y el icono */}
         <div className="profile-header">
           <div className="profile-box">
@@ -109,7 +112,9 @@ const Insignias = () => {
               </p>
             </div>
           </div>
+          
         </div>
+
 
         {/* Lista de insignias */}
         <div className="insignias-list">
@@ -129,9 +134,7 @@ const Insignias = () => {
             </div>
           ))}
         </div>
-        <button onClick={handleBackClick} className="back-button">
-        <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
-      </button>
+      
       </div>
 
       {/* Modal */}

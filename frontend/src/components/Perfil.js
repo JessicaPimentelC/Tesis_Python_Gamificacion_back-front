@@ -86,6 +86,10 @@ const Perfil = () => {
     };
     fetchInsignias();
   }, []);
+  const handlePerfil = () => {
+    navigate("/editar-usuario");
+  };
+
   return (
     <div className="perfil-container">
       <Sidebar />
@@ -96,8 +100,7 @@ const Perfil = () => {
         <div className="perfil-header">
           <h2>Perfil de Usuario</h2>
         </div>
-
-        <div className="perfil-info">
+        <div className="perfil-info" >
           <img
             src="foto_usuario.jpg"
             alt="Foto de usuario"
@@ -122,6 +125,9 @@ const Perfil = () => {
               <p>Cargando información del usuario...</p>
             )}
           </div>
+          <button className="boton-editar" onClick={handlePerfil}>
+              Editar usuario
+          </button>
         </div>
         <h3>🏅 Logros</h3>
         <div className="perfil-logros">

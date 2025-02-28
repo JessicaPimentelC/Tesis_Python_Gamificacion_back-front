@@ -34,12 +34,21 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra */
 }
-.back-button{
+.btn-atras{
+  margin-top: 30px;
+  margin-right: 10px;
+  position: relative;
+  top:20px;
+  
+}
+.back-button-insignias {
+  top: 20px; /* Distancia desde la parte superior */
+  left: 20px; /* Distancia desde la izquierda */
   background: none;
   border: none;
   cursor: pointer;
-  margin-right: 20px; /* Ajusta el espacio entre el botón de retroceso y la barra de búsqueda */
-  margin-bottom: 0%;
+  padding: 0;
+  z-index: 10; /* Asegura que esté por encima de otros elementos */
 }
 /* Cuadro que contiene el nombre y el icono */
 .profile-box {

@@ -234,6 +234,7 @@ import Enunciado50Nivel2 from './components/Nivel2/Enunciados/enunciado50';
 import Sidebar from './components/Sidebar';
 import Treinta from './components/Nivel1/Intermedios/30';
 import Perfil from './components/Perfil';
+import EditarUsuario from './components/EditarUsuario';
 
 
 const App = () => {
@@ -467,6 +468,7 @@ const App = () => {
         <Route path="/challenges" element={<Challenges />} /> 
         <Route path="/avances" element={<Avances />} /> 
         <Route path="/nivel2" element={<Nivel2 />} /> 
+        <Route path="/editar-usuario" element={<EditarUsuario />} />
 
       </Routes>
     </Router>

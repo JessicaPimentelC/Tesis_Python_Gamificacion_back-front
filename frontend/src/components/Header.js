@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import PinguinoModal from "./PinguinoModal";
+import Mapa from "./Mapa";
+
 
 const Header = () => {
     const [currentTime, setCurrentTime] = useState("");
@@ -14,6 +16,13 @@ const Header = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
+    const [isModalOpenMapa, setIsModalOpenMapa] = useState(false);
+
+    const openModalMapa = () => {
+        setIsModalOpenMapa((prevState) => !prevState); // Alterna el estado del modal
+        console.log("clikeado mapa", isModalOpenMapa);
+
+    };
 
     const openModalPinguino = () => {
         setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
@@ -84,6 +93,9 @@ const Header = () => {
         setIsModalOpen(false);
         setIsResponseModalOpen(false);
     };
+    const closeModalMapa = () => {
+        setIsModalOpenMapa(false); // Cerrar el modal
+    };
 
 
     return (
@@ -93,7 +105,20 @@ const Header = () => {
             </button>
             <div className="icon-group-header">
 
-                <img src="ubicacion.png" alt="Icon 1" className="header-icon" />
+            <button className="icon-button-mapa" onClick={openModalMapa}>
+            <img src="/colombia.png" alt="Icono Mapa" className="header-icon" />
+        </button>
+        {isModalOpenMapa && (
+            <div className="modal-mapa">
+            <div className="modal-content-mapa">
+                <h2 style={{ textAlign: "center" }}>Mapa</h2>
+                <button className="close-button" onClick={closeModalMapa}>
+                Cerrar
+                </button>
+                <Mapa /> {/* Aquí se muestra el mapa dentro del modal */}
+            </div>
+            </div>
+        )}
                 <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
                     <img src="/bandera.png" alt="Icono Insignias" className="header-icon" />
                 </button>

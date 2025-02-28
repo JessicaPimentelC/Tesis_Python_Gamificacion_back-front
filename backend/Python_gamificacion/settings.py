@@ -154,7 +154,13 @@ CSRF_TRUSTED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
     'rest_framework.permissions.AllowAny',
+
 ]
+,'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # Para sesiones (cookies)
+        'rest_framework.authentication.TokenAuthentication',  # Para tokens (TokenAuth)
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # Para JWT
+    ],
 }
 
 AUTHENTICATION_BACKENDS = (

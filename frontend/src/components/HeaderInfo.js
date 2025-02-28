@@ -43,7 +43,7 @@ const HeaderInfo = () => {
                 <button className="close-button" onClick={closeModal}>
                 Cerrar
                 </button>
-                <Mapa /> {/* Aquí se muestra el mapa dentro del modal */}
+                <Mapa/> {/* Aquí se muestra el mapa dentro del modal */}
             </div>
             </div>
         )}

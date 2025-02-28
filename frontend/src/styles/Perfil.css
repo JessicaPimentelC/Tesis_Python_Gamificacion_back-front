@@ -50,6 +50,24 @@
   border: 4px solid #007bff;
   margin-bottom: 10px;
 }
+/* Botón de guardar cambios */
+.boton-editar {
+  width: 30%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.boton-editar:hover {
+  background-color: #007bff;
+  box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.3);
+}
+
 
 .text-content p {
   text-align: justify;

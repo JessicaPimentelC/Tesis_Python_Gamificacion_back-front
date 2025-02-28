@@ -443,15 +443,11 @@ def obtener_logros_usuario(request):
 @api_view(['PUT'])  # Solo permitir solicitudes PUT
 @csrf_exempt
 def editar_usuario(request):
-    # Verificar si el usuario está autenticado
     if not request.user.is_authenticated:
         return Response({"error": "No estás autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
 
     try:
-        # Obtener el usuario actual
-        usuario = request.user
-
-        # Validar y actualizar los datos del usuario
+        usuario = request.user  # Obtener el usuario actual
         serializer = UsuarioEditarSerializer(usuario, data=request.data, partial=True)  # partial=True permite actualizaciones parciales
         if serializer.is_valid():
             serializer.save()  # Guardar los cambios en la base de datos
@@ -460,4 +456,3 @@ def editar_usuario(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Devolver errores de validación
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  # Manejo de errores
-
