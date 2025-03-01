@@ -86,21 +86,28 @@ const Perfil = () => {
     };
     fetchInsignias();
   }, []);
-  const handlePerfil = () => {
+  const handleEditar = () => {
     navigate("/editar-usuario");
   };
-
+  const handleListarUsuarios = () => {
+    navigate("/listar-usuarios");
+  };
   return (
     <div className="perfil-container">
       <Sidebar />
       <div className="perfil-content">
-      <button onClick={handleBackClick} className="back-button">
-        <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
-      </button>
+        <button onClick={handleBackClick} className="back-button">
+          <img
+            src="/atrasa.png"
+            alt="Back"
+            className="back-icon"
+            onClick={handleBackClick}
+          />
+        </button>
         <div className="perfil-header">
           <h2>Perfil de Usuario</h2>
         </div>
-        <div className="perfil-info" >
+        <div className="perfil-info">
           <img
             src="foto_usuario.jpg"
             alt="Foto de usuario"
@@ -125,43 +132,46 @@ const Perfil = () => {
               <p>Cargando información del usuario...</p>
             )}
           </div>
-          <button className="boton-editar" onClick={handlePerfil}>
+          <div className="botones-container">
+            <button className="boton-editar" onClick={handleEditar}>
               Editar usuario
-          </button>
+            </button>
+            <button className="boton-editar" onClick={handleListarUsuarios}>
+              Listar usuarios
+            </button>
+          </div>
         </div>
         <h3>🏅 Logros</h3>
         <div className="perfil-logros">
-            {logros &&
-              logros.map((item, index) =>
-                item.logro ? ( // ✅ Verifica que 'logro' no sea undefined
-                  <div key={index} className="perfil-stats-table">
-                    <div className="stat-box">
-                      <img
-                        src={`/logros/${item.logro.id_logro}.png`} // Usa el ID del logro
-                        alt={item.logro.nombre}
-                      />
-                      <div className="insignia-nombre">{item.logro.nombre}</div>
-
-                    </div>
+          {logros &&
+            logros.map((item, index) =>
+              item.logro ? ( // ✅ Verifica que 'logro' no sea undefined
+                <div key={index} className="perfil-stats-table">
+                  <div className="stat-box">
+                    <img
+                      src={`/logros/${item.logro.id_logro}.png`} // Usa el ID del logro
+                      alt={item.logro.nombre}
+                    />
+                    <div className="insignia-nombre">{item.logro.nombre}</div>
                   </div>
-                ) : null
-              )}
+                </div>
+              ) : null
+            )}
         </div>
         <h3>🏅 Insignias</h3>
         <div className="perfil-logros">
-        {insignias.map((item, index) => (
+          {insignias.map((item, index) => (
             <div
               key={index}
               className="perfil-stats-table"
               onClick={() => handleInsigniaClick(item.insignia.nombre)}
-              >
+            >
               <div className="stat-box">
                 <img
                   src={`/insignias/${item.insignia.nombre.toLowerCase()}.png`}
                   alt={item.insignia.nombre}
                 />{" "}
                 <div className="insignia-nombre">{item.insignia.nombre}</div>
-
               </div>
             </div>
           ))}

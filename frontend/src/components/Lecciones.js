@@ -75,28 +75,19 @@ const Lecciones = () => {
           </div>
           <h1>BIENVENIDOS AL CURSO DE LENGUAJE DE PROGRAMACION PYTHON</h1>
           <div className="levels">
-      <button
-        className={`level-button nivel-1 ${selectedLevel === 1 ? "active" : ""}`}
-        onClick={() => handleLevelClick(1)}
-      >
-        <img src="python1.png" alt="Level 1" />
-        <span>NIVEL 1</span>
-      </button>
-      <button
-        className={`level-button nivel-2 ${selectedLevel === 2 ? "active" : ""}`}
-        onClick={() => handleLevelClick(2)}
-      >
-        <img src="py.png" alt="Level 2" />
-        <span>NIVEL 2</span>
-      </button>
-      <button
-        className={`level-button nivel-3 ${selectedLevel === 3 ? "active" : ""}`}
-        onClick={() => handleLevelClick(3)}
-      >
-        <img src="python2.png" alt="Level 3" />
-        <span>NIVEL 3</span>
-      </button>
-    </div>
+            <button className="level-button nivel-1" onClick={handleLevel1Click}>
+              <img src="python1.png" alt="Level 1" />
+              <span>NIVEL 1</span>
+            </button>
+            <button className="level-button nivel-2" onClick={handleLevel2Click}>
+              <img src="py.png" alt="Level 2" />
+              <span>NIVEL 2</span>
+            </button>
+            <button className="level-button nivel-3" onClick={handleLevel3Click}>
+              <img src="python2.png" alt="Level 3" />
+              <span>NIVEL 3</span>
+            </button>
+          </div>
         </div>
       </div>
 

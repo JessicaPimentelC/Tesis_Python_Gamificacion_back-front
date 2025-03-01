@@ -47,14 +47,20 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 4px solid #007bff;
+  border: 4px solid #ff6b6b;
   margin-bottom: 10px;
 }
 /* Botón de guardar cambios */
+.botones-container {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
+  justify-content: center; /* Centra los botones horizontalmente */
+  margin-top: 20px; /* Espacio superior */
+}
 .boton-editar {
-  width: 30%;
+  width: 50%;
   padding: 12px;
-  background-color: #007bff;
+  background-color:#ff6b6b;
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -64,7 +70,7 @@
 }
 
 .boton-editar:hover {
-  background-color: #007bff;
+  background-color: #ff6b6b;
   box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.3);
 }
 
@@ -97,7 +103,7 @@
 }
 
 .stat-box {
-  background: #007bff;
+  background: #ff6b6b;
   color: white;
   padding: 10px 15px;
   border-radius: 8px;

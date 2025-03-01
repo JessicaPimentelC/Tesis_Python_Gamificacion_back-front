@@ -235,6 +235,7 @@ import Sidebar from './components/Sidebar';
 import Treinta from './components/Nivel1/Intermedios/30';
 import Perfil from './components/Perfil';
 import EditarUsuario from './components/EditarUsuario';
+import ListarUsuario from './components/ListarUsuario';
 
 
 const App = () => {
@@ -469,6 +470,7 @@ const App = () => {
         <Route path="/avances" element={<Avances />} /> 
         <Route path="/nivel2" element={<Nivel2 />} /> 
         <Route path="/editar-usuario" element={<EditarUsuario />} />
+        <Route path="/listar-usuarios" element={<ListarUsuario />} />
 
       </Routes>
     </Router>
