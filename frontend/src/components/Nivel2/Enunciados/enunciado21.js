@@ -77,7 +77,7 @@ print("Los números ordenados son:", mínimo, medio, máximo)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/21.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

@@ -55,9 +55,9 @@ const Enunciado17Nivel2 = () => {
                   <code>{`
 numero = int(input("Ingresa un número: ")) 
 if (numero % 2 == 0):
-	print(“El número es par”)
+	print("El número es par")
 else:
-	print(“El número no es par”)
+	print("El número no es par")
 
 `} </code>
                 </pre>
@@ -73,7 +73,7 @@ else:
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/17.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

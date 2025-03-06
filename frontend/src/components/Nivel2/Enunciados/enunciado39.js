@@ -83,7 +83,7 @@ print(f"El precio final es: ${"precio_final:.2f"}")
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/39.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

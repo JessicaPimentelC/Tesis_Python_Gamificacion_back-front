@@ -78,7 +78,7 @@ print("Ambos números son iguales.”)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/42.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

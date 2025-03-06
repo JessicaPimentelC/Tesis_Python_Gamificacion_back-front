@@ -56,19 +56,31 @@ const Enunciado19Nivel2 = () => {
                   <code>{`
 num1 = int(input("Ingresa primer número: ")) 
 num2 = int(input("Ingresa segundo número: ")) 
-opcion = int(input("Seleccione la opción que desea \n 1.Suma \n 2.Resta \n 3.Multiplicación \n 4.Division \n")) 
+
+print("Seleccione la opción que desea:")
+print("1. Suma")
+print("2. Resta")
+print("3. Multiplicación")
+print("4. División")
+
+opcion = int(input()) 
+
 if opcion == 1:
-    suma = num1+num2
-    print("El resultado es",suma)
+    suma = num1 + num2
+    print("El resultado es", suma)
 elif opcion == 2:
-    resta = num1-num2
-    print("El resultado es",resta)
+    resta = num1 - num2
+    print("El resultado es", resta)
 elif opcion == 3:
-    multiplicación = num1*num2
-    print("El resultado es",multiplicación)
+    multiplicacion = num1 * num2  
+elif opcion == 4:
+    if num2 != 0: 
+        division = num1 / num2
+        print("El resultado es", division)
+    else:
+        print("Error: No se puede dividir por cero.")
 else:
-    division = num1/num2
-    print("El resultado es",división)
+    print("Opción inválida. Por favor, seleccione un número del 1 al 4.")
 
 `} </code>
                 </pre>
@@ -84,7 +96,7 @@ else:
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/19.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
