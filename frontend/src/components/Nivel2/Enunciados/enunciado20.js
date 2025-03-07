@@ -79,7 +79,7 @@ print("El número mayor es:", mayor)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/20.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

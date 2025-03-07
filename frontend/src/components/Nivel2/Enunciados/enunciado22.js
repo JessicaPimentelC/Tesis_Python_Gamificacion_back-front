@@ -76,7 +76,7 @@ print("Eres un", categoría)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/22.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

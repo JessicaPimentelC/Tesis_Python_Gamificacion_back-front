@@ -82,7 +82,7 @@ print(f"Positivos: {positivos}, Negativos: {negativos}, Ceros: {ceros}")
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/37.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

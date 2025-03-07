@@ -97,7 +97,7 @@ print("El valor en kilómetros es:", kilometros)
             <p>
               🌟 ¡Excelente trabajo! 🚀 Ahora has aprendido a realizar una conversión de unidades en Python. Sigue practicando y mejorando tus habilidades. ¡Adelante, lo estás haciendo genial!
             </p>
-            <img src="hdt.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/yy.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>

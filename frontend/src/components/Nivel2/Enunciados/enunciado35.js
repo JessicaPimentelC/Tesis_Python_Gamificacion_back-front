@@ -78,7 +78,7 @@ else:
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/35.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

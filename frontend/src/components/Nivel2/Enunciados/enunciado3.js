@@ -75,7 +75,7 @@ print("No pasaste la materia, tu promedio es:", promedio)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="gif.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel2/3.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
@@ -99,7 +99,7 @@ print("No pasaste la materia, tu promedio es:", promedio)
               🌟 ¡Estás a punto de comenzar una emocionante aventura en el aprendizaje de Python! 🚀
               Prepárate para explorar, descubrir y aprender. ¡Estamos emocionados de tenerte a bordo!
             </p>
-            <img src="X3PR.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/nivel222.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>
