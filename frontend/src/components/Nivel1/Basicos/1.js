@@ -30,38 +30,6 @@ const Uno = () => {
   
   const toggleSidebar = () => setIsOpen(!isOpen);
 
- /**  const handleNext = () => {
-    const proximoEjercicio = obtenerEjercicioAleatorioEnunciado();
-
-    if (proximoEjercicio) {
-        // Actualiza el estado
-        setNumerosUsados([...numerosUsados, proximoEjercicio]);
-        setShowModal(false);
-
-        // Redirige al enunciado del próximo ejercicio
-        redirigirAEnunciado(proximoEjercicio, navigate);
-        verificarYOtorgarInsignia([...numerosUsados, proximoEjercicio], setInsignias);
-    } else {
-        console.log('No quedan ejercicios disponibles.');
-    }
-};**/
-// Modificar handleNext para guardar ejercicios en la BD antes de avanzar
-// Función para guardar un ejercicio en la base de datos
-const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
-  try {
-    console.log("Enviando a la BD:", { usuario_id, ejercicio_id }); // <-- Verifica en la consola
-
-    const response = await axios.post("http://localhost/myapp/guardar_ejercicio/", {
-      usuario_id,
-      ejercicio_id,  // <-- Solo un ID
-    });
-
-    console.log("Ejercicio guardado:", response.data);
-  } catch (error) {
-    console.error("Error al guardar ejercicio:", error.response?.data || error.message);
-  }
-};
-
 const options = ["Mundo", "Hola", "Print"];
 
   const handleDragStart = (e, item) => {
@@ -106,9 +74,24 @@ const options = ["Mundo", "Hola", "Print"];
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+/**Guarda el ejercicio en la BD */
+const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
+  try {
+    console.log("Enviando a la BD:", { usuario_id, ejercicio_id }); 
 
-  //FUNCIONES PARA OBTENER EL EJERCICIO Y GUARDAR EL INTENTO
-  const obtenerEjercicioId = async () => {
+    const response = await axios.post("http://localhost/myapp/guardar_ejercicio/", {
+      usuario_id,
+      ejercicio_id,  // <-- Solo un ID
+    });
+
+    console.log("Ejercicio guardado:", response.data);
+  } catch (error) {
+    console.error("Error al guardar ejercicio:", error.response?.data || error.message);
+  }
+};
+
+//obtiene el id del ejercicio
+    const obtenerEjercicioId = async () => {
     try {
       const response = await axios.get("http://localhost:8000/myapp/ejercicio/");
       console.log("Datos completos recibidos:", response.data);
@@ -123,6 +106,7 @@ const options = ["Mundo", "Hola", "Print"];
     }
     return null;
   };
+  //Permite avanzar entre ejercicios
   const handleNext = async () => {
     if (!userInfo || !userInfo.id) {
       console.error("No se encontró el ID del usuario");
@@ -151,7 +135,7 @@ const options = ["Mundo", "Hola", "Print"];
       console.log("No quedan ejercicios disponibles.");
     }
   };
-  
+  //Verifica que el ejercicio este correcto
   const handleVerify = async () => {
     if (!droppedItem) {
       alert("Por favor, selecciona una palabra antes de verificar.");
@@ -193,7 +177,7 @@ const options = ["Mundo", "Hola", "Print"];
         errores: isCorrectAnswer ? 0 : errores + 1, // Incrementar errores si la respuesta es incorrecta
       };
 
-      // Realizar la petición POST con axios
+      //Guarda el intento
       const response = await axios.post(
         "http://localhost:8000/myapp/guardar-intento/",
         requestData
@@ -209,6 +193,7 @@ const options = ["Mundo", "Hola", "Print"];
           setShowNextButton(false);
           new Audio("/perder.mp3").play();
         }
+        await verificarYOtorgarLogro(usuario_id);
       } else {
         console.error("Error en la respuesta de la API:", response.data);
       }
@@ -217,6 +202,27 @@ const options = ["Mundo", "Hola", "Print"];
         "Error al guardar el intento:",
         error.response ? error.response.data : error.message
       );
+    }
+  };
+  //Verifica y otorga los logros
+  const verificarYOtorgarLogro = async (usuario_id) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/myapp/verificar-logro/",
+        { usuario_id },
+        { withCredentials: true }
+      );
+  
+      console.log("Logros verificados:", response.data);
+      
+      if (response.data.nuevo_logro) {
+        alert(`¡Felicidades! Has desbloqueado un nuevo logro: ${response.data.nuevo_logro.nombre}`);
+        
+        // Opcional: actualizar la lista de insignias en el frontend
+        setInsignias((prev) => [...prev, response.data.nuevo_logro]);
+      }
+    } catch (error) {
+      console.error("Error al verificar logros:", error.response?.data || error.message);
     }
   };
   

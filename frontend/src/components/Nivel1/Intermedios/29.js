@@ -8,7 +8,7 @@ import Puntaje from "../../Puntaje";
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
 
 const Veintiocho = () => {
-  const [options, setOptions] = useState(["=","/","*"]); // Solo tenemos el signo "=" como opción
+  const [options, setOptions] = useState(["=",",","*"]); // Solo tenemos el signo "=" como opción
   const [hoveredInsignia, setHoveredInsignia] = useState(null);
   const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

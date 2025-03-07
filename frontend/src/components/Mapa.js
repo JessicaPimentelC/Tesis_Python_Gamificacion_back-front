@@ -69,7 +69,7 @@ const Mapa = () => {
         });
     };
     
-    const positions = generarEspiralVertical(20, 100, 50, 20, 15);
+    const positions = generarEspiralVertical(20, 100, 20, 20, 15);
     
     return (
         <div className="circles-container-mapa" style={{ textAlign: "center" }}>

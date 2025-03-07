@@ -5,8 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,InsigniaConFechaSerializer,UsuarioEditarSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Participacion_foro, Ejercicio, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro
+from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking
 import subprocess
+from datetime import date
 from django.db.models import Sum
 from .utils import evaluar_insignias
 from django.shortcuts import get_object_or_404
@@ -90,22 +91,32 @@ def Login(request):
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':
+        print("Datos recibidos en la API:", request.data)  # Verifica los datos en la consola
+
+        usuario_id = request.data.get("usuario_id")
+        if not usuario_id:
+            return Response({'error': 'El usuario_id es obligatorio'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = ForoSerializer(data=request.data)
         if serializer.is_valid():
             foro = serializer.save()
             return Response({'message': 'Foro creado exitosamente'}, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     elif request.method == 'GET':
         foros = Foro.objects.all()
         serializer = ForoSerializer(foros, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
     
 
 @api_view(['GET','DELETE'])
 def eliminarRegistroForo(request, id_foro):
     try:
+        print(f"Intentando eliminar foro con ID: {id_foro}")  # 🛠️ Debug
         participacion = Foro.objects.get(id_foro=id_foro)
+        print(f"Registro encontrado: {participacion}")  # 🛠️ Debug
         participacion.delete()
         return Response({'message': 'Pregunta eliminada exitosamente'}, status=status.HTTP_200_OK)
     except Foro.DoesNotExist:
@@ -273,24 +284,23 @@ def obtener_insignias(request):
 def otorgar_insignia_20_ejercicios(request):
     # Verificar si el usuario está autenticado
     if not request.user.is_authenticated:
-        return Response({"error": "No estás autenticado"}, status=401)
+        return Response({"error": "No estás autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
 
-    usuario_id = request.user.id  # Usamos el id del usuario autenticado
-    
-    # Verificar cuántos ejercicios ha completado el usuario
-    ejercicios_completados = UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id)
-    
-    insignias_otorgadas = []
-    # Regla para Insignia 2: Completar 20 ejercicios
-    if ejercicios_completados.count() >= 20:
-        insignia_20 = Insignia.objects.filter(tipo="Insignia de 20 ejercicios").first()
-        if insignia_20 and not UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id, insignia=insignia_20).exists():
-            UsuarioEjercicioInsignia.objects.create(usuario_id=usuario_id, insignia=insignia_20)
-            insignias_otorgadas.append(insignia_20.tipo)
+    usuario_id = request.user.id  
 
-    if insignias_otorgadas:
-            return Response({"message": f"¡Insignias otorgadas: {', '.join(insignias_otorgadas)}!"}, status=status.HTTP_201_CREATED)
-        
+    # Contar los ejercicios completados por el usuario
+    ejercicios_completados = UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id, completado=True).count()
+
+    # Verificar si el usuario ya tiene la insignia
+    try:
+        insignia_20 = Insignia.objects.get(tipo="Insignia de 20 ejercicios")
+    except Insignia.DoesNotExist:
+        return Response({"error": "Insignia no encontrada"}, status=status.HTTP_404_NOT_FOUND)
+
+    if ejercicios_completados >= 20 and not UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id, insignia=insignia_20).exists():
+        UsuarioEjercicioInsignia.objects.create(usuario_id=usuario_id, insignia=insignia_20)
+        return Response({"message": f"¡Insignia otorgada: {insignia_20.tipo}!"}, status=status.HTTP_201_CREATED)
+
     return Response({"message": "No se han cumplido los requisitos para otorgar insignias."}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -435,7 +445,7 @@ def obtener_logros_usuario(request):
         return Response({"error": "No estás autenticado"}, status=401)
 
     usuario_id = request.user.id  
-    logros_obtenidos = Usuario_logro.objects.filter(usuario_id=usuario_id).select_related('logro_id')  # ✅ Usar 'logro' en lugar de 'logro_id'
+    logros_obtenidos = Usuario_logro.objects.filter(usuario_id=usuario_id).select_related('logro_id') 
     serializer = UsuarioLogroSerializer(logros_obtenidos, many=True)
     
     return Response(serializer.data)
@@ -456,3 +466,87 @@ def editar_usuario(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Devolver errores de validación
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  # Manejo de errores
+
+#LOGROS
+@api_view(['POST'])
+def verificar_y_otorgar_logros(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "No estás autenticado"}, status=401)
+
+    usuario_id = request.user.id
+    logros_obtenidos = []
+
+    # Obtener todos los logros disponibles
+    logros = Logro.objects.all()
+
+    for logro in logros:
+        # Verificar si el usuario ya tiene este logro
+        if Usuario_logro.objects.filter(usuario_id=usuario_id, logro_id=logro.id_logro).exists():
+            continue  # Si ya lo tiene, pasamos al siguiente
+
+        # Evaluar si el usuario cumple la condición para obtener el logro
+        if cumple_condicion_logro(usuario_id, logro.id_logro):
+            Usuario_logro.objects.create(usuario_id=usuario_id, logro_id=logro, fecha_completado=date.today())
+            logros_obtenidos.append(logro.nombre)
+
+    if logros_obtenidos:
+        return Response({"message": f"¡Logros otorgados: {', '.join(logros_obtenidos)}!"}, status=201)
+
+    return Response({"message": "No se han cumplido los requisitos para otorgar logros."}, status=400)
+
+
+def cumple_condicion_logro(usuario_id, logro_id):
+    """
+    Verifica si un usuario cumple la condición para obtener un logro.
+    """
+    if logro_id == 1:  # Completar nivel 1
+        return completar_nivel(usuario_id, 1)
+    elif logro_id == 2:  # Completar nivel 2
+        return completar_nivel(usuario_id, 2)
+    elif logro_id == 3:  # Completar nivel 3
+        return completar_nivel(usuario_id, 3)
+    elif logro_id == 4:  # Participar en el foro
+        return Foro.objects.filter(usuario_id=usuario_id).exists()
+    elif logro_id == 5:  # Responder en el foro
+        return Participacion_foro.objects.filter(usuario_id=usuario_id).exists()
+    elif logro_id == 6:  # Hacer un ejercicio al día por 7 días
+        return EjercicioAsignado.objects.filter(usuario_id=usuario_id).count() >= 7
+    elif logro_id == 7:  # Alcanzar un puntaje de 200
+        return obtener_puntaje_total(usuario_id) >= 200
+    elif logro_id == 8:  # Primeros lugares del ranking
+        return Ranking.objects.filter(usuario_id=usuario_id).exists()    
+    return False  # Si no hay una regla definida para ese logro
+
+
+def obtener_puntaje_total(usuario_id):
+    """
+    Obtiene el puntaje total del usuario sumando los puntos de los ejercicios completados.
+    """
+    puntaje_total = EjercicioAsignado.objects.filter(usuario_id=usuario_id).aggregate(
+        total=Sum('ejercicio__puntos')  # Accedemos a los puntos a través de la relación con `Ejercicio`
+    )['total']
+    
+    return puntaje_total if puntaje_total else 0  # Si no tiene puntaje, devolver 0
+
+
+def completar_nivel(usuario_id, nivel_id):
+    """
+    Verifica si un usuario ha completado un nivel específico.
+    Requisitos:
+    - Haber realizado al menos 2 ejercicios en el nivel con éxito (resultado=True).
+    - Haber cumplido los demás logros del nivel.
+    """
+    # Verificar si el usuario ha completado al menos 2 ejercicios en el nivel con éxito
+    ejercicios_completados = Intento.objects.filter(
+        usuario_id=usuario_id,  
+        ejercicio__nivel=nivel_id,  # ✅ Se usa `nivel` directamente, no `nivel_id`
+        resultado=True
+    ).values('ejercicio').distinct().count()
+
+    # Verificar si el usuario ha cumplido todos los logros requeridos para este nivel
+    logros_requeridos = Logro.objects.filter(nivel=nivel_id)  # ✅ Se usa `nivel`, no `nivel_id`
+    logros_obtenidos = Usuario_logro.objects.filter(usuario_id=usuario_id, logro_id__in=logros_requeridos).count()
+
+    if ejercicios_completados >= 2 and logros_obtenidos >= logros_requeridos.count():
+        return True  # Nivel completado
+    return False  # Aún no ha completado el nivel

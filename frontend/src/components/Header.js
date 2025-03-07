@@ -120,17 +120,17 @@ const Header = () => {
             </div>
         )}
                 <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
-                    <img src="/bandera.png" alt="Icono Insignias" className="header-icon" />
+                    <img src="/bandera_header.png" alt="Icono Insignias" className="header-icon" />
                 </button>
                 <button className="icon-button-mapa" onClick={openModalPinguino}>
                     <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
                 </button>
                 {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
                 <button className="icon-button-mapa" onClick={handleForoIconClick}>
-                    <img src="mensaje.png" alt="Icon 3" className="header-icon" />
+                    <img src="foro.png" alt="Icon 3" className="header-icon" />
                 </button>
                 <img
-                    src="/AYUDA.jpeg"
+                    src="/perfil.png"
                     alt="Imagen de perfil"
                     className="profile-picture"
                     onClick={() => setDropdownOpen(!dropdownOpen)}

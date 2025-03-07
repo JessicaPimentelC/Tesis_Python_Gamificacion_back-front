@@ -41,7 +41,7 @@ class Ejercicio(models.Model):
     id_ejercicio = models.AutoField(auto_created=True, primary_key=True, verbose_name='ID')
     titulo = models.CharField(max_length=200)
     descripcion = models.TextField(max_length=500)
-    nivel_id = models.ForeignKey(Nivel, on_delete=models.CASCADE, related_name='ejercicios')
+    nivel = models.ForeignKey(Nivel, on_delete=models.CASCADE, related_name='ejercicios')
     codigo = models.TextField()  
     salida_esperada = models.TextField(blank=True, null=True)  
     puntos = models.IntegerField()
@@ -62,6 +62,7 @@ class Foro(models.Model):
     tema = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
     fecha_creacion = models.DateField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
 class Participacion_foro(models.Model):
     id_participacion_foro = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -87,6 +88,7 @@ class Logro(models.Model):
     nombre = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
     recompensa_id = models.ForeignKey(Recompensa, on_delete=models.CASCADE, related_name='recompensas_logro')
+    nivel = models.ForeignKey(Nivel, on_delete=models.CASCADE, related_name='logros', null=True, blank=True) 
     
 class Ranking(models.Model):
     id_ranking = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -97,7 +99,7 @@ class Ranking(models.Model):
 class Intento(models.Model):
     id_intento = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     usuario_id = models.IntegerField()
-    ejercicio_id = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos_ejercicios')
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos_ejercicios')
     fecha = models.DateField()
     resultado = models.BooleanField()
     errores = models.IntegerField()

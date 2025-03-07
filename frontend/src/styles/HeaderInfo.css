@@ -88,12 +88,3 @@
   border: 2px solid rgb(221, 120, 37); /* Borde rojo */
  
 }
-
-.circles-container-mapa{
-position: relative;
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Ajusta para que los elementos se distribuyan en filas */
-gap: 10px; /* Espacio entre los íconos */
-background-color: #f5f5f5; /* Fondo del contenedor del mapa */
-padding: 20px; /* Espaciado interno */
-}

@@ -43,12 +43,12 @@ class ParticipacionForoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ForoSerializer(serializers.ModelSerializer):
-    participaciones_foro = ParticipacionForoSerializer(many=True, read_only=True)  # Asegúrate de que el nombre aquí es el correcto
-
+    usuario_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source="usuario")
+    participaciones_foro = ParticipacionForoSerializer(many=True, read_only=True)  
+    
     class Meta:
         model = Foro
-        fields = ['id_foro', 'tema', 'descripcion', 'fecha_creacion', 'participaciones_foro']
-
+        fields = ['id_foro','usuario_id', 'tema', 'descripcion', 'fecha_creacion', 'participaciones_foro']  
 
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:

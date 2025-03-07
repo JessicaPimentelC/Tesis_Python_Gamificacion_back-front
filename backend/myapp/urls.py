@@ -34,6 +34,8 @@ urlpatterns = [
     path("ejercicios_usuario/<int:usuario_id>/", views.obtener_ejercicios_usuario, name="obtener_ejercicios_usuario"),
 
     path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
+    path('otorgar_logros/', views.verificar_y_otorgar_logros, name='otorgar_logros'),
+
     path('editar-usuario/', views.editar_usuario, name='actualizar-user'),
 
     path('intento/', views.intento, name='intento'),
