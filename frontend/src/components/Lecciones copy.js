@@ -5,7 +5,6 @@ import Sidebar from './Sidebar';
 
 const Lecciones = () => {
   const [isLevel1Complete, setIsLevel1Complete] = useState(false); // Estado para controlar si el nivel 1 está completo
-  const [isLevel2Complete, setIsLevel2Complete] = useState(false); // Estado para controlar si el nivel 1 está completo
   const [showPopup, setShowPopup] = useState(false); // Estado para mostrar el cuadro emergente
   const [popupMessage, setPopupMessage] = useState(''); // Estado para el mensaje del cuadro emergente
   const [selectedLevel, setSelectedLevel] = useState(null);
@@ -37,23 +36,18 @@ const Lecciones = () => {
     setIsLevel1Complete(true); // Marcar el nivel 1 como completo (esto debería hacerse al completar realmente el nivel)
   };
   const handleLevel2Click = () => {
-    if (isLevel1Complete) {
-      navigate('/Nivel2/enunciado/1'); 
-      setIsLevel2Complete(true);
+    navigate('/Nivel2/enunciado/1'); // Asegúrate de que coincida con la ruta de <Route>
+    setIsLevel1Complete(true);
+};
 
-    }else{
-      showFloatingMessage('¡Espera, genio! 🚧 Completa el nivel 1 antes de pasar al nivel 2. ¡Vamos a ello! 🦸‍♂️');
-    }
-  };
 
   const handleLevel3Click = () => {
-    if (isLevel2Complete) {
-      navigate('/Nivel3/enunciado/1');
+    if (isLevel1Complete) {
+      navigate('/nivel3');
     } else {
       showFloatingMessage('¡Espera, genio! 🚧 Completa el nivel 2 antes de pasar al nivel 3. ¡Vamos a ello! 🦸‍♂️');
     }
   };
-
   const handleLevelClick = (level) => {
     setSelectedLevel(level);
   };

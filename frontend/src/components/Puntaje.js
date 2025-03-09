@@ -11,7 +11,9 @@ const Puntaje = () => {
     const [loading, setLoading] = useState(true);
     const [menuVisible, setMenuVisible] = useState(false); // Estado para mostrar u ocultar el menú
     const navigate = useNavigate();
+    const [vidas, setVidas] = useState(5);
 
+    
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
@@ -29,6 +31,7 @@ const Puntaje = () => {
                 setUserInfo(userResponse.data); 
                 // Llamar a fetchScore con el usuario_id
                 fetchScore(usuario_id);
+                fetchVidas(usuario_id);  // Llamada a la función para obtener vidas
     
             } catch (error) {
                 console.error("Error al obtener usuario:", error);
@@ -43,9 +46,19 @@ const Puntaje = () => {
                 console.error("Error al obtener score:", error);
             }
         };
+        const fetchVidas = async (usuario_id) => {
+            try {
+                const response = await axios.get(`http://localhost:8000/myapp/vidas/${usuario_id}`);
+                setVidas(response.data.vidas); // Guardamos las vidas en el estado
+            } catch (error) {
+                console.error("Error al obtener vidas:", error);
+            }
+        };
     
         fetchUsuario();
-    }, []); // Eliminamos `username` de las dependencias porque no lo usas directamente
+    }, []); 
+
+
     
     if (error) {
         return <div className="text-content"><p>{error}</p></div>;
@@ -92,7 +105,7 @@ const Puntaje = () => {
                 alt="Icono Diamante"
                 className="info-icon"
             />
-            <p>Vidas</p>
+            <p className="score-value">{vidas}</p>
             </div>
             <div className="icon-text">
             <img src="/baa.png" alt="Icono Mundo" className="info-icon" />

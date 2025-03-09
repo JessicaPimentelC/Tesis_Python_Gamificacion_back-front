@@ -1,0 +1,10 @@
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Intento, VidasUsuario
+
+@receiver(post_save, sender=Intento)
+def actualizar_vidas(sender, instance, created, **kwargs):
+    if created and not instance.resultado:  # Si el intento es fallido
+        vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=instance.usuario)
+        vidas_usuario.vidas_restantes = max(0, vidas_usuario.vidas_restantes - 1)  # No permite valores negativos
+        vidas_usuario.save()

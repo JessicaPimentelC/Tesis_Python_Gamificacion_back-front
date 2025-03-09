@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
     objects = UserManager()
-
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -92,17 +92,24 @@ class Logro(models.Model):
     
 class Ranking(models.Model):
     id_ranking = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario_id = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_ranking')
     posicion = models.CharField(max_length=50)
     fecha_actualizacion = models.DateField()
 
 class Intento(models.Model):
     id_intento = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario_id = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_intentos')
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos_ejercicios')
     fecha = models.DateField()
     resultado = models.BooleanField()
     errores = models.IntegerField()
+
+class VidasUsuario(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='vidas_usuario')
+    vidas_restantes = models.IntegerField(default=5)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.vidas_restantes} vidas"
 
 class IntentoEjercicio(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='intentos')

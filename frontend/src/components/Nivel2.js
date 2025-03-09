@@ -12,15 +12,6 @@ const Nivel2 = () => {
     const navigate = useNavigate(); // Hook para la redirección
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
 
-    const checkAnswer = () => {
-        if (input1.trim().toLowerCase() === "75") {
-        setResult("correct");
-        setShowNext(true); // Muestra el botón "Siguiente"
-        } else {
-        setResult("incorrect");
-        setShowNext(false); // Oculta el botón "Siguiente"
-        }
-    };
     const closeModal = () => {
         setShowModal(false); // Cerrar el modal
     };
@@ -46,7 +37,7 @@ const Nivel2 = () => {
     };
 
     const handleConfirmYes = () => {
-        navigate("/ejercicios1"); // Cambia la vista al módulo Ejercicios1
+        navigate("/Nivel2/Basicos/1"); // Cambia la vista al módulo Ejercicios1
     };
 
     const handleConfirmNo = () => {
@@ -87,21 +78,14 @@ const Nivel2 = () => {
                     </button>
                 </div>
                 </div>
-                <p>¡𝙀𝙡 𝙥𝙧𝙞𝙢𝙚𝙧 𝙥𝙖𝙨𝙤 𝙚𝙨𝙩á 𝙙𝙖𝙙𝙤, 𝙘𝙤𝙢𝙚𝙣𝙘𝙚𝙢𝙤𝙨 𝙟𝙪𝙣𝙩𝙤𝙨 𝙚𝙨𝙩𝙚 𝙣𝙞𝙫𝙚𝙡!</p>
+                <p>¡𝙀𝙡 𝙥𝙧𝙞𝙢𝙚𝙧 𝙣𝙞𝙫𝙚𝙡 𝙚𝙨𝙩á 𝙘𝙤𝙢𝙥𝙡𝙚𝙩𝙖𝙙𝙤, 𝙥𝙪𝙚𝙙𝙚𝙨 𝙘𝙤𝙣𝙩𝙞𝙣𝙪𝙖𝙧 𝙖𝙡 𝙨𝙞𝙜𝙪𝙞𝙚𝙣𝙩𝙚 𝙣𝙞𝙫𝙚𝙡!</p>
                 <div className={`nivel1-card ${showNext ? "fade-out" : ""}`}>
                 <div className="nivel1-card-header">
-                    <span>
-                    Python: Un Lenguaje de Programación Innovador y Versátil
-                    </span>
+                    <span>Estructuras de decisión                    </span>
                 </div>
                 <div className="nivel1-card-body">
-                    <p>
-                    Python es un lenguaje de programación de alto nivel, conocido
-                    por su simplicidad y claridad. Facilita el desarrollo de
-                    soluciones eficientes y es ampliamente utilizado en áreas como
-                    desarrollo web e inteligencia artificial, gracias a su
-                    versatilidad y una comunidad activa que impulsa su evolución.
-                    </p>
+                    <p>Las estructuras de decisión controlan el flujo del programa según condiciones lógicas. Estas condiciones generalmente se expresan mediante operadores relacionales (<code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>) y operadores lógicos (<code>and</code>, <code>or</code>, <code>not</code>).</p>
+
                     <div className="nivel1-card-button-container">
                     {!showNext && (
                         <button
@@ -115,17 +99,9 @@ const Nivel2 = () => {
                 </div>
                 {showNext && !showConfirmation && (
                     <div className="nivel1-next-section show">
-                    <h2>¿Por qué aprender Python?</h2>
+                    <h2>¿Por qué aprender las estructuras de decisión en Python?</h2>
                     <p>
-                        Python es un lenguaje de programación popular y versátil,
-                        conocido por su sintaxis sencilla y fácil de leer, ideal
-                        tanto para principiantes como para expertos. Se utiliza en
-                        diversos campos como desarrollo web, ciencia de datos,
-                        inteligencia artificial y automatización. Aprender Python
-                        abre muchas oportunidades laborales y facilita el
-                        aprendizaje de otros lenguajes. Además, su amplia comunidad
-                        y recursos lo hacen accesible y práctico para todo tipo de
-                        proyectos.
+                    Las estructuras de decisión son fundamentales en la programación porque permiten que un programa tome decisiones y ejecute diferentes bloques de código según condiciones específicas. Su importancia radica en varios aspectos clave
                     </p>
                     <div className="nivel1-next-button-container">
                         <button

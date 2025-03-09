@@ -27,6 +27,7 @@ const Uno = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  const [vidas, setVidas] = useState(null);
   
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -135,56 +136,45 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
       console.log("No quedan ejercicios disponibles.");
     }
   };
-  //Verifica que el ejercicio este correcto
   const handleVerify = async () => {
     if (!droppedItem) {
       alert("Por favor, selecciona una palabra antes de verificar.");
       return;
     }
+  
     const ejercicio_id = await obtenerEjercicioId();
-      if (!ejercicio_id) {
-        console.error("No se pudo obtener el ejercicio_id");
-        return;
-      }
-
+    if (!ejercicio_id) {
+      console.error("No se pudo obtener el ejercicio_id");
+      return;
+    }
+  
     const isCorrectAnswer = droppedItem === "Mundo";
     setIsCorrect(isCorrectAnswer);
-
+  
     try {
-          const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
-        withCredentials: true, // Incluir cookies en la petición
-      });
-      console.log("respuesta",userResponse.data.username
-      );
-      const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
-      const ejercicio_id = await obtenerEjercicioId();
-      if (!ejercicio_id) {
-        console.error("No se pudo obtener el ejercicio_id");
-        return;
-      }
-      
+      const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", { withCredentials: true });
+      const usuario_id = userResponse.data.id;
+  
       if (!usuario_id) {
         alert("Error: Usuario no identificado.");
         return;
       }
   
       const requestData = {
-      
-        usuario_id,
-        ejercicio_id,
-        fecha: new Date().toISOString().split("T")[0], // Fecha actual en formato 'YYYY-MM-DD'
-        resultado: isCorrectAnswer, // True o False dependiendo si es correcto
-        errores: isCorrectAnswer ? 0 : errores + 1, // Incrementar errores si la respuesta es incorrecta
+        usuario:usuario_id,
+        ejercicio: ejercicio_id,
+        fecha: new Date().toISOString().split("T")[0],
+        resultado: isCorrectAnswer,
+        errores: isCorrectAnswer ? 0 : errores + 1,
       };
-
-      //Guarda el intento
-      const response = await axios.post(
-        "http://localhost:8000/myapp/guardar-intento/",
-        requestData
-      );
-
+  
+      console.log("Datos enviados:", requestData);
+      const response = await axios.post("http://localhost:8000/myapp/guardar-intento/", requestData);
+  
       if (response.status === 201) {
-        // 201 significa que se creó correctamente
+        const vidasRestantes = response.data.vidas; // Obtener las vidas del backend
+        setVidas(vidasRestantes); // Actualizar en React
+  
         if (isCorrectAnswer) {
           setShowNextButton(true);
           setScore(score + 10);
@@ -193,17 +183,21 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
           setShowNextButton(false);
           new Audio("/perder.mp3").play();
         }
+  
+        if (vidasRestantes === 0) {
+          alert("No tienes más vidas. Espera o recarga vidas.");
+          return;
+        }
+  
         await verificarYOtorgarLogro(usuario_id);
       } else {
         console.error("Error en la respuesta de la API:", response.data);
       }
     } catch (error) {
-      console.error(
-        "Error al guardar el intento:",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
     }
   };
+  
   //Verifica y otorga los logros
   const verificarYOtorgarLogro = async (usuario_id) => {
     try {

@@ -32,7 +32,10 @@ urlpatterns = [
 
     path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),
     path("ejercicios_usuario/<int:usuario_id>/", views.obtener_ejercicios_usuario, name="obtener_ejercicios_usuario"),
-
+    
+    path('vidas/<int:user_id>/', views.obtener_vidas, name='obtener_vidas'),
+    path('vidas/reset/<int:user_id>/', views.resetear_vidas, name='resetear_vidas'),
+    
     path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
     path('otorgar_logros/', views.verificar_y_otorgar_logros, name='otorgar_logros'),
 

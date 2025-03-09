@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,InsigniaConFechaSerializer,UsuarioEditarSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking
+from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking,VidasUsuario
 import subprocess
 from datetime import date
 from django.db.models import Sum
@@ -181,20 +181,37 @@ def ejercicio_python(request):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def guardar_intento(request):
-    if request.method == 'POST':
-        serializer = IntentoSerializer(data=request.data)
-        if serializer.is_valid():
-            intento = serializer.save()
-            return Response({'message': 'Intento creado exitosamente'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    elif request.method == 'GET':
-        intentos = Intento.objects.all()
-        serializer = IntentoSerializer(intentos, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
+    serializer = IntentoSerializer(data=request.data)
+    if serializer.is_valid():
+        intento = serializer.save()
+        usuario = intento.usuario  # Relación con User
+        
+        # Contar intentos fallidos
+        intentos_fallidos = Intento.objects.filter(usuario=usuario, resultado=False).count()
+        
+        # Calcular vidas restantes
+        vidas_restantes = max(5 - intentos_fallidos, 0)
+
+        if vidas_restantes == 0:
+            return Response({'message': 'No tienes más vidas', 'vidas': vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Intento guardado exitosamente', 'vidas': vidas_restantes}, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def obtener_vidas(request, user_id):
+    vidas_usuario = get_object_or_404(VidasUsuario, usuario_id=user_id)
+    return Response({"vidas": vidas_usuario.vidas_restantes}, status=status.HTTP_200_OK)
+
+def resetear_vidas(request, user_id):
+    vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario_id=user_id)
+    vidas_usuario.vidas_restantes = 5
+    vidas_usuario.save()
+    return JsonResponse({"mensaje": "Vidas reseteadas a 5", "vidas": vidas_usuario.vidas_restantes})
+
 @api_view(['GET'])
 def ProgresoVersionNueva(request):
     if request.method == 'GET':

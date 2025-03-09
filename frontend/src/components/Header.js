@@ -74,7 +74,7 @@ const Header = () => {
         setIsResponseModalOpen(true);
     };
     const handleBackClick = () => {
-        navigate("/dashboard");
+        navigate(-1);
     };
 
     const openModal = () => {

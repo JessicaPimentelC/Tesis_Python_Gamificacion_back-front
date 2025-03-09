@@ -22,6 +22,7 @@ const Foro = () => {
   const [participaciones, setParticipaciones] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [usuarioId, setUsuarioId] = useState(null);
+  
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
