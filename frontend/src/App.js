@@ -408,6 +408,11 @@ const App = () => {
         <Route path="/Nivel2/enunciado/49" element={<Enunciado49Nivel2 />} />
         <Route path="/Nivel2/enunciado/50" element={<Enunciado50Nivel2 />} />
 
+
+
+        
+    (/*Nivel3-enunciados*/)
+
         <Route path="/examen" element={<Examen />} />
         <Route path="/examennivel1" element={<Examennivel1 />} />
         <Route path="/condicionales" element={<Condicionales />} />
