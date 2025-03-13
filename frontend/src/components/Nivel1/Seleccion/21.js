@@ -47,19 +47,16 @@ const Veintiuno = () => {
     setHoveredInsignia(null);
   };
 
-  const checkAnswer = () => {
-    if (selectedAnswer === "float") {
+  const handleSelectAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    if (answer === "int") {
       setOutput("Respuesta correcta: El área del rectángulo es 50");
       setScore(score + 10);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
-      setShowNext(false); // Asegura que el botón "Siguiente" solo aparezca con la respuesta correcta
+      setShowNext(false);
     }
-  };
-
-  const handleSelectAnswer = (answer) => {
-    setSelectedAnswer(answer);
   };
 
   return (
@@ -76,8 +73,10 @@ const Veintiuno = () => {
             </div>
 
             <div className="nivel1-card">
+            <div className="nivel1-card-header">
+            <span>Ejercicio de Cálculo del Área de un Rectángulo</span>
+            </div>
               <div className="nivel1-card-body">
-                <span>Ejercicio de Cálculo del Área de un Rectángulo</span>
                 <p>¿Cuál es la palabra que falta para que el código imprima el área correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
@@ -103,17 +102,15 @@ const Veintiuno = () => {
                     </div>
                   ))}
                 </div>
-
-                <button className="nivel1-card-button" onClick={checkAnswer}>
-                  Verificar
-                </button>
                 {showNext && (
-                  <button
-                    className="nivel1-card-button"
-                    onClick={handleNext}
-                  >
-                    Siguiente
-                  </button>
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  </div>
                 )}
 
                 {output && (

@@ -116,7 +116,7 @@ const Cuarentacinco = () => {
               <div className="nivel1-card-header">
                 <span>Captura y Muestra de una Fecha de Nacimiento</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                 Encuentra la pareja relacionada.
                 </p>

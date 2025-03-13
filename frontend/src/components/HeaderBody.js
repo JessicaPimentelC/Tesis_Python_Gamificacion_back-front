@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/HeaderBody.css';
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 const HeaderBody = () => {
     const [currentTime, setCurrentTime] = useState('');
     const navigate = useNavigate(); // Hook para la redirección
     const [showModal, setShowModal] = React.useState(false);
     const [hoveredInsignia, setHoveredInsignia] = useState(null);
-    const [insignias, setInsignias] = useState([]); // Insignias dinámicas
+    const [insignias, setInsignias] = useState([]);  // Asegurar que es un array
 
     const handleControlPanelClick = () => {
         // Logic for the control panel
@@ -22,15 +23,34 @@ const HeaderBody = () => {
         const fetchInsignias = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/myapp/insignias/', {
-                    withCredentials: true, // Para incluir cookies si las usas
-
+                    withCredentials: true,
                 });
-                console.log("insignias obtenidas", response.data);
-                setInsignias(response.data);
+    
+                console.log("Insignias obtenidas:", response.data);
+                
+                // Verificar que la respuesta contenga 'insignias'
+                if (response.data && Array.isArray(response.data.insignias)) {
+                    setInsignias(response.data.insignias);
+                } else {
+                    setInsignias([]);  // Evitar errores si la API no devuelve un array
+                }
+    
+                // Mostrar mensaje si hay una nueva insignia
+                if (response.status === 200 && response.data.nuevas_insignias && response.data.mensaje) {
+                    Swal.fire({
+                        title: "¡Nueva Insignia!",
+                        text: response.data.mensaje, 
+                        icon: "success",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#007bff"
+                    });
+                }
             } catch (error) {
                 console.error("Error al obtener las insignias:", error);
+                setInsignias([]);  // Evita que el estado quede como 'undefined'
             }
         };
+
         fetchInsignias();
 
         const interval = setInterval(() => {
@@ -44,8 +64,17 @@ const HeaderBody = () => {
     
     []);
     // Función para manejar el click en una insignia (si necesitas alguna acción)
-    const handleInsigniaClick = (insigniaNombre) => {
-        console.log(`Insignia clickeada: ${insigniaNombre}`);
+
+    const handleInsigniaClick = (insignia) => {
+        console.log("Datos de la insignia clickeada:", insignia);
+        Swal.fire({
+            title: insignia.nombre,
+            text: insignia.descripcion,
+            icon: "info",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#007bff" 
+
+        });
     };
 
     const handleMouseEnter = (insigniaNombre) => {
@@ -72,8 +101,8 @@ const HeaderBody = () => {
                 <div key={index} className="circular-icon-container">
                     <button
                     className="circular-icon"
-                    onClick={() => handleInsigniaClick(item.insignia.nombre)}
-                    onMouseEnter={() => handleMouseEnter(item.insignia.nombre)}
+                    onClick={() => handleInsigniaClick(item.insignia)}
+                    onMouseEnter={() => handleMouseEnter(item.insignia)}
                     onMouseLeave={handleMouseLeave}
                     >
                     <img

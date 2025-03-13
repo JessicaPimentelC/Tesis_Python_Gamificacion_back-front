@@ -118,17 +118,17 @@ const Cuarenta = () => {
               </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>EJERCICIO PROMEDIO</span>
+                <span>Ejercicio promedio</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
-                <p>Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejerccio sea el correcto .</p>
+              <div className="nivel1-card-body">
+                <p>Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejercicio sea el correcto .</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
                   <div className="code">
                     <pre>
                       <code>
                         num1 ___ int(input("Ingrese el primer número ")){"\n"}
-                        num2 ____ int(input("Ingrese el segundo número ")){"\n"}
+                        num2 ___ int(input("Ingrese el segundo número ")){"\n"}
                         print("El promedio de los números es: ", (num1+num2)/2){"\n"}
                       </code>
                     </pre>

@@ -64,6 +64,7 @@
     width: 50px; /* Ajusta el tamaño del ícono según sea necesario */
     height: 50px;
     transition: transform 0.5s ease; /* Añadir transición para una animación suave */
+    align-items: center;
   }
   
   /* Efecto al pasar el mouse */
@@ -114,6 +115,7 @@
     color: #E9F1DF; /* Color base */
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     animation: celebrate 1s ease forwards; /* Añadido para la animación de celebración */
+    align-items: center;
   }
   
   /* Definición de la animación de celebración */
@@ -189,11 +191,6 @@
 .icon-background {
   width: 60px;
   height: 60px;
-}
-
-.info-icon {
-  width: 30px;
-  height: 30px;
 }
 
 .score-title {

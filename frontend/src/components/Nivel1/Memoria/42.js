@@ -116,9 +116,9 @@ const Cuarentados = () => {
               <div className="nivel1-card-header">
                 <span>Captura y Muestra de una Fecha de Nacimiento</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
-                Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejerccio sea el correcto .
+                Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejercicio sea el correcto .
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

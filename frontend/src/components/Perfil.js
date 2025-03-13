@@ -79,7 +79,7 @@ const Perfil = () => {
           }
         );
         console.log("insignias obtenidas", response.data);
-        setInsignias(response.data);
+        setInsignias(response.data.insignias);
       } catch (error) {
         console.error("Error al obtener las insignias:", error);
       }

@@ -101,11 +101,13 @@ const Doce = () => {
                   </pre>
                 </div>
               </div>
+              <div className="button-container">
 
               <button className="nivel1-card-button" onClick={checkAnswer}>
                 Verificar
               </button>
               {showNext && (
+
                 <button
                   className="nivel1-card-button"
                   onClick={handleNext} // Ajusta la ruta según sea necesario
@@ -113,6 +115,7 @@ const Doce = () => {
                   Siguiente
                 </button>
               )}
+                </div>
 
               {output && (
                 <div className="code-box">

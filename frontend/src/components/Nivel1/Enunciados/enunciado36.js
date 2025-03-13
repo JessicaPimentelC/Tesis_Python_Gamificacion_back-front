@@ -72,10 +72,10 @@ const Enunciado36 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre>
     <code>
-      {`a = input("ingresa el primer valor:")
-b= input("ingresa el segundo valor:")
-a, b= b, a
+      {`a = input("ingresa el primer valor:")\nb = input("ingresa el segundo valor:")\n
+a, b = b, a\n
 print("despues de intercambiar:")
 print("primer valor:",a)
 print("segundo valor", b)
@@ -83,6 +83,8 @@ print("segundo valor", b)
 
 `}
     </code>
+    </pre>
+
   </div>
 
 

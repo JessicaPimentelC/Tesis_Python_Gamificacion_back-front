@@ -159,7 +159,7 @@ const Seis = ({ toggleView }) => {
                 </div>
               )}
 
-              <div className="nivel1-card-button-container">
+              <div className="button-container">
                 {showNext && (
                   <button
                     className="nivel1-card-button"

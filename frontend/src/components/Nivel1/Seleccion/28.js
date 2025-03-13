@@ -47,6 +47,16 @@ const Veintiocho = () => {
 
   const handleSelectAnswer = (answer) => {
     setSelectedAnswer(answer);
+    if (answer === "número") {
+      const numero = 16; // ejemplo
+      const raiz = Math.sqrt(numero);
+      setOutput("Respuesta correcta: La raíz cuadrada es: " + raiz);
+      setScore(score + 10);
+      setShowNext(true);
+    } else {
+      setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+      setShowNext(false);
+    }
   };
 
   const handleInsigniaClick = () => {
@@ -112,7 +122,7 @@ const Veintiocho = () => {
               </div>
                 {/* Opciones de respuesta */}
         <div className="options">
-          {["numero", "valor", "input", "variable"].map((option) => (
+          {["número", "valor", "input", "variable"].map((option) => (
             <div
               key={option}
               className={`option ${selectedAnswer === option ? "selected" : ""}`}
@@ -122,18 +132,16 @@ const Veintiocho = () => {
             </div>
           ))}
         </div>
-
-        <button className="nivel1-card-button" onClick={checkAnswer}>
-
-                  Verificar
-                </button>
                 {showNext && (
+                  <div className="button-container">
+
                   <button
-                    className="level21-card-button"
+                    className="nivel1-card-button"
                     onClick={handleNext}
                   >
                     Siguiente
                   </button>
+                  </div>
                 )}
 
                 {output && (

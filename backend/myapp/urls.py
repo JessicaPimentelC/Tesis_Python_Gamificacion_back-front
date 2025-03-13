@@ -26,13 +26,17 @@ urlpatterns = [
     path('ejercicio/', views.ejercicio_python, name='ejercicio'),
     path("insignias/", views.obtener_insignias, name="insignias-usuario"),
     path("insigniasPrueba/", views.otorgar_insignia_20_ejercicios, name="insignias-usuario"),
+    path("verificar_nivel_completado/", views.verificar_nivel_completado, name="nivel_completado"),
 
-    path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
+
+
     path('intentos/<int:usuario_id>/', views.obtener_intentos, name="obtener_intentos"),
 
     path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),
     path("ejercicios_usuario/<int:usuario_id>/", views.obtener_ejercicios_usuario, name="obtener_ejercicios_usuario"),
-    
+    path('id_ejercicio_asignado/<int:ejercicio_id>/', views.obtener_ejercicio_asignado, name='ejercicio_id'),
+    path('nivel_ejercicio_asignado/<int:ejercicio_id>/', views.obtener_nivel_ejercicio_asignado, name='nivel_ejercicio_asignado'),
+
     path('vidas/<int:user_id>/', views.obtener_vidas, name='obtener_vidas'),
     path('vidas/reset/<int:user_id>/', views.resetear_vidas, name='resetear_vidas'),
     
@@ -41,7 +45,7 @@ urlpatterns = [
 
     path('editar-usuario/', views.editar_usuario, name='actualizar-user'),
 
-    path('intento/', views.intento, name='intento'),
+    path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
     path('score/<int:user_id>/', views.get_score, name='get_score'),
     path('run_code/', views.run_code, name='run_code'),
     path('progreso/', views.ProgresoVersionNueva, name='progreso'),

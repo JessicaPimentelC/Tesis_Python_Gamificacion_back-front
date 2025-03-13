@@ -117,7 +117,7 @@ const Cuarentasiete = () => {
                 <span>Cálculo del Área de un Cuadrado en Python
 </span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Encuentra la pareja relacionada.
                 </p>

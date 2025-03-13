@@ -111,6 +111,7 @@ const Quince = () => {
                   </pre>
                 </div>
               </div>
+              <div className="button-container">
 
               <button className="nivel1-card-button" onClick={checkAnswer}>
                 Verificar
@@ -123,7 +124,7 @@ const Quince = () => {
                   Siguiente
                 </button>
               )}
-
+              </div>
               {/* Mostrar el resultado aquí */}
               {output && (
                 <div className="code-box">

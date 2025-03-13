@@ -97,7 +97,7 @@ const Dieciséis = () => {
                 </pre>
               </div>
 
-              <div className="nivel1-card-button-container">
+              <div className="button-container">
                 <button className="nivel1-card-button" onClick={handleCheckAnswers}>
                   Verificar
                 </button>

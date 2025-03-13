@@ -32,21 +32,17 @@ const Veintidos = () => {
         console.log('No quedan ejercicios disponibles.');
     }
 };
-  const checkAnswer = () => {
-    if (selectedAnswer === "kilometros") {
-      setOutput("Respuesta correcta: El valor en kilómetros es: " + (parseFloat(selectedAnswer) / 1000));
+
+  const handleSelectAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    if (answer === "kilometros") {
+      setOutput("¡Respuesta correcta!");
+      setScore(score + 10);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
       setShowNext(false);
     }
-  };
-
-  const handleSelectAnswer = (answer) => {
-    setSelectedAnswer(answer);
-  };
-  const handleInsigniaClick = () => {
-    navigate("/insignias");
   };
 
   const closeModal = () => {
@@ -112,17 +108,15 @@ const Veintidos = () => {
             </div>
           ))}
         </div>
-
-        <button className="nivel1-card-button" onClick={checkAnswer}>
-                  Verificar
-                </button>
                 {showNext && (
-                  <button
-                    className="level21-card-button"
-                    onClick={handleNext}
-                  >
-                    Siguiente
-                  </button>
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  </div>
                 )}
 
                 {output && (

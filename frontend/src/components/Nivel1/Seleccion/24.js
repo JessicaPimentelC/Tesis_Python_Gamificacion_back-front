@@ -33,26 +33,22 @@ const Veinticuatro = () => {
         console.log('No quedan ejercicios disponibles.');
     }
 };
-  const checkAnswer = () => {
-    if (selectedAnswer === "input") {
+
+  const handleSelectAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    if (answer === "input") {
       const tasa_cambio = 20; // ejemplo, puedes hacerlo interactivo con input del usuario
       const dolar = 100; // ejemplo de monto en dólares
       const moneda_local = dolar * tasa_cambio;
       setOutput(
         "Respuesta correcta: La cantidad en moneda local es: " + moneda_local
-      );
+      );      
+      setScore(score + 10);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
       setShowNext(false);
     }
-  };
-
-  const handleSelectAnswer = (answer) => {
-    setSelectedAnswer(answer);
-  };
-  const handleInsigniaClick = () => {
-    navigate("/insignias");
   };
 
   const closeModal = () => {
@@ -128,18 +124,15 @@ const Veinticuatro = () => {
                     </div>
                   ))}
                 </div>
-
-                <button className="nivel1-card-button" onClick={checkAnswer}>
-
-                  Verificar
-                </button>
                 {showNext && (
+                  <div className="button-container">
                   <button
-                    className="level21-card-button"
+                    className="nivel1-card-button"
                     onClick={handleNext}
                   >
                     Siguiente
                   </button>
+                  </div>
                 )}
 
                 {output && (

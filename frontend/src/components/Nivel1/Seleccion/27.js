@@ -33,20 +33,19 @@ const Veintisiete = () => {
         console.log('No quedan ejercicios disponibles.');
     }
 };
-  const checkAnswer = () => {
-    if (selectedAnswer === "math") {
+
+  const handleSelectAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    if (answer === "math") {
       const numero = 4; // ejemplo
       const potencia = Math.pow(numero, 2);
       setOutput("Respuesta correcta: La potencia es: " + potencia);
+      setScore(score + 10);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
       setShowNext(false);
     }
-  };
-
-  const handleSelectAnswer = (answer) => {
-    setSelectedAnswer(answer);
   };
   const handleInsigniaClick = () => {
     navigate("/insignias");
@@ -118,18 +117,15 @@ const Veintisiete = () => {
             </div>
           ))}
         </div>
-
-        <button className="nivel1-card-button" onClick={checkAnswer}>
-
-                  Verificar
-                </button>
                 {showNext && (
+                  <div className="button-container">
                   <button
-                    className="level21-card-button"
+                    className="nivel1-card-button"
                     onClick={handleNext}
                   >
                     Siguiente
                   </button>
+                  </div>
                 )}
 
                 {output && (

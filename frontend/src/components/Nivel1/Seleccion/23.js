@@ -33,18 +33,18 @@ const Veintidos = () => {
         console.log('No quedan ejercicios disponibles.');
     }
 };
-  const checkAnswer = () => {
-    if (selectedAnswer === "int") {
+
+
+  const handleSelectAnswer = (answer) => {
+    setSelectedAnswer(answer);
+    if (answer === "int") {
       setOutput("Respuesta correcta: El promedio de los números es: " + (parseInt("10") + parseInt("20")) / 2);
+      setScore(score + 10);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
       setShowNext(false);
     }
-  };
-
-  const handleSelectAnswer = (answer) => {
-    setSelectedAnswer(answer);
   };
   const handleInsigniaClick = () => {
     navigate("/insignias");
@@ -114,16 +114,16 @@ const Veintidos = () => {
           ))}
         </div>
 
-        <button className="nivel1-card-button" onClick={checkAnswer}>
-                  Verificar
-                </button>
                 {showNext && (
+              <div className="button-container">
+
                   <button
-                    className="level21-card-button"
+                    className="nivel1-card-button"
                     onClick={handleNext}
                   >
                     Siguiente
                   </button>
+                  </div>
                 )}
 
                 {output && (

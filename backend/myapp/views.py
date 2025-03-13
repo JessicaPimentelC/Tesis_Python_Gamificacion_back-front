@@ -1,11 +1,13 @@
 from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes, authentication_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,InsigniaConFechaSerializer,UsuarioEditarSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking,VidasUsuario
+from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking,VidasUsuario,Usuario_insignia
 import subprocess
 from datetime import date
 from django.db.models import Sum
@@ -147,6 +149,36 @@ def eliminarPartiForo(request, id_participacion_foro):
     except Participacion_foro.DoesNotExist:
         return Response({'error': 'Participación no encontrada'}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+def obtener_ejercicio_asignado(request, ejercicio_id):
+    try:
+        ejercicio = EjercicioAsignado.objects.get(id=ejercicio_id)
+        return Response({"id_ejercicio": ejercicio.id, "nivel_id": ejercicio.nivel.id})
+    except EjercicioAsignado.DoesNotExist:
+        return Response({"error": "Ejercicio no encontrado"}, status=404)
+
+@api_view(['GET'])
+def obtener_nivel_ejercicio_asignado(request, ejercicio_id):
+    """
+    Devuelve el nivel del ejercicio asignado basado en el ID del ejercicio.
+    """
+    try:
+        ejercicio_asignado = EjercicioAsignado.objects.filter(ejercicio_id=ejercicio_id).select_related('ejercicio__nivel').first()
+
+        if not ejercicio_asignado:
+            return Response({"error": "No hay un ejercicio asignado con este ID"}, status=404)
+
+        return Response({
+            "id_ejercicio": ejercicio_asignado.ejercicio.id_ejercicio,
+            "titulo": ejercicio_asignado.ejercicio.titulo,
+            "nivel_id": ejercicio_asignado.ejercicio.nivel.id_nivel if ejercicio_asignado.ejercicio.nivel else None,
+            "nivel_nombre": ejercicio_asignado.ejercicio.nivel.nombre if ejercicio_asignado.ejercicio.nivel else "Sin nivel"
+        })
+    except EjercicioAsignado.DoesNotExist:
+        return Response({"error": "El ejercicio asignado no existe"}, status=404)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
 
 @api_view(['GET', 'POST'])
 def ejercicio_python(request):
@@ -186,18 +218,22 @@ def guardar_intento(request):
     serializer = IntentoSerializer(data=request.data)
     if serializer.is_valid():
         intento = serializer.save()
-        usuario = intento.usuario  # Relación con User
-        
-        # Contar intentos fallidos
+        usuario = intento.usuario
+
+        # Contar intentos fallidos (resultado=False)
         intentos_fallidos = Intento.objects.filter(usuario=usuario, resultado=False).count()
-        
+
         # Calcular vidas restantes
         vidas_restantes = max(5 - intentos_fallidos, 0)
 
         if vidas_restantes == 0:
             return Response({'message': 'No tienes más vidas', 'vidas': vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'message': 'Intento guardado exitosamente', 'vidas': vidas_restantes}, status=status.HTTP_201_CREATED)
+        return Response({
+            'message': 'Intento guardado exitosamente',
+            'vidas': vidas_restantes,
+            'errores': intento.errores  # Mostrar cantidad de errores en la respuesta
+        }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -206,11 +242,19 @@ def obtener_vidas(request, user_id):
     vidas_usuario = get_object_or_404(VidasUsuario, usuario_id=user_id)
     return Response({"vidas": vidas_usuario.vidas_restantes}, status=status.HTTP_200_OK)
 
+def regenerar_una_vida(user_id):
+    try:
+        vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario_id=user_id)
+        if vidas_usuario.vidas_restantes < 5:  # Solo si tiene menos de 5 vidas
+            vidas_usuario.vidas_restantes += 1
+            vidas_usuario.save()
+        return vidas_usuario.vidas_restantes
+    except VidasUsuario.DoesNotExist:
+        return 0
+
 def resetear_vidas(request, user_id):
-    vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario_id=user_id)
-    vidas_usuario.vidas_restantes = 5
-    vidas_usuario.save()
-    return JsonResponse({"mensaje": "Vidas reseteadas a 5", "vidas": vidas_usuario.vidas_restantes})
+    vidas = regenerar_una_vida(user_id)
+    return JsonResponse({"mensaje": "Se ha restaurado 1 vida", "vidas": vidas})
 
 @api_view(['GET'])
 def ProgresoVersionNueva(request):
@@ -238,7 +282,6 @@ def get_score(request, user_id):
             .distinct()  # Evitar duplicados
             .count()  # Contar los ejercicios únicos correctos
         )
-
         # Calcular puntos por ejercicios correctos (10 puntos por ejercicio correcto)
         puntos_por_ejercicio = ejercicios_correctos * 10
 
@@ -276,25 +319,93 @@ def postCompletoEjercicio(self, request):
         "mensaje": "Ejercicio completado",
         "insignias_ganadas": [{"nombre": i.nombre, "descripcion": i.descripcion} for i in insignias_ganadas]
     })
+# Función para verificar rapidez (esto depende de cómo defines rapidez)
+def verificar_rapidez(usuario_id):
+    intentos = Intento.objects.filter(usuario_id=usuario_id, resultado=True).order_by('fecha_intento')[:5]
+    if len(intentos) < 5:
+        return False  # Si no ha hecho al menos 5 ejercicios, no se evalúa rapidez
+
+    tiempos = [intento.tiempo_resolucion for intento in intentos]
+    return sum(tiempos) / len(tiempos) <= 30  # Ejemplo: si el promedio de tiempo es menor o igual a 30 segundos
+
+def contar_ejercicios_realizados(usuario_id):
+    return Intento.objects.filter(usuario_id=usuario_id, resultado=True).values('ejercicio_id').distinct().count()
+
+def cumple_condicion_insignia(usuario_id, insignia_id):
+    """
+    Verifica si un usuario cumple la condición para obtener una insignia.
+    """
+    if insignia_id == 1:  # Junior - Completar Nivel 1
+        return completar_nivel(usuario_id, 1)
+    elif insignia_id == 2:  # Semi Senior - Completar Nivel 2
+        return completar_nivel(usuario_id, 2)
+    elif insignia_id == 3:  # Senior - Completar Nivel 3
+        return completar_nivel(usuario_id, 3)
+    elif insignia_id == 4:  # Rapidez - Completar ejercicios en menos de cierto tiempo
+        return verificar_rapidez(usuario_id)  # Función que verifica si los ejercicios fueron rápidos
+    elif insignia_id == 5:  # 20_Ejercicios - Completar 20 ejercicios correctos únicos
+        return contar_ejercicios_realizados(usuario_id) >= 20
+
+    return False  # Si no hay una regla definida para esa insignia
+
+def verificar_y_otorgar_insignia(usuario_id):
+    """
+    Verifica si el usuario cumple las condiciones para obtener una insignia
+    y la otorga solo si no la tiene aún.
+    """
+
+    # Definir qué logros otorgan insignias
+    logros_a_insignias = {
+        1: 1,  # Logro "Completar Nivel 1" → Insignia "Junior"
+        2: 2,  # Logro "Completar Nivel 2" → Insignia "Semi senior"
+        3: 3,  # Logro "Completar Nivel 3" → Insignia "Senior"
+        7: 5,  # Logro "Alcanzar 20 ejercicios" → Insignia "20_Ejercicios"
+        4: 4   # Logro "Rapidez" → Insignia "Rapidez"
+    }
+
+    insignia_otorgada = False  # Para saber si se entregó alguna
+
+    for logro_id, insignia_id in logros_a_insignias.items():
+        if cumple_condicion_logro(usuario_id, logro_id):  
+            # Verificar si el usuario ya tiene la insignia
+            if not Usuario_insignia.objects.filter(usuario_id=usuario_id, insignia_id=insignia_id).exists():
+                # Otorgar la insignia
+                Usuario_insignia.objects.create(
+                    usuario_id=usuario_id,
+                    insignia_id=Insignia.objects.get(id_insignia=insignia_id),
+                    fecha_otorgada=now().date()
+                )
+                insignia_otorgada = True  
+
+    return insignia_otorgada  # Devuelve True si otorgó alguna insignia
 
 
+
+# Vista para obtener las insignias y verificar si deben ser otorgadas
 @api_view(['GET'])
 def obtener_insignias(request):
-    # Verificar si el usuario está autenticado
     if not request.user.is_authenticated:
         return Response({"error": "No estás autenticado"}, status=401)
 
-    # Obtener el email del usuario autenticado
-    email = request.user.email
-    usuario_id = request.user.id  # Usamos el id del usuario autenticado
+    usuario_id = request.user.id
 
-    # Ahora que tenemos el id del usuario, hacemos la consulta
+    # Intentar otorgar insignias si aún no las tiene
+    insignias_otorgadas = verificar_y_otorgar_insignia(usuario_id)
+
+    # Obtener todas las insignias del usuario
     insignias_obtenidas = UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id).select_related('insignia')
 
     # Serializar las insignias obtenidas
     serializer = InsigniaConFechaSerializer(insignias_obtenidas, many=True)
-    
-    return Response(serializer.data)
+
+    # Definir mensaje solo si se otorgó una nueva insignia
+    mensaje = "¡Has obtenido una nueva insignia!" if insignias_otorgadas else ""
+
+    return Response({
+        "insignias": serializer.data,
+        "nuevas_insignias": insignias_otorgadas,
+        "mensaje": mensaje  # Enviamos el mensaje al frontend
+    })
 
 @csrf_exempt
 @api_view(['POST'])
@@ -320,42 +431,15 @@ def otorgar_insignia_20_ejercicios(request):
 
     return Response({"message": "No se han cumplido los requisitos para otorgar insignias."}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def intento(request):
-    data = request.data
-    usuario_id = data.get('usuario_id')
-    ejercicio_id = data.get('ejercicio_id')
-    respuesta_usuario = data.get('respuesta_usuario')
-
-    try:
-        ejercicio = Ejercicio.objects.get(id_ejercicio=ejercicio_id)
-        es_correcto = ejercicio.salida_esperada.strip().lower() == respuesta_usuario.strip().lower()
-
-        # Guardar el intento del usuario
-        intento = IntentoEjercicio.objects.create(
-            usuario_id=usuario_id,
-            ejercicio=ejercicio,
-            respuesta_usuario=respuesta_usuario,
-            es_correcto=es_correcto
-        )
-
-        return Response({
-            "correcto": es_correcto,
-            "mensaje": "¡Correcto!" if es_correcto else "Inténtalo de nuevo",
-            "puntos": ejercicio.puntos if es_correcto else 0
-        })
-    except Ejercicio.DoesNotExist:
-        return Response({"error": "Ejercicio no encontrado"}, status=404)
-
-
 @api_view(['GET'])
 def obtener_intentos(request, usuario_id):
-    intentos = IntentoEjercicio.objects.filter(usuario_id=usuario_id).order_by('-fecha')
+    intentos = Intento.objects.filter(usuario_id=usuario_id).order_by('-fecha')
     data = [
         {
+            "usuario": intento.usuario.id,
             "ejercicio": intento.ejercicio.titulo,
-            "respuesta_usuario": intento.respuesta_usuario,
-            "es_correcto": intento.es_correcto,
+            "resultado": intento.resultado,
+            "errores": intento.errores,
             "fecha": intento.fecha.strftime('%Y-%m-%d %H:%M')
         }
         for intento in intentos
@@ -419,8 +503,6 @@ def guardar_ejercicio(request):
                 return JsonResponse({"error": "Datos incompletos"}, status=400)
 
             usuario = User.objects.get(id=usuario_id)  # Recuperar usuario
-            print(f"Tipo de usuario obtenido: {type(usuario)}")
-            print(f"Es instancia de User: {isinstance(usuario, User)}")
             ejercicio = Ejercicio.objects.get(id_ejercicio=ejercicio_id)
 
             ejercicio_asignado = EjercicioAsignado(
@@ -439,10 +521,6 @@ def guardar_ejercicio(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
-@csrf_exempt
-def obtener_ejercicios_usuario(request, usuario_id):
-    ejercicios = EjercicioAsignado.objects.filter(usuario_id=usuario_id).values_list("ejercicio_id", flat=True)
-    return JsonResponse({"ejercicios": list(ejercicios)})
 
 def obtener_ejercicios_usuario(request, usuario_id):
     try:
@@ -548,22 +626,50 @@ def obtener_puntaje_total(usuario_id):
 
 def completar_nivel(usuario_id, nivel_id):
     """
-    Verifica si un usuario ha completado un nivel específico.
-    Requisitos:
-    - Haber realizado al menos 2 ejercicios en el nivel con éxito (resultado=True).
-    - Haber cumplido los demás logros del nivel.
+    Verifica si un usuario ha completado un nivel específico y le otorga una insignia si es el caso.
     """
     # Verificar si el usuario ha completado al menos 2 ejercicios en el nivel con éxito
     ejercicios_completados = Intento.objects.filter(
         usuario_id=usuario_id,  
-        ejercicio__nivel=nivel_id,  # ✅ Se usa `nivel` directamente, no `nivel_id`
+        ejercicio__nivel_id=nivel_id,  # Asegurar la relación correcta con el nivel
         resultado=True
     ).values('ejercicio').distinct().count()
-
     # Verificar si el usuario ha cumplido todos los logros requeridos para este nivel
-    logros_requeridos = Logro.objects.filter(nivel=nivel_id)  # ✅ Se usa `nivel`, no `nivel_id`
-    logros_obtenidos = Usuario_logro.objects.filter(usuario_id=usuario_id, logro_id__in=logros_requeridos).count()
+    logros_requeridos = Logro.objects.filter(nivel_id=nivel_id).values_list("id_logro", flat=True)
+    logros_obtenidos = Usuario_logro.objects.filter(
+        usuario_id=usuario_id, 
+        logro_id__in=logros_requeridos
+    ).count()
 
-    if ejercicios_completados >= 2 and logros_obtenidos >= logros_requeridos.count():
+    if ejercicios_completados >= 2 and logros_obtenidos >= len(logros_requeridos):
+        # Intentar otorgar la insignia correspondiente
+        otorgar_insignia(usuario_id, f"Completar Nivel {nivel_id}")
         return True  # Nivel completado
     return False  # Aún no ha completado el nivel
+
+def otorgar_insignia(usuario_id, nombre_insignia):
+    """
+    Otorga una insignia a un usuario si aún no la tiene.
+    """
+    try:
+        insignia = Insignia.objects.get(nombre=nombre_insignia)
+        if not UsuarioEjercicioInsignia.objects.filter(usuario_id=usuario_id, insignia=insignia).exists():
+            UsuarioEjercicioInsignia.objects.create(usuario_id=usuario_id, insignia=insignia)
+            print(f"Insignia '{insignia.nombre}' otorgada al usuario {usuario_id}")
+    except Insignia.DoesNotExist:
+        print(f"Error: No se encontró la insignia '{nombre_insignia}'")
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def verificar_nivel_completado(request):#este se usa en el handleVerify
+    if not request.user.is_authenticated:
+        return Response({"error": "No estás autenticado"}, status=401)
+
+    usuario_id = request.user.id
+    nivel_id = request.data.get("nivel_id")  # Nivel enviado desde el frontend
+
+    if completar_nivel(usuario_id, nivel_id):
+        return Response({"mensaje": f"¡Felicidades! Has completado el Nivel {nivel_id} y recibido una insignia"})
+    
+    return Response({}, status=204)  # 🔹 No devuelve mensaje si no ha completado el nivel

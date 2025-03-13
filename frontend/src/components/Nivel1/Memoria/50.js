@@ -118,7 +118,7 @@ const Cuarentacincuenta = () => {
 
                 </span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>Encuentra la pareja relacionada.</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
