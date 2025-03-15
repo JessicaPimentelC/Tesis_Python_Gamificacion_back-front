@@ -51,8 +51,6 @@ const Enunciado24Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-Imprimir los números impares que hayan hasta el número ingresado
 num = int(input("numero: "))
 for i in range(1,num):
     impares = i % 2
@@ -73,7 +71,7 @@ for i in range(1,num):
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="/.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel3/24.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
@@ -97,7 +95,7 @@ for i in range(1,num):
               🌟 ¡Estás a punto de comenzar una emocionante aventura en el aprendizaje de Python! 🚀
               Prepárate para explorar, descubrir y aprender. ¡Estamos emocionados de tenerte a bordo!
             </p>
-            <img src="/.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/uu.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>

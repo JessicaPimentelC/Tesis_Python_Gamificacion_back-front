@@ -70,7 +70,7 @@ print("Cantidad de números pares:", contador)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="/.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel3/16.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
@@ -94,7 +94,7 @@ print("Cantidad de números pares:", contador)
               🌟 ¡Estás a punto de comenzar una emocionante aventura en el aprendizaje de Python! 🚀
               Prepárate para explorar, descubrir y aprender. ¡Estamos emocionados de tenerte a bordo!
             </p>
-            <img src="/.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/+.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>
