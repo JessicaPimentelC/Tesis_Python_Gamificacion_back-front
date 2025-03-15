@@ -68,7 +68,7 @@ print(i)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src="/.gif" alt="GIF" className="gif-image" />
+                  <img src="/GifNivel3/6.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
