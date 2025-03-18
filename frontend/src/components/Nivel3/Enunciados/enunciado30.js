@@ -104,7 +104,7 @@ while numero != 1:
               🌟 ¡Estás a punto de comenzar una emocionante aventura en el aprendizaje de Python! 🚀
               Prepárate para explorar, descubrir y aprender. ¡Estamos emocionados de tenerte a bordo!
             </p>
-            <img src="/o.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/+.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>

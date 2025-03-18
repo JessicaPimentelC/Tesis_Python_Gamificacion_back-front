@@ -10,19 +10,31 @@ html, body {
 
 /* Imagen de fondo para toda la página */
 body {
-  background-color: #ffffff; /* Imagen de fondo para toda la página */
-  background-size: cover; /* Asegura que la imagen cubra toda el área */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  background-attachment: fixed; /* Fija la imagen de fondo */
-  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  margin: 0;
 }
 
 /* Estilo general para el contenedor del examen */
-.exam-container {
-  background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente blanco para el contenido */
-  border-radius: 10px;
+.exam-content {
+  background: rgba(245, 162, 162, 0.8); /* Fondo semi-transparente blanco para el contenido */
+  border-radius: 60px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 650px;
+  width: 100%;
+  text-align: center;
+  margin: 20px auto; /* Centrar el contenedor */
+  color: #000; /* Color del texto en negro */
+  
+}
+/* Estilo general para el contenedor del examen */
+.exam-container {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb); /* Fondo semi-transparente blanco para el contenido */
+  border-radius: 60px;
+  box-shadow: 0 0 20px rgba(105, 13, 13, 0.1);
   padding: 20px;
   max-width: 800px;
   width: 100%;
@@ -74,7 +86,7 @@ body {
 
 .submit-btn {
   background-color: #FF4B4B; /* Color de fondo para el botón */
-  color: white;
+  color: #5e2222;
   padding: 15px 30px;
   border: none;
   border-radius: 8px;
