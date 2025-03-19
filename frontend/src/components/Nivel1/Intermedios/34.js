@@ -109,7 +109,7 @@ const Treintacuatro = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   En este ejercicio, debes arrastrar el operador correcto para completar el cálculo del capital final con interés compuesto.
                 </p>

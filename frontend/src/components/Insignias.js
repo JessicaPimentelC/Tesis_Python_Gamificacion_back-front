@@ -54,8 +54,8 @@ const Insignias = () => {
             withCredentials: true, // Para incluir cookies si las usas
           }
         );
-        console.log("insignias obtenidas", response.data);
-        setInsignias(response.data);
+        console.log("insignias obtenidas", response.data.insignias);
+        setInsignias(response.data.insignias);
       } catch (error) {
         console.error("Error al obtener las insignias:", error);
       }

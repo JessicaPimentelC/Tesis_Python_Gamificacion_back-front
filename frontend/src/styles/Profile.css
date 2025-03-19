@@ -1,36 +1,8 @@
-.profile-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    padding: 100px;
-    box-sizing: border-box;
-    background-color: #ff6b6b; /* Agregamos el color de fondo */
-}
-.sidebar {
-    background-color: #ff6b6b;
-    width: 200px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .logo {
     width: 100px;
     margin-bottom: 20px;
 }
 
-.sidebar-button {
-    background-color: #fff;
-    color: #ff6b6b;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px 0;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-}
 
 .main-content {
     flex-grow: 1;

@@ -108,7 +108,7 @@ const Treintacinco = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   En este ejercicio, debes arrastrar la función correcta para mostrar el número en binario y en hexadecimal.
                 </p>

@@ -111,9 +111,7 @@
   display: flex;
   justify-content: center; /* Centra horizontalmente */
   align-items: center; /* Centra verticalmente */
-  background-image: url('/public/fondo2.jpg'); /* Ruta desde public */
-
-
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
   background-size: cover; /* Asegura que el fondo cubra todo el contenedor */
   background-position: center; /* Centra la imagen de fondo */
   height: 100vh;

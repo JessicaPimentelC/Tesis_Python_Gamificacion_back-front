@@ -96,7 +96,7 @@ const Perfil = () => {
     <div className="perfil-container">
       <Sidebar />
       <div className="perfil-content">
-        <button onClick={handleBackClick} className="back-button">
+        <button onClick={handleBackClick} className="boton-atras">
           <img
             src="/atrasa.png"
             alt="Back"

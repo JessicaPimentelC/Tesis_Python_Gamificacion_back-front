@@ -28,8 +28,6 @@ urlpatterns = [
     path("insigniasPrueba/", views.otorgar_insignia_20_ejercicios, name="insignias-usuario"),
     path("verificar_nivel_completado/", views.verificar_nivel_completado, name="nivel_completado"),
 
-
-
     path('intentos/<int:usuario_id>/', views.obtener_intentos, name="obtener_intentos"),
 
     path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),
@@ -42,8 +40,10 @@ urlpatterns = [
     
     path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
     path('otorgar_logros/', views.verificar_y_otorgar_logros, name='otorgar_logros'),
-
-    path('editar-usuario/', views.editar_usuario, name='actualizar-user'),
+    
+    path('usuarios/', views.listar_usuarios, name='listar_usuarios'), 
+    path('editar-usuario/<int:user_id>/', views.editar_usuario, name='actualizar-user'),
+    path('usuario/<int:user_id>/', views.obtener_usuario, name='obtener_usuario'), 
 
     path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
     path('score/<int:user_id>/', views.get_score, name='get_score'),

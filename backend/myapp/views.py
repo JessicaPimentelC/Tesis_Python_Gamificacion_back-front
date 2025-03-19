@@ -545,23 +545,26 @@ def obtener_logros_usuario(request):
     
     return Response(serializer.data)
 
-@api_view(['PUT'])  # Solo permitir solicitudes PUT
-@csrf_exempt
-def editar_usuario(request):
-    if not request.user.is_authenticated:
-        return Response({"error": "No estás autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+@api_view(['PUT','GET'])
+@permission_classes([IsAuthenticated])  # 🔹 Asegurar que el usuario esté autenticado
+def editar_usuario(request, user_id):
+    usuario = request.user  # 🔹 Obtener el usuario autenticado
+
+    # 🔹 Solo permitir editar su propio perfil o si es superusuario
+    if usuario.id != user_id and not usuario.is_superuser:
+        return Response({"error": "No tienes permiso para editar este usuario"}, status=status.HTTP_403_FORBIDDEN)
 
     try:
-        usuario = request.user  # Obtener el usuario actual
-        serializer = UsuarioEditarSerializer(usuario, data=request.data, partial=True)  # partial=True permite actualizaciones parciales
-        if serializer.is_valid():
-            serializer.save()  # Guardar los cambios en la base de datos
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Devolver errores de validación
-    except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  # Manejo de errores
+        usuario_obj = User.objects.get(id=user_id)  # Buscar usuario por ID
+    except User.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
+    serializer = UsuarioEditarSerializer(usuario_obj, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 #LOGROS
 @api_view(['POST'])
 def verificar_y_otorgar_logros(request):
@@ -673,3 +676,20 @@ def verificar_nivel_completado(request):#este se usa en el handleVerify
         return Response({"mensaje": f"¡Felicidades! Has completado el Nivel {nivel_id} y recibido una insignia"})
     
     return Response({}, status=204)  # 🔹 No devuelve mensaje si no ha completado el nivel
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Solo usuarios autenticados pueden acceder
+def listar_usuarios(request):
+    usuarios = User.objects.all().values('id', 'username', 'email', 'last_login')  # Obtiene todos los usuarios
+    return Response(usuarios, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Solo usuarios autenticados pueden acceder
+def obtener_usuario(request, user_id):
+    """Devuelve los datos de un usuario específico por su ID"""
+    try:
+        usuario = User.objects.get(id=user_id)
+        serializer = UsuarioEditarSerializer(usuario)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)

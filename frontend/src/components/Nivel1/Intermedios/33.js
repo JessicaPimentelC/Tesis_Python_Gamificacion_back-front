@@ -107,9 +107,9 @@ const Treintatres = () => {
 
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>EJERCICIO #1</span>
+                <span>EJERCICIO</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   En este ejercicio, debes arrastrar el tipo de dato correcto para completar el código
                   que convierte las horas en minutos y segundos.
@@ -119,10 +119,10 @@ const Treintatres = () => {
                   <div className="code-content">
                     <pre>
                       <code>
-                        horas = ____(input("Ingresa el número de horas: ")) {"\n"}
-                        minutos = horas * 60 {"\n"}
-                        segundos = horas * 3600 {"\n"}
-                        print(f"0 horas son 0 minutos o 0 segundos.")
+horas = ____(input("Ingresa el número de horas: ")) {"\n"}
+minutos = horas * 60 {"\n"}
+segundos = horas * 3600 {"\n"}
+print(f"0 horas son 0 minutos o 0 segundos.")
                       </code>
                     </pre>
                   </div>

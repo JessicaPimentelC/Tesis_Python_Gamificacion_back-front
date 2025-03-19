@@ -108,7 +108,7 @@ const Treintados = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   En este ejercicio, debes arrastrar el tipo de dato correcto para completar el código
                   que calcula el precio final de un producto después de aplicar un descuento.

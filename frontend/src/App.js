@@ -469,7 +469,7 @@ const App = () => {
         <Route path="/challenges" element={<Challenges />} /> 
         <Route path="/avances" element={<Avances />} /> 
         <Route path="/nivel2" element={<Nivel2 />} /> 
-        <Route path="/editar-usuario" element={<EditarUsuario />} />
+        <Route path="/editar-usuario/:user_id" element={<EditarUsuario />} />
         <Route path="/listar-usuarios" element={<ListarUsuario />} />
 
       </Routes>

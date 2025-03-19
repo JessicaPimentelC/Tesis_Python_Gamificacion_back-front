@@ -109,7 +109,7 @@ const Treinta = () => {
               <span>EJERCICIO #30</span>
 
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   En este ejercicio, debes identificar el signo correcto para
                   completar el siguiente código y hacer que se imprima un mensaje con las variables.

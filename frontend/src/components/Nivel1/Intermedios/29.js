@@ -88,7 +88,7 @@ const Veintiocho = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>En este ejercicio, debes arrastrar el signo correcto para imprimir las dos variables</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
