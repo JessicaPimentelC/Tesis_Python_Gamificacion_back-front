@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import "../styles/Perfil.css"; // Archivo CSS mejorado
 import axios from "axios";
 import Sidebar from "./Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "./Header";
 
 const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [logros, setLogros] = useState(null);
   const navigate = useNavigate(); // Hook para la redirección
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
+  const { user_id } = useParams(); 
+  
   // Función para manejar el click en una insignia (si necesitas alguna acción)
   const handleInsigniaClick = (insigniaNombre) => {
     console.log(`Insignia clickeada: ${insigniaNombre}`);
@@ -86,24 +89,27 @@ const Perfil = () => {
     };
     fetchInsignias();
   }, []);
-  const handleEditar = () => {
-    navigate("/editar-usuario");
-  };
+  const handleEditar = (user_id) => {
+    navigate(`/editar-usuario/${user_id}`);
+};
   const handleListarUsuarios = () => {
     navigate("/listar-usuarios");
   };
+  const handleCrear = () => {
+    navigate("/crear-usuario");
+  };
   return (
     <div className="perfil-container">
-      <Sidebar />
+      <Header></Header>
       <div className="perfil-content">
-        <button onClick={handleBackClick} className="boton-atras">
+        {/***<button onClick={handleBackClick} className="boton-atras">
           <img
             src="/atrasa.png"
             alt="Back"
             className="back-icon"
             onClick={handleBackClick}
           />
-        </button>
+        </button>***/}
         <div className="perfil-header">
           <h2>Perfil de Usuario</h2>
         </div>
@@ -133,7 +139,10 @@ const Perfil = () => {
             )}
           </div>
           <div className="botones-container">
-            <button className="boton-editar" onClick={handleEditar}>
+            <button className="boton-editar" onClick={handleCrear}>
+              Crear usuario
+            </button>
+            <button className="boton-editar"  onClick={() => handleEditar(userInfo.id)}>
               Editar usuario
             </button>
             <button className="boton-editar" onClick={handleListarUsuarios}>

@@ -236,6 +236,7 @@ import Treinta from './components/Nivel1/Intermedios/30';
 import Perfil from './components/Perfil';
 import EditarUsuario from './components/EditarUsuario';
 import ListarUsuario from './components/ListarUsuario';
+import RegistroUsuario from './components/RegistroUsuario';
 
 
 const App = () => {
@@ -471,6 +472,7 @@ const App = () => {
         <Route path="/nivel2" element={<Nivel2 />} /> 
         <Route path="/editar-usuario/:user_id" element={<EditarUsuario />} />
         <Route path="/listar-usuarios" element={<ListarUsuario />} />
+        <Route path="/crear-usuario" element={<RegistroUsuario />} />
 
       </Routes>
     </Router>

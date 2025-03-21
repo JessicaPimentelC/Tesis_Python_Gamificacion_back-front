@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Sidebar from './Sidebar';
-import Header from './Header';
 import '../styles/Editar-usuario.css';
+import Header from './Header';
 
 const EditarUsuario = () => {
     const navigate = useNavigate();
@@ -74,7 +74,7 @@ const EditarUsuario = () => {
 
     return (
         <div className="editar-container">
-            <Sidebar />
+            <Header />
             <div className="editar-content">
                 <button onClick={() => navigate("/perfil")} className="back-button">
                     <img src="/atrasa.png" alt="Back" className="back-icon" />

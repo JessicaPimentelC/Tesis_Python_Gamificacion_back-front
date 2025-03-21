@@ -11,76 +11,118 @@
   top: 0;
   left: 0;
 }
-
-/* Contenedor de los íconos */
 .icon-group-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-end; /* Mantiene los íconos a la derecha */
+  gap: 15px; /* Espacio uniforme entre íconos */
   margin-right: 50px;
-  justify-content: flex-end; /* Asegura que siempre estén a la derecha */
 }
 
 /* Ajustes de tamaño para los íconos */
 .header-icon,
-.profile-picture{
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
+/* Estilo para los botones de los íconos */
+.icon-button-mapa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Tamaño uniforme */
+  height: 40px;
+  background: transparent; /* Sin fondo */
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-button-mapa img {
+  width: 100%; /* Hace que la imagen ocupe todo el botón */
+  height: auto;
+}
+.header-buttons {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los botones */
+  gap: 10px; /* Espaciado entre los botones */
+  margin-right: auto; /* Mueve los botones a la izquierda sin afectar otros elementos */
+}
+
+.button-atras{
   width: 40px;
   height: 40px;
 }
-
-/* 📌 Para tablets (pantallas medianas) */
-@media (max-width: 1024px) {
-  .dashboard-header {
-      padding: 10px; /* Reduce el padding */
+.boton-inicio, .button-atras{
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    
   }
+  
 
+/* Ajustes responsivos */
+@media (max-width: 1024px) {
   .icon-group-header {
-      gap: 5px; /* Reduce el espacio entre íconos */
-      margin-right: 20px; /* Reduce el margen derecho */
+    gap: 10px;
+    margin-right: 20px;
   }
 
   .header-icon,
   .profile-picture {
-      width: 35px;
-      height: 35px; /* Reduce el tamaño de los íconos */
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-button-mapa {
+    width: 40px;
+    height: 40px;
   }
 }
 
-/* 📌 Para móviles (pantallas pequeñas) */
 @media (max-width: 768px) {
   .dashboard-header {
-      flex-direction: column; /* Pone los elementos en columna */
-      align-items: center;
-      padding: 10px;
+    flex-direction: column;
+    align-items: self-end;
+    padding: 10px;
   }
 
   .icon-group-header {
-      margin-right: 0; /* Centra los íconos */
-      gap: 8px;
+    justify-content: center;
+    gap: 8px;
   }
 
   .header-icon,
   .profile-picture {
-      width: 30px;
-      height: 30px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .icon-button-mapa {
+    width: 35px;
+    height: 35px;
   }
 }
 
-/* 📌 Para móviles muy pequeños (menos de 480px) */
 @media (max-width: 480px) {
-  .dashboard-header {
-      padding: 5px;
-  }
-
   .icon-group-header {
-      flex-wrap: wrap; /* Permite que los íconos se ajusten en varias filas si es necesario */
-      justify-content: center;
-      gap: 5px;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: self-end;
   }
 
   .header-icon,
   .profile-picture {
-      width: 25px;
-      height: 25px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .icon-button-mapa {
+    width: 30px;
+    height: 30px;
   }
 }

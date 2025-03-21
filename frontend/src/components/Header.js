@@ -58,7 +58,7 @@ const Header = () => {
     const handleConfirmCerrarSesion = () => {
         // Logic to log out
         setShowModal(false);
-        window.location.href = '"http://localhost:8000/myapp/login/';
+        navigate('/')
     };
     //"http://localhost:8000/myapp/login/",
 
@@ -100,9 +100,18 @@ const Header = () => {
 
     return (
         <div className="dashboard-header">
-            <button onClick={handleBackClick} className="back-button">
-                <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
+            <div className="header-buttons">
+            <button className="boton-inicio" onClick={() => navigate('/dashboard')}>
+            <img 
+                className="header-icon" 
+                src="/tesis.png" 
+                alt="Icono"  
+            />
             </button>
+            {/**<button onClick={handleBackClick} className="button-atras">
+                <img src="/atrasa.png" alt="Back" className="header-icon" onClick={handleBackClick}/>
+            </button>**/}
+            </div>
             <div className="icon-group-header">
 
             <button className="icon-button-mapa" onClick={openModalMapa}>
@@ -129,12 +138,14 @@ const Header = () => {
                 <button className="icon-button-mapa" onClick={handleForoIconClick}>
                     <img src="foro.png" alt="Icon 3" className="header-icon" />
                 </button>
+                <button className="icon-button-mapa" onClick={() => setDropdownOpen(!dropdownOpen)}>
                 <img
                     src="/perfil.png"
                     alt="Imagen de perfil"
                     className="profile-picture"
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
                 />
+                </button>
+
                 {dropdownOpen && (
                     <div className="dropdown-menu">
                         <button

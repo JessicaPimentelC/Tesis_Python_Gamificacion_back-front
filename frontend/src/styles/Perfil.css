@@ -7,13 +7,13 @@
 }
 
 .perfil-content {
+  margin-top: 50px;
   flex: 1;
-  background: #F8C4B4;
+  background: white;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-left: 160px; /* Deja espacio para el sidebar */
 }
 
 /* Cabecera */
@@ -29,6 +29,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 .perfil-picture {
@@ -143,6 +144,8 @@
   .perfil-content {
     margin-left: 0;
     width: 100%;
+    margin-top: 70px;
+
   }
 }
 /* Responsividad */

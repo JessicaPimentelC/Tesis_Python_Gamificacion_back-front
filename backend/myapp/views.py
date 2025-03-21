@@ -693,3 +693,23 @@ def obtener_usuario(request, user_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+User = get_user_model()  # Obtiene el modelo `auth_user` de Django
+
+@api_view(['POST'])
+def crear_usuario(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()  # Ahora `save()` funciona correctamente
+
+        return Response({
+            'message': 'Usuario creado exitosamente',
+            'user_id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name':user.first_name,
+            'last_name':user.last_name
+        
+        }, status=status.HTTP_201_CREATED)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

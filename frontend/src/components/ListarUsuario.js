@@ -20,7 +20,7 @@ const ListarUsuario = () => {
     });
 
     const formatearFecha = (fechaISO) => {
-        if (!fechaISO) return "Fecha no disponible";
+        if (!fechaISO) return "Sin fecha de última vez";
         const fecha = new Date(fechaISO);
         return fecha.toLocaleString("es-ES", {
             year: "numeric",
@@ -61,11 +61,8 @@ const ListarUsuario = () => {
     };
     return (
         <div className="editar-container">
-        <Sidebar />
+        <Header></Header>
         <div className="editar-content">
-        <button onClick={handleBackClick} className="back-button">
-            <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
-        </button>
             <div className="editar-header">
             <h2>Usuarios Registrados</h2>
             </div>

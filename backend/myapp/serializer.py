@@ -2,31 +2,35 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import User, Foro, Participacion_foro, Ejercicio, Intento, Insignia, UsuarioEjercicioInsignia, Usuario_logro, Logro
+from django.contrib.auth import get_user_model
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
 
+User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','email', 'username', 'password')
+        fields = ('id','email', 'username', 'password', 'first_name', 'last_name')
         #fields = '__all__'
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
             'username': {'required': True}
         }
-
-
     def create(self, validated_data):
-        user = User.objects.create_user(
+        user = User(
             username=validated_data['username'],
-            password=validated_data['password'],
-            email=validated_data['email']
+            email=validated_data['email'],
+            first_name=validated_data.get('first_name', ''), 
+            last_name=validated_data.get('last_name', '')  
+        
         )
+        user.set_password(validated_data['password']) 
+        user.save() 
         return user
 
 class UsuarioEditarSerializer(serializers.ModelSerializer):
