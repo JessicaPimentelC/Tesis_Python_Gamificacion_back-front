@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { redirigirAEnunciado } from "../utils/utils";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import API_BASE_URL from "../config";
 
 const Mapa = () => {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Mapa = () => {
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
                     withCredentials: true,
                 });
                 setUserInfo(response.data);
@@ -30,7 +31,7 @@ const Mapa = () => {
         if (userInfo) {
             const obtenerEjerciciosDesdeBD = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8000/myapp/ejercicios_usuario/${userInfo.id}/`);
+                    const response = await axios.get(`${API_BASE_URL}/myapp/ejercicios_usuario/${userInfo.id}/`);
                     setEjercicios(response.data.ejercicios);
                 } catch (error) {
                     console.error("Error al obtener ejercicios:", error);

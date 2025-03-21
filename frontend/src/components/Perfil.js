@@ -4,6 +4,7 @@ import axios from "axios";
 import Sidebar from "./Sidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
+import API_BASE_URL from "../config";
 
 const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -21,7 +22,7 @@ const Perfil = () => {
     const fetchUsuario = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/myapp/usuario-info/",
+          `${API_BASE_URL}/myapp/usuario-info/`,
           {
             withCredentials: true,
           }
@@ -42,7 +43,7 @@ const Perfil = () => {
     const fetchLogros = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/myapp/logros-usuario/",
+          `${API_BASE_URL}/myapp/logros-usuario/`,
           {
             withCredentials: true, // Para incluir cookies si las usas
           }
@@ -76,7 +77,7 @@ const Perfil = () => {
     const fetchInsignias = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/myapp/insignias/",
+          `${API_BASE_URL}/myapp/insignias/`,
           {
             withCredentials: true, // Para incluir cookies si las usas
           }

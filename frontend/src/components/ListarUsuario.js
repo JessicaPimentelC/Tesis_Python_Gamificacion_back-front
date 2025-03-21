@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import '../styles/Editar-usuario.css';
 import { useParams,useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 const ListarUsuario = () => {
     const navigate = useNavigate(); // Hook para la redirección
@@ -35,7 +36,7 @@ const ListarUsuario = () => {
     useEffect(() => {
         const listarUsuarios = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/myapp/usuarios/", {
+                const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
                     withCredentials: true,  
                 });
                 setUsuarios(response.data); 

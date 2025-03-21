@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/HeaderBody.css';
 import axios from "axios";
 import Swal from 'sweetalert2';
+import API_BASE_URL from "../config";
 
 const HeaderBody = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -22,7 +23,7 @@ const HeaderBody = () => {
     useEffect(() => {
         const fetchInsignias = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/myapp/insignias/', {
+                const response = await axios.get(`${API_BASE_URL}/myapp/insignias/`, {
                     withCredentials: true,
                 });
     
@@ -87,7 +88,7 @@ const HeaderBody = () => {
     const handleConfirmCerrarSesion = () => {
     // Logic to log out
     setShowModal(false);
-    window.location.href = '"http://localhost:8000/myapp/login/';
+    window.location.href = `${API_BASE_URL}/myapp/login/`;
     };
 
     const handleCancelCerrarSesion = () => {

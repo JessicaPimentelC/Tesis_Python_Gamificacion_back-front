@@ -3,6 +3,7 @@ import '../styles/Editar-usuario.css';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Sidebar from './Sidebar';
+import API_BASE_URL from "../config";
 
 const RegistroUsuario = () => {
     const [user, setUser] = useState({
@@ -24,7 +25,7 @@ const RegistroUsuario = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:8000/myapp/crear-usuario/",
+                `${API_BASE_URL}/myapp/crear-usuario/`,
                 user,
                 {
                     headers: {

@@ -4,6 +4,7 @@ import "../styles/Insignias.css";
 import Usuario from "./Usuario";
 import Sidebar from "./Sidebar";
 import axios from "axios";
+import API_BASE_URL from "../config";
 
 const Insignias = () => {
   const navigate = useNavigate(); // Hook para la redirección
@@ -28,7 +29,7 @@ const Insignias = () => {
     const fetchUsuario = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/myapp/usuario-info/",
+          `${API_BASE_URL}/myapp/usuario-info/`,
           {
             withCredentials: true,
           }
@@ -49,7 +50,7 @@ const Insignias = () => {
     const fetchInsignias = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/myapp/insignias/",
+          `${API_BASE_URL}/myapp/insignias/`,
           {
             withCredentials: true, // Para incluir cookies si las usas
           }

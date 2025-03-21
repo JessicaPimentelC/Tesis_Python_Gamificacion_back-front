@@ -4,6 +4,7 @@ import '../styles/Register.css';
 import Loginsesion from './Loginsesion'; 
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from "../config";
 
 const Register = ({ toggleView }) => {
   const [username, setUsername] = useState('');
@@ -31,7 +32,7 @@ const Register = ({ toggleView }) => {
     
     try {
       const response = await axios.post(
-        "http://localhost:8000/myapp/registro/",
+        `${API_BASE_URL}/myapp/registro/`,
         { email, username, password});
 
   

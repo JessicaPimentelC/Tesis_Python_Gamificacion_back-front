@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Dashboard.css";
-import Lesson from "./Lesson";
-import Positions from "./Positions";
-import Challenges from "./Challenges";
-import Timer from "./Timer";
+import API_BASE_URL from "../config";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import Sidebar from "./Sidebar";
@@ -90,7 +87,7 @@ const Dashboard = () => {
   const handleConfirmCerrarSesion = () => {
     // Logic to log out
     setShowModal(false);
-    window.location.href = '"http://localhost:8000/myapp/login/'; // Redirect to login page
+    window.location.href = `${API_BASE_URL}/myapp/login/`; // Redirect to login page
   };
   //"http://localhost:8000/myapp/login/",
 

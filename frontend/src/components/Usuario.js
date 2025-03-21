@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../config";
 
 const Usuario = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -8,7 +9,7 @@ const Usuario = () => {
 useEffect(() => {
     const fetchUsuario = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+            const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
             withCredentials: true,
             });
             setUserInfo(response.data);

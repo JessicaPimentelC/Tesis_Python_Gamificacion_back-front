@@ -3,6 +3,7 @@ import "../styles/foro.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
+import API_BASE_URL from "../config";
 
 const Foro = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +27,7 @@ const Foro = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/myapp/registroForo/"
+        `${API_BASE_URL}/myapp/registroForo/`
       );
       if (Array.isArray(response.data)) {
         const questionsWithAnswers = response.data.map((q) => ({
@@ -110,7 +111,7 @@ const Foro = () => {
   const handleVote = async (participacionId, tipoVoto) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/myapp/votar_respuesta/",
+        `${API_BASE_URL}/myapp/votar_respuesta/`,
         {
           id_participacion_foro: participacionId,
           voto: tipoVoto, // 'like' o 'dislike'
@@ -131,7 +132,7 @@ const Foro = () => {
   const fetchParticipaciones = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/myapp/participaciones/"
+        `${API_BASE_URL}/myapp/participaciones/`
       );
       setParticipaciones(response.data);
     } catch (error) {
@@ -146,7 +147,7 @@ const Foro = () => {
   const handleRegistroForo = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/myapp/registroForo/",
+        `${API_BASE_URL}/myapp/registroForo/`,
         { usuario_id: usuarioId, tema, descripcion, fecha_creacion }
       );
 
@@ -162,7 +163,7 @@ const Foro = () => {
   const fetchUsuario = async () => {
     try {
       const userResponse = await axios.get(
-        "http://localhost:8000/myapp/usuario-info/",
+        `${API_BASE_URL}/myapp/usuario-info/`,
         {
           withCredentials: true, // Incluir cookies en la petición
         }
@@ -196,7 +197,7 @@ const Foro = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:8000/myapp/registroParti_foro/",
+        `${API_BASE_URL}/myapp/registroParti_foro/`,
         {
           usuario_id: userId,
           foro_id: questions[currentQuestionIndex].id_foro, // Usar 'id_foro' según tu estructura
@@ -237,7 +238,7 @@ const Foro = () => {
     try {
       console.log(`Intentando eliminar pregunta con ID: ${id_foro}`); // 🛠️ Debug
       const response = await axios.delete(
-        `http://localhost:8000/myapp/eliminarRegistro_foro/${id_foro}`
+        `${API_BASE_URL}/myapp/eliminarRegistro_foro/${id_foro}`
       );
 
       if (response.status === 200) {
@@ -253,7 +254,7 @@ const Foro = () => {
   const handleDeleteRespuesta = async (id_participacion_foro, index) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/myapp/eliminarParti_foro/${id_participacion_foro}/`
+        `${API_BASE_URL}/myapp/eliminarParti_foro/${id_participacion_foro}/`
       );
       console.log("Eliminar:", response.data);
 

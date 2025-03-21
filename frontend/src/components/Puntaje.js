@@ -2,6 +2,7 @@ import axios from "axios";
 import "../styles/Puntaje.css"; 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 const Puntaje = () => {
     const [score, setScore] = useState(0);
@@ -17,7 +18,7 @@ const Puntaje = () => {
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
-                const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+                const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
                     withCredentials: true, // Incluir cookies en la petición
                 });
                 
@@ -40,7 +41,7 @@ const Puntaje = () => {
     
         const fetchScore = async (usuario_id) => {
             try {
-                const response = await axios.get(`http://localhost:8000/myapp/score/${usuario_id}`);
+                const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}`);
                 setScore(response.data.score);
             } catch (error) {
                 console.error("Error al obtener score:", error);
@@ -48,7 +49,7 @@ const Puntaje = () => {
         };
         const fetchVidas = async (usuario_id) => {
             try {
-                const response = await axios.get(`http://localhost:8000/myapp/vidas/${usuario_id}`);
+                const response = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}`);
                 setVidas(response.data.vidas); // Guardamos las vidas en el estado
             } catch (error) {
                 console.error("Error al obtener vidas:", error);

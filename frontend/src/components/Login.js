@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
-import API_BASE_URL from "./config";
+import API_BASE_URL from "../config";
 import FacebookLogin from 'react-facebook-login';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import '../styles/Register.css';
@@ -47,7 +47,7 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/myapp/accounts/google/login/token/",
+        `${API_BASE_URL}/myapp/accounts/google/login/token/`,
         { token: response.credential }
       );
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import Sidebar from './Sidebar';
 import '../styles/Editar-usuario.css';
 import Header from './Header';
+import API_BASE_URL from "../config";
 
 const EditarUsuario = () => {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ const EditarUsuario = () => {
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/myapp/editar-usuario/${user_id}/`, {
+                const response = await axios.get(`${API_BASE_URL}/myapp/editar-usuario/${user_id}/`, {
                     withCredentials: true,
                 });
 
@@ -52,7 +53,7 @@ const EditarUsuario = () => {
         try {
             const csrfToken = getCSRFToken();
             const response = await axios.put(
-                `http://localhost:8000/myapp/editar-usuario/${user_id}/`, 
+                `${API_BASE_URL}/myapp/editar-usuario/${user_id}/`, 
                 user, 
                 {
                     headers: {
