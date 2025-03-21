@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import API_BASE_URL from "./config";
 import FacebookLogin from 'react-facebook-login';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import '../styles/Register.css';
@@ -23,7 +24,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/myapp/login/",
+        `${API_BASE_URL}/myapp/login/`,
         { email, password },
         {
           withCredentials: true,
