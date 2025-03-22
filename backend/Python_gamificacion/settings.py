@@ -141,15 +141,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
-
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = ["http://40.71.96.180",  "http://localhost:3000"]
+CORS_ALLOW_ALL_ORIGINS = False  # IMPORTANTE: No ponerlo en True si se usa CORS_ALLOWED_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # Cambia esto a la URL de tu frontend
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+    "X-Requested-With",
+    "accept",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-forwarded-for",
 ]
+
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',  # Cambia esto a la URL de tu frontend
+    "http://40.71.96.180",
+    "http://localhost:3000",
 ]
 
 REST_FRAMEWORK = {
