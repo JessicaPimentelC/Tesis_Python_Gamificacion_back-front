@@ -88,8 +88,6 @@ def Login(request):
         return Response({'message': 'Inicio de sesión exitoso'}, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':
@@ -99,19 +97,37 @@ def RegistroForo(request):
         if not usuario_id:
             return Response({'error': 'El usuario_id es obligatorio'}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = ForoSerializer(data=request.data)
-        if serializer.is_valid():
-            foro = serializer.save()
-            return Response({'message': 'Foro creado exitosamente'}, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Intentar obtener la instancia de User
+        try:
+            usuario = User.objects.get(id=usuario_id)
+            print(f"Usuario encontrado: {usuario} (ID: {usuario.id})")  # Depuración
+        except User.DoesNotExist:
+            return Response({'error': 'El usuario no existe'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Verificar el tipo de usuario antes de asignarlo
+        if not isinstance(usuario, User):
+            print(f"Error: usuario no es una instancia de User, es {type(usuario)}")
+            return Response({'error': 'El usuario no es válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Crear el foro manualmente para evitar problemas con el serializador
+        foro = Foro(
+            usuario_id=usuario.id,  # Asignamos la instancia real del usuario
+            tema=request.data.get("tema"),
+            descripcion=request.data.get("descripcion"),
+            fecha_creacion=request.data.get("fecha_creacion"),
+        )
+
+        foro.save()
+        print(f"Foro guardado con ID: {foro.id_foro}")  # Confirmación
+
+        # Serializamos la instancia guardada para la respuesta
+        serializer = ForoSerializer(foro)
+        return Response({'message': 'Foro creado exitosamente', 'foro': serializer.data}, status=status.HTTP_201_CREATED)
 
     elif request.method == 'GET':
         foros = Foro.objects.all()
         serializer = ForoSerializer(foros, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    
 
 @api_view(['GET','DELETE'])
 def eliminarRegistroForo(request, id_foro):

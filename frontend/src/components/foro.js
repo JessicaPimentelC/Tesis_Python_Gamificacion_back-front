@@ -145,7 +145,13 @@ const Foro = () => {
   }, []);
 
   const handleRegistroForo = async () => {
+    console.log("Usuario ID:", usuarioId);  // 🔍 Verifica si usuarioId tiene un valor correcto
+    if (!usuarioId) {
+      alert("Error: usuario_id no definido");
+      return;
+    }
     try {
+
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroForo/`,
         { usuario_id: usuarioId, tema, descripcion, fecha_creacion }
