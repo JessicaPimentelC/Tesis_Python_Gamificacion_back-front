@@ -9,9 +9,6 @@ const Sidebar = () => {
 
     return (
         <>
-        <button className="menu-btn" onClick={toggleSidebar}>
-            ☰
-        </button>
         {/* Sidebar con estado isOpen */}
         <SidebarToggle isOpen={isOpen} />
         {/* Fondo oscuro cuando el sidebar esté abierto */}

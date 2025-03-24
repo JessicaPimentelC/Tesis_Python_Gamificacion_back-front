@@ -134,7 +134,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <MediaQuery minWidth={1224}>
         <Sidebar />
         <Header />
 
@@ -304,7 +303,6 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-      </MediaQuery>
     </div>
   );
 };

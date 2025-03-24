@@ -1,7 +1,7 @@
 .dashboard-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Distribuye los elementos */
+  justify-content: space-between; /* Distribuye los elementos a los extremos */
   padding: 10px 20px;
   background-color: #F8C4B4;
   border-bottom: 1px solid #ccc;
@@ -21,14 +21,15 @@
 
 /* Ajustes de tamaño para los íconos */
 .header-icon,
-.profile-picture {
+.profile-picture,
+.boton-inicio {
   width: 40px;
   height: 40px;
   object-fit: contain; /* Asegura que la imagen no se deforme */
 }
 
 /* Estilo para los botones de los íconos */
-.icon-button-mapa {
+.icon-button-mapa, .boton-inicio {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +41,7 @@
   padding: 0;
 }
 
-.icon-button-mapa img {
+.icon-button-mapa img, .boton-inicio {
   width: 100%; /* Hace que la imagen ocupe todo el botón */
   height: auto;
 }
@@ -73,7 +74,8 @@
   }
 
   .header-icon,
-  .profile-picture {
+  .profile-picture,
+  .boton-inicio {
     width: 40px;
     height: 40px;
   }
@@ -86,7 +88,6 @@
 
 @media (max-width: 768px) {
   .dashboard-header {
-    flex-direction: column;
     align-items: self-end;
     padding: 10px;
   }
@@ -97,7 +98,8 @@
   }
 
   .header-icon,
-  .profile-picture {
+  .profile-picture,
+  .boton-inicio {
     width: 35px;
     height: 35px;
   }
@@ -116,7 +118,8 @@
   }
 
   .header-icon,
-  .profile-picture {
+  .profile-picture,
+  .boton-inicio {
     width: 30px;
     height: 30px;
   }

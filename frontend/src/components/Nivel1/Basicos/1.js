@@ -8,12 +8,14 @@ import Puntaje from "../../Puntaje";
 import {verificarYOtorgarInsignia,obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
 import Sidebar from "../../Sidebar";
 import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
 
 export { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado };
 
 const Uno = () => {
   const [draggedItem, setDraggedItem] = useState(null);
-  const [droppedItem, setDroppedItem] = useState("");
+  const [droppedItem, setDroppedItem] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [score, setScore] = useState(0);
@@ -34,9 +36,6 @@ const Uno = () => {
 
 const options = ["Mundo", "Hola", "Print"];
 
-  const handleDragStart = (e, item) => {
-    setDraggedItem(item);
-  };
 
   // Función para abrir el modal
   const openModal = () => {
@@ -45,14 +44,11 @@ const options = ["Mundo", "Hola", "Print"];
   const openModalPinguino = () => {
     setIsModalOpenPinguino(true);
   };
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDroppedItem(draggedItem);
-  };
+
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/myapp/usuario-info/", {
+        const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
           withCredentials: true,
         });
         setUserInfo(response.data);
@@ -80,7 +76,7 @@ const options = ["Mundo", "Hola", "Print"];
 const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
     try {
         const response = await axios.post(
-            "http://localhost:8000/myapp/guardar_ejercicio/",
+            `${API_BASE_URL}/myapp/guardar_ejercicio/`,
             {
                 usuario_id: usuario_id,
                 ejercicio_id: ejercicio_id,
@@ -99,7 +95,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
 //obtiene el id del ejercicio
     const obtenerEjercicioId = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/myapp/ejercicio/");
+      const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`);
       console.log("Datos completos recibidos:", response.data);
   
       if (response.status === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
@@ -132,7 +128,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         await guardarEjercicioEnBD(usuario_id, proximoEjercicio);
   
         // 🔹 Obtener el nivel del ejercicio
-        const nivelResponse = await axios.get(`http://localhost:8000/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`, { withCredentials: true });
+        const nivelResponse = await axios.get(`${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`, { withCredentials: true });
             
             if (nivelResponse.status === 200) {
                 const nivelId = nivelResponse.data.nivel_id;
@@ -173,7 +169,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
     setIsCorrect(isCorrectAnswer);
 
     try {
-        const userResponse = await axios.get("http://localhost:8000/myapp/usuario-info/", { withCredentials: true });
+        const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
         const usuario_id = userResponse.data.id;
 
         if (!usuario_id) {
@@ -190,7 +186,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         };
 
         console.log("Datos enviados:", requestData);
-        const response = await axios.post("http://localhost:8000/myapp/guardar-intento/", requestData);
+        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
 
         if (response.status === 201) {
             const vidasRestantes = response.data.vidas;
@@ -236,7 +232,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
   const verificarYOtorgarLogro = async (usuario_id) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/myapp/otorgar-logros/",
+        `${API_BASE_URL}/myapp/otorgar-logros/`,
         { usuario_id },
         { withCredentials: true }
       );
@@ -264,7 +260,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
 
       try {
           const response = await axios.post(
-              "http://localhost:8000/myapp/verificar_nivel_completado/",
+              `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
               { nivel_id: nivelId },
               { 
                   withCredentials: true,
@@ -302,7 +298,44 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
 
     return () => clearInterval(intervalId);
   }, []);
-
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.setData("text/plain", item);
+    e.dataTransfer.effectAllowed = "move";
+    setDraggedItem(item);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedText = e.dataTransfer.getData("text/plain");
+    setDroppedItem(droppedText);
+  
+    // Limpiar el estado del item arrastrado
+    setDraggedItem(null);
+  };
+  
+const handleTouchStart = (e, item) => {
+    setDraggedItem(item);
+    setIsDragging(true);
+};
+const handleDragOver = (e) => {
+  e.preventDefault(); // Permite el drop
+};
+const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const element = document.getElementById("dragging");
+    if (element) {
+        element.style.position = "absolute";
+        element.style.left = `${touch.clientX}px`;
+        element.style.top = `${touch.clientY}px`;
+    }
+};
+const handleDragEnd = () => {
+  setDraggedItem(null);
+};
+const handleTouchEnd = (e) => {
+    setIsDragging(false);
+    setDroppedItem(draggedItem);
+};
 
   const handlePythonIconClick = () => {
     console.log("Botón de Python clickeado"); // Para verificar el clic
@@ -352,6 +385,11 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
                       className="drag-option"
                       draggable
                       onDragStart={(e) => handleDragStart(e, option)}
+                        onTouchStart={(e) => handleTouchStart(e, option)}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onDragEnd={handleDragEnd}
+                        id={isDragging && draggedItem === option ? "dragging" : ""}
                     >
                       {option}
                     </div>
@@ -359,9 +397,10 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
                 </div>
                 <div
                   className="drop-zone"
-                  onDragOver={(e) => e.preventDefault()}
                   onDrop={handleDrop}
-                >
+                  onTouchEnd={(e) => handleTouchEnd(e)} // Móviles
+                  onDragOver={handleDragOver}
+                  >
                   {droppedItem
                     ? `print("Hola, ${droppedItem}!")`
                     : "Arrastra aquí la palabra correcta"}

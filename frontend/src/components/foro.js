@@ -215,9 +215,10 @@ const Foro = () => {
 
       console.log("Success:", response.data);
 
-      // Actualizar el estado para reflejar la nueva respuesta
-
-      fetchParticipaciones();
+      setTimeout(() => {
+        fetchQuestions();
+        fetchParticipaciones();
+      }, 300);
       // Resetea los campos y cierra el modal
       setResponseUsername("");
       setResponseText("");

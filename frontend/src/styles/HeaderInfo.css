@@ -35,13 +35,7 @@
     border: none;
     cursor: pointer;
 }
-.icon-button-mapa {
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-}
+
 .mapa{
     position: absolute;
     right: 1300px; /* Ajusta este valor para controlar la posición horizontal */
