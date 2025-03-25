@@ -237,9 +237,10 @@ import Perfil from './components/Perfil';
 import EditarUsuario from './components/EditarUsuario';
 import ListarUsuario from './components/ListarUsuario';
 import RegistroUsuario from './components/RegistroUsuario';
-
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const App = () => {
+
   return (
     <Router>
       <Routes>
@@ -247,6 +248,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/iniciogoogle" element={<Iniciogoogle />} />
         <Route path="/loginsesion" element={<Loginsesion />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/perfil" element={<Perfil />} />

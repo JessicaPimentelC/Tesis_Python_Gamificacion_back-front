@@ -16,7 +16,8 @@ from django.shortcuts import get_object_or_404
 import json
 from django.http import JsonResponse
 from django.utils.timezone import now
-
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 User = get_user_model()
 
@@ -88,6 +89,49 @@ def Login(request):
         return Response({'message': 'Inicio de sesión exitoso'}, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+
+CLIENT_ID="567858506235-sd9fvbkheo3rnggdfpmnfjp63t6rgej3.apps.googleusercontent.com"
+@csrf_exempt
+@api_view(["POST"])
+def google_login(request):
+    token = request.data.get("token")
+
+    if not token:
+        return JsonResponse({"error": "No se recibió el token"}, status=400)
+
+    try:
+        print("Token recibido en backend:", token)  # Verifica que el token llega correctamente
+
+        google_user = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        print("Usuario de Google:", google_user)  # Verifica qué datos devuelve Google
+
+        if not google_user:
+            return JsonResponse({"error": "Token inválido"}, status=400)
+
+        email = google_user["email"]
+        name = google_user.get("name", "")
+
+        name_parts = name.split(" ", 1)  
+        first_name = name_parts[0]  
+        last_name = name_parts[1] if len(name_parts) > 1 else ""  
+
+        user, created = User.objects.get_or_create(email=email, defaults={"username": email, "first_name": first_name,"last_name":last_name })
+
+        from rest_framework_simplejwt.tokens import RefreshToken
+        refresh = RefreshToken.for_user(user)
+
+        return JsonResponse({
+            "message": "Inicio de sesión exitoso",
+            "access_token": str(refresh.access_token),
+            "refresh_token": str(refresh),
+            "user": {"id": user.id, "email": user.email, "name": user.first_name},
+        })
+
+    except Exception as e:
+        print("Error en la autenticación:", e)  # Imprime el error exacto en la terminal
+        return JsonResponse({"error": str(e)}, status=400)
+
+
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':

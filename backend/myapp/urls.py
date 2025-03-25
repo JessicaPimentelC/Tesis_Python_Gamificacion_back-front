@@ -19,6 +19,7 @@ urlpatterns = [
     path("participaciones/", views.ParticipacionForo, name="participaciones"),
 
     path('login/', views.Login, name='login'),
+    path("google-login/", views.google_login, name="google-login"),
     path('usuario/<username>/', views.obtenerUsuario, name='usuario'),    
     #path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
