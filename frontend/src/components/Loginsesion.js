@@ -6,7 +6,7 @@ const Loginsesion = () => {
     const navigate = useNavigate();
 
     const handleGoogleLoginSuccess = async (response) => {
-        console.log("Token recibido:", response.credential); 
+       // console.log("Token recibido:", response.credential); 
         try {
             const res = await axios.post(
                 `${API_BASE_URL}/myapp/google-login/`,

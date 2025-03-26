@@ -73,7 +73,7 @@ const Login = () => {
           <button type="submit" className="login-button">LOGIN</button>
         </form>
         <div className="social-login">
-         <Loginsesion/>
+          <Loginsesion/>
         </div>
         <div className="login-footer">
           <a href="#" onClick={() => navigate('/register')}>Crear una cuenta</a>

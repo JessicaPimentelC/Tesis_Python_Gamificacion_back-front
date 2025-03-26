@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-t26k*mlz72yiu$0lo72qi+gr%d)wgaj4vv!hnu%=p%ksmjn%!*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pythongamificacion.myvnc.com', 'localhost', '127.0.0.1','40.71.96.180']
+
 
 
 # Application definition
@@ -141,7 +142,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOWED_ORIGINS = ["http://40.71.96.180",  "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["http://40.71.96.180",  "http://localhost:3000","http://pythongamificacion.myvnc.com:3000"]
 CORS_ALLOW_ALL_ORIGINS = False  # IMPORTANTE: No ponerlo en True si se usa CORS_ALLOWED_ORIGINS
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
@@ -159,6 +160,8 @@ CORS_ALLOW_HEADERS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://40.71.96.180",
     "http://localhost:3000",
+    "http://pythongamificacion.myvnc.com:3000",
+    
 ]
 
 REST_FRAMEWORK = {

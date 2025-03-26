@@ -48,7 +48,12 @@ const options = ["Mundo", "Hola", "Print"];
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
+        const csrfToken = getCSRFToken();
+        console.log("token",csrfToken)
         const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
+          headers: {
+            "X-CSRFToken": csrfToken,
+        },
           withCredentials: true,
         });
         setUserInfo(response.data);
@@ -124,10 +129,8 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
     }
     if (proximoEjercicio) {
       try {
-        // 🔹 Guardar el ejercicio en la BD antes de avanzar
         await guardarEjercicioEnBD(usuario_id, proximoEjercicio);
   
-        // 🔹 Obtener el nivel del ejercicio
         const nivelResponse = await axios.get(`${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`, { withCredentials: true });
             
             if (nivelResponse.status === 200) {
@@ -231,10 +234,15 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
   //Verifica y otorga los logros
   const verificarYOtorgarLogro = async (usuario_id) => {
     try {
+      const csrfToken = getCSRFToken();
       const response = await axios.post(
-        `${API_BASE_URL}/myapp/otorgar-logros/`,
+        `${API_BASE_URL}/myapp/otorgar_logros/`,
         { usuario_id },
-        { withCredentials: true }
+        { headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      withCredentials: true }
       );
   
       console.log("Logros verificados:", response.data);

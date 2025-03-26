@@ -27,6 +27,7 @@ class ApiView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
 
+@csrf_exempt  
 @api_view(['GET'])
 def get_user_info(request):
     username = request.GET.get('username')  # Obtener el parámetro 'username' de la URL
