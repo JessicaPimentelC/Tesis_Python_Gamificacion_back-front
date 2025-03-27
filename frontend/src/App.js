@@ -10,7 +10,9 @@ import Positions from './components/Positions';
 import Insignias from './components/Insignias'; 
 import Nivel1 from './components/Nivel1';
 import Examen from './components/Examen';
+import Examen2 from './components/Examen2';
 import Examennivel1 from './components/Examennivel1';
+import Examennivel2 from './components/Examennivel2';
 import Condicionales from './components/Condicionales';
 import Unotest from './components/Unotest';
 
@@ -639,7 +641,9 @@ const App = () => {
         <Route path="/Nivel3/enunciado/50" element={<Enunciado50Nivel3 />} />
 
         <Route path="/examen" element={<Examen />} />
+        <Route path="/examen2" element={<Examen2 />} />
         <Route path="/examennivel1" element={<Examennivel1 />} />
+        <Route path="/examennivel2" element={<Examennivel2 />} />
         <Route path="/condicionales" element={<Condicionales />} />
         <Route path="/basicos/enunciado3" element={<Enunciado3 />} />
         <Route path="/enunciado4" element={<Enunciado4 />} />

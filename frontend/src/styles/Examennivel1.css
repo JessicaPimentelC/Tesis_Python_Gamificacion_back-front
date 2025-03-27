@@ -303,7 +303,7 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Estilos para los botones en horizontal */
+* Estilos para los botones en horizontal */
 .submit-button {
   background-color: #4CAF50;
   color: white;
@@ -440,3 +440,55 @@ body {
 }
 
 
+/* Estilo del área de texto para el código */
+.code-input {
+  width: 95%;
+  height: 140px;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #ffffff;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 10px;
+  outline: none;
+  resize: vertical;
+}
+
+/* Efecto al enfocar el área de código */
+.code-input:focus {
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+/* Botón para ejecutar código */
+.run-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.run-button:hover {
+  background-color: #330e0e;
+}
+
+/* Área donde se mostrará la salida del código */
+.output {
+  width: 95%;
+  min-height: 50px;
+  background-color: #282c34;
+  color: #f1f1f1;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #4caf50;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}

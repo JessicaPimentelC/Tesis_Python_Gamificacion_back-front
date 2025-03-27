@@ -6,7 +6,7 @@
     padding: 10px 20px;
     background-color: #F8C4B4; /* Ajusta según tu diseño */
     border-bottom: 1px solid #ccc;
-    width: 100vw;
+    width: 50vw;
     z-index: 1; /* Mantiene el header por debajo del botón */
     position: absolute;
   }
