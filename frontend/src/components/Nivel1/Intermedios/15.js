@@ -6,6 +6,8 @@ import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
 import Puntaje from '../../Puntaje';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
 
 const Quince = () => {
   const [centimetros, setCentimetros] = useState('');

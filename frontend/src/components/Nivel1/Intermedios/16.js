@@ -6,6 +6,8 @@ import Puntaje from '../../Puntaje';
 import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
 
 const Dieciséis = () => {
   const [importAnswer, setImportAnswer] = useState('');

@@ -6,6 +6,9 @@ import Puntaje from '../../Puntaje';
 import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
+import axios from "axios";
 
 const Diecinueve = () => {
   const [celsiusInput, setCelsiusInput] = useState('');
@@ -18,6 +21,8 @@ const Diecinueve = () => {
   const navigate = useNavigate(); // Hook para la redirección
   const audioRef = useRef(null); // Referencia al elemento de audio
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
+  const [errores, setErrores] = useState(0);
+  const [insignias, setInsignias] = useState([]); // Insignias dinámicas
 
   const handleNext = () => {
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado(numerosUsados);

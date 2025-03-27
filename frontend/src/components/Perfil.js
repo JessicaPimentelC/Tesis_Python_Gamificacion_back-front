@@ -16,13 +16,22 @@ const Perfil = () => {
   const handleInsigniaClick = (insigniaNombre) => {
     console.log(`Insignia clickeada: ${insigniaNombre}`);
   };
-
+  const getCSRFToken = () => {
+    const cookies = document.cookie.split("; ");
+    const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
+    return csrfCookie ? csrfCookie.split("=")[1] : "";
+};
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
+        const csrfToken = getCSRFToken();
+
         const response = await axios.get(
           `${API_BASE_URL}/myapp/usuario-info/`,
-          {
+          {headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+          },
             withCredentials: true,
           }
         );

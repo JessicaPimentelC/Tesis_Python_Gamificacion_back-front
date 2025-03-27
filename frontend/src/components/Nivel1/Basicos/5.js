@@ -6,6 +6,9 @@ import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
 import Puntaje from '../../Puntaje';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
+import axios from "axios";
 
 const Cinco = () => {
   const [inputValue, setInputValue] = useState('');
@@ -17,6 +20,8 @@ const Cinco = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
+  const [errores, setErrores] = useState(0);
+  const [insignias, setInsignias] = useState([]); // Insignias dinámicas
 
   const handleNext = () => {
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado(numerosUsados);

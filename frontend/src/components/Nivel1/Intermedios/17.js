@@ -6,6 +6,8 @@ import HeaderBody from '../../HeaderBody';
 import Puntaje from '../../Puntaje';
 import HeaderInfo from '../../HeaderInfo';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
 
 const Diecisiete = () => {
   const [elifAnswer, setElifAnswer] = useState('');

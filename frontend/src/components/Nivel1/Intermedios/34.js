@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from 'react';
 import "../../../styles/1.css"; // Asegúrate de que la ruta sea correcta
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../Sidebar";
@@ -6,6 +6,8 @@ import HeaderBody from "../../HeaderBody";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
 
 const Treintacuatro = () => {
   // Estado para manejar las opciones disponibles

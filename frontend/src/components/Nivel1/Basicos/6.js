@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import '../../../styles/1.css'; // Asegúrate de que la ruta sea correcta
 import { useNavigate } from 'react-router-dom';
 import Puntaje from '../../Puntaje';
@@ -6,12 +6,15 @@ import Sidebar from '../../Sidebar';
 import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
 import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../../config";
+import axios from "axios";
 
 // Crea un objeto de audio global para su uso
 const audio = new Audio('/nivel6.mp3');
 audio.preload = 'auto';
 
-const Seis = ({ toggleView }) => {
+const Seis = () => {
   const [draggedNumber, setDraggedNumber] = useState('');
   const [result, setResult] = useState(null);
   const [showNext, setShowNext] = useState(false);
@@ -21,6 +24,8 @@ const Seis = ({ toggleView }) => {
   const navigate = useNavigate(); // Hook para la redirección
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
+  const [errores, setErrores] = useState(0);
+  const [insignias, setInsignias] = useState([]); // Insignias dinámicas
 
   const handleNext = () => {
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado(numerosUsados);
