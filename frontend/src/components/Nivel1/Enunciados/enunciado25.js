@@ -70,12 +70,15 @@ const Enunciado25 = () => {
   </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
+
     <code>
-      {`base = int(input("Ingrese la base: "))
-exponente = int(input("Ingrese el exponente: "))
-resultado = base ** exponente
-print("El resultado es:", resultado)`}
+base = int(input("Ingrese la base: ")){"\n"}
+exponente = int(input("Ingrese el exponente: ")){"\n"}
+resultado = base ** exponente{"\n"}
+print("El resultado es:", resultado)
     </code>
+    </pre>
   </div>
 
 

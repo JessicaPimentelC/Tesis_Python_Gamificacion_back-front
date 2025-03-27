@@ -71,15 +71,14 @@ const Enunciado31 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`año_nacimiento = int(input("¿En qué año naciste? ")) 
-año_actual = 2024 
-edad = año_actual - año_nacimiento 
+año_nacimiento = int(input("¿En qué año naciste? ")){"\n"}
+año_actual = 2024 {"\n"}
+edad = año_actual - año_nacimiento {"\n"}
 print("Tienes", edad, "años.")
-
-
-`}
     </code>
+    </pre>
   </div>
 
 

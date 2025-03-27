@@ -69,14 +69,14 @@ const Enunciado28 = () => {
   </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`import math
-
-numero=int(input("numero:"))
-raiz = math.sqrt(numero)
+import math
+numero=int(input("numero:")){"\n"}
+raiz = math.sqrt(numero){"\n"}
 print("La raiz cuadrada es:",raiz)
-`}
     </code>
+    </pre>
   </div>
 
 

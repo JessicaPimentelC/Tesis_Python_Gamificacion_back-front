@@ -72,21 +72,18 @@ const Enunciado38 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`import math\n
+import math{"\n"}
 
-cateto1 = float(input("Ingresa la longitud del primer cateto: ")) 
-cateto2 = float(input("Ingresa la longitud del segundo cateto: ")) 
-hipotenusa = math.sqrt(cateto1**2 + cateto2**2) 
+cateto1 = float(input("Ingresa la longitud del primer cateto: ")) {"\n"}
+cateto2 = float(input("Ingresa la longitud del segundo cateto: ")) {"\n"}
+hipotenusa = math.sqrt(cateto1**2 + cateto2**2) {"\n"}
 print("La hipotenusa del triángulo es:", hipotenusa)
 
-
-
-`}
     </code>
+    </pre>
   </div>
-
-
               {!showGif && (
                 <div className="nivel1-card-button-container">
                   <button className="nivel1-card-button" onClick={handleShowGif}>

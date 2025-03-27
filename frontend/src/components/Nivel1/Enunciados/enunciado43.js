@@ -73,14 +73,13 @@ const Enunciado43 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`
-        numero = int(input(“Ingrese un numero”))
-        print("El cuadrado de”, numero, “es”, numero**2)
+numero = int(input(“Ingrese un numero”)){"\n"}
+print("El cuadrado de”, numero, “es”, numero**2)
 
-
-`}
     </code>
+    </pre>
   </div>
 
 

@@ -69,18 +69,16 @@ const Enunciado50 = () => {
                 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-    import math
-radio = input("Introduce el radio del cilindro: ")
-altura = input("Introduce la altura del cilindro: ")
-volumen = math.pi * float(radio)**2 * float(altura)
+import math{"\n"}
+radio = input("Introduce el radio del cilindro: "){"\n"}
+altura = input("Introduce la altura del cilindro: "){"\n"}
+volumen = math.pi * float(radio)**2 * float(altura){"\n"}
 print("El volumen del cilindro es", volumen)
 
-
-
-`}
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

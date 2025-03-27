@@ -79,8 +79,6 @@ a, b = b, a\n
 print("despues de intercambiar:")
 print("primer valor:",a)
 print("segundo valor", b)
-
-
 `}
     </code>
     </pre>

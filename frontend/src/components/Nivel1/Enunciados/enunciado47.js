@@ -62,23 +62,19 @@ const Enunciado47 = () => {
           <div className="nivel1-card">
             <div className="nivel1-card-header">
               <span>Cálculo del Área de un Cuadrado en Python
-
-</span>
+          </span>
             </div>
             <div className="nivel1-card-body">
-              
-
               <p> En Python, se puede crear un algoritmo que permita al usuario ingresar la longitud del lado de un cuadrado y calcular su área</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-               lado = input("Introduce la longitud del lado del cuadrado: ") 
-               area = float(lado) ** 2 
+lado = input("Introduce la longitud del lado del cuadrado: ") {"\n"}
+area = float(lado) ** 2 {"\n"}
 print("El área del cuadrado es”, area)
-
-`}
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

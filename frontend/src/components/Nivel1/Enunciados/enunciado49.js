@@ -71,18 +71,15 @@ const Enunciado49 = () => {
                 En Python, se puede crear un algoritmo que permita al usuario ingresar el radio y la altura de un cilindro, y luego calcular su área total.               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-    import math 
-    radio = input("Introduce el radio del cilindro: ") 
-    altura = input("Introduce la altura del cilindro: ")
-    area_total = 2 * math.pi * float(radio) * (float(radio) + float(altura)) 
-                print("El área total del cilindro es”, area_total
-
-
-
-`}
+import math {"\n"}
+radio = input("Introduce el radio del cilindro: ") {"\n"}
+ltura = input("Introduce la altura del cilindro: "){"\n"}
+area_total = 2 * math.pi * float(radio) * (float(radio) + float(altura)) {"\n"}
+print("El área total del cilindro es”, area_total)
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

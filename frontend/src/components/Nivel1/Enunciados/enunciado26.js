@@ -69,12 +69,14 @@ const Enunciado26 = () => {
   </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`import math\n
-radio = float(input("Ingresa el radio del círculo: "))
-area = math.pi * radio**2
-print("El área del círculo con radio", radio, "es:", area)`}
+import math{"\n"}
+radio = float(input("Ingresa el radio del círculo: ")){"\n"}
+area = math.pi * radio**2{"\n"}
+print("El área del círculo con radio", radio, "es:", area)
     </code>
+    </pre>
   </div>
 
 

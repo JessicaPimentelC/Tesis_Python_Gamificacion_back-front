@@ -68,13 +68,13 @@ const Enunciado41 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`
-cadena1 = input(“hola”)
-cadena2 = input(“mundo”)
+cadena1 = input(“hola”){"\n"}
+cadena2 = input(“mundo”){"\n"}
 print (cadena1, cadena2)
-`}
     </code>
+    </pre>
   </div>
 
 

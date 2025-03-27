@@ -69,14 +69,13 @@ const Enunciado46 = () => {
               En Python, se puede crear un algoritmo que permita al usuario ingresar un número de minutos y convertirlo a horas. Este ejercicio es útil para practicar operaciones matemáticas y el manejo de entradas y salidas de datos.              </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-               minutos = int(input("Ingresa el número de horas: ")) 
-horas = horas = int(minutos) // 60 
+minutos = int(input("Ingresa el número de horas: ")){"\n"} 
+horas = horas = int(minutos) // 60 {"\n"}
 print(minutos “son: ”, horas)
-
-`}
-                </code>
+          </code>
+          </pre>
               </div>
 
               {!showGif && (

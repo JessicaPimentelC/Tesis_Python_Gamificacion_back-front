@@ -70,16 +70,14 @@ const Enunciado48 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-            base = input("Introduce la base del rectángulo: ") 
-            altura = input("Introduce la altura del rectángulo: ")
-            perimetro = 2 * (float(base) + float(altura)) 
-            print("El perimetro del rectangulo es”, perimetro
-
-
-`}
+base = input("Introduce la base del rectángulo: ") {"\n"}
+altura = input("Introduce la altura del rectángulo: ") 
+perimetro = 2 * (float(base) + float(altura)) {"\n"}
+print("El perimetro del rectangulo es”, perimetro
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

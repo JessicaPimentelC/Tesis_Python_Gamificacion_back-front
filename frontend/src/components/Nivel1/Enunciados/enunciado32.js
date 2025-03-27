@@ -70,16 +70,15 @@ const Enunciado32 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`precio = float(input("Ingresa el precio del producto: ")) 
-descuento = float(input("Ingresa el porcentaje de descuento: ")) 
-precio_final = precio - (precio * descuento / 100) 
+precio = float(input("Ingresa el precio del producto: ")){"\n"}
+descuento = float(input("Ingresa el porcentaje de descuento: ")) {"\n"}
+precio_final = precio - (precio * descuento / 100) {"\n"}
 print("El precio final después del descuento es:", precio_final)
 
-
-
-`}
     </code>
+    </pre>
   </div>
 
 

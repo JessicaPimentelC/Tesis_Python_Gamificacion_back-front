@@ -70,15 +70,14 @@ const Enunciado34 = () => {
   En Python, se crea un programa que solicite al usuario el capital inicial, la tasa de interés anual y el número de años, y calcule el capital final usando la fórmula de interés compuesto, mostrando el resultado en pantalla.</p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`capital_inicial = float(input("Ingresa el capital inicial: ")) 
-      tasa_interes = float(input("Ingresa la tasa de interés anual (en %): ")) / 100 
-años = int(input("Ingresa el número de años: ")) 
+capital_inicial = float(input("Ingresa el capital inicial: ")) {"\n"}
+tasa_interes = float(input("Ingresa la tasa de interés anual (en %): ")) / 100 {"\n"}
+años = int(input("Ingresa el número de años: ")) {"\n"}
 capital_final = capital_inicial * (1 + tasa_interes) ** años print("El capital final es:", capital_final)
-
-
-`}
     </code>
+    </pre>
   </div>
 
 

@@ -69,14 +69,13 @@ const Enunciado45 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
-                  {`
-                litros = input("Introduce la cantidad en litros: ") 
-    mililitros = float(litros) * 1000 
-                print("La cantidad en mililitros es", mililitros)
-
-`}
+litros = input("Introduce la cantidad en litros: ") {"\n"}
+mililitros = float(litros) * 1000 {"\n"}
+print("La cantidad en mililitros es", mililitros)
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

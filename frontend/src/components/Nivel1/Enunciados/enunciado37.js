@@ -74,19 +74,15 @@ const Enunciado37 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`import math\n
-radio = float(input("Ingresa el radio del círculo: "))
-perimetro = 2 * math.pi * radio
+import math{"\n"}
+radio = float(input("Ingresa el radio del círculo: ")){"\n"}
+perimetro = 2 * math.pi * radio{"\n"}
 print("El perímetro del círculo es:", perimetro)
-
-
-
-`}
     </code>
+    </pre>
   </div>
-
-
               {!showGif && (
                 <div className="nivel1-card-button-container">
                   <button className="nivel1-card-button" onClick={handleShowGif}>

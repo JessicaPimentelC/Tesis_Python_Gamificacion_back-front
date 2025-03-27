@@ -70,18 +70,14 @@ const Enunciado40 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`\n
-
-num1 = int(input("Ingrese el primer número "))
-num2 = int(input("Ingrese el segundo número "))
+num1 = int(input("Ingrese el primer número ")){"\n"}
+num2 = int(input("Ingrese el segundo número ")){"\n"}
 print ("El promedio de los números es: ", (num1+num2)/2)
 
-
-
-
-`}
     </code>
+    </pre>
   </div>
 
 

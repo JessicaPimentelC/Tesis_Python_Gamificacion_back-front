@@ -70,12 +70,15 @@ const Enunciado24 = () => {
   </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
+
     <code>
-      {`tasa_cambio = float(input("Ingrese la tasa de cambio (moneda local por dólar): "))
-dolar = float(input("Ingrese la cantidad en dólares: "))
-moneda_local = dolar * tasa_cambio
-print("La cantidad en moneda local es:", moneda_local)`}
+tasa_cambio = float(input("Ingrese la tasa de cambio (moneda local por dólar): ")){"\n"}
+dolar = float(input("Ingrese la cantidad en dólares: ")){"\n"}
+moneda_local = dolar * tasa_cambio{"\n"}
+print("La cantidad en moneda local es:", moneda_local)
     </code>
+    </pre>
   </div>
 
 

@@ -67,23 +67,17 @@ const Enunciado35 = () => {
 <div className="nivel1-card-body">
   <p>
   En Python, se crea un programa que solicite al usuario un número entero y lo convierta a su equivalente en binario y hexadecimal, mostrando ambos resultados en pantalla.
-
-
-
-
-
-
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`numero = int(input("Ingresa un número entero: ")) 
-      binario = bin(numero) hexadecimal = hex(numero) 
-      print("En binario:", binario) 
-      print("En hexadecimal:", hexadecimal)
-
-`}
+numero = int(input("Ingresa un número entero: ")) {"\n"}
+binario = bin(numero) hexadecimal = hex(numero) {"\n"}
+print("En binario:", binario) {"\n"}
+print("En hexadecimal:", hexadecimal)
     </code>
+    </pre>
   </div>
 
 

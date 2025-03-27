@@ -69,12 +69,14 @@ const Enunciado27 = () => {
   </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`import math\n
-numero = int(input("numero:"))
-potencia = math.pow(numero, 2)
-print("La potencia es:", potencia)`}
+import math{"\n"}
+numero = int(input("numero:")){"\n"}
+potencia = math.pow(numero, 2){"\n"}
+print("La potencia es:", potencia)
     </code>
+    </pre>
   </div>
 
 

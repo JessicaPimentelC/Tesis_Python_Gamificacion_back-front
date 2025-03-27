@@ -82,9 +82,14 @@ const Enunciado22 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
+
                 <code>
-                  {`metros = float(input("Ingresa el valor en metros: "))\nkilometros = metros / 1000\nprint("El valor en kilómetros es:", kilometros)`}
+metros = float(input("Ingresa el valor en metros: ")){"\n"}
+kilometros = metros / 1000{"\n"}
+print("El valor en kilómetros es:", kilometros)
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

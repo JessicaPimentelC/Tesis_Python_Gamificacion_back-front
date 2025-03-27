@@ -71,14 +71,13 @@ const Enunciado29 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`variable1 = "Hola mundo"
-variable2 = 100
+variable1 = "Hola mundo"{"\n"}
+variable2 = 100{"\n"}
 print(variable1,variable2)
-
-
-`}
     </code>
+    </pre>
   </div>
 
 

@@ -69,13 +69,12 @@ const Enunciado42 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`
-fecha = input("¿Cuál es tu fecha de nacimiento? (DD/MM/AAAA): ")
+fecha = input("¿Cuál es tu fecha de nacimiento? (DD/MM/AAAA): "){"\n"}
 print("Tu fecha de nacimiento es:”,fecha)
-
-`}
     </code>
+    </pre>
   </div>
               {!showGif && (
                 <div className="nivel1-card-button-container">

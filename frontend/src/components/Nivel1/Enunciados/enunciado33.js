@@ -70,18 +70,14 @@ const Enunciado33 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
+    <pre className="code">
     <code>
-      {`horas = int(input("Ingresa el número de horas: ")) 
-minutos = horas * 60
-segundos = horas * 3600 
-print(f"{horas} horas son {minutos} minutos o {segundos} segundos.")
-
-
-
-
-
-`}
+horas = int(input("Ingresa el número de horas: ")) {"\n"}
+minutos = horas * 60 {"\n"}
+segundos = horas * 3600 {"\n"}
+print("horas", horas son, "minutos", minutos, "o segundos", segundos)
     </code>
+    </pre>
   </div>
 
 

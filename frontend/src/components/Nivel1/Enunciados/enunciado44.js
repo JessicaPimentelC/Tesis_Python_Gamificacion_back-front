@@ -71,13 +71,16 @@ const Enunciado44 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
+
                 <code>
-                  {`
-            numero1 = int(input(“Ingrese un primer numero1”))
-            numero2 = int(input(“Ingrese un segundo numero2”))
-            print("El resultado de la division es”,numero1/numero2)
-`}
+                  
+numero1 = int(input(“Ingrese un primer numero1”)){"\n"}
+numero2 = int(input(“Ingrese un segundo numero2”)){"\n"}
+print("El resultado de la division es”,numero1/numero2)
+
                 </code>
+                </pre>
               </div>
 
               {!showGif && (
