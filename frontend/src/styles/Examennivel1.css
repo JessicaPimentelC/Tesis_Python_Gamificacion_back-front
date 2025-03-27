@@ -492,3 +492,10 @@ body {
   margin-top: 10px;
   white-space: pre-wrap;
 }
+@media print {
+  body * {
+    display: none !important;
+  }
+}
+
+

@@ -4,11 +4,11 @@ import '../styles/Examen.css';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
-function Examen2() {
+function Examen3() {
   const navigate = useNavigate();
 
   const startExam = () => {
-    navigate('/examennivel2'); // Navegar al módulo Examennivel1
+    navigate('/examennivel3'); // Navegar al módulo Examennivel1
   };
 
   return (
@@ -39,4 +39,4 @@ function Examen2() {
   );
 }
 
-export default Examen2;
+export default Examen3;
