@@ -87,7 +87,7 @@ const CuarentaSeisNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO RANGO DE NÚMEROS</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Completa la condición correcta para verificar si un número está en el rango de 10 a 20.
                 </p>

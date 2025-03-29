@@ -3,10 +3,10 @@ import API_BASE_URL from "../config";
 // Función para seleccionar 20 ejercicios aleatorios sin repetirse
 export const obtenerEjerciciosAleatorios = (cantidad = 20) => {
     const ejerciciosPorCarpeta = {
-        basicos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 19, 20],
-        intermedios: [12, 13, 14, 15, 16, 17, 18, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-        memoria: [40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
-        seleccion: [21, 22, 23, 24, 25, 26, 27, 28],
+        basicos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        intermedios: [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        memoria: [41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+        seleccion: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
     };
 
     const todosLosEjercicios = Object.values(ejerciciosPorCarpeta).flat();
@@ -53,7 +53,6 @@ export const redirigirAEnunciado = (ejercicio, navigate) => {
         console.log('No hay ejercicio seleccionado para redirigir.');
         return;
     }
-
     navigate(`/enunciado${ejercicio}`);
 };
 

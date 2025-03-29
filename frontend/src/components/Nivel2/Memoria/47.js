@@ -87,7 +87,7 @@ const CuarentaSieteNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO CONDICIÓN NUMÉRICA</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Completa la condición correcta para verificar si un número es positivo y mayor que 100.
                 </p>

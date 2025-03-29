@@ -88,7 +88,7 @@ const CuarentaTresNivel2= () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO CONDICIONALES</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Encuentra la clasificación correcta del triángulo en función de sus lados.
                 </p>

@@ -87,7 +87,7 @@ const CuarentaCuatroNivel2= () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO NÚMERO DE ARMSTRONG</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Completa el código para determinar si un número ingresado es un número de Armstrong.
                 </p>

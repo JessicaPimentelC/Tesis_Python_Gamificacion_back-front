@@ -87,7 +87,7 @@ const CuarentaOchoNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO CONDICIÓN NUMÉRICA</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Completa la condición correcta para verificar si un número es negativo o menor que -50.
                 </p>

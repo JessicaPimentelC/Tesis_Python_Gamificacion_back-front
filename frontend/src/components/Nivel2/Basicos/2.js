@@ -182,7 +182,7 @@ const DosNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                 El ejercicio consiste en identificar el operador que debe ir en el espacio en blanco. ¡Buena suerte!
                   <br />

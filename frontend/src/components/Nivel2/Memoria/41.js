@@ -87,7 +87,7 @@ const CuarentaUnoNivel2= () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO TRIÁNGULOS</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Encuentra la palabra clave correcta para completar el código que clasifica los triángulos.
                 </p>

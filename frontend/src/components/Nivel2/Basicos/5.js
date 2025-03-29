@@ -182,11 +182,9 @@ const CincoNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO 5</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
-                  
                   <br />
-             
                   Arrastra la opción correcta al espacio en blanco _______ en el siguiente código:
                                   </p>
                 <div className="code-box">

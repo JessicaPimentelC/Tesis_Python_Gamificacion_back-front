@@ -87,7 +87,7 @@ const CuarentaNueveNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO NÚMERO ENTERO</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>Completa la función correcta para convertir el número ingresado a un entero.</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

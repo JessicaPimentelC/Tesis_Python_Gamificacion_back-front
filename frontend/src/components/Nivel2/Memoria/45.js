@@ -87,7 +87,7 @@ const CuarentaCincoNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO CLASIFICACIÓN DE TRIÁNGULOS</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   Completa el código para clasificar un triángulo según sus lados.
                 </p>

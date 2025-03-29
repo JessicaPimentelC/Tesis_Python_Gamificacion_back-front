@@ -182,7 +182,7 @@ const OchoNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO 7</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   
                   <br />

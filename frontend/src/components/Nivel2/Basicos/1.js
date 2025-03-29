@@ -92,7 +92,7 @@ const UnoNivel2 = () => {
               <div className="nivel1-card-header">
                 <span>EJERCICIO #1</span>
               </div>
-              <div className="nivel1-card-body-ejer1">
+              <div className="nivel1-card-body">
                 <p>
                   A continuación, te presentamos nuestro primer ejercicio de nivel 2. El ejercicio consiste en completar el siguiente algoritmo para determinar si una persona es mayor de edad. ¡Buena suerte!
                 </p>
