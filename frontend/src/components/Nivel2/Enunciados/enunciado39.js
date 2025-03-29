@@ -107,7 +107,7 @@ print(f"El precio final es: ${"precio_final:.2f"}")
               🌟 ¡Estás a punto de comenzar una emocionante aventura en el aprendizaje de Python! 🚀
               Prepárate para explorar, descubrir y aprender. ¡Estamos emocionados de tenerte a bordo!
             </p>
-            <img src="X3PR.gif" alt="GIF de bienvenida" className="modal-gif" />
+            <img src="/mm.gif" alt="GIF de bienvenida" className="modal-gif" />
             <button className="modal-close-button" onClick={handleCloseModal}>
               Continuar
             </button>

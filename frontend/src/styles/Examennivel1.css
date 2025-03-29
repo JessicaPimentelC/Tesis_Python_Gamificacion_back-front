@@ -10,19 +10,31 @@ html, body {
 
 /* Imagen de fondo para toda la página */
 body {
-  background-color: #ffffff; /* Imagen de fondo para toda la página */
-  background-size: cover; /* Asegura que la imagen cubra toda el área */
-  background-position: center; /* Centra la imagen */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  background-attachment: fixed; /* Fija la imagen de fondo */
-  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  margin: 0;
 }
 
 /* Estilo general para el contenedor del examen */
-.exam-container {
-  background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente blanco para el contenido */
-  border-radius: 10px;
+.exam-content {
+  background: rgba(245, 162, 162, 0.8); /* Fondo semi-transparente blanco para el contenido */
+  border-radius: 60px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 650px;
+  width: 100%;
+  text-align: center;
+  margin: 20px auto; /* Centrar el contenedor */
+  color: #000; /* Color del texto en negro */
+  
+}
+/* Estilo general para el contenedor del examen */
+.exam-container {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb); /* Fondo semi-transparente blanco para el contenido */
+  border-radius: 60px;
+  box-shadow: 0 0 20px rgba(105, 13, 13, 0.1);
   padding: 20px;
   max-width: 800px;
   width: 100%;
@@ -74,7 +86,7 @@ body {
 
 .submit-btn {
   background-color: #FF4B4B; /* Color de fondo para el botón */
-  color: white;
+  color: #5e2222;
   padding: 15px 30px;
   border: none;
   border-radius: 8px;
@@ -291,7 +303,7 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Estilos para los botones en horizontal */
+* Estilos para los botones en horizontal */
 .submit-button {
   background-color: #4CAF50;
   color: white;
@@ -425,6 +437,65 @@ body {
   border: 1px solid #ccc;
   margin-right: 10px;
   cursor: pointer;
+}
+
+
+/* Estilo del área de texto para el código */
+.code-input {
+  width: 95%;
+  height: 140px;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #ffffff;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 10px;
+  outline: none;
+  resize: vertical;
+}
+
+/* Efecto al enfocar el área de código */
+.code-input:focus {
+  border-color: #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+/* Botón para ejecutar código */
+.run-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.run-button:hover {
+  background-color: #330e0e;
+}
+
+/* Área donde se mostrará la salida del código */
+.output {
+  width: 95%;
+  min-height: 50px;
+  background-color: #282c34;
+  color: #f1f1f1;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #4caf50;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+@media print {
+  body * {
+    display: none !important;
+  }
 }
 
 

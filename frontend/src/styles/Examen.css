@@ -87,9 +87,21 @@ body {
 }
 
 .main-content h1 {
-  color: #333;
+  color: #000000; /* Rojo oscuro para resaltar */
   font-size: 36px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
   margin-bottom: 20px;
+  letter-spacing: 2px;
+
+  /* Estilos para el cuadro */
+  background-color: #FFECEC; /* Fondo suave */
+  padding: 15px 30px; /* Espaciado interno */
+  border: 3px solid #020202; /* Borde rojo oscuro */
+  border-radius: 10px; /* Bordes redondeados */
+  display: inline-block; /* Ajusta al tamaño del texto */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
 .exam-instructions {
@@ -115,4 +127,79 @@ body {
 
 .start-exam:hover {
   background-color: #FF6F6F;
+}
+.exam-instructions {
+  background-color: #FFF3F3;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  width: 85%;
+  text-align: left; /* Alinear el texto a la izquierda */
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.exam-instructions h2 {
+  color: #D32F2F;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.exam-instructions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.exam-instructions ul li {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.exam-instructions ul li i {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #D32F2F;
+}
+
+.exam-instructions .tip {
+  font-style: italic;
+  font-size: 16px;
+  color: #555;
+  margin-top: 15px;
+  text-align: center;
+}
+/* Contenedor del tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Estilos del mensaje flotante */
+.tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 120%; /* Ubica el tooltip arriba del botón */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 14px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Muestra el mensaje cuando el usuario pasa el mouse */
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
