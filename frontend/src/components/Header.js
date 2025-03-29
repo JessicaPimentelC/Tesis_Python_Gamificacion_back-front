@@ -136,7 +136,7 @@ const Header = () => {
                 </button>
                 {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
                 <button className="icon-button-mapa" onClick={handleForoIconClick}>
-                    <img src="foro.png" alt="Icon 3" className="header-icon" />
+                    <img src="/foro.png" alt="Icon 3" className="header-icon" />
                 </button>
                 <button className="icon-button-mapa" onClick={() => setDropdownOpen(!dropdownOpen)}>
                 <img

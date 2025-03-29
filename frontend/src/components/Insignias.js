@@ -5,6 +5,7 @@ import Usuario from "./Usuario";
 import Sidebar from "./Sidebar";
 import axios from "axios";
 import API_BASE_URL from "../config";
+import Header from "./Header";
 
 const Insignias = () => {
   const navigate = useNavigate(); // Hook para la redirección
@@ -17,13 +18,6 @@ const Insignias = () => {
     console.log(`Insignia clickeada: ${insigniaNombre}`);
   };
 
-  const handleMouseEnter = (insigniaNombre) => {
-    setHoveredInsignia(insigniaNombre);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredInsignia(null);
-  };
   // Estado para controlar el modal
   useEffect(() => {
     const fetchUsuario = async () => {
@@ -83,11 +77,11 @@ const Insignias = () => {
 };
   return (
     <div className="container">
-      <Sidebar></Sidebar>
+      <Header></Header>
       <div className="profile-container">
-      <button onClick={handleBackClick} className="back-button-insignias">
+      {/*<button onClick={handleBackClick} className="back-button-insignias">
         <img src="/atrasa.png" alt="Back" className="back-icon" onClick={handleBackClick}/>
-      </button>
+      </button>*/}
         {/* Cuadro alrededor del nombre y el icono */}
         <div className="profile-header">
           <div className="profile-box">
