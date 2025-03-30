@@ -1,47 +1,37 @@
-/* Asegúrate de que html y body ocupen todo el alto y ancho */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  
-  /* Añadir barra de desplazamiento a todo el documento */
-  overflow-y: auto; /* Permite el desplazamiento en todo el documento */
-}
-
-/* Imagen de fondo para toda la página */
-body {
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
-  height: 100vh; /* Ocupa toda la altura de la pantalla */
-  margin: 0;
-}
-
 /* Estilo general para el contenedor del examen */
 .exam-content {
-  background: rgba(245, 162, 162, 0.8); /* Fondo semi-transparente blanco para el contenido */
+  background: #ff6b6b; /* Fondo semi-transparente blanco para el contenido */
   border-radius: 60px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
   max-width: 650px;
   width: 100%;
   text-align: center;
-  margin: 20px auto; /* Centrar el contenedor */
   color: #000; /* Color del texto en negro */
   
 }
 /* Estilo general para el contenedor del examen */
 .exam-container {
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb); /* Fondo semi-transparente blanco para el contenido */
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
   border-radius: 60px;
   box-shadow: 0 0 20px rgba(105, 13, 13, 0.1);
   padding: 20px;
   max-width: 800px;
   width: 100%;
+  /* Centrar el contenedor sin modificar el body */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Agregar margen automático en los lados para centrar */
+  margin: auto;
+  margin-top: 100px; /* Ajusta la distancia desde la parte superior */
+  margin-bottom: 50px;
+
   text-align: center;
-  margin: 20px auto; /* Centrar el contenedor */
-  color: #000; /* Color del texto en negro */
-  
+  color: #000;
 }
+
 
 /* Ajusta el color del texto y otros elementos si es necesario */
 .exam-form label,
@@ -84,7 +74,7 @@ body {
 }
 
 .submit-btn {
-  background-color: #FF4B4B; /* Color de fondo para el botón */
+  background-color: #ff6b6b; /* Color de fondo para el botón */
   color: #5e2222;
   padding: 15px 30px;
   border: none;
@@ -96,7 +86,7 @@ body {
 }
 
 .submit-btn:hover {
-  background-color: #FF6F6F; /* Color de fondo al pasar el mouse */
+  background-color: #ff6b6b; /* Color de fondo al pasar el mouse */
 }
 
 .exam-form {
@@ -151,7 +141,7 @@ body {
 }
 
 .close-modal {
-  background: #FF4B4B;
+  background: #ff6b6b;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -163,12 +153,6 @@ body {
 
 .close-modal:hover {
   background: #FF6F6F;
-}
-
-.exam-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 .exam-form {
@@ -491,10 +475,113 @@ body {
   margin-top: 10px;
   white-space: pre-wrap;
 }
-@media print {
-  body * {
-    display: none !important;
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+  .exam-container {
+    max-width: 90%;
+    padding: 15px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+
+  .exam-content {
+    padding: 15px;
+    border-radius: 40px;
+  }
+
+  .exam-container h1 {
+    font-size: 28px;
+  }
+
+  .form-group label {
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .submit-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .drop-zone {
+    width: 100%;
+    height: 50px;
+  }
+
+  .drag-words {
+    gap: 5px;
+  }
+
+  .drag-word {
+    padding: 6px 10px;
+    font-size: 14px;
   }
 }
 
+@media (max-width: 480px) {
+  .exam-container {
+    max-width: 95%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
 
+  .exam-content {
+    padding: 10px;
+    border-radius: 30px;
+  }
+
+  .exam-container h1 {
+    font-size: 24px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .submit-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .drop-zone {
+    height: 40px;
+  }
+
+  .drag-word {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

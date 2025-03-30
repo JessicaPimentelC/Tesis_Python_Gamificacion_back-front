@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Examennivel1.css';
-import Sidebar from './Sidebar';
-import HeaderBody from './HeaderBody';
+import Header from './Header';
 
 function Examennivel3() {
   const [answers, setAnswers] = useState({});
@@ -133,9 +132,7 @@ function Examennivel3() {
 
   return (
     <div className="exam-container">
-      <HeaderBody />
-      <Sidebar />
-
+      <Header></Header>
       <div className="exam-content">
         <h1>EXAMEN NIVEL 3</h1>
         <div className="exam-form">
