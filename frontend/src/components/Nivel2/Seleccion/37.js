@@ -61,7 +61,7 @@ const Nivel2Treintaseite = () => {
                 <p>¿Cuál es la función que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       numeros = input("Ingresa una lista de números separados por espacios: ")._____(){"\n"}
                       positivos = 0{"\n"}

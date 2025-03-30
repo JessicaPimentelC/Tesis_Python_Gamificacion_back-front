@@ -103,15 +103,6 @@
   box-sizing: border-box; /* Incluye padding y borde dentro del ancho */
 }
 
-
-/* Encabezado de la tarjeta del nivel 1 */
-.nivel1-card-header {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center; /* Centra el texto */
-}
-
 /* Cuerpo de la tarjeta del nivel 1 */
 .nivel1-card-body p {
   margin: 0;

@@ -174,8 +174,8 @@ const Treintados = () => {
               </div>
             </div>
           </div>
-          </div>
           <Puntaje></Puntaje>
+          </div>
           </div>
           </div>
   );

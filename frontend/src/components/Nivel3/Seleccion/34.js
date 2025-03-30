@@ -60,7 +60,7 @@ const Nivel3TreintaCuatro = () => {
                 <p>¿Cuál es la palabra clave correcta para completar la entrada de datos?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`_____ = input("Ingresa un número: ")
 suma = 0

@@ -61,7 +61,7 @@ const Nivel2Treintatres = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       cadena1 = input("Ingresa la primera cadena: "){"\n"}
                       cadena2 = input("Ingresa la segunda cadena: "){"\n"}

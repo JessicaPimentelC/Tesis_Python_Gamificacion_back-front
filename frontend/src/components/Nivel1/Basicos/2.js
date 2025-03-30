@@ -284,8 +284,8 @@ const verificarNivel = async (nivelId) => {
         <div className="white-background">
           <HeaderBody></HeaderBody>
           <div className="header-title">
-          <h2>NIVEL 2</h2>
-          <HeaderInfo></HeaderInfo>
+            <h2>NIVEL 1</h2>
+            <HeaderInfo></HeaderInfo>
           </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
@@ -333,8 +333,9 @@ const verificarNivel = async (nivelId) => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
+
       </div>
-      <Puntaje></Puntaje>
       </div>
     </div>
   );

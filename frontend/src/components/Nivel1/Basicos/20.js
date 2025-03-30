@@ -108,8 +108,8 @@ const Enunciado20 = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
       </div>
-      <Puntaje></Puntaje>
     </div>
     </div>
   );

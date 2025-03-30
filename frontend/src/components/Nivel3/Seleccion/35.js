@@ -60,7 +60,7 @@ const Nivel3TreintaCinco = () => {
                 <p>¿Cuál es la palabra clave correcta para convertir la entrada en un número decimal?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`suma = 0
 while True:

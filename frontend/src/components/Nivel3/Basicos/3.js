@@ -103,7 +103,7 @@ const TresNivel3 = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
                     <pre>
                       <code>
                         ______ numero in range(5, 20, 3):{"\n"}

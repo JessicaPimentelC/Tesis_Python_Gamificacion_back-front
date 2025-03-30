@@ -91,8 +91,8 @@ print("La suma de los dígitos es:", suma)`}
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

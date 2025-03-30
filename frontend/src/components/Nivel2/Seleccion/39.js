@@ -61,7 +61,7 @@ const Nivel2Treintanueve = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       membresia = input("Ingresa tu tipo de membresía (Oro, Plata, Bronce, Ninguna): ").lower(){"\n"}
                       monto = float(input("Ingresa el monto de la compra: ")){"\n"}

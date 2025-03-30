@@ -87,8 +87,8 @@ for i in range(1, 11):
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

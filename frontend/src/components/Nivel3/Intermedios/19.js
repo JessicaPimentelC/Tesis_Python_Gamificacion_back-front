@@ -91,8 +91,8 @@ print("Número invertido:", invertido)`}
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

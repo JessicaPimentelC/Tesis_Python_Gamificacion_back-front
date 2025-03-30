@@ -122,8 +122,9 @@ const checkAnswer = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
+
       </div>
-      <Puntaje></Puntaje>
     </div>
     </div>
   );

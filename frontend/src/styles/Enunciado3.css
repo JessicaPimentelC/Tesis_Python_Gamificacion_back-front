@@ -74,14 +74,6 @@
     line-height: 1.5;
 }
 
-/* Contenedor del botón "Siguiente" en la tarjeta */
-.nivel1-card-button-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-
 /* Imagen GIF */
 .gif-container {
     text-align: center;

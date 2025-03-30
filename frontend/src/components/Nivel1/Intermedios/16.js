@@ -121,8 +121,9 @@ const Dieciséis = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
+
       </div>
-      <Puntaje></Puntaje>
     </div>
     </div>
   );

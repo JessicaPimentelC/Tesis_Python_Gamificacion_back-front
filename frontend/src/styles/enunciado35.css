@@ -77,12 +77,6 @@
     border-radius: 8px;
     margin-top: 20px;
 }
-
-  .nivel1-card-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
   
   .modal-overlay {
     position: fixed;

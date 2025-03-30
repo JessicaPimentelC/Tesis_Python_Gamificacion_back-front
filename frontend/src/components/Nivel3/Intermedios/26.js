@@ -95,8 +95,8 @@ print("Desaprobaron ",totalDes)`}
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

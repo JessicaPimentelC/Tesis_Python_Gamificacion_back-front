@@ -98,7 +98,7 @@ const UnoNivel2 = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
                     <pre>
                       <code>{`edad = int(input("Ingresa la edad: "))\nif edad ______:\n    print("Es mayor de edad")\nelse:\n    print("Es menor de edad")`}</code>
                     </pre>

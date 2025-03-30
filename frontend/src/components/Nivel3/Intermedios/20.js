@@ -88,8 +88,8 @@ print("La suma es", suma)`}
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ const Nivel3Treintados = () => {
                 <p>¿Cuál es la forma correcta de escribir el print en Python?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`suma = 0
 for i in range(1, 101):

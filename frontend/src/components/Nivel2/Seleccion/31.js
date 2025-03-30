@@ -62,7 +62,7 @@ const Nivel2Treintauno = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       edad = int(input("Ingresa tu edad: ")){"\n"}
                       {"\n"}

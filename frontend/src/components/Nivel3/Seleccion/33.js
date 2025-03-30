@@ -60,7 +60,7 @@ const Nivel3Treintatres = () => {
                 <p>¿Cuál es la palabra clave correcta para completar el bucle?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`suma = 0
 _____ True:

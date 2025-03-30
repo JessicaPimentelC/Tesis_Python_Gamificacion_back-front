@@ -175,8 +175,8 @@ print(f"0 horas son 0 minutos o 0 segundos.")
               </div>
             </div>
           </div>
+          <Puntaje></Puntaje>
         </div>
-        <Puntaje></Puntaje>
       </div>
     </div>
   );

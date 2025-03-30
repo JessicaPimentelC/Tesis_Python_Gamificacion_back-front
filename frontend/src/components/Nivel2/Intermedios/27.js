@@ -94,8 +94,8 @@ const Nivel2Veintisiete = () => {
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
 
       {/* Modal de ayuda */}

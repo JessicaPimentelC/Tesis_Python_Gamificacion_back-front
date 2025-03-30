@@ -103,7 +103,7 @@ const TreceNivel3 = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
                     <pre>
                       <code>
                         suma = 0{"\n"}

@@ -591,60 +591,56 @@ const App = () => {
 
         
     (/*Nivel3-enunciados*/)
-        <Route path="/Nivel3/enunciado/1" element={<Enunciado1Nivel3 />} />
-        <Route path="/Nivel3/enunciado/2" element={<Enunciado2Nivel3 />} />
-        <Route path="/Nivel3/enunciado/3" element={<Enunciado3Nivel3 />} />
-        <Route path="/Nivel3/enunciado/4" element={<Enunciado4Nivel3 />} />
-        <Route path="/Nivel3/enunciado/5" element={<Enunciado5Nivel3 />} />
-        <Route path="/Nivel3/enunciado/6" element={<Enunciado6Nivel3 />} />
-        <Route path="/Nivel3/enunciado/7" element={<Enunciado7Nivel3 />} />
-        <Route path="/Nivel3/enunciado/8" element={<Enunciado8Nivel3 />} />
-        <Route path="/Nivel3/enunciado/9" element={<Enunciado9Nivel3 />} />
-        <Route path="/Nivel3/enunciado/10" element={<Enunciado10Nivel3 />} />
-        <Route path="/Nivel3/enunciado/11" element={<Enunciado11Nivel3 />} />
-        <Route path="/Nivel3/enunciado/12" element={<Enunciado12Nivel3 />} />
-        <Route path="/Nivel3/enunciado/13" element={<Enunciado13Nivel3 />} />
-        <Route path="/Nivel3/enunciado/14" element={<Enunciado14Nivel3 />} />
-        <Route path="/Nivel3/enunciado/15" element={<Enunciado15Nivel3 />} />
-
-        <Route path="/Nivel3/enunciado/16" element={<Enunciado16Nivel3 />} />
-        <Route path="/Nivel3/enunciado/17" element={<Enunciado17Nivel3 />} />
-        <Route path="/Nivel3/enunciado/18" element={<Enunciado18Nivel3 />} />
-        <Route path="/Nivel3/enunciado/19" element={<Enunciado19Nivel3 />} />
-        <Route path="/Nivel3/enunciado/20" element={<Enunciado20Nivel3 />} />
-        <Route path="/Nivel3/enunciado/21" element={<Enunciado21Nivel3 />} />
-        <Route path="/Nivel3/enunciado/22" element={<Enunciado22Nivel3 />} />
-        <Route path="/Nivel3/enunciado/23" element={<Enunciado23Nivel3 />} />
-        <Route path="/Nivel3/enunciado/24" element={<Enunciado24Nivel3 />} />
-        <Route path="/Nivel3/enunciado/25" element={<Enunciado25Nivel3 />} />
-        <Route path="/Nivel3/enunciado/26" element={<Enunciado26Nivel3 />} />
-        <Route path="/Nivel3/enunciado/27" element={<Enunciado27Nivel3 />} />
-        <Route path="/Nivel3/enunciado/28" element={<Enunciado28Nivel3 />} />
-        <Route path="/Nivel3/enunciado/29" element={<Enunciado29Nivel3 />} />
-        <Route path="/Nivel3/enunciado/30" element={<Enunciado30Nivel3 />} />
-
-
-        <Route path="/Nivel3/enunciado/31" element={<Enunciado31Nivel3 />} />
-        <Route path="/Nivel3/enunciado/32" element={<Enunciado32Nivel3 />} />
-        <Route path="/Nivel3/enunciado/33" element={<Enunciado33Nivel3 />} />
-        <Route path="/Nivel3/enunciado/34" element={<Enunciado34Nivel3 />} />
-        <Route path="/Nivel3/enunciado/35" element={<Enunciado35Nivel3 />} />
-        <Route path="/Nivel3/enunciado/36" element={<Enunciado36Nivel3 />} />
-        <Route path="/Nivel3/enunciado/37" element={<Enunciado37Nivel3 />} />
-        <Route path="/Nivel3/enunciado/38" element={<Enunciado38Nivel3 />} />
-        <Route path="/Nivel3/enunciado/39" element={<Enunciado39Nivel3 />} />
-        <Route path="/Nivel3/enunciado/40" element={<Enunciado40Nivel3 />} />
-
-        <Route path="/Nivel3/enunciado/41" element={<Enunciado41Nivel3 />} />
-        <Route path="/Nivel3/enunciado/42" element={<Enunciado42Nivel3 />} />
-        <Route path="/Nivel3/enunciado/43" element={<Enunciado43Nivel3 />} />
-        <Route path="/Nivel3/enunciado/44" element={<Enunciado44Nivel3 />} />
-        <Route path="/Nivel3/enunciado/45" element={<Enunciado45Nivel3 />} />
-        <Route path="/Nivel3/enunciado/46" element={<Enunciado46Nivel3 />} />
-        <Route path="/Nivel3/enunciado/47" element={<Enunciado47Nivel3 />} />
-        <Route path="/Nivel3/enunciado/48" element={<Enunciado48Nivel3 />} />
-        <Route path="/Nivel3/enunciado/49" element={<Enunciado49Nivel3 />} />
-        <Route path="/Nivel3/enunciado/50" element={<Enunciado50Nivel3 />} />
+        <Route path="/Nivel3/enunciado1" element={<Enunciado1Nivel3 />} />
+        <Route path="/Nivel3/enunciado2" element={<Enunciado2Nivel3 />} />
+        <Route path="/Nivel3/enunciado3" element={<Enunciado3Nivel3 />} />
+        <Route path="/Nivel3/enunciado4" element={<Enunciado4Nivel3 />} />
+        <Route path="/Nivel3/enunciado5" element={<Enunciado5Nivel3 />} />
+        <Route path="/Nivel3/enunciado6" element={<Enunciado6Nivel3 />} />
+        <Route path="/Nivel3/enunciado7" element={<Enunciado7Nivel3 />} />
+        <Route path="/Nivel3/enunciado8" element={<Enunciado8Nivel3 />} />
+        <Route path="/Nivel3/enunciado9" element={<Enunciado9Nivel3 />} />
+        <Route path="/Nivel3/enunciado10" element={<Enunciado10Nivel3 />} />
+        <Route path="/Nivel3/enunciado11" element={<Enunciado11Nivel3 />} />
+        <Route path="/Nivel3/enunciado12" element={<Enunciado12Nivel3 />} />
+        <Route path="/Nivel3/enunciado13" element={<Enunciado13Nivel3 />} />
+        <Route path="/Nivel3/enunciado14" element={<Enunciado14Nivel3 />} />
+        <Route path="/Nivel3/enunciado15" element={<Enunciado15Nivel3 />} />
+        <Route path="/Nivel3/enunciado16" element={<Enunciado16Nivel3 />} />
+        <Route path="/Nivel3/enunciado17" element={<Enunciado17Nivel3 />} />
+        <Route path="/Nivel3/enunciado18" element={<Enunciado18Nivel3 />} />
+        <Route path="/Nivel3/enunciado19" element={<Enunciado19Nivel3 />} />
+        <Route path="/Nivel3/enunciado20" element={<Enunciado20Nivel3 />} />
+        <Route path="/Nivel3/enunciado21" element={<Enunciado21Nivel3 />} />
+        <Route path="/Nivel3/enunciado22" element={<Enunciado22Nivel3 />} />
+        <Route path="/Nivel3/enunciado23" element={<Enunciado23Nivel3 />} />
+        <Route path="/Nivel3/enunciado24" element={<Enunciado24Nivel3 />} />
+        <Route path="/Nivel3/enunciado25" element={<Enunciado25Nivel3 />} />
+        <Route path="/Nivel3/enunciado26" element={<Enunciado26Nivel3 />} />
+        <Route path="/Nivel3/enunciado27" element={<Enunciado27Nivel3 />} />
+        <Route path="/Nivel3/enunciado28" element={<Enunciado28Nivel3 />} />
+        <Route path="/Nivel3/enunciado29" element={<Enunciado29Nivel3 />} />
+        <Route path="/Nivel3/enunciado30" element={<Enunciado30Nivel3 />} />
+        <Route path="/Nivel3/enunciado31" element={<Enunciado31Nivel3 />} />
+        <Route path="/Nivel3/enunciado32" element={<Enunciado32Nivel3 />} />
+        <Route path="/Nivel3/enunciado33" element={<Enunciado33Nivel3 />} />
+        <Route path="/Nivel3/enunciado34" element={<Enunciado34Nivel3 />} />
+        <Route path="/Nivel3/enunciado35" element={<Enunciado35Nivel3 />} />
+        <Route path="/Nivel3/enunciado36" element={<Enunciado36Nivel3 />} />
+        <Route path="/Nivel3/enunciado37" element={<Enunciado37Nivel3 />} />
+        <Route path="/Nivel3/enunciado38" element={<Enunciado38Nivel3 />} />
+        <Route path="/Nivel3/enunciado39" element={<Enunciado39Nivel3 />} />
+        <Route path="/Nivel3/enunciado40" element={<Enunciado40Nivel3 />} />
+        <Route path="/Nivel3/enunciado41" element={<Enunciado41Nivel3 />} />
+        <Route path="/Nivel3/enunciado42" element={<Enunciado42Nivel3 />} />
+        <Route path="/Nivel3/enunciado43" element={<Enunciado43Nivel3 />} />
+        <Route path="/Nivel3/enunciado44" element={<Enunciado44Nivel3 />} />
+        <Route path="/Nivel3/enunciado45" element={<Enunciado45Nivel3 />} />
+        <Route path="/Nivel3/enunciado46" element={<Enunciado46Nivel3 />} />
+        <Route path="/Nivel3/enunciado47" element={<Enunciado47Nivel3 />} />
+        <Route path="/Nivel3/enunciado48" element={<Enunciado48Nivel3 />} />
+        <Route path="/Nivel3/enunciado49" element={<Enunciado49Nivel3 />} />
+        <Route path="/Nivel3/enunciado50" element={<Enunciado50Nivel3 />} />
 
         <Route path="/examen" element={<Examen />} />
         <Route path="/examen2" element={<Examen2 />} />

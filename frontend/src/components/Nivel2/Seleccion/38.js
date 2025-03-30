@@ -61,7 +61,7 @@ const Nivel2Treintaocho = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       horas = int(input("Ingresa el número de horas estacionado: ")){"\n"}
                       if horas &lt;= 1:{"\n"}

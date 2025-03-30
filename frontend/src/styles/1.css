@@ -59,12 +59,6 @@
       font-weight: bold;
       color: #FF5733;
   }
-  
-  /* Estado del encabezado */
-  .header-status {
-      display: flex;
-      align-items: center;
-  }
 
   /* Cuadro de información en la parte superior */
   .info-container {
@@ -507,10 +501,18 @@
     margin-bottom: 20px;
     align-items: center; /* Asegura alineación uniforme */
     flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
-
+  }
+  .nivel1-card-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;  /* Espacio entre botones */
+    margin-bottom: 20px;
+    align-items: center; /* Asegura alineación uniforme */
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    margin-top: 10px;
 
   }
-  
+
   /* Botón de siguiente (oculto inicialmente) */
   .next-button {
     visibility: hidden; /* Oculta pero mantiene su espacio */

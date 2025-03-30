@@ -128,8 +128,8 @@ const Doce = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
       </div>
-      <Puntaje></Puntaje>
       </div>
     </div>
   );

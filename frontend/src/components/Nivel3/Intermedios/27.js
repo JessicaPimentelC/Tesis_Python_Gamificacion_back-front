@@ -90,8 +90,8 @@ print("El carácter", caracterBuscado, "aparece", contador, "veces en la cadena.
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

@@ -93,7 +93,8 @@ const CuarentaNueveNivel3 = () => {
                   <div className="code-header">Python</div>
                   <div className="code">
                     <pre>
-                      i = 1{"\n"}                      suma = 0{"\n"}
+                      i = 1{"\n"}                      
+                      suma = 0{"\n"}
                       while i &lt;= 5:{"\n"}
                       {'    '}suma <span className="highlight">____</span> i{"\n"}
                       {'    '}i += 1{"\n"}

@@ -99,7 +99,7 @@ const Diecinueve = () => {
 
               <div className="code-box">
                 <div className="code-header">PYTHON</div>
-                <div className="code-content">
+                <div className="code">
                   <pre>
                     celsius = float(input("Ingresa la temperatura en grados Celsius: "))<br />
                     fahrenheit = (celsius * 9/5) + 32<br />
@@ -143,8 +143,8 @@ const Diecinueve = () => {
               )}
             </div>
           </div>
+          <Puntaje></Puntaje>
         </div>
-        <Puntaje></Puntaje>
       </div>
 
       {/* Modal */}

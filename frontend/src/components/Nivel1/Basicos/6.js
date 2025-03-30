@@ -183,8 +183,9 @@ const Seis = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
+
       </div>
-      <Puntaje></Puntaje>
     </div>
     </div>
   );

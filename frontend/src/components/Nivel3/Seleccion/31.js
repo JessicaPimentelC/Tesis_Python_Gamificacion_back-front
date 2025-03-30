@@ -60,7 +60,7 @@ const Nivel3Treintauno = () => {
                 <p>¿Cuál es la palabra clave correcta para completar el código?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`contador = 0
 _____ i in range(1, 51):

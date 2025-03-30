@@ -91,8 +91,8 @@ const Nivel2Dieciseis = () => {
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

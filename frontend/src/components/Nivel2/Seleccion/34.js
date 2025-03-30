@@ -61,7 +61,7 @@ const Nivel2Treintacuatro = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       from datetime import datetime{"\n"}
                       año_nacimiento = int(input("Ingresa tu año de nacimiento: ")){"\n"}

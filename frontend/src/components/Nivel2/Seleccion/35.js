@@ -61,7 +61,7 @@ const Nivel2Treintacinco = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       numero = int(input("Ingresa un número: ")){"\n"}
                       factorial = 1{"\n"}

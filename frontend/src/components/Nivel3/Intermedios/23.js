@@ -89,8 +89,8 @@ print("El factorial es:", fact)`}
               </div>
             </div>
           </div>
+        <Puntaje></Puntaje>
         </div>
-        <Puntaje />
       </div>
     </div>
   );

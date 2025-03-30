@@ -83,9 +83,9 @@ const Nivel2Viente = () => {
                         placeholder="función"
                       />
                       (input("Ingrese el tercer número: ")) <br />
-                      if num1 >= num2 and num1 >= num3: <br />
+                      if num1 &gt;= num2 and num1 &gt;= num3: <br />
                       {'  '}mayor = num1 <br />
-                      elif num2 >= num1 and num2 >= num3: <br />
+                      elif num2 &gt;= num1 and num2 &gt;= num3: <br />
                       {'  '}mayor = num2 <br />
                       else: <br />
                       {'  '}mayor = num3 <br />
@@ -112,8 +112,8 @@ const Nivel2Viente = () => {
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

@@ -191,7 +191,7 @@ const OnceNivel2 = () => {
                                   </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
   <pre>
     <code>
 {`letra = input("Ingrese una letra: ")

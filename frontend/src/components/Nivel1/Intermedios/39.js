@@ -157,10 +157,10 @@ const Trientanueve = () => {
               )}
             </div>
           </div>
-          </div>
           <Puntaje></Puntaje>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
                   
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>

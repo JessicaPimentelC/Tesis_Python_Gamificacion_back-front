@@ -5,7 +5,7 @@ import HeaderBody from "../../HeaderBody";
 import axios from "axios";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
-import {verificarYOtorgarInsignia,obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
 import Sidebar from "../../Sidebar";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
@@ -34,8 +34,7 @@ const Uno = () => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-const options = ["Mundo", "Hola", "Print"];
-
+  const options = ["Mundo", "Hola", "Print"];
 
   // Función para abrir el modal
   const openModal = () => {
@@ -413,7 +412,7 @@ const handleTouchEnd = (e) => {
                     ? `print("Hola, ${droppedItem}!")`
                     : "Arrastra aquí la palabra correcta"}
                 </div>
-                <div className="button-container">
+                <div className="nivel1-card-button-container">
                   <button className="nivel1-card-button" onClick={handleVerify}>
                     Verificar
                   </button>

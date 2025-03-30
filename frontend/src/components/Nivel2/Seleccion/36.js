@@ -61,7 +61,7 @@ const Nivel2Treintacuatro = () => {
                 <p>¿Cuál es la función que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       import math{"\n"}
                       numero = int(input("Ingresa un número: ")){"\n"}

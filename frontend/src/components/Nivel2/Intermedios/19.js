@@ -108,8 +108,8 @@ const Nivel2Diecinueve= () => {
               </div>
             </div>
           </div>
+          <Puntaje />
         </div>
-        <Puntaje />
       </div>
     </div>
   );

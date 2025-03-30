@@ -60,7 +60,7 @@ const Nivel3Cuarenta = () => {
                 <p>¿Cuál es la función correcta para completar el código?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       {`i = 10
 while i >= 1:

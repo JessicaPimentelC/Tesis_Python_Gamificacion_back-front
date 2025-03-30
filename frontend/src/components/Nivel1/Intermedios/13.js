@@ -142,8 +142,8 @@ const Trece = () => {
             </div>
           </div>
         </div>
+        <Puntaje></Puntaje>
       </div>
-      <Puntaje></Puntaje>
       </div>
     </div>
   );

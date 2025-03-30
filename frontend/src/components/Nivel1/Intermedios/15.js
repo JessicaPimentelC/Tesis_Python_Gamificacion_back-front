@@ -136,8 +136,8 @@ const Quince = () => {
               )}
             </div>
           </div>
+          <Puntaje></Puntaje>
         </div>
-        <Puntaje></Puntaje>
       </div>
     </div>
   );

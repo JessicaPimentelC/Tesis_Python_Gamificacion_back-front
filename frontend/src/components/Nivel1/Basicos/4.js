@@ -93,11 +93,9 @@ const Cuatro = () => {
             <h2>EJERCICIO #4</h2>
             </div>
             <div className="nivel1-card-body">
-              <p>Arrastra la palabra <strong>`print`</strong> al cuadro de código y verifica tu respuesta.</p>
+              <p>Arrastra la palabra correcta al cuadro de código y verifica tu respuesta.</p>
             </div>
-            <div className="nivel1-card-body">
-              <div
-                className="code-box"
+              <div className="code-box"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
@@ -161,10 +159,9 @@ const Cuatro = () => {
               )}
             </div>
           </div>
+          <Puntaje></Puntaje>
         </div>
       </div>
-      <Puntaje></Puntaje>
-    </div>
     </div>
   );
 };

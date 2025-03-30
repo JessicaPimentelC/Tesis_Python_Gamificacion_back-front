@@ -61,7 +61,7 @@ const Nivel2Treintados = () => {
                 <p>¿Cuál es la palabra que falta para que el código funcione correctamente?</p>
                 <div className="code-box">
                   <div className="code-header">PYTHON</div>
-                  <div className="code-content">
+                  <div className="code">
                     <pre>
                       contraseña_correcta = "python123"{"\n"}
                       contraseña = input("Ingresa la contraseña: "){"\n"}

@@ -103,7 +103,7 @@ const SeisNivel3 = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
                     <pre>
                       <code>
                         ______ i in range(10, 0, -1):{"\n"}

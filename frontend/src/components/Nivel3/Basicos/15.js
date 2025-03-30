@@ -103,12 +103,12 @@ const QuinceNivel3 = () => {
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
-                  <div className="code-area">
+                  <div className="code">
                     <pre>
                       <code>
                         i = 0{"\n"}
                         entrada = input("Ingrese la palabra: "){"\n"}
-                        ____ len(entrada) > 3:{"\n"}
+                        ____ len(entrada) &gt; 3:{"\n"}
                         &nbsp;&nbsp;entrada = input("Ingrese la palabra: "){"\n"}
                         &nbsp;&nbsp;i = i + 1{"\n"}
                         print("¡Saliste!", "Ingresaste", i, "palabras")
