@@ -95,6 +95,8 @@
   .icon-group-header {
     justify-content: center;
     gap: 8px;
+    margin-right: 50px;
+
   }
 
   .header-icon,
@@ -115,6 +117,7 @@
     flex-wrap: wrap;
     gap: 5px;
     align-items: self-end;
+    margin-right: 50px;
   }
 
   .header-icon,

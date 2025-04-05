@@ -31,7 +31,6 @@ const Dos = () => {
       const fetchUsuario = async () => {
         try {
           const csrfToken = getCSRFToken();
-          console.log("token",csrfToken)
           const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
             headers: {
               "X-CSRFToken": csrfToken,
@@ -48,21 +47,21 @@ const Dos = () => {
     },[]);
 
     //obtiene el id del ejercicio
-    const obtenerEjercicioId = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`);
-        console.log("Datos completos recibidos:", response.data);
-    
-        if (response.status === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
-          return response.data.data[0].id_ejercicio; 
-        } else {
-          console.error("El array de ejercicios está vacío o no tiene la estructura esperada.");
-        }
-      } catch (error) {
-        console.error("Error al obtener los ejercicios:", error);
+  const obtenerEjercicioId = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`);
+      console.log("Datos completos recibidos:", response.data);
+  
+      if (response.status === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
+        return response.data.data[0].id_ejercicio; 
+      } else {
+        console.error("El array de ejercicios está vacío o no tiene la estructura esperada.");
       }
-      return null;
-    };
+    } catch (error) {
+      console.error("Error al obtener los ejercicios:", error);
+    }
+    return null;
+  };
   
     /**Guarda el ejercicio en la BD */
 const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
@@ -94,6 +93,7 @@ const handleNext = async () => {
   const usuario_id = userInfo.id;
   const proximoEjercicio = obtenerEjercicioAleatorioEnunciado();
   const ejercicio_id = await obtenerEjercicioId();
+  console.log("ejercicio id en handle next",ejercicio_id)
   if (!ejercicio_id) {
       console.error("No se pudo obtener el ejercicio_id");
       return;
@@ -125,16 +125,7 @@ const handleNext = async () => {
     console.log("No quedan ejercicios disponibles.");
   }
 };
-
-  const checkAnswer = () => {
-    if (input1.trim().toLowerCase() === '75') {
-      setResult('correct');
-      setShowNext(true); // Muestra el botón "Siguiente"
-    } else {
-      setResult('incorrect');
-      setShowNext(false); // Oculta el botón "Siguiente"
-    }
-  };
+  
 //Verifica respuesta ejercicio
 const handleVerify = async () => {
   // Validar la respuesta antes de continuar
@@ -151,25 +142,21 @@ const handleVerify = async () => {
   }
 
   try {
-    const ejercicio_id = await obtenerEjercicioId();
-    if (!ejercicio_id) {
-      console.error("No se pudo obtener el ejercicio_id");
-      return;
-    }
+    const ejercicio_id = 2; 
 
     const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
     const usuario_id = userResponse.data.id;
+    console.log("Respuesta del usuario obtenida:", userResponse.data);
 
     if (!usuario_id) {
       alert("Error: Usuario no identificado.");
       return;
     }
-
     const requestData = {
       usuario: usuario_id,
       ejercicio: ejercicio_id,
       fecha: new Date().toISOString().split("T")[0],
-      resultado: isCorrect ? "75" : "",
+      resultado: isCorrect,
       errores: isCorrect ? 0 : errores + 1,
     };
 
@@ -177,6 +164,7 @@ const handleVerify = async () => {
     const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
 
     if (response.status === 201) {
+
       const vidasRestantes = response.data.vidas;
       setVidas(vidasRestantes);
 
@@ -305,7 +293,7 @@ const verificarNivel = async (nivelId) => {
                         type="text"
                         value={input1}
                         onChange={(e) => setInput1(e.target.value)}
-                        className="code-input"
+                        className="code-input-inline"
                       />{' '}")
                     </code>
                   </pre>

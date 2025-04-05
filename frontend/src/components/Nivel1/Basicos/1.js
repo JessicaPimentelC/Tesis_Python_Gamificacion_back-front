@@ -36,14 +36,6 @@ const Uno = () => {
 
   const options = ["Mundo", "Hola", "Print"];
 
-  // Función para abrir el modal
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const openModalPinguino = () => {
-    setIsModalOpenPinguino(true);
-  };
-
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
@@ -294,10 +286,6 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
   };
   
 
-  const handleMouseLeave = () => {
-    // No hacemos nada aquí para evitar el parpadeo
-  };
-
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
@@ -344,10 +332,6 @@ const handleTouchEnd = (e) => {
     setDroppedItem(draggedItem);
 };
 
-  const handlePythonIconClick = () => {
-    console.log("Botón de Python clickeado"); // Para verificar el clic
-    setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
-  };
  
   return (
     <div className="nivel1-page">
@@ -369,9 +353,7 @@ const handleTouchEnd = (e) => {
               <div className="nivel1-card-body">
                 <p>
                   A continuación, te presentamos nuestro primer ejercicio de
-                  nivel 1. El ejercicio consiste en identificar la palabra
-                  correcta en relación con el siguiente enunciado. ¡Buena
-                  suerte!
+                  nivel 1.
                   <br />
                   <br />
                   Por favor, arrastra la palabra que falta en el código para

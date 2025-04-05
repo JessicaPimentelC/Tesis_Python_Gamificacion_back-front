@@ -352,7 +352,10 @@
   .draggable-words {
     justify-content: space-around; /* Distribuye mejor en pantallas pequeñas */
   }
-
+  .drop-zone {
+    width:80%;
+    justify-content: space-around;
+  }
   .draggable-word {
     font-size: 12px; /* Reduce aún más el tamaño en móviles */
     padding: 6px 10px;
