@@ -51,7 +51,7 @@ const Enunciado40Nivel2 = () => {
             El programa solicita al usuario que ingrese tres números y, utilizando estructuras de decisión (if-else), determina si los tres números son iguales o si hay diferencias entre ellos.   </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero1= int(input("Ingresa la primera cadena: "))
 numero2= int(input("Ingresa la segunda cadena: "))

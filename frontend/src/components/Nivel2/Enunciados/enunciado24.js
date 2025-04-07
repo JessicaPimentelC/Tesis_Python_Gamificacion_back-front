@@ -51,7 +51,7 @@ const Enunciado24Nivel2 = () => {
             el programa pedirá al usuario que ingrese las longitudes de los tres lados de un triángulo. Luego, analizará las medidas ingresadas y determinará qué tipo de triángulo es, según las siguientes clasificaciones   </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = int(input("Ingresa un número: "))
 suma_divisores = 0

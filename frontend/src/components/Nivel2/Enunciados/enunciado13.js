@@ -50,7 +50,7 @@ const Enunciado13Nivel2 = () => {
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 temperatura = float(input("Ingresa la temperatura Celsius: "))
 

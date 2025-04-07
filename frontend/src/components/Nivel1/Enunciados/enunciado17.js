@@ -80,7 +80,7 @@ const Enunciado17 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`numero = float(input("Ingresa un número: "))
 if numero > 0:

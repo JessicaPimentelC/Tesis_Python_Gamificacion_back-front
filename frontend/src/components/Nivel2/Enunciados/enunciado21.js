@@ -51,7 +51,7 @@ const Enunciado21Nivel2 = () => {
             El programa solicitará al usuario que ingrese tres números y los ordenará de menor a mayor. Luego, mostrará el resultado en pantalla.    </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 num1 = float(input("Ingrese el primer número: "))
 num2 = float(input("Ingrese el segundo número: "))

@@ -31,6 +31,28 @@
 .code-area{
     text-align: left;
 }
+.code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    text-align: left;
+
+    color: #ffffff;
+    word-wrap: break-word; /* Asegura que el texto no se desborde */
+    overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+}
+/* Ajustes para pantallas medianas */
+@media screen and (max-width: 768px) {
+    .code {
+        font-size: 16px;
+    }
+    }
+    
+    /* Ajustes para pantallas pequeñas */
+    @media screen and (max-width: 480px) {
+    .code {
+        font-size: 14px;
+    }
+    }
 .code-box-area{
     align-items: center; 
 }

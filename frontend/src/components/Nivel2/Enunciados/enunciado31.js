@@ -52,7 +52,7 @@ const Enunciado31Nivel2 = () => {
             El programa solicita al usuario que ingrese su edad y, utilizando estructuras de decisión (if, elif, else), determina en qué categoría se encuentra. Para ello, compara la edad ingresada con los siguientes rangos       </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 if edad <= 12:
     print("Eres un niño.")

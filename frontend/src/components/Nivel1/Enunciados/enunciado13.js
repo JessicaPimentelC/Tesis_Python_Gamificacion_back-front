@@ -73,7 +73,7 @@ const Enunciado13 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`num1 = float(input("Ingresa el primer número: "))
 num2 = float(input("Ingresa el segundo número: "))

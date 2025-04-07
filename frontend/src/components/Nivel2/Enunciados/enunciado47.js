@@ -49,7 +49,7 @@ const Enunciado47Nivel2 = () => {
             Este programa evaluará si un número cumple con dos condiciones al mismo tiempo. 📊</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 
 if numero > 0 and numero > 100:

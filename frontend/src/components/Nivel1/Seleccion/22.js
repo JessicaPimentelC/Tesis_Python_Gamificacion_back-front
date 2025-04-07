@@ -356,7 +356,7 @@ const verificarNivel = async (nivelId) => {
                   <div className="code-box">
                     <div className="code-header">SALIDA</div>
                     <div className="code"><pre>{output}</pre></div>
-                                      </div>
+                    </div>
                 )}
               </div>
             </div>

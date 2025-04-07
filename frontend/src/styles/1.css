@@ -263,6 +263,18 @@
   word-wrap: break-word; /* Asegura que el texto no se desborde */
   overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
 }
+.code input {
+  width: 50px;               /* Más corto */
+  background-color: #f4f4f4; /* Fondo tipo editor de código */
+  border: 1px solid #ccc;    /* Bordecito sutil */
+  border-radius: 4px;        /* Bordes suaves */
+  font-family: monospace;    /* Fuente tipo código */
+  font-size: 14px;           /* Tamaño consistente con código */
+  padding: 2px 4px;          /* Un poco de espacio interno */
+  margin-right: 5px;         /* Espacio con lo que sigue */
+  display: inline-block;     /* Que no se expanda a toda la línea */
+  vertical-align: middle;    /* Alinear con el texto */
+}
 .draggable-words {
   display: flex;
   flex-wrap: wrap; /* Permite que los elementos se ajusten a diferentes tamaños de pantalla */

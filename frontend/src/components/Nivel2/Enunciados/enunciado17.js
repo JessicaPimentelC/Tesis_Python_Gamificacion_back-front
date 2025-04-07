@@ -51,7 +51,7 @@ const Enunciado17Nivel2 = () => {
             El programa solicitará al usuario que ingrese un número entero y determinará si es par o impar. Si el número es divisible entre 2 sin dejar residuo, se mostrará un mensaje indicando que es par; de lo contrario, se indicará que es impar.            </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = int(input("Ingresa un número: ")) 
 if (numero % 2 == 0):

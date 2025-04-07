@@ -50,7 +50,7 @@ const Enunciado46Nivel2 = () => {
             Este programa te permitirá comprobar si un número está dentro del rango de 10 a 20. 🧐</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 
 numero = float(input("Ingresa un número: "))

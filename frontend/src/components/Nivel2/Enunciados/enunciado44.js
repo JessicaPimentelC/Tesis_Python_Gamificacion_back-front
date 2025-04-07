@@ -50,7 +50,7 @@ const Enunciado44Nivel2 = () => {
             El programa pedirá al usuario que ingrese un número y determinará si es un número de Armstrong. Un número de Armstrong (o número narcisista) es aquel cuya suma de sus dígitos elevados a la potencia de la cantidad total de dígitos es igual al mismo número.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 
 numero = input("Ingresa un número: ")

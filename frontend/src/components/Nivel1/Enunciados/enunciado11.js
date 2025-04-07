@@ -77,7 +77,7 @@ const Enunciado11 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`estatura = float(input("Ingrese su estatura: "))
 print(estatura)

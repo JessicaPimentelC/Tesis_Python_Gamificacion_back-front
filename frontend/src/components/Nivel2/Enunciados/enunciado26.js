@@ -52,7 +52,7 @@ const Enunciado26Nivel2 = () => {
             Este programa pedirá al usuario que ingrese su ingreso anual en dólares y calculará el impuesto sobre la renta   </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 ingreso = float(input("Ingresa tu ingreso anual: "))
 if ingreso <= 10000:

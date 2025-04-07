@@ -52,7 +52,7 @@ const Enunciado36Nivel2 = () => {
            El programa solicita al usuario que ingrese un número entero y verifica si es un cuadrado perfecto. Un número es un cuadrado perfecto si su raíz cuadrada es un número entero.  </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 import math
 numero = int(input("Ingresa un número: "))

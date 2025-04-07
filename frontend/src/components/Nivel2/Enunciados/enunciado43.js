@@ -50,7 +50,7 @@ const Enunciado43Nivel2 = () => {
             El programa pedirá al usuario que ingrese las longitudes de los tres lados de un triángulo. Luego, utilizando estructuras condicionales (if-elif-else), analizará los valores ingresados y determinará de qué tipo de triángulo se trata, mostrando el resultado en panta</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 
 

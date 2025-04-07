@@ -52,7 +52,7 @@ const Enunciado1Nivel2 = () => {
                 <div className="code-header">Python</div>
                 <img src="/Flujo.png" alt="GIF" className="Flujo" />
 
-                <pre className="code-area">
+                <pre className="code">
 <p className="white-text">Ejemplo:</p>
                   <code>{`                  
 if("condición"):

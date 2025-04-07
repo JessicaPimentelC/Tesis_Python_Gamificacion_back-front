@@ -67,7 +67,7 @@ const Enunciado12 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`nombre = input("¿Cómo te llamas? ")
 print("Hola, " + nombre)

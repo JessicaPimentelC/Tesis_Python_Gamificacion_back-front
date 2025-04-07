@@ -55,7 +55,7 @@ const Enunciado45Nivel2 = () => {
 ⚫ Escaleno → Si todos los lados tienen longitudes distintas.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 
 lado1 = float(input("Ingresa la longitud del primer lado: "))

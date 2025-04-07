@@ -51,7 +51,7 @@ const Enunciado10Nivel2 = () => {
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 contrasena_correcta = "1994*"
 contrasena = input("Ingrese la contraseña: ")

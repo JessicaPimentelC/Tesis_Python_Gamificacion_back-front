@@ -50,7 +50,7 @@ const Enunciado29Nivel2 = () => {
             El programa solicita al usuario que ingrese un número y, utilizando una estructura condicional (if-else), determina si el número cumple dos condiciones simultáneamente:</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = int(input("Ingresa un número: "))
 

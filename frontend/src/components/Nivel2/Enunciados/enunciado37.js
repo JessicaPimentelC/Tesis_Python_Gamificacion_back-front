@@ -52,7 +52,7 @@ const Enunciado37Nivel2 = () => {
             El programa solicita al usuario que ingrese una lista de números separados por espacios y, utilizando un bucle for junto con estructuras de decisión (if-elif-else)  </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numeros = input("Ingresa una lista de números separados por espacios: ").split()
 positivos = 0

@@ -51,7 +51,7 @@ const Enunciado35Nivel2 = () => {
             El programa solicita al usuario que ingrese un número entero y calcula su factorial utilizando una estructura de decisión (if-elif-else) y un bucle for.   </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = int(input("Ingresa un número: "))
 factorial = 1

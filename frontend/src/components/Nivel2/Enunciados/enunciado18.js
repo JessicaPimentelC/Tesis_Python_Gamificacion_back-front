@@ -51,7 +51,7 @@ const Enunciado18Nivel2 = () => {
             El programa solicitará al usuario que ingrese la cantidad de personas que asistirán a un concierto y calculará el descuento aplicable según el número de asistentes. Dependiendo de la cantidad ingresada, se aplicará un porcentaje de descuento diferente.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = int(input("Ingresa un número de familiares: ")) 
 if numero <= 2:

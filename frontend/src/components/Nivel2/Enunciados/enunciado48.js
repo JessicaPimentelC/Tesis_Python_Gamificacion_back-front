@@ -49,7 +49,7 @@ const Enunciado48Nivel2 = () => {
             Este programa evaluará si un número ingresado cumple con al menos una de las siguientes condiciones</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = float(input("Ingresa un número: "))
 

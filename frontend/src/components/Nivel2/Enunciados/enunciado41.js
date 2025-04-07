@@ -52,7 +52,7 @@ const Enunciado41Nivel2 = () => {
             El programa solicita al usuario que ingrese las longitudes de los tres lados de un triángulo y, utilizando una estructura condicional (if-elif-else), determina el tipo de triángulo según sus lados  </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 lado1 = float(input("Longitud del primer lado: "))
 lado2 = float(input("Longitud del segundo lado: "))

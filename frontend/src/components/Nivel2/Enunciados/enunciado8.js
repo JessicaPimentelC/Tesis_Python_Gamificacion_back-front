@@ -52,7 +52,7 @@ const Enunciado8Nivel2 = () => {
 </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 calificación = float(input("Ingresa tu calificación: "))
 if calificacion >= 70:

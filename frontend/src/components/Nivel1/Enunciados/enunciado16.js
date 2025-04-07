@@ -81,7 +81,7 @@ const Enunciado16 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`from datetime `}&nbsp;
                     <span className="import-link" onClick={handleImportClick}>

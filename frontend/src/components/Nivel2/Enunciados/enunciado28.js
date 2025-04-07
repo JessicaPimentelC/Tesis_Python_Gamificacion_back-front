@@ -50,7 +50,7 @@ const Enunciado28Nivel2 = () => {
             El programa solicita al usuario que ingrese una letra y, utilizando una estructura condicional (if-else), determina si la letra ingresada es una vocal o una consonante. </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 letra = input("Ingresa una letra: ").lower()
 

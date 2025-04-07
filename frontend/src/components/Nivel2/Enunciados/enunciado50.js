@@ -50,7 +50,7 @@ const Enunciado50Nivel2 = () => {
             Este programa solicita al usuario que ingrese un número y luego verifica si se encuentra dentro del rango exclusivo de 50 a 100.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 numero = float(input("Ingresa un número: "))
 if 50 < numero < 100:

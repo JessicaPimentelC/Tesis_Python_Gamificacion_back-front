@@ -73,7 +73,7 @@ const Enunciado39 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`print(76 / 2);`}
                   </code>

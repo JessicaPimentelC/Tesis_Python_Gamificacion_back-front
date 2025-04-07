@@ -51,7 +51,7 @@ const Enunciado23Nivel2 = () => {
             el programa solicitará al usuario que ingrese un año y determinará si es bisiesto o no.    </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 anio = int(input("Ingrese un año: "))
 if anio % 4 == 0:

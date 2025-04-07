@@ -63,7 +63,7 @@ const Enunciado18 = () => {
               <div className="code-box">
                 <div className="code-header">Python</div>
 
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                   lado = float(input("Ingresa la longitud del lado del cuadrado: "))<br></br>
                   area = lado ** 2<br></br>

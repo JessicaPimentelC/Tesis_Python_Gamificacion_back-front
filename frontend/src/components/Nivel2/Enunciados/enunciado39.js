@@ -52,7 +52,7 @@ const Enunciado39Nivel2 = () => {
             El programa solicita al usuario que ingrese su tipo de membresía (Oro, Plata, Bronce o Ninguna) y el monto de su compra. Luego, utilizando estructuras de decisión (if-elif-else), aplica un descuento según la siguiente escala: </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 membresia = input("Ingresa tu tipo de membresía (Oro, Plata, Bronce, Ninguna): ").lower()
 monto = float(input("Ingresa el monto de la compra: "))

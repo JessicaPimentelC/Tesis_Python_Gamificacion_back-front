@@ -51,7 +51,7 @@ const Enunciado38Nivel2 = () => {
             El programa solicita al usuario que ingrese el número de horas que ha estado estacionado y, utilizando estructuras de decisión (if-elif-else), calcula el costo total basado en las siguientes tarifas:</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 horas = int(input("Ingresa el número de horas estacionado: "))
 if horas <= 1:

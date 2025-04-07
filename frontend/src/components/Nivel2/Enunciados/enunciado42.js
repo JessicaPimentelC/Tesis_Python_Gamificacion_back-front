@@ -53,7 +53,7 @@ const Enunciado42Nivel2 = () => {
             El programa solicita al usuario que ingrese dos números y, utilizando una estructura condicional (if-elif-else), determina cuál de los dos números es mayor o si son iguales. </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 num1 = int(input("Ingresa el primer número: ")) 
 num2 = int(input("Ingresa el segundo número: ")) 

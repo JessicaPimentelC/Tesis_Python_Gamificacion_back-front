@@ -51,7 +51,7 @@ const Enunciado22Nivel2 = () => {
             Escribe un programa que solicite al usuario ingresar su edad y, con base en el valor ingresado, determine en qué etapa de la vida se encuentra.         </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 edad = int(input("Ingresa tu edad: "))
 if edad <= 12:

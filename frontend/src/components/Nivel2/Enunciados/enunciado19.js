@@ -52,7 +52,7 @@ const Enunciado19Nivel2 = () => {
             El programa solicitará al usuario que ingrese dos números y seleccione una operación matemática entre suma, resta, multiplicación y división. Luego, realizará el cálculo correspondiente y mostrará el resultado en pantalla.            </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 num1 = int(input("Ingresa primer número: ")) 
 num2 = int(input("Ingresa segundo número: ")) 

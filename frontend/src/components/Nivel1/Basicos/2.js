@@ -10,22 +10,20 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 
-
 const Dos = () => {
   const [input1, setInput1] = useState('');
-  const [result, setResult] = useState(null);
   const [showNext, setShowNext] = useState(false);
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [isCorrect, setIsCorrect] = useState(null);
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [vidas, setVidas] = useState(null);
-  const [issModalOpenPinguino,setIsModalOpenPinguino] =useState(false);
   const [errores, setErrores] = useState(0);
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
+  const [result, setResult] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
 
   useEffect(() => {
       const fetchUsuario = async () => {

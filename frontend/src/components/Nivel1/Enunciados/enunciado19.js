@@ -63,7 +63,7 @@ const Enunciado19 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`celsius = float(input("Ingresa la temperatura en grados Celsius: "))
 fahrenheit = (celsius * 9/5) + 32

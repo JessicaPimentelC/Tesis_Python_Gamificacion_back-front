@@ -54,7 +54,7 @@ const Enunciado15 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`metros = float(input("Ingresa el valor en metros: "))
 kilometros = metros / 1000

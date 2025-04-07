@@ -18,7 +18,6 @@ const Cuarenta = () => {
   const [hoveredInsignia, setHoveredInsignia] = useState(null);
   const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [score, setScore] = useState(0);
   const [errores, setErrores] = useState(0); 
@@ -31,6 +30,8 @@ const Cuarenta = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState('');
+  const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
+
   
 useEffect(() => {
     const fetchUsuario = async () => {

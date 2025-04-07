@@ -49,7 +49,7 @@ const Enunciado3Nivel2 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 nota1 = float(input("Ingresa la nota 1: ")) 
 nota2 = float(input("Ingresa la nota 2: ")) 

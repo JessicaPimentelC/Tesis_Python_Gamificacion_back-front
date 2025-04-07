@@ -19,7 +19,6 @@ const Veintiuno = () => {
   const [hoveredInsignia, setHoveredInsignia] = useState(null);
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
-  
   const [errores, setErrores] = useState(0); 
   const [userInfo, setUserInfo] = useState(null);
   const [errorMessage,setErrorMessage] = useState(null);

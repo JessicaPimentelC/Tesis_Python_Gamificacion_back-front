@@ -49,7 +49,7 @@ const Enunciado4Nivel2 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 precio = float(input("Ingresa el precio del producto: ")) 
 if precio >= 50.000: 

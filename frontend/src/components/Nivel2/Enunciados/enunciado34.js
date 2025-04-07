@@ -52,7 +52,7 @@ const Enunciado34Nivel2 = () => {
             El programa solicita al usuario que ingrese su año de nacimiento y, utilizando el año actual obtenido con la librería datetime, calcula su edad.  </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 from datetime import datetime
 año_nacimiento = int(input("Ingresa tu año de nacimiento: "))

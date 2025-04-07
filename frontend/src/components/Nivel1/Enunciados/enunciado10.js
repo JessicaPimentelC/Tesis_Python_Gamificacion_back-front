@@ -72,7 +72,7 @@ const Enunciado10 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-content">
+                <pre className="code">
                   <code>
                     {`texto=input("Ingrese un texto: ")
 print(texto)

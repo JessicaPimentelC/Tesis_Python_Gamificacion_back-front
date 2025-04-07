@@ -51,7 +51,7 @@ const Enunciado33Nivel2 = () => {
             El programa solicita al usuario que ingrese dos cadenas de texto y, utilizando una estructura de decisión (if-else), verifica si ambas cadenas son iguales o diferentes.   </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
-                <pre className="code-area">
+                <pre className="code">
                   <code>{`
 contraseña_correcta = "python123"
 contraseña = input("Ingresa la contraseña: ")
