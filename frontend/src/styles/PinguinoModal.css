@@ -148,4 +148,24 @@
     cursor: pointer;
   }
   
+  .penguin-container {
+    perspective: 1000px;
+    transition: transform 0.6s ease;
+  }
+  
+  .penguin-container:hover .penguin {
+    transform: rotateY(25deg) rotateX(10deg) scale(1.05);
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .penguin-content .penguin {
+    position: relative;
+    width: 120px;
+    height: 160px;
+    background-color: #2c3e50;
+    border-radius: 50% 50% 40% 40%;
+    animation: bounce 2s infinite;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+  }
   
