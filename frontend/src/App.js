@@ -17,6 +17,7 @@ import Examennivel2 from './components/Examennivel2';
 import Examennivel3 from './components/Examennivel3';
 import Condicionales from './components/Condicionales';
 import Unotest from './components/Unotest';
+import Chatbot from './components/Chatbot'; 
 
 import Enunciado1 from './components/Nivel1/Enunciados/enunciado1';
 import Enunciado3 from './components/Nivel1/Enunciados/enunciado3';
@@ -367,6 +368,7 @@ const App = () => {
         <Route path="/loginsesion" element={<Loginsesion />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/lecciones" element={<Lecciones />} />
         <Route path="/nivel1" element={<Nivel1 />} />

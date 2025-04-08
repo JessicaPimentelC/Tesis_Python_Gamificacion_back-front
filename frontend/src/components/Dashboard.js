@@ -8,7 +8,7 @@ import Header from "./Header";
 import PinguinoModal from "./PinguinoModal";
 import Ruleta from "./Ruleta";
 import MediaQuery from "react-responsive";
-
+import Chatbot from "./Chatbot";
 const Dashboard = () => {
   const [loadingProgress2, setLoadingProgress2] = React.useState(0);
   const [showModal, setShowModal] = React.useState(false);
@@ -291,7 +291,8 @@ const Dashboard = () => {
           {/* <Ruleta></Ruleta>*/}
           </div>
         </div>
-          
+           {/* Integración del Chatbot */}
+        <Chatbot />
 
         {showModal && (
           <div className="modal-overlay" onClick={handleCancelCerrarSesion}>
