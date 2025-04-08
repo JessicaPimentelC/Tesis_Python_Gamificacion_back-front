@@ -15,7 +15,6 @@ const Nivel2Treintauno = () => {
   const [showNext, setShowNext] = useState(false);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [hoveredInsignia, setHoveredInsignia] = useState(null);
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
@@ -28,6 +27,7 @@ const Nivel2Treintauno = () => {
   const [vidas, setVidas] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
     const fetchUsuario = async () => {

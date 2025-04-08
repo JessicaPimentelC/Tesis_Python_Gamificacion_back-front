@@ -275,6 +275,7 @@
   display: inline-block;     /* Que no se expanda a toda la línea */
   vertical-align: middle;    /* Alinear con el texto */
 }
+
 .draggable-words {
   display: flex;
   flex-wrap: wrap; /* Permite que los elementos se ajusten a diferentes tamaños de pantalla */

@@ -140,7 +140,6 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
     }
   };
 
-
   const options = [">", "<", "Cero"];
 
   const handleDragStart = (e, item) => {

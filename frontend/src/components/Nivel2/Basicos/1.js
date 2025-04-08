@@ -16,7 +16,6 @@ const UnoNivel2 = () => {
   const [isCorrect, setIsCorrect] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [score, setScore] = useState(0);
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [isOpen, setIsOpen] = useState(false); // Estado para la barra lateral
@@ -26,7 +25,8 @@ const UnoNivel2 = () => {
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   const [userInfo, setUserInfo] = useState(null);
   const [vidas, setVidas] = useState(null);
-  
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const fetchUsuario = async () => {
       try {

@@ -15,7 +15,6 @@ const Nivel2Dieciseis = () => {
   const [output, setOutput] = useState('');
   const [showNext, setShowNext] = useState(false);
   const [score, setScore] = useState(0);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [errores, setErrores] = useState(0);
@@ -24,6 +23,7 @@ const Nivel2Dieciseis = () => {
   const [vidas, setVidas] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
 
   useEffect(() => {
       const fetchUsuario = async () => {
