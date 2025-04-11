@@ -69,9 +69,11 @@ const Enunciado23 = () => {
               </p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className='code'>
                 <code>
                   {`primerNum = int(input("Ingrese el primer número"))\nsegundoNum = int(input("Ingrese el segundo número"))\nprint("El promedio de los números es: ", (primerNum + segundoNum) / 2)`}
                 </code>
+                </pre>
               </div>
 
               {!showGif && (

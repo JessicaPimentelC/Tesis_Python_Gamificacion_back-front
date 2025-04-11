@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Lecciones.css';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Header from './Header';
 
 const Lecciones = () => {
   const [isLevel1Complete, setIsLevel1Complete] = useState(false); // Estado para controlar si el nivel 1 está completo
@@ -60,25 +61,10 @@ const Lecciones = () => {
 
   return (
     <div className="lecciones-container">
-      
       <Sidebar></Sidebar>
-
+      <Header></Header>
       <div className="content">
-        <div className="white-background">
-          <div className="header">
-            <button className="icon-button">
-              <img src="bandera.png" alt="Profile" className="profile" />
-            </button>
-            <button className="icon-button">
-              <img src="medalla.png" alt="Notification" className="notification" />
-            </button>
-            <button className="icon-button">
-              <img src="mensaje.png" alt="Help" className="help" />
-            </button>
-            <button className="icon-button">
-              <img src="AYUDA.jpeg" alt="Profile" className="profile" />
-            </button>
-          </div>
+        <div className="lecciones-white-background">
           <h1>BIENVENIDOS AL CURSO DE LENGUAJE DE PROGRAMACION PYTHON</h1>
           <div className="levels">
             <button className="level-button nivel-1" onClick={handleLevel1Click}>

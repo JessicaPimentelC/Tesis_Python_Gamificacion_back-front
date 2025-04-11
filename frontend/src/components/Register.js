@@ -79,7 +79,7 @@ const Register = ({ toggleView }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="register-button">REGISTRARME</button>
+          <button type="submit" className="register-button">Registrarme</button>
         </form>
         <div className="social-register">
           
@@ -87,9 +87,8 @@ const Register = ({ toggleView }) => {
             <Loginsesion />
           </GoogleOAuthProvider>
         </div>
-        <button onClick={() => toggleView('login')} className="toggle-button">Iniciar Sesión</button>
         <p className="terms">
-          Al registrarte en XXX, aceptas nuestros <a href="">Términos y Política de privacidad</a>.
+          Al registrarte en PythonGo, aceptas nuestros <a href="">Términos y Política de privacidad</a>.
         </p>
       </div>
     </div>

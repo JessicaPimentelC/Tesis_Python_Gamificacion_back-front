@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import '../styles/PinguinoModal.css';
 
-const PinguinoModal = () => {
+const PinguinoModal = ({ onPenguinClick }) => {
     const [showPenguinModal, setShowPenguinModal] = useState(false);
-    const [showPengui, setShowPenguin] = useState(false);
-
 
     const handlePenguinClick = () => {
-        setShowPenguinModal(true); // Al hacer clic, se muestra el modal y se oculta el pingüino
+        setShowPenguinModal(true);
     };
 
-    const closeShowPinguino = () => {
-        setShowPenguinModal(false); // Al cerrar el modal, vuelve a aparecer el pingüino
-    };    
     const closePinguino = () => {
-        setShowPenguinModal(false); // Al cerrar el modal, vuelve a aparecer el pingüino
+        setShowPenguinModal(false);
     };
-    console.log("estado pinguino", showPenguinModal)
+
+    const handleHelpClick = () => {
+        if (onPenguinClick) {
+            onPenguinClick(); // 🔥 Este activa el chatbot
+        }
+        setShowPenguinModal(false); // Opcional: cerrar el modal
+    };
+
     return (
         <div className="penguin-content">
-            {/* Renderiza el pingüino solo si el modal está cerrado */}
             {!showPenguinModal && (
                 <div className="penguin-container" onClick={handlePenguinClick}>
                     <div className="penguin">
@@ -36,22 +37,22 @@ const PinguinoModal = () => {
                 <div className="modal-overlay" onClick={closePinguino}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <h2>¡Hola, soy Pingui!</h2>
-                        <p>Aquí podrás encontrar todas las ayudas que necesites para completar los ejercicios. ¡No dudes en consultarlo cuando lo necesites!</p>
-                        
+                        <p>Aquí podrás encontrar todas las ayudas que necesites para completar los ejercicios.</p>
+
                         <div className="nivel1-card-header">
                             <p>Seleccione una Ayuda:</p>
                         </div>
-                        
+
                         <div className="modal-icons">
-                            <button className="modal-icon-button" onClick={() => alert('Ayuda 1: Idea')}>
+                            <button className="modal-icon-button" onClick={handleHelpClick}>
                                 <img src="/idea.gif" alt="Icono 1" className="modal-icon" />
                             </button>
-                            
-                            <button className="modal-icon-button" onClick={() => alert('Ayuda 2: Apoyo')}>
+
+                            <button className="modal-icon-button" onClick={handleHelpClick}>
                                 <img src="/apoyo.gif" alt="Icono 2" className="modal-icon" />
                             </button>
 
-                            <button className="modal-icon-button" onClick={() => alert('Ayuda 3: Cuaderno')}>
+                            <button className="modal-icon-button" onClick={handleHelpClick}>
                                 <img src="/cuaderno.gif" alt="Icono 3" className="modal-icon" />
                             </button>
                         </div>

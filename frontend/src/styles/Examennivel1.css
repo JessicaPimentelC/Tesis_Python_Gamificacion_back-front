@@ -178,7 +178,7 @@
 
 .submit-button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #4267B2;
   color: white;
   border: none;
   border-radius: 4px;
@@ -186,7 +186,7 @@
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: #4267B2;
 }
 
 /* Estilo específico para los GIFs en modales */
@@ -288,7 +288,7 @@
 
 * Estilos para los botones en horizontal */
 .submit-button {
-  background-color: #4CAF50;
+  background-color: #4267B2;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -299,7 +299,7 @@
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+  background-color: #4267B2;
 }
 /* Estilo de los botones */
 /* Estilo de los botones */
@@ -537,8 +537,11 @@
   }
 
   .exam-content {
+    margin-top: 20%;
     padding: 10px;
     border-radius: 30px;
+    width: 90%;
+
   }
 
   .exam-container h1 {

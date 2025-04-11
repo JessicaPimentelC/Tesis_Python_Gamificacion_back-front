@@ -342,7 +342,7 @@ const handleTouchEnd = (e) => {
           {/* Sección principal con el ejercicio */}
           <div className="white-background">
             <HeaderBody></HeaderBody>
-            <div className="header-title">
+            <div className="header-titulo">
               <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>

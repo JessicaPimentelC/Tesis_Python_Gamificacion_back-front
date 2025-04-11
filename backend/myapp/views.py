@@ -460,8 +460,12 @@ def obtener_insignias(request):
     serializer = InsigniaConFechaSerializer(insignias_obtenidas, many=True)
 
     # Definir mensaje solo si se otorgó una nueva insignia
-    mensaje = "¡Has obtenido una nueva insignia!" if insignias_otorgadas else ""
-
+    #mensaje = "¡Has obtenido una nueva insignia!" if insignias_otorgadas else ""
+    if insignias_otorgadas:
+        nombres = ", ".join([insignia.nombre for insignia in insignias_otorgadas])
+        mensaje = f"¡Has obtenido una nueva insignia! {nombres}"
+    else:
+        mensaje = ""
     return Response({
         "insignias": serializer.data,
         "nuevas_insignias": insignias_otorgadas,

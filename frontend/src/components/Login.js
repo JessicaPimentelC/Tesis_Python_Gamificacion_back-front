@@ -47,7 +47,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h1>¡Bienvenido a PythonLearner!</h1>
+        <h1>¡Bienvenido a PythonGo!</h1>
         <p className="login-description">
         "𝘿𝙚𝙨𝙘𝙪𝙗𝙧𝙚 𝙚𝙡 𝙥𝙤𝙙𝙚𝙧 𝙙𝙚 𝙡𝙖 𝙥𝙧𝙤𝙜𝙧𝙖𝙢𝙖𝙘𝙞ó𝙣 𝙚𝙣 𝙋𝙮𝙩𝙝𝙤𝙣 𝙮 𝙩𝙧𝙖𝙣𝙨𝙛𝙤𝙧𝙢𝙖 𝙩𝙪𝙨 𝙞𝙙𝙚𝙖𝙨 𝙚𝙣 𝙧𝙚𝙖𝙡𝙞𝙙𝙖𝙙."        </p>
         <form onSubmit={handleSubmit} className="login-form">
@@ -70,14 +70,13 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="login-button">LOGIN</button>
+          <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
         <div className="social-login">
           <Loginsesion/>
         </div>
         <div className="login-footer">
-          <a href="#" onClick={() => navigate('/register')}>Crear una cuenta</a>
-          <a href="#" onClick={() => navigate('reset')}>Olvidó la contraseña?</a>
+          <a href="#" onClick={() => navigate('/register')}>Registrarse</a>
         </div>
       </div>
     </div>

@@ -7,8 +7,6 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 import PinguinoModal from "./PinguinoModal";
 import Ruleta from "./Ruleta";
-import MediaQuery from "react-responsive";
-import Chatbot from "./Chatbot";
 const Dashboard = () => {
   const [loadingProgress2, setLoadingProgress2] = React.useState(0);
   const [showModal, setShowModal] = React.useState(false);
@@ -270,6 +268,69 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
+            <div
+              className="dashboard-left"
+              onClick={() => navigate("/lecciones")}
+            >
+              <button className="info-box-lesson lesson-box">
+                <h1>NIVEL 3</h1>
+                Programa tu futuro hoy mismo
+              </button>
+              <div className="button-route">
+                <button
+                  className={`route-button ${
+                    currentStep === 0 ? "active" : ""
+                  }`}
+                  onClick={handlePythonIconClick}
+                >
+                  <img
+                    src="python1.png"
+                    alt="Python Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 1 ? "active" : ""
+                  }`}
+                >
+                  <img src="libero.png" alt="Book Icon" className="icon-img" />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 2 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="bombillo.png"
+                    alt="Star Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 3 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cohetee.png"
+                    alt="Rocket Icon"
+                    className="icon-img"
+                  />
+                </button>
+                <button
+                  className={`route-button ${
+                    currentStep === 4 ? "active" : ""
+                  }`}
+                >
+                  <img
+                    src="cofre.png"
+                    alt="Treasure Icon"
+                    className="icon-img"
+                  />
+                </button>
+              </div>
+            </div>
             </div>
             <div className="dashboard-right">
             <button
@@ -292,7 +353,6 @@ const Dashboard = () => {
           </div>
         </div>
            {/* Integración del Chatbot */}
-        <Chatbot />
 
         {showModal && (
           <div className="modal-overlay" onClick={handleCancelCerrarSesion}>

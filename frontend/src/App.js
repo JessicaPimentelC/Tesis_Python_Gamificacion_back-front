@@ -123,6 +123,7 @@ import Header from './components/Header';
 import Challenges from './components/Challenges'; 
 import Avances from './components/Avances'; 
 import Nivel2 from './components/Nivel2'; 
+import Nivel3 from './components/Nivel3'; 
 import React from 'react';
 import UnoNivel2 from './components/Nivel2/Basicos/1'
 import DosNivel2 from './components/Nivel2/Basicos/2'
@@ -707,6 +708,7 @@ const App = () => {
         <Route path="/challenges" element={<Challenges />} /> 
         <Route path="/avances" element={<Avances />} /> 
         <Route path="/nivel2" element={<Nivel2 />} /> 
+        <Route path="/nivel3" element={<Nivel3 />} /> 
         <Route path="/editar-usuario/:user_id" element={<EditarUsuario />} />
         <Route path="/listar-usuarios" element={<ListarUsuario />} />
         <Route path="/crear-usuario" element={<RegistroUsuario />} />

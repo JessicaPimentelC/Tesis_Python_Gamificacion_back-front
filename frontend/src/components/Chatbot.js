@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/chatbot.css";
-import "../styles/PinguinoModal.css";
 
 const pythonDocs = {
   "variables": "En Python, una variable se define simplemente asignando un valor a un nombre. Ejemplo: x = 10",
@@ -36,7 +35,7 @@ const pythonDocs = {
   "map": "Aplica una función a cada elemento de una lista. Ejemplo: map(lambda x: x*2, [1,2,3])",
   "filter": "Filtra elementos según una condición. Ejemplo: filter(lambda x: x>2, [1,2,3,4])"
 };
-const Chatbot = () => {
+const Chatbot = ({ onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { text: "¡Hola hola! Soy Pingüino, y estoy listo pa’ ayudarte con lo que necesites 🧠💬", sender: "bot" }
@@ -92,22 +91,10 @@ const Chatbot = () => {
 
   return (
     <div className="chatbot-container">
-      {!isOpen && (
-        <div className="penguin-container" onClick={toggleChatbot}>
-          <div className="penguin">
-            <div className="eye left"></div>
-            <div className="eye right"></div>
-            <div className="beak"></div>
-            <div className="foot left"></div>
-            <div className="foot right"></div>
-          </div>
-        </div>
-      )}
-      {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
             <span>Chatbot - Pingüino</span>
-            <button onClick={toggleChatbot}>✖</button>
+            <button onClick={onClose}>✖</button>
           </div>
           <div className="chatbot-messages">
             {messages.map((msg, index) => (
@@ -146,7 +133,6 @@ const Chatbot = () => {
             <button onClick={handleSendMessage}>Enviar</button>
           </div>
         </div>
-      )}
     </div>
   );
 };

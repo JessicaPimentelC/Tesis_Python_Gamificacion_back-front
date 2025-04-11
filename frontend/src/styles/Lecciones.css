@@ -8,13 +8,20 @@
   height: 100vh; /* Ocupa todo el alto de la ventana */
 }
 
-
-
 .logo {
   width: 80px;
   margin-bottom: 20px;
 }
-
+.lecciones-white-background {
+  background-color: #fff; /* Color blanco */
+  padding: 20px;
+  border: 1px solid #ccc; /* Borde opcional */
+  border-radius: 5px;
+  width: 80%; /* Limita el ancho */
+  max-width: 600px; /* Evita que sea demasiado grande */
+  text-align: center; /* Centra el texto dentro */
+  margin-top: 20%;
+}
 .score {
   display: flex;
   align-items: center;

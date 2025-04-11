@@ -70,9 +70,11 @@ const Enunciado21 = () => {
               En Python, es posible crear algoritmos que nos ayuden a resolver problemas matemáticos de manera fácil y rápida.Aprenderás a solicitar al usuario que ingrese los valores de la base y la altura del triángulo, y luego usar esos datos para calcular y mostrar el área.</p>
               <div className="code-box">
                 <div className="code-header">Python</div>
+                <pre className="code">
                 <code>
                     {`base = float(input("Ingresa la base del triángulo: "))\naltura = float(input("Ingresa la altura del triángulo: "))\narea = base * altura\nprint("El área del triángulo es", area)`}
                   </code>
+                  </pre>
               </div>
 
               {!showGif && (

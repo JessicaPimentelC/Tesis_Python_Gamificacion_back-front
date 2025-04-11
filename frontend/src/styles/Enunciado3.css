@@ -127,8 +127,9 @@
     border-radius: 8px;
     text-align: center;
     width: 300px;
+    max-width: 90%; /* Para asegurar que el modal no sea demasiado ancho en pantallas pequeñas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 .modal-close-button {
     background-color: #ff5733;
     color: #fff;
@@ -169,15 +170,6 @@
     z-index: 3; /* Asegura que el modal esté por encima de todo el contenido */
 }
 
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 300px;
-    max-width: 90%; /* Para asegurar que el modal no sea demasiado ancho en pantallas pequeñas */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
 .modal-content h2 {
     color: #ff5733; /* Color para el título del modal */

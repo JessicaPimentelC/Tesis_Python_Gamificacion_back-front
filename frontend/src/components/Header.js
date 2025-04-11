@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Header.css";
 import PinguinoModal from "./PinguinoModal";
 import Mapa from "./Mapa";
+import Chatbot from "./Chatbot";
 
 
 const Header = () => {
@@ -17,16 +18,12 @@ const Header = () => {
     const [searchText, setSearchText] = useState("");
     const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
     const [isModalOpenMapa, setIsModalOpenMapa] = useState(false);
-
+    const [showChatbot, setShowChatbot] = useState(false);
+    
     const openModalMapa = () => {
         setIsModalOpenMapa((prevState) => !prevState); // Alterna el estado del modal
         console.log("clikeado mapa", isModalOpenMapa);
 
-    };
-
-    const openModalPinguino = () => {
-        setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
-        console.log("clikeado pinguino", isModalOpenPinguino);
     };
     const handleForoIconClick = () => {
         navigate("/foro");
@@ -96,8 +93,17 @@ const Header = () => {
     const closeModalMapa = () => {
         setIsModalOpenMapa(false); // Cerrar el modal
     };
+    const openModalPinguino = () => {
+        setIsModalOpenPinguino(!isModalOpenPinguino);
+      };
+      
+    const handlePenguinClick = () => {
+        setShowChatbot(true);
+    };
 
-
+    const handleCloseChatbot = () => {
+        setShowChatbot(false);
+      };
     return (
         <div className="dashboard-header">
             <div className="header-buttons">
@@ -131,10 +137,12 @@ const Header = () => {
                 <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
                     <img src="/bandera_header.png" alt="Icono Insignias" className="header-icon" />
                 </button>
-                <button className="icon-button-mapa" onClick={openModalPinguino}>
+                <button className="icon-button-mapa" onClick={handlePenguinClick}>
                     <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
-                </button>
-                {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
+                </button>           
+                    {showChatbot && (
+                    <Chatbot onClose={handleCloseChatbot} />
+                    )}
                 <button className="icon-button-mapa" onClick={handleForoIconClick}>
                     <img src="/foro.png" alt="Icon 3" className="header-icon" />
                 </button>

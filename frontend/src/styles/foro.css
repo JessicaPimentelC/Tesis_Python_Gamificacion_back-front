@@ -12,6 +12,23 @@
   border-bottom: 1px solid #ccc;
   height: 50px;
 }
+/* Mejora visual en pantallas pequeñas */
+@media (max-width: 480px) {
+  .foro-content {
+    padding: 15px;
+    width: 90%; /* Ajustado para ocupar todo el ancho disponible */
+    margin-top: 30px;
+  }
+}
+@media (min-width: 768px) {
+  .foro-container {
+    flex-direction: row; /* o 'row-reverse' si querés cambiar el orden */
+    align-items: flex-start;
+  }
+  .foro-content {
+    width: 90%; /* Ajustado para ocupar todo el ancho disponible */
+  }
+}
 
 .back-button {
   background: none;
@@ -59,7 +76,7 @@
 
 .foro-content {
   margin-top: 50px;
-  width: 100%; /* Ajustado para ocupar todo el ancho disponible */
+  width: 90%; /* Ajustado para ocupar todo el ancho disponible */
   padding: 20px;
   background-color: #f4f4f4;
 }
@@ -205,10 +222,6 @@
   cursor: pointer;
   margin: 5px;
 }
-
-.modal-close {
-  background-color: #e74c3c;
-}
 .success-message {
   color: green;
   font-size: 16px;
@@ -242,9 +255,6 @@
   margin: 5px;
 }
 
-.modal-close {
-  background-color: #e74c3c;
-}
 .reply-button {
   background-color: #008CBA;
   color: white;
@@ -304,6 +314,7 @@
 .modal-close {
   background-color: #e74c3c;
 }
+
 .actions {
   display: flex;
   justify-content: space-between;

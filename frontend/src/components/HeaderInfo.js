@@ -3,11 +3,13 @@ import "../styles/HeaderInfo.css";
 import { useNavigate } from "react-router-dom";
 import Mapa from "./Mapa";
 import PinguinoModal from "./PinguinoModal";
+import Chatbot from "./Chatbot";
 
 const HeaderInfo = () => {
     const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
     const navigate = useNavigate();
     const [isModalOpenMapa, setIsModalOpenMapa] = useState(false);
+    const [showChatbot, setShowChatbot] = useState(false);
 
     const openModalPinguino = () => {
         setIsModalOpenPinguino((prevState) => !prevState); // Alterna el estado del modal
@@ -25,14 +27,22 @@ const HeaderInfo = () => {
     const closeModalPinguino = () => {
         setIsModalOpenPinguino(false); // Cerrar el modal
     }
+    const handlePenguinClick = () => {
+        setShowChatbot(true);
+    };
+
+    const handleCloseChatbot = () => {
+        setShowChatbot(false);
+      };
     return (
     <div className="header-status">
         <span></span>
-        <button className="icon-button-mapa" onClick={openModalPinguino}>
-            <img src="/muñeco.png" alt="Icono Moneda" />
-        </button>
-        {isModalOpenPinguino && <PinguinoModal onClick={openModalPinguino} />}
-        
+        <button className="icon-button-mapa" onClick={handlePenguinClick}>
+                            <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
+        </button>           
+            {showChatbot && (
+            <Chatbot onClose={handleCloseChatbot} />
+            )}
         <button className="icon-button-mapa" onClick={openModalMapa}>
             <img src="/colombia.png" alt="Icono Mapa" className="info-icon" />
         </button>

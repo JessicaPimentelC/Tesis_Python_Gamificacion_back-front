@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import HeaderInfo from "./HeaderInfo";
 
-const Nivel2 = () => {
+const Nivel3 = () => {
     const [input1, setInput1] = useState("");
     const [result, setResult] = useState(null);
     const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
@@ -64,15 +64,15 @@ const Nivel2 = () => {
                 <HeaderInfo></HeaderInfo>
                 </div>
                 <div className="header-title">
-                    <h2>NIVEL 2</h2>
+                    <h2>NIVEL 3</h2>
                 </div>
-                <p>¡𝙀𝙡 𝙥𝙧𝙞𝙢𝙚𝙧 𝙣𝙞𝙫𝙚𝙡 𝙚𝙨𝙩á 𝙘𝙤𝙢𝙥𝙡𝙚𝙩𝙖𝙙𝙤, 𝙥𝙪𝙚𝙙𝙚𝙨 𝙘𝙤𝙣𝙩𝙞𝙣𝙪𝙖𝙧 𝙖𝙡 𝙨𝙞𝙜𝙪𝙞𝙚𝙣𝙩𝙚 𝙣𝙞𝙫𝙚𝙡!</p>
+                <p>¡𝘾𝙤𝙢𝙥𝙡𝙚𝙩𝙖𝙨𝙩𝙚 𝙚𝙡 𝙣𝙞𝙫𝙚𝙡 𝟮 𝙘𝙤𝙣 é𝙭𝙞𝙩𝙤, 𝙛𝙚𝙡𝙞𝙘𝙞𝙩𝙖𝙘𝙞𝙤𝙣𝙚𝙨! ¡𝙀𝙨𝙩á𝙨 𝙚𝙣 𝙚𝙡 ú𝙡𝙩𝙞𝙢𝙤 𝙣𝙞𝙫𝙚𝙡!</p>
                 <div className={`nivel1-card ${showNext ? "fade-out" : ""}`}>
                 <div className="nivel1-card-header">
-                    <span>Estructuras de decisión                    </span>
+                    <span>Estructuras de repetición                    </span>
                 </div>
                 <div className="nivel1-card-body">
-                    <p>Las estructuras de decisión controlan el flujo del programa según condiciones lógicas. Estas condiciones generalmente se expresan mediante operadores relacionales (<code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>) y operadores lógicos (<code>and</code>, <code>or</code>, <code>not</code>).</p>
+                    <p>Las estructuras de repetición permiten ejecutar instrucciones mas de una vez. Se caracterizan por tener un punto inicial de partida y una condiición final</p>
 
                     <div className="nivel1-card-button-container">
                     {!showNext && (
@@ -126,52 +126,8 @@ const Nivel2 = () => {
             </div>
             </div>
         </div>
-
-        {/* Modal */}
-        {showModal && (
-            <div className="modal-overlay" onClick={closeModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <h2>¡Hola, soy pingui!</h2>
-                <p>
-                Aquí podrás encontrar todas las ayudas que necesites para
-                completar los ejercicios. ¡No dudes en consultarlo cuando lo
-                necesites!
-                </p>
-
-                <div className="nivel1-card-header">
-                <p>Seleccione una Ayuda:</p>
-                </div>
-
-                {/* Contenedor de los iconos en forma vertical */}
-                <div className="modal-icons">
-                <button
-                    className="modal-icon-button"
-                    onClick={() => alert("Ayuda 1: Idea")}
-                >
-                    <img src="idea.gif" alt="Icono 1" className="modal-icon" />
-                </button>
-
-                <button
-                    className="modal-icon-button"
-                    onClick={() => alert("Ayuda 2: Apoyo")}
-                >
-                    <img src="apoyo.gif" alt="Icono 2" className="modal-icon" />
-                </button>
-
-                <button
-                    className="modal-icon-button"
-                    onClick={() => alert("Ayuda 3: Cuaderno")}
-                >
-                    <img src="cuaderno.gif" alt="Icono 3" className="modal-icon" />
-                </button>
-                </div>
-
-                <button onClick={closeModal}>Cerrar</button>
-            </div>
-            </div>
-        )}
         </div>
     );
 };
 
-export default Nivel2;
+export default Nivel3;

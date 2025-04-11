@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../styles/Nivel1.css'; // Asegúrate de que la ruta sea correcta
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import HeaderBody from './HeaderBody';
+import HeaderInfo from './HeaderInfo';
 
 const Nivel1 = ({ toggleView }) => {
   const [showNext, setShowNext] = useState(false);
@@ -29,27 +31,13 @@ const Nivel1 = ({ toggleView }) => {
       <Sidebar></Sidebar>
       <div className="content">
         <div className="white-background">
-          <div className="header">
-            <button className="icon-button">
-              <img src="python1.png" alt="Icono Nivel" />
-            </button>
-            <div className="header-title">
-              <h2>NIVEL 1</h2>
-            </div>
-            <div className="header-status">
-              <span></span>
-              <button className="icon-button">
-                <img src="informacion.png" alt="Icono Moneda" />
-              </button>
-              <button className="icon-button">
-                <img src="ubicacion.png" alt="Icono Pregunta" />
-              </button>
-              <button className="icon-button">
-                <img src="AYUDA.jpeg" alt="Icono Perfil" />
-              </button>
-            </div>
-          </div>
-          <p>¡𝙀𝙡 𝙥𝙧𝙞𝙢𝙚𝙧 𝙥𝙖𝙨𝙤 𝙚𝙨𝙩á 𝙙𝙖𝙙𝙤, 𝙘𝙤𝙢𝙚𝙣𝙘𝙚𝙢𝙤𝙨 𝙟𝙪𝙣𝙩𝙤𝙨 𝙚𝙨𝙩𝙚 𝙣𝙞𝙫𝙚𝙡!</p>
+        <div className="header">
+                <HeaderInfo></HeaderInfo>
+                </div>
+                <div className="header-title">
+                    <h2>NIVEL 1</h2>
+                </div>          
+                <p>¡𝙀𝙡 𝙥𝙧𝙞𝙢𝙚𝙧 𝙥𝙖𝙨𝙤 𝙚𝙨𝙩á 𝙙𝙖𝙙𝙤, 𝙘𝙤𝙢𝙚𝙣𝙘𝙚𝙢𝙤𝙨 𝙟𝙪𝙣𝙩𝙤𝙨 𝙚𝙨𝙩𝙚 𝙣𝙞𝙫𝙚𝙡!</p>
           <div className={`nivel1-card ${showNext ? 'fade-out' : ''}`}>
             <div className="nivel1-card-header">
               <span>Python: Un Lenguaje de Programación Innovador y Versátil</span>

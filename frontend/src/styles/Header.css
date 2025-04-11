@@ -15,8 +15,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-end; /* Mantiene los íconos a la derecha */
-  gap: 15px; /* Espacio uniforme entre íconos */
-  margin-right: 50px;
 }
 
 /* Ajustes de tamaño para los íconos */
@@ -67,11 +65,6 @@
 
 /* Ajustes responsivos */
 @media (max-width: 1024px) {
-  .icon-group-header {
-    gap: 10px;
-    margin-right: 20px;
-    
-  }
 
   .header-icon,
   .profile-picture,
@@ -94,8 +87,6 @@
 
   .icon-group-header {
     justify-content: center;
-    gap: 8px;
-    margin-right: 50px;
 
   }
 
@@ -115,9 +106,7 @@
 @media (max-width: 480px) {
   .icon-group-header {
     flex-wrap: wrap;
-    gap: 5px;
     align-items: self-end;
-    margin-right: 50px;
   }
 
   .header-icon,
