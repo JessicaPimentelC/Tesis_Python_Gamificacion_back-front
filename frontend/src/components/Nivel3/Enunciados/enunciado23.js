@@ -51,7 +51,6 @@ const Enunciado23Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 num = int(input("numero: "))
 fact = 1
 for i in range(num,0,-1):

@@ -72,7 +72,7 @@ const Enunciado36 = () => {
 </p>
   <div className="code-box">
     <div className="code-header">Python</div>
-    <pre>
+    <pre className='code'>
     <code>
       {`a = input("ingresa el primer valor:")\nb = input("ingresa el segundo valor:")\n
 a, b = b, a\n

@@ -58,9 +58,6 @@ const Enunciado50Nivel3 = () => {
 colores = ["rojo", "verde", "azul"]
 for color in colores:
     print(color)
-
-
-
 `} </code>
                 </pre>
               </div>

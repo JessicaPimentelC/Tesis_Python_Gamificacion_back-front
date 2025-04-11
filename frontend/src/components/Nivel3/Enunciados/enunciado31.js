@@ -54,17 +54,11 @@ const Enunciado31Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
 contador = 0
 for i in range(1, 51):
     if i % 3 == 0:
         contador += 1
 print(f"Hay {contador} múltiplos de 3 entre 1 y 50.")
-
-
-
-
 `} </code>
                 </pre>
               </div>

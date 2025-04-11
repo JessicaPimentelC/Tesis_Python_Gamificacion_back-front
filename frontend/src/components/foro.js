@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "./Header";
 import API_BASE_URL from "../config";
+import { esAdmin } from "../utils/validacionUsuario"; 
+import Swal from 'sweetalert2';
 
 const Foro = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -312,7 +314,8 @@ const Foro = () => {
                 <div className="question" key={q.id_foro || `question-${index}`}>
                 <div className="question-header">
                     <p className="question-info">
-                    Tema: {q.tema} | Fecha: {q.fecha_creacion}
+                    Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
+                    Pregunta de: {username}
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -335,7 +338,7 @@ const Foro = () => {
                         {" "}
                         <div className="answer-header">
                             <p className="answer-info">
-                            Respuesta de {a.usuario} en {a.fecha_participacion}
+                            Respuesta de {username} en {a.fecha_participacion}
                             </p>
                         </div>
                         <p className="answer-text">{a.comentario}</p>
@@ -361,18 +364,21 @@ const Foro = () => {
                                 src="/eliminar.png"
                                 alt="Eliminar"
                                 className="action-icon"
-                                onClick={() =>
-                                handleDeleteRespuesta(
+                                onClick={  () =>{
+                                  if (esAdmin(userInfo)) {
+                                  handleDeleteRespuesta(
                                     a.id_participacion_foro,
                                     index
                                 )
+                                }else {
+                                  Swal.fire({
+                                    icon: 'error',
+                                    title: 'Acceso denegado',
+                                    text: 'No tienes permiso para eliminar esta respuesta.',
+                                    confirmButtonColor: '#d33',
+                                  });
                                 }
-                            />
-                            <img
-                                src="/correo.png"
-                                alt="Correo"
-                                className="action-icon"
-                                onClick={() => openResponseModal(index)}
+                              }}
                             />
                             </div>
                         </div>
@@ -385,13 +391,18 @@ const Foro = () => {
                         src="/eliminar.png"
                         alt="Eliminar"
                         className="action-icon"
-                        onClick={() => handleDeletePregunta(q.id_foro, index)}
-                    />
-                    <img
-                        src="/correo.png"
-                        alt="Correo"
-                        className="action-icon"
-                        onClick={() => openResponseModal(index)}
+                        onClick={() =>{
+                          if (esAdmin(userInfo)) {
+                            handleDeletePregunta(q.id_foro, index)
+                          }else {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Acceso denegado',
+                              text: 'No tienes permiso para eliminar esta pregunta.',
+                              confirmButtonColor: '#d33',
+                            });
+                          }}
+                        }
                     />
                     </div>
                 </div>

@@ -61,7 +61,6 @@ for i in range(1, numero  + 1):
     if i % 3 == 0 or i % 5 == 0:
         contador += 1
 print("Cantidad de múltiplos de 3 o 5:", contador)
-
 `} </code>
                 </pre>
               </div>

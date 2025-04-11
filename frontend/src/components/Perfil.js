@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import API_BASE_URL from "../config";
+import { esAdmin } from "../utils/validacionUsuario"; 
 
 const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -147,7 +148,8 @@ const Perfil = () => {
               <p>Cargando información del usuario...</p>
             )}
           </div>
-          <div className="botones-container">
+          {esAdmin(userInfo) && (
+            <div className="botones-container">
             <button className="boton-editar" onClick={handleCrear}>
               Crear usuario
             </button>
@@ -158,6 +160,7 @@ const Perfil = () => {
               Listar usuarios
             </button>
           </div>
+          )}
         </div>
         <h3>🏅 Logros</h3>
         <div className="perfil-logros">

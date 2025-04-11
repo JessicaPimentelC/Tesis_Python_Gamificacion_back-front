@@ -55,7 +55,6 @@ const Enunciado42Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 numero = 123456789
 contador = 0
 

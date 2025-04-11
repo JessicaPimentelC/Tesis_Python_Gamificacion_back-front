@@ -57,7 +57,6 @@ const Enunciado41Nivel3 = () => {
                   <code>{`
 i = 1
 producto = 1
-
 while i <= 5:
     producto *= i
     i += 1

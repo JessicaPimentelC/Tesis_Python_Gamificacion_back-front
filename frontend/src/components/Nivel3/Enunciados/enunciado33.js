@@ -55,7 +55,6 @@ const Enunciado33Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 suma = 0
 while True:
     numero = float(input("Ingresa un número (0 para terminar): "))

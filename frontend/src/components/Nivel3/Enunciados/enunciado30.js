@@ -54,18 +54,13 @@ const Enunciado30Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
 numero = int(input("Ingrese un número entero: "))
-
 while numero != 1:
     if numero % 2 == 0:
         numero //= 2
     else:
         numero = 3 * numero + 1
     print(numero)
-
-
 `} </code>
                 </pre>
               </div>

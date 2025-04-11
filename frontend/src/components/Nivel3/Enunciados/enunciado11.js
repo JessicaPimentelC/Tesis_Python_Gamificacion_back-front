@@ -53,9 +53,7 @@ const Enunciado11Nivel3 = () => {
                   <code>{`
 n=int(input("ingrese un numero: "))
 for n in range(0,n):
-print('hola')
-
-
+    print('hola')
 `} </code>
                 </pre>
               </div>

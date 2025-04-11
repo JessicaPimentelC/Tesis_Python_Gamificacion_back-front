@@ -61,7 +61,6 @@ while i <= 5:
     suma += i
     i += 1
 print("Suma:", suma)
-
 `} </code>
                 </pre>
               </div>

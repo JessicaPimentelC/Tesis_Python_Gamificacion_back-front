@@ -58,7 +58,6 @@ const Enunciado47Nivel3 = () => {
 palabra = "Python"
 for letra in palabra:
     print(letra)
-
 `} </code>
                 </pre>
               </div>

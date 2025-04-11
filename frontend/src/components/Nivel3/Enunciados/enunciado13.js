@@ -53,11 +53,12 @@ const Enunciado13Nivel3 = () => {
                   <code>{`
 suma = 0
 numero = int(input(u"Ingrese un número: "))
+
 while numero!=0:
     suma += numero
     numero = int(input(u"Ingrese un número: ")) 
-if (numero==0):
-    print("Suma total:",suma)
+
+print("Suma total:",suma)
 	
 `} </code>
                 </pre>

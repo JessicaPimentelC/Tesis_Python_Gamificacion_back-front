@@ -56,7 +56,6 @@ for i in range(1,num):
     impares = i % 2
     if (impares != 0):
         print (i)
-
 `} </code>
                 </pre>
               </div>

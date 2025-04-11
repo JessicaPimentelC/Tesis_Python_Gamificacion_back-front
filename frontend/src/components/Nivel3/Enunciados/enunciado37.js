@@ -55,7 +55,6 @@ const Enunciado37Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 i = 1
 while i <= 50:
     print(i)

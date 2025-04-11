@@ -53,9 +53,9 @@ const Enunciado16Nivel3 = () => {
                   <code>{`
 contador = 0 
 for i in range(1, 101): 
-if i % 2 == 0: 
-contador += 1 
-print("Cantidad de números pares:", contador)
+    if i % 2 == 0: 
+    contador += 1 
+    print("Cantidad de números pares:", contador)
 `} </code>
                 </pre>
               </div>

@@ -51,8 +51,6 @@ const Enunciado25Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
 for i in range(5, 0, -1):
     for j in range(i, 0, -1):
         print(j, end=" ")

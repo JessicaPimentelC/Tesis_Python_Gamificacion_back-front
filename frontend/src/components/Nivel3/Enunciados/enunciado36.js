@@ -55,14 +55,10 @@ const Enunciado36Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 numero = 25
-
 for i in range(1, 101):
     if i % numero == 0:
         print(i)
-
-
 `} </code>
                 </pre>
               </div>

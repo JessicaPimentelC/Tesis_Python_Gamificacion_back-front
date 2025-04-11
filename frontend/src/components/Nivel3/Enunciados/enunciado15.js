@@ -53,6 +53,7 @@ const Enunciado15Nivel3 = () => {
                   <code>{`
 i = 0
 entrada = input("ingrese la palabra: ")
+
 while len(entrada) > 3:
     entrada = input("ingrese la palabra: ")
     i = i+1

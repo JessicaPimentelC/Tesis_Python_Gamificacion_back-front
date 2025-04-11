@@ -51,11 +51,10 @@ const Enunciado26Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
 i=0
 total=0
 totalDes=0
+
 while i<5:
     nota=int(input("Ingrese la nota: "))
     if nota >= 3:
@@ -63,6 +62,7 @@ while i<5:
     else:
         totalDes=totalDes+1
     i=i+1
+    
 print("Aprobaron ",total)
 print("Desaprobaron ",totalDes)
 `} </code>

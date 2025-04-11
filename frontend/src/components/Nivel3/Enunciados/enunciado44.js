@@ -62,8 +62,6 @@ while num > 0:
     suma += num % 10
     num //= 10
 print("Suma de los dígitos:", suma)
-
-
 `} </code>
                 </pre>
               </div>

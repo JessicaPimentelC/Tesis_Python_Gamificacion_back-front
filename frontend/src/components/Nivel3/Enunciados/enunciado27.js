@@ -51,9 +51,6 @@ const Enunciado27Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
-
 cadena = input("Ingrese una cadena: ")
 caracterBuscado = input("Ingrese el carácter a contar: ")
 contador = 0

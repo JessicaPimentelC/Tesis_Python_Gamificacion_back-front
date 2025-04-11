@@ -55,7 +55,6 @@ const Enunciado32Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
 suma = 0
 for i in range(1, 101):
     suma += i

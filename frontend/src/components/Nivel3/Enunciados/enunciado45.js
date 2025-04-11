@@ -55,10 +55,6 @@ const Enunciado45Nivel3 = () => {
                 <div className="code-header">Python</div>
                 <pre className="code">
                   <code>{`
-
-
-
-
 a = 7
 b = 5
 resultado = 0
@@ -67,8 +63,6 @@ while i < b:
     resultado += a
     i += 1
 print("Multiplicación:", resultado)
-
-
 `} </code>
                 </pre>
               </div>
