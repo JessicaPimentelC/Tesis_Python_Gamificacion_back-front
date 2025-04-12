@@ -188,7 +188,7 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
 
             if (isCorrectAnswer) {
                 setShowNextButton(true);
-                setScore(score + 10);
+                  setScore(score + 10);
                 new Audio("/ganar.mp3").play();
             } else {
                 setShowNextButton(false);

@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,InsigniaConFechaSerializer,UsuarioEditarSerializer
 from django.contrib.auth import get_user_model
-from .models import Foro, Nivel, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking,VidasUsuario,Usuario_insignia
+from .models import Foro, Nivel,Puntaje, Participacion_foro, Ejercicio,Logro, Intento, UsuarioEjercicioInsignia, Insignia, IntentoEjercicio, EjercicioAsignado,Usuario_logro,Ranking,VidasUsuario,Usuario_insignia
 import subprocess
 from datetime import date
 from django.db.models import Sum
@@ -351,9 +351,12 @@ def get_score(request, user_id):
             Intento.objects.filter(usuario_id=user_id, resultado=True)
             .aggregate(total_errores=Sum('errores'))['total_errores'] or 0  # Evitar None
         )
-
+        votos_positivos = (
+            Participacion_foro.objects.filter(usuario_id=user_id, resultado=True).count()
+        )
+        puntos_por_votos = votos_positivos * 50  # o el valor que decidas
         # Calcular el puntaje final
-        score = puntos_por_ejercicio - penalizacion_errores
+        score = puntos_por_ejercicio - penalizacion_errores + puntos_por_votos
 
         return Response({'score': max(score, 0)}, status=200)  # Puntaje no puede ser negativo
     except Exception as e:
@@ -532,28 +535,38 @@ def run_code(request):
 
 @api_view(['POST'])
 def votar_respuesta(request):
-    participacion_id = request.data.get('id_participacion_foro')  # ID de la participación
-    voto = request.data.get('voto')  # 'like' o 'dislike'
+    participacion_id = request.data.get('id_participacion_foro')
+    voto = request.data.get('resultado')
 
     try:
         participacion = Participacion_foro.objects.get(id_participacion_foro=participacion_id)
 
+        # Ahora obtenemos directamente la instancia del usuario
+        user_instance = participacion.usuario
+
+        if not user_instance:
+            return Response({'success': False, 'error': 'Usuario no asignado a la participación'}, status=400)
+
+        puntaje, created = Puntaje.objects.get_or_create(usuario=user_instance)
+
         if voto == 'like':
             participacion.resultado = True
-            # Opcional: otorgar puntos al usuario por una respuesta útil
-            # usuario = User.objects.get(id=participacion.usuario_id)
-            # usuario.profile.puntos += 10
-            # usuario.profile.save()
+            puntaje.puntos += 50
         elif voto == 'dislike':
             participacion.resultado = False
 
         participacion.save()
+        puntaje.save()
+
         return Response({
             'success': True,
             'resultado': participacion.resultado,
+            'puntaje': puntaje.puntos
         })
+
     except Participacion_foro.DoesNotExist:
         return Response({'success': False, 'error': 'Participación no encontrada'}, status=404)
+
 
 @csrf_exempt
 def guardar_ejercicio(request):

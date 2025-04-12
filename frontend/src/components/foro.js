@@ -25,6 +25,7 @@ const Foro = () => {
   const [participaciones, setParticipaciones] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [usuarioId, setUsuarioId] = useState(null);
+  const [score, setScore] = useState(0);
   
   const fetchQuestions = async () => {
     try {
@@ -110,26 +111,51 @@ const Foro = () => {
   useEffect(() => {
     fetchUsuario();
   }, []);
+
+  const getCSRFToken = () => {
+    const cookies = document.cookie.split("; ");
+    const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
+    return csrfCookie ? csrfCookie.split("=")[1] : "";
+  };
+
   const handleVote = async (participacionId, tipoVoto) => {
+
     try {
+      const csrfToken = getCSRFToken();
       const response = await axios.post(
         `${API_BASE_URL}/myapp/votar_respuesta/`,
         {
           id_participacion_foro: participacionId,
-          voto: tipoVoto, // 'like' o 'dislike'
-        }
+          resultado: tipoVoto,  // 'like' es true, 'dislike' es false
+        },
+        {headers: {
+          "X-CSRFToken": csrfToken,  // Incluir el token CSRF en el header
+        },
+        withCredentials: true,  // Asegurarse de incluir cookies de sesión
+      }
       );
-
+  
       if (response.data.success) {
-        alert(
-          `Voto registrado: ${tipoVoto === "like" ? "Me gusta" : "No me gusta"}`
-        );
-        // Aquí puedes actualizar la UI o el estado local para reflejar el cambio
+        setScore(response.data.puntaje);  // Actualizar el puntaje con el valor devuelto por la API
+        Swal.fire({
+          icon: "success",
+          title: "¡Voto registrado!",
+          text:
+            tipoVoto === "like"
+              ? "Le diste un Me Gusta a la respuesta"
+              : "No te gustó esta respuesta",
+        });
       }
     } catch (error) {
-      console.error("Error al registrar el voto:", error);
+      console.error("Error al registrar el voto:", error.response || error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response ? error.response.data.error : "No se pudo registrar tu voto.",
+      });
     }
   };
+  
 
   const fetchParticipaciones = async () => {
     try {
@@ -348,14 +374,14 @@ const Foro = () => {
                                 src="/like.png"
                                 alt="Like"
                                 className="like-icon"
-                                onClick={() => handleVote(a.id, "like")}
+                                onClick={() => handleVote(a.id_participacion_foro, "like")}
                                 style={{ cursor: "pointer" }}
                             />
                             <img
                                 src="/dislike.png"
                                 alt="Dislike"
                                 className="dislike-icon"
-                                onClick={() => handleVote(a.id, "dislike")}
+                                onClick={() => handleVote(a.id_participacion_foro, "dislike")}
                                 style={{ cursor: "pointer" }}
                             />
                                 </div>

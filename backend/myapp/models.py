@@ -18,6 +18,7 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, username,password, **extra_fields)
 
+
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150,unique=True)
@@ -32,6 +33,12 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+class Puntaje(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    puntos = models.IntegerField(default=0)
+    def __str__(self):
+        return f"{self.usuario.username} - {self.puntos} puntos"
+    
 class Nivel(models.Model):
     id_nivel = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     nombre = models.CharField(max_length=50)
@@ -60,7 +67,7 @@ class Foro(models.Model):
 
 class Participacion_foro(models.Model):
     id_participacion_foro = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario_id = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     foro_id = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name='participaciones_foro')
     fecha_participacion = models.DateField()
     comentario = models.CharField(max_length=500)

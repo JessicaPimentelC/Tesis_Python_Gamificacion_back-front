@@ -59,7 +59,24 @@ const Puntaje = () => {
         fetchUsuario();
     }, []); 
 
+    const updateScore = async (tipoVoto) => {
+        const usuario_id = userInfo.id;  // Obtener el ID del usuario logueado
+        try {
+            const response = await axios.post(`${API_BASE_URL}/myapp/votar_respuesta/`, {
+                id_participacion_foro: 17, 
+                resultado: tipoVoto, // 'like' o 'dislike'
+            });
 
+            if (response.data.success) {
+                // Si el voto fue registrado correctamente, actualizamos el puntaje
+                setScore(response.data.puntos_actualizados); // Actualiza el puntaje
+            } else {
+                alert("Hubo un problema al registrar el voto.");
+            }
+        } catch (error) {
+            console.error("Error al registrar el voto:", error);
+        }
+    };
     
     if (error) {
         return <div className="text-content"><p>{error}</p></div>;
