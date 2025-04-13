@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
@@ -108,7 +109,7 @@ class Intento(models.Model):
 class VidasUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='vidas_usuario')
     vidas_restantes = models.IntegerField(default=5)
-
+    ultima_actualizacion = models.DateTimeField(default=timezone.now) 
     def __str__(self):
         return f"{self.usuario.username} - {self.vidas_restantes} vidas"
 

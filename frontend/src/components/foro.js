@@ -136,6 +136,7 @@ const Foro = () => {
       );
   
       if (response.data.success) {
+        console.log("puntaje",response.data.puntaje)
         setScore(response.data.puntaje);  // Actualizar el puntaje con el valor devuelto por la API
         Swal.fire({
           icon: "success",

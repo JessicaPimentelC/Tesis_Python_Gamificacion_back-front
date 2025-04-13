@@ -18,7 +18,8 @@ from django.http import JsonResponse
 from django.utils.timezone import now
 from google.auth.transport import requests
 from google.oauth2 import id_token
-
+from datetime import timedelta
+from django.utils import timezone
 User = get_user_model()
 
 #class ApiView(generics.ListCreateAPIView):
@@ -276,23 +277,27 @@ def ejercicio_python(request):
         
 @api_view(['POST'])
 def guardar_intento(request):
+    if not request.user.is_authenticated:
+        return Response({'error': 'Usuario no autenticado'}, status=401)
+
     serializer = IntentoSerializer(data=request.data)
+    usuario = request.user.id # Obtiene el usuario autenticado
+
     if serializer.is_valid():
         intento = serializer.save()
-        usuario = intento.usuario
+        vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=usuario)
+        if intento.resultado is False:
+            if vidas_usuario.vidas_restantes > 0:
+                #vidas_usuario.vidas_restantes -= 1
+                vidas_usuario.save()  # Guardamos el cambio        
 
-        # Contar intentos fallidos (resultado=False)
-        intentos_fallidos = Intento.objects.filter(usuario=usuario, resultado=False).count()
-
-        # Calcular vidas restantes
-        vidas_restantes = max(5 - intentos_fallidos, 0)
-
-        if vidas_restantes == 0:
-            return Response({'message': 'No tienes más vidas', 'vidas': vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
+        # Verificar si el usuario se quedó sin vidas
+        if vidas_usuario.vidas_restantes == 0:
+            return Response({'message': 'No tienes más vidas', 'vidas': vidas_usuario.vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
             'message': 'Intento guardado exitosamente',
-            'vidas': vidas_restantes,
+            'vidas': vidas_usuario.vidas_restantes,
             'errores': intento.errores  # Mostrar cantidad de errores en la respuesta
         }, status=status.HTTP_201_CREATED)
 
@@ -300,22 +305,32 @@ def guardar_intento(request):
 
 @api_view(['GET'])
 def obtener_vidas(request, user_id):
-    vidas_usuario = get_object_or_404(VidasUsuario, usuario_id=user_id)
-    return Response({"vidas": vidas_usuario.vidas_restantes}, status=status.HTTP_200_OK)
-
-def regenerar_una_vida(user_id):
     try:
-        vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario_id=user_id)
-        if vidas_usuario.vidas_restantes < 5:  # Solo si tiene menos de 5 vidas
-            vidas_usuario.vidas_restantes += 1
-            vidas_usuario.save()
-        return vidas_usuario.vidas_restantes
-    except VidasUsuario.DoesNotExist:
-        return 0
+        if not request.user.is_authenticated:
+            return Response({'error': 'Usuario no autenticado'}, status=401)
 
-def resetear_vidas(request, user_id):
-    vidas = regenerar_una_vida(user_id)
-    return JsonResponse({"mensaje": "Se ha restaurado 1 vida", "vidas": vidas})
+        usuario = request.user.id # Obtiene el usuario autenticado
+        
+        vidas_usuario, _ = VidasUsuario.objects.get_or_create(usuario=usuario)
+        print("vidas_en OBTENER vidas",vidas_usuario.vidas_restantes)
+        # Restaurar automáticamente si pasó el tiempo
+        #OJO PENDIENTE DESCOMENTAR
+        actualizar_vidas_si_corresponde(vidas_usuario)
+        
+        return Response({'vidas_restantes': vidas_usuario.vidas_restantes}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+def actualizar_vidas_si_corresponde(vidas_usuario):
+    ahora = timezone.now()
+    intervalo = timedelta(minutes=30)  # Cada 30 minutos
+
+    # Verificar si ha pasado al menos un intervalo
+    if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes < 5:
+        vidas_usuario.vidas_restantes += 1  # Solo sumamos 1 vida
+        vidas_usuario.ultima_actualizacion = ahora  # Actualizamos a "ahora"
+        vidas_usuario.save()
+        print("🟢 Se restauró 1 vida. Total ahora:", vidas_usuario.vidas_restantes)
 
 @api_view(['GET'])
 def ProgresoVersionNueva(request):
@@ -332,35 +347,55 @@ def ProgresoVersionNueva(request):
         
         return Response({'porcentaje en view': porcentaje})
     
-@api_view(['GET'])
-def get_score(request, user_id):
-    
+def actualizar_puntaje_usuario(user_id):
     try:
-        # Filtrar ejercicios correctos únicos
+        # ✅ Asegurarse de que sea una instancia de User
+        user_instance = User.objects.get(id=user_id).id
+        print("usuario_instancia",user_instance);
+        # Ejercicios correctos únicos
         ejercicios_correctos = (
-            Intento.objects.filter(usuario_id=user_id, resultado=True)
-            .values('ejercicio_id')  # Agrupar por ejercicio_id
-            .distinct()  # Evitar duplicados
-            .count()  # Contar los ejercicios únicos correctos
+            Intento.objects.filter(usuario=user_instance, resultado=True)
+            .values('ejercicio_id')
+            .distinct()
+            .count()
         )
-        # Calcular puntos por ejercicios correctos (10 puntos por ejercicio correcto)
         puntos_por_ejercicio = ejercicios_correctos * 10
 
-        # Calcular la penalización total por errores
+        # Penalización por errores
         penalizacion_errores = (
-            Intento.objects.filter(usuario_id=user_id, resultado=True)
-            .aggregate(total_errores=Sum('errores'))['total_errores'] or 0  # Evitar None
+            Intento.objects.filter(usuario=user_instance, resultado=True)
+            .aggregate(total_errores=Sum('errores'))['total_errores'] or 0
         )
-        votos_positivos = (
-            Participacion_foro.objects.filter(usuario_id=user_id, resultado=True).count()
-        )
-        puntos_por_votos = votos_positivos * 50  # o el valor que decidas
-        # Calcular el puntaje final
-        score = puntos_por_ejercicio - penalizacion_errores + puntos_por_votos
 
-        return Response({'score': max(score, 0)}, status=200)  # Puntaje no puede ser negativo
-    except Exception as e:
-        return Response({'error': str(e)}, status=500)
+        # Votos positivos en el foro
+        votos_positivos = (
+            Participacion_foro.objects.filter(usuario=user_instance, resultado=True).count()
+        )
+        puntos_por_votos = votos_positivos * 50
+
+        puntaje_total = puntos_por_ejercicio - penalizacion_errores + puntos_por_votos
+
+        # Ahora, obtenemos o creamos el Puntaje
+        puntaje, created = Puntaje.objects.get_or_create(usuario=user_instance)
+
+        # Actualizamos el puntaje
+        puntaje.puntos = max(puntaje_total, 0)  # Aseguramos que el puntaje no sea negativo
+        puntaje.save()  # Guardamos el puntaje
+
+        return puntaje.puntos  # Devolvemos el puntaje actualizado
+    except User.DoesNotExist:
+        return None
+    
+@api_view(['GET'])
+def get_score(request, user_id):
+    try:
+        user_instance = User.objects.get(id=user_id).id
+        puntaje = Puntaje.objects.get(usuario=user_instance)
+        return Response({'score': puntaje.puntos}, status=200)
+    except User.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'}, status=404)
+    except Puntaje.DoesNotExist:
+        return Response({'score': 0}, status=200)  # Si aún no tiene puntaje
 
 def verificar_actividad_consecutiva(usuario, dias):
     fechas = usuario.ejercicios_completados.values_list('fecha', flat=True).order_by('fecha')

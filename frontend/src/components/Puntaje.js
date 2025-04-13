@@ -3,6 +3,7 @@ import "../styles/Puntaje.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
+import useVidasStore from "./vidasStore";
 
 const Puntaje = () => {
     const [score, setScore] = useState(0);
@@ -12,72 +13,42 @@ const Puntaje = () => {
     const [loading, setLoading] = useState(true);
     const [menuVisible, setMenuVisible] = useState(false); // Estado para mostrar u ocultar el menú
     const navigate = useNavigate();
-    const [vidas, setVidas] = useState(5);
-
+    const vidas = useVidasStore((state) => state.vidas);
+    const setVidas = useVidasStore((state) => state.setVidas);
     
     useEffect(() => {
-        const fetchUsuario = async () => {
+        const fetchUsuarioYVidas = async () => {
+            
             try {
+                const csrfToken = getCSRFToken();
                 const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-                    withCredentials: true, // Incluir cookies en la petición
+                    headers: {
+                    "X-CSRFToken": csrfToken,
+                },
+                    withCredentials: true,
                 });
-                
-                console.log("Usuario:", userResponse.data.username);
-                const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
-                
-                if (!usuario_id) {
-                    alert("Error: Usuario no identificado.");
-                    return;
-                }
-                setUserInfo(userResponse.data); 
-                // Llamar a fetchScore con el usuario_id
-                fetchScore(usuario_id);
-                fetchVidas(usuario_id);  // Llamada a la función para obtener vidas
-    
+                setUserInfo(userResponse.data);
+                const usuario_id = userResponse.data.id;
+                const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
+                    withCredentials: true,
+                });
+                console.log("Vidas iniciales desde la API:", vidasResponse.data.vidas_restantes); // Verificamos el valor de las vidas
+                const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`);
+                setVidas(vidasResponse.data.vidas_restantes);
+                setScore(response.data.score); // Asumiendo que también devuelves el puntaje desde la API
             } catch (error) {
-                console.error("Error al obtener usuario:", error);
+                console.error("Error al obtener usuario o vidas:", error);
             }
         };
-    
-        const fetchScore = async (usuario_id) => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}`);
-                setScore(response.data.score);
-            } catch (error) {
-                console.error("Error al obtener score:", error);
-            }
-        };
-        const fetchVidas = async (usuario_id) => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}`);
-                setVidas(response.data.vidas); // Guardamos las vidas en el estado
-            } catch (error) {
-                console.error("Error al obtener vidas:", error);
-            }
-        };
-    
-        fetchUsuario();
-    }, []); 
+        fetchUsuarioYVidas();
+    }, [setVidas]); // Asegúrate de que el useEffect se ejecute solo una vez al montar el componente
 
-    const updateScore = async (tipoVoto) => {
-        const usuario_id = userInfo.id;  // Obtener el ID del usuario logueado
-        try {
-            const response = await axios.post(`${API_BASE_URL}/myapp/votar_respuesta/`, {
-                id_participacion_foro: 17, 
-                resultado: tipoVoto, // 'like' o 'dislike'
-            });
+    const getCSRFToken = () => {
+        const cookies = document.cookie.split("; ");
+        const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
+        return csrfCookie ? csrfCookie.split("=")[1] : "";
+        };
 
-            if (response.data.success) {
-                // Si el voto fue registrado correctamente, actualizamos el puntaje
-                setScore(response.data.puntos_actualizados); // Actualiza el puntaje
-            } else {
-                alert("Hubo un problema al registrar el voto.");
-            }
-        } catch (error) {
-            console.error("Error al registrar el voto:", error);
-        }
-    };
-    
     if (error) {
         return <div className="text-content"><p>{error}</p></div>;
     } 

@@ -6,40 +6,49 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from "../config";
 
-const Register = ({ toggleView }) => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Hook para la redirección
+  const [user, setUser] = useState({
+      username: "",
+      email: "",
+      password: "",
+      first_name: "",
+      last_name: ""
+  });
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+};
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (!username || !email || !password) {
-      alert('Por favor, completa todos los campos.');
-      return;
-    }
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();  
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
+    if (!emailPattern.test(user.email)) {
       alert('Por favor, ingresa un correo electrónico válido.');
       return;
     }
   
-    if (password.length <= 4) {
+    if (user.password.length <= 4) {
       alert('La contraseña debe tener al menos 4 caracteres.');
       return;
     }
     
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/myapp/registro/`,
-        { email, username, password});
-
-  
+        `${API_BASE_URL}/myapp/crear-usuario/`,
+        user,
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
       //const data = await response.json();
       alert('Registro exitoso.');
       console.log('Success:', response.data);
-      navigate('/login');
+      navigate('/dashboard');
     } 
 
     catch (error) {
@@ -53,35 +62,62 @@ const Register = ({ toggleView }) => {
     <div className="register-container">
       <div className="register-box">
         <img src="tesis.png" alt="Logo" className="register-logo" />
+        <form onSubmit={handleSubmit} className="register-form">
         <h2 className="register-title">Completa los siguientes espacios</h2>
-        <form onSubmit={handleRegister} className="register-form">
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="Correo electrónico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="register-button">Registrarme</button>
-        </form>
-        <div className="social-register">
+        <div className="form-group">
+                <input
+                    type="text"
+                    name="username"
+                    value={user.username}
+                    onChange={handleChange}
+                    required
+                    placeholder="Nombre de usuario"
+                />
+                    </div>
+                    <div className="form-group">
+
+                <input
+                    type="email"
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Correo electrónico"
+                />
+                </div>
+                <div className="form-group">
+                <input
+                    type="password"
+                    name="password"
+                    value={user.password}
+                    onChange={handleChange}
+                    required
+                    placeholder="Contraseña"
+                />
+                </div>
+                <div className="form-group">
+                <input
+                    type="text"
+                    name="first_name"
+                    value={user.first_name}
+                    onChange={handleChange}
+                    required
+                    placeholder="Nombres"
+                />
+                </div>
+                <div className="form-group">
+                <input
+                    type="text"
+                    name="last_name"
+                    value={user.last_name}
+                    onChange={handleChange}
+                    required
+                    placeholder="Apellidos"
+                />
+                </div>
+                <button type="submit" className="login-button">Registarse</button>
+                </form>
+          <div className="social-register">
           
           <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
             <Loginsesion />

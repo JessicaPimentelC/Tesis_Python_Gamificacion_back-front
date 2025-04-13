@@ -9,6 +9,7 @@ import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../..
 import Sidebar from "../../Sidebar";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
+import useVidasStore from "../../vidasStore";
 
 export { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado };
 
@@ -29,9 +30,8 @@ const Uno = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
   const [issModalOpenPinguino,setIsModalOpenPinguino] =useState(false);
-
+  const setVidas = useVidasStore((state) => state.setVidas); // Asegúrate de que este acceso es correcto
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const options = ["Mundo", "Hola", "Print"];
@@ -40,7 +40,6 @@ const Uno = () => {
     const fetchUsuario = async () => {
       try {
         const csrfToken = getCSRFToken();
-        console.log("token",csrfToken)
         const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
           headers: {
             "X-CSRFToken": csrfToken,
@@ -180,12 +179,16 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         };
 
         console.log("Datos enviados:", requestData);
-        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+        const csrfToken = getCSRFToken();
+        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+          headers: {
+            "X-CSRFToken": csrfToken,
+        },
+            withCredentials: true,
+        });
+        const vidasRestantes = response.data.vidas;
+        setVidas(vidasRestantes);
         if (response.status === 201) {
-            const vidasRestantes = response.data.vidas;
-            setVidas(vidasRestantes);
-
             if (isCorrectAnswer) {
                 setShowNextButton(true);
                   setScore(score + 10);

@@ -37,7 +37,7 @@ urlpatterns = [
     path('nivel_ejercicio_asignado/<int:ejercicio_id>/', views.obtener_nivel_ejercicio_asignado, name='nivel_ejercicio_asignado'),
 
     path('vidas/<int:user_id>/', views.obtener_vidas, name='obtener_vidas'),
-    path('vidas/reset/<int:user_id>/', views.resetear_vidas, name='resetear_vidas'),
+#    path('restaurar-vidas/<int:user_id>/', views.restaurar_vidas, name='restaurar-vidas'),
     
     path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
     path('otorgar_logros/', views.verificar_y_otorgar_logros, name='otorgar_logros'),

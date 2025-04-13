@@ -90,7 +90,7 @@ const RegistroUsuario = () => {
                 <label>Nombres:</label>
                 <input
                     type="text"
-                    name="nombre"
+                    name="first_name"
                     value={user.first_name}
                     onChange={handleChange}
                     required
@@ -100,7 +100,7 @@ const RegistroUsuario = () => {
                 <label>Apellidos:</label>
                 <input
                     type="text"
-                    name="Apellidos"
+                    name="last_name"
                     value={user.last_name}
                     onChange={handleChange}
                     required

@@ -1,6 +1,6 @@
 const adminEmails = [
   "admin@gmail.com",
-  //"usuario@gmail.com",
+  "usuario@gmail.com",
   "jessica.pimentel@correounivalle.edu.co",
   "eduardo.daza@correounivalle.edu.co.co"
 ];
