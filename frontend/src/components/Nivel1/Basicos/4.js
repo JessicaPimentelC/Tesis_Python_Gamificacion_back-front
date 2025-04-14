@@ -9,6 +9,7 @@ import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../.
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
+import useVidasStore from "../../vidasStore";
 
 const Cuatro = () => {
   const [droppedWords, setDroppedWords] = useState([]);
@@ -20,7 +21,7 @@ const Cuatro = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas); // Asegúrate de que este acceso es correcto
   const [showNextButton, setShowNextButton] = useState(false);  
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
   const [errores, setErrores] = useState(0);
@@ -170,13 +171,16 @@ const handleVerify = async () => {
     };
 
     console.log("Datos enviados:", requestData);
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+    const csrfToken = getCSRFToken();
+    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+      headers: {
+        "X-CSRFToken": csrfToken,
+    },
+        withCredentials: true,
+    });
+    const vidasRestantes = response.data.vidas;
+    setVidas(vidasRestantes);
     if (response.status === 201) {
-
-      const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
-
       if (isCorrectAnswer) {
         setShowNextButton(true);
         setScore(score + 10);

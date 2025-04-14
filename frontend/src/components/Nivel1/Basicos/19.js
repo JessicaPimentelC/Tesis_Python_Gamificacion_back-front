@@ -9,6 +9,7 @@ import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../.
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
+import useVidasStore from "../../vidasStore";
 
 const Diecinueve = () => {
   const [celsiusInput, setCelsiusInput] = useState('');
@@ -24,10 +25,10 @@ const Diecinueve = () => {
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas); 
 
 useEffect(() => {
         const fetchUsuario = async () => {
@@ -190,15 +191,18 @@ useEffect(() => {
         resultado: isCorrect,
         errores: isCorrect ? 0 : errores + 1,
       };
-  
       console.log("Datos enviados:", requestData);
-      const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-  
+      const csrfToken = getCSRFToken();
+      const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+          headers: {
+              "X-CSRFToken": csrfToken,
+          },
+          withCredentials: true,
+          });
+      const vidasRestantes = response.data.vidas;
+      setVidas(vidasRestantes);
       if (response.status === 201) {
-  
-        const vidasRestantes = response.data.vidas;
-        setVidas(vidasRestantes);
-  
+
         if (isCorrect) {
           setShowNextButton(true);
           setScore(score + 10);

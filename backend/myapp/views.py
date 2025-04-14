@@ -274,7 +274,12 @@ def ejercicio_python(request):
             return Response({
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+def actualizar_puntaje_usuario(usuario, puntos_a_sumar):
+    puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
+    puntaje.puntos += puntos_a_sumar
+    puntaje.save()
+
 @api_view(['POST'])
 def guardar_intento(request):
     if not request.user.is_authenticated:
@@ -282,9 +287,14 @@ def guardar_intento(request):
 
     serializer = IntentoSerializer(data=request.data)
     usuario = request.user.id # Obtiene el usuario autenticado
-
+    print("usuario kk",usuario)
     if serializer.is_valid():
         intento = serializer.save()
+
+        if intento.resultado:
+            actualizar_puntaje_usuario(usuario, 10)  # 👈 Suma 10 puntos
+
+
         vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=usuario)
         if intento.resultado is False:
             if vidas_usuario.vidas_restantes > 0:
@@ -347,7 +357,7 @@ def ProgresoVersionNueva(request):
         
         return Response({'porcentaje en view': porcentaje})
     
-def actualizar_puntaje_usuario(user_id):
+def actualizar_puntaje_usuario_antes_de(user_id):
     try:
         # ✅ Asegurarse de que sea una instancia de User
         user_instance = User.objects.get(id=user_id).id
@@ -826,3 +836,14 @@ def crear_usuario(request):
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#Ranking
+def ranking_usuarios(request):
+    ranking = Puntaje.objects.select_related('usuario').order_by('-puntos')
+    data = [
+        {
+            'username': puntaje.usuario.username,
+            'puntos': puntaje.puntos
+        } for puntaje in ranking if puntaje.usuario is not None
+    ]
+    return JsonResponse(data, safe=False)

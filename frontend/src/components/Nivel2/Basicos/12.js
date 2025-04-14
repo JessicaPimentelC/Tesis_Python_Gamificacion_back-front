@@ -6,9 +6,10 @@ import HeaderBody from "../../HeaderBody";
 import axios from "axios";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
-import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils_nivel2';
 import API_BASE_URL from "../../../config";
 import Swal from "sweetalert2";
+import useVidasStore from "../../vidasStore";
 
 const DoceNivel2 = () => {
   const [draggedItem, setDraggedItem] = useState(null);
@@ -28,7 +29,7 @@ const DoceNivel2 = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas);
   
   useEffect(() => {
     const fetchUsuario = async () => {
@@ -177,13 +178,17 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
             resultado: isCorrectAnswer,
             errores: isCorrectAnswer ? 0 : errores + 1,
         };
-
         console.log("Datos enviados:", requestData);
-        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+        const csrfToken = getCSRFToken();
+        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+              headers: {
+                  "X-CSRFToken": csrfToken,
+              },
+                  withCredentials: true,
+              });
+        const vidasRestantes = response.data.vidas;
+        setVidas(vidasRestantes);
         if (response.status === 201) {
-            const vidasRestantes = response.data.vidas;
-            setVidas(vidasRestantes);
 
             if (isCorrectAnswer) {
                 setShowNextButton(true);

@@ -5,10 +5,11 @@ import Sidebar from '../../Sidebar';
 import Puntaje from '../../Puntaje';
 import HeaderBody from '../../HeaderBody';
 import HeaderInfo from '../../HeaderInfo';
-import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils_nivel2';
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
+import useVidasStore from "../../vidasStore";
 
 const Nivel2Veintidos = () => {
   const [intFunction, setIntFunction] = useState('');
@@ -20,7 +21,7 @@ const Nivel2Veintidos = () => {
   const [errores, setErrores] = useState(0);
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas); 
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
@@ -168,12 +169,16 @@ const handleVerify = async () => {
     };
 
     console.log("Datos enviados:", requestData);
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+    const csrfToken = getCSRFToken();
+    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+        headers: {
+            "X-CSRFToken": csrfToken,
+        },
+            withCredentials: true,
+        });
+    const vidasRestantes = response.data.vidas;
+    setVidas(vidasRestantes);
     if (response.status === 201) {
-
-      const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
 
       if (isCorrect) {
         setShowNextButton(true);

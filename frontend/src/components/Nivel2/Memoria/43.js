@@ -5,10 +5,11 @@ import Sidebar from "../../Sidebar";
 import HeaderBody from "../../HeaderBody";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
-import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from "../../../utils/utils";
+import {obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils_nivel2';
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
+import useVidasStore from "../../vidasStore";
 
 const CuarentaTresNivel2= () => {
   const [flippedCards, setFlippedCards] = useState([]); // Tarjetas volteadas
@@ -19,7 +20,7 @@ const CuarentaTresNivel2= () => {
   const [insignias, setInsignias] = useState([]);
   const [showNext, setShowNext] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas);
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState('');
@@ -207,14 +208,17 @@ const handleVerify = async () => {
       resultado: isCorrect,
       errores: isCorrect ? 0 : errores + 1,
     };
-
     console.log("Datos enviados:", requestData);
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+    const csrfToken = getCSRFToken();
+    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+        headers: {
+            "X-CSRFToken": csrfToken,
+        },
+            withCredentials: true,
+        });
+    const vidasRestantes = response.data.vidas;
+    setVidas(vidasRestantes);
     if (response.status === 201) {
-
-      const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
 
       if (isCorrect) {
         setShowNextButton(true);

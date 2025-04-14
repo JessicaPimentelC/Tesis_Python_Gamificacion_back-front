@@ -9,6 +9,7 @@ import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../.
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
+import useVidasStore from "../../vidasStore";
 
 const Veintisiete = () => {
   const [primerNum, setPrimerNum] = useState(""); // Primer número
@@ -21,14 +22,13 @@ const Veintisiete = () => {
   const [hoveredInsignia, setHoveredInsignia] = useState(null); // Estado de hover para insignias
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
-  
   const [errores, setErrores] = useState(0); 
   const [userInfo, setUserInfo] = useState(null);
   const [errorMessage,setErrorMessage] = useState(null);
   const [insignias, setInsignias] = useState([]);
   const [successMessage,setSuccessMessage] = useState(null);
   const [result, setResult] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas); 
   const [showNextButton, setShowNextButton] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   
@@ -186,12 +186,16 @@ const handleVerify = async (answer) => {
     };
 
     console.log("Datos enviados:", requestData);
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+    const csrfToken = getCSRFToken();
+    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+        headers: {
+            "X-CSRFToken": csrfToken,
+        },
+        withCredentials: true,
+        });
+    const vidasRestantes = response.data.vidas;
+    setVidas(vidasRestantes);
     if (response.status === 201) {
-
-      const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
 
       if (isCorrect) {
         setShowNextButton(true);

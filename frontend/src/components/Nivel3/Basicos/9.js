@@ -6,9 +6,10 @@ import HeaderBody from "../../HeaderBody";
 import axios from "axios";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
-import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';
+import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils_nivel3';
 import API_BASE_URL from "../../../config";
 import Swal from "sweetalert2";
+import useVidasStore from "../../vidasStore";
 
 const NueveNivel3 = () => {
   const [draggedItem, setDraggedItem] = useState(null);
@@ -24,7 +25,7 @@ const NueveNivel3 = () => {
   const [errores, setErrores] = useState(0);
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   const [userInfo, setUserInfo] = useState(null);
-  const [vidas, setVidas] = useState(null);
+  const setVidas = useVidasStore((state) => state.setVidas); 
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -177,11 +178,16 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         };
 
         console.log("Datos enviados:", requestData);
-        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData);
-
+        const csrfToken = getCSRFToken();
+        const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
+            headers: {
+                "X-CSRFToken": csrfToken,
+            },
+                withCredentials: true,
+            });
+        const vidasRestantes = response.data.vidas;
+        setVidas(vidasRestantes);
         if (response.status === 201) {
-            const vidasRestantes = response.data.vidas;
-            setVidas(vidasRestantes);
 
             if (isCorrectAnswer) {
                 setShowNextButton(true);

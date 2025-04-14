@@ -11,8 +11,6 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import useVidasStore from "../../vidasStore";
 
-export { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado };
-
 const Uno = () => {
   const [draggedItem, setDraggedItem] = useState(null);
   const [droppedItem, setDroppedItem] = useState(null);
@@ -152,16 +150,11 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         return;
     }
 
-    const ejercicio_id = await obtenerEjercicioId();
-    if (!ejercicio_id) {
-        console.error("No se pudo obtener el ejercicio_id");
-        return;
-    }
-
     const isCorrectAnswer = droppedItem === "Mundo";
     setIsCorrect(isCorrectAnswer);
 
     try {
+        const ejercicio_id = 1; 
         const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
         const usuario_id = userResponse.data.id;
 
@@ -189,16 +182,16 @@ const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
         const vidasRestantes = response.data.vidas;
         setVidas(vidasRestantes);
         if (response.status === 201) {
-            if (isCorrectAnswer) {
-                setShowNextButton(true);
-                  setScore(score + 10);
-                new Audio("/ganar.mp3").play();
-            } else {
-                setShowNextButton(false);
-                new Audio("/perder.mp3").play();
-            }
+          if (isCorrectAnswer) {
+              setShowNextButton(true);
+              setScore(score + 10);
+              new Audio("/ganar.mp3").play();
+          } else {
+              setShowNextButton(false);
+              new Audio("/perder.mp3").play();
+          }
 
-            if (vidasRestantes === 0) {
+          if (vidasRestantes === 0) {
               Swal.fire({
                 title: "Oh oh!",
                 text: `No tienes más vidas. Espera o recarga vidas`,
