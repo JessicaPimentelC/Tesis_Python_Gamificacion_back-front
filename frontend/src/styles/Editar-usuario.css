@@ -1,14 +1,12 @@
-/* Estilos generales */
 .editar-container {
     display: flex;
-    flex-direction: column; /* Asegura que los elementos se apilen en pantallas pequeñas */
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
     padding: 20px;
 }
 
-/* Contenedor del perfil */
 .editar-content {
     flex:1;
     background: white;
@@ -19,7 +17,6 @@
     text-align: center;
 }
 
-/* Cabecera */
 .editar-header h2 {
     font-size: 24px;
     font-weight: bold;
@@ -27,7 +24,6 @@
     margin-bottom: 20px;
 }
 
-/* Botón de regreso */
 .back-button {
     position: absolute;
     top: 10px;
@@ -39,15 +35,13 @@
     z-index: 10;
 }
 
-/* Tabla de estadísticas */
 .perfil-stats-table {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se acomoden en varias filas en pantallas pequeñas */
+    flex-wrap: wrap; 
     justify-content: center;
     gap: 10px;
 }
 
-/* Estilos del formulario */
 .formulario {
     margin-top: 20px;
     padding: 20px;

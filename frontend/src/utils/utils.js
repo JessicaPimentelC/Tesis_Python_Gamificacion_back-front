@@ -1,7 +1,7 @@
 import axios from 'axios';
 import API_BASE_URL from "../config";
 // Función para seleccionar 20 ejercicios aleatorios sin repetirse
-export const obtenerEjerciciosAleatorios = (cantidad = 20) => {
+export const obtenerEjerciciosAleatorios = (cantidad = 3) => {
     const ejerciciosPorCarpeta = {
         basicos: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 19, 20],
         intermedios: [12, 13, 14, 15, 16, 17, 18, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],

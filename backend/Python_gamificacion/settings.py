@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'django.contrib.sites',
-    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -199,19 +198,4 @@ SOCIALACCOUNTS_PROVIDERS = {
         'OAUTH_PKCE_ENABLED': True,
     }
 
-}
-
-# settings.py
-
-# settings.py
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis como broker
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-
-CELERY_BEAT_SCHEDULE = {
-    'resetear_vidas_cada_dia': {
-        'task': 'myapp.tasks.resetear_vidas',  # Reemplaza con el nombre de tu app
-        'schedule': 86400.0,  # 24 horas (en segundos)
-    },
 }

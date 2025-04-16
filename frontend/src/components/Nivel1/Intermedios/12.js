@@ -114,11 +114,9 @@ useEffect(() => {
                 console.error("No se encontró un nivel asignado.");
             }
   
-        // 🔹 Actualizar el estado
         setNumerosUsados((prev) => [...prev, proximoEjercicio]);
         setShowModal(false);
   
-        // 🔹 Redirigir al enunciado del próximo ejercicio
         redirigirAEnunciado(proximoEjercicio, navigate);
   
       } catch (error) {
@@ -128,21 +126,16 @@ useEffect(() => {
         console.log("No quedan ejercicios disponibles.");
       }
     };
-  
-  // Función para actualizar la hora y fecha
   const updateTime = () => {
     const now = new Date();
     setCurrentTime(now.toLocaleString()); // Ajusta el formato según tus necesidades
   };
 
-  // Actualiza la hora y fecha al cargar el componente
   useEffect(() => {
     updateTime();
 
-    // Actualiza la hora y fecha cada minuto
     const intervalId = setInterval(updateTime, 60000);
 
-    // Limpia el intervalo cuando el componente se desmonte
     return () => clearInterval(intervalId);
   }, []);
 
@@ -166,7 +159,7 @@ useEffect(() => {
   
     const isCorrect = inputFunction === 'input' && printFunction === 'print';
   
-    setOutput(`¡Correcto! Hola, ${inputFunction}`);
+    setOutput(`¡Correcto!`);
     setResult(isCorrect ? 'correct' : 'incorrect');
     setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
   

@@ -103,7 +103,7 @@ const Dashboard = () => {
 
   const handlePositionsClick = () => {
     // Logic to handle click on positions box
-    navigate("/posiciones");
+    navigate("/ranking");
   };
 
   const handleChallengesClick = () => {
@@ -340,7 +340,7 @@ const Dashboard = () => {
               <div className="icon-container">
                 <img src="personas.png" alt="Icono" className="icon" />
               </div>
-              <h2>Posiciones</h2>
+              <h2>Ranking</h2>
               <p>Aspira a sobresalir entre nuestros usuarios destacados</p>
             </button>
 

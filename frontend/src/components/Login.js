@@ -6,6 +6,7 @@ import '../styles/Register.css';
 import Loginsesion from './Loginsesion';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -25,17 +26,35 @@ const Login = () => {
         }
         
       );
-
-      alert(response.data.message);
-      navigate('/dashboard'); 
-    }catch (error) {
-        console.error(error);
-        if (error.response && error.response.data) {
-          alert(error.response.data.error || "Credenciales incorrectas");
-        } else {
-          alert("Credenciales incorrectas");
+      Swal.fire({
+        title: "¡Login Exitoso!",
+        text: `"${response.data.message}".`,
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#007bff"
+        }).then(() => {
+            navigate("/dashboard");
+            });
+          } catch (error) {
+            console.error(error);
+            let mensaje = "Credenciales incorrectas";
+        
+            if (error.response && error.response.data) {
+                // Si viene con un mensaje de error personalizado
+                if (typeof error.response.data === 'string') {
+                    mensaje = error.response.data;
+                } else if (error.response.data.error) {
+                    mensaje = error.response.data.error;
+                }
+            }
+        
+            Swal.fire({
+                title: "Error",
+                text: mensaje,
+                icon: "error",
+                confirmButtonText: "Aceptar"
+            });
         }
-      }
   };
 
 <GoogleLogin

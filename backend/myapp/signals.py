@@ -1,6 +1,7 @@
+print("Señales cargadas")  
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Intento, VidasUsuario
+from .models import Intento, VidasUsuario, User
 
 @receiver(post_save, sender=Intento)
 def actualizar_vidas(sender, instance, created, **kwargs):

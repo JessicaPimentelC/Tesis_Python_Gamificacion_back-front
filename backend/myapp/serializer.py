@@ -21,6 +21,17 @@ class UserSerializer(serializers.ModelSerializer):
             'email': {'required': True},
             'username': {'required': True}
         }
+    def validate(self, data):
+        username = data.get('username', '').lower()
+        email = data.get('email', '').lower()
+
+        if User.objects.filter(username__iexact=username).exists():
+            raise serializers.ValidationError({'username': 'El nombre de usuario ya está en uso.'})
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError({'email': 'El correo electrónico ya está registrado.'})
+        return data
+    
     def create(self, validated_data):
         user = User(
             username=validated_data['username'],

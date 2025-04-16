@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_BASE_URL from "../config";
 import Header from './Header';
+import Swal from "sweetalert2";
 
 const RegistroUsuario = () => {
     const [user, setUser] = useState({
@@ -33,14 +34,39 @@ const RegistroUsuario = () => {
                     },
                 }
             );
-
-            console.log("Usuario creado:", response.data);
-            alert(`Usuario ${response.data.username} creado correctamente`);
-            navigate("/listar-usuarios");
+            Swal.fire({
+                title: "¡Usuario registrado!",
+                text: `El usuario "${response.data.username}" se ha creado correctamente.`,
+                icon: "success",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#007bff"
+            }).then(() => {
+                navigate("/listar-usuarios");
+            });
         } catch (error) {
-            console.error("Error al crear el usuario:", error);
-            alert(error.response?.data?.message || "Error al crear el usuario");
+            if (error.response && error.response.data) {
+                const errores = error.response.data;
+                const mensaje = Object.values(errores).flat().join('\n');
+            
+                Swal.fire({
+                    title: "Error al registrar",
+                    text: mensaje,
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#007bff"
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Ocurrió un error inesperado.",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#007bff"
+
+                });
+            }
         }
+        
     };
 
     return (

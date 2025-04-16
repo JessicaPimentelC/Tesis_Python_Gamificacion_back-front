@@ -6,7 +6,7 @@ import Profile from './components/Profile';
 import Iniciogoogle from './components/Iniciogoogle';
 import Loginsesion from './components/Loginsesion';
 import Lecciones from './components/Lecciones';
-import Positions from './components/Positions';
+import Ranking from './components/Ranking';
 import Insignias from './components/Insignias'; 
 import Nivel1 from './components/Nivel1';
 import Examen from './components/Examen';
@@ -702,7 +702,7 @@ const App = () => {
         <Route path="/enunciado49" element={<Enunciado49/>} />
         <Route path="/enunciado50" element={<Enunciado50/>} />
         <Route path="/foro" element={<Foro />} />
-        <Route path="/posiciones" exact element={<Positions />} />
+        <Route path="/ranking" exact element={<Ranking />} />
         <Route path="/insignias" element={<Insignias />} /> 
         <Route path="/header" element={<Header />} />
         <Route path="/sidebar" element={<Sidebar />} /> 

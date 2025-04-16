@@ -91,12 +91,6 @@ class Logro(models.Model):
     descripcion = models.CharField(max_length=200)
     recompensa_id = models.ForeignKey(Recompensa, on_delete=models.CASCADE, related_name='recompensas_logro')
     nivel = models.ForeignKey(Nivel, on_delete=models.CASCADE, related_name='logros', null=True, blank=True) 
-    
-class Ranking(models.Model):
-    id_ranking = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_ranking')
-    posicion = models.CharField(max_length=50)
-    fecha_actualizacion = models.DateField()
 
 class Intento(models.Model):
     id_intento = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
@@ -112,17 +106,6 @@ class VidasUsuario(models.Model):
     ultima_actualizacion = models.DateTimeField(default=timezone.now) 
     def __str__(self):
         return f"{self.usuario.username} - {self.vidas_restantes} vidas"
-
-
-class IntentoEjercicio(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='intentos')
-    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos')
-    respuesta_usuario = models.TextField()  # Respuesta ingresada por el usuario
-    es_correcto = models.BooleanField(default=False)  # Si la respuesta fue correcta o no
-    fecha = models.DateTimeField(auto_now_add=True)  # Fecha del intento
-
-    def __str__(self):
-        return f"Intento de {self.usuario.username} en {self.ejercicio.titulo}"
 
 class Usuario_insignia(models.Model):
     id_usuario_insignia = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')

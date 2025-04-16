@@ -41,7 +41,8 @@ urlpatterns = [
     
     path('logros-usuario/', views.obtener_logros_usuario, name='logros'),
     path('otorgar_logros/', views.verificar_y_otorgar_logros, name='otorgar_logros'),
-    
+    path('ranking',views.ranking_usuarios, name='ranking_usuarios'),
+
     path('usuarios/', views.listar_usuarios, name='listar_usuarios'), 
     path('editar-usuario/<int:user_id>/', views.editar_usuario, name='actualizar-user'),
     path('usuario/<int:user_id>/', views.obtener_usuario, name='obtener_usuario'), 
