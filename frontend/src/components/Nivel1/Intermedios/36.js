@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
+import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
 
 const Treintaseis = () => {
   // Estado para manejar las opciones disponibles
@@ -28,7 +29,8 @@ const Treintaseis = () => {
   const [userInfo, setUserInfo] = useState(null);
   const setVidas = useVidasStore((state) => state.setVidas);
   const [output, setOutput] = useState('');
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
@@ -48,43 +50,6 @@ const Treintaseis = () => {
     fetchUsuario();
   },[]);
 
-    //obtiene el id del ejercicio
-  const obtenerEjercicioId = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`);
-      console.log("Datos completos recibidos:", response.data);
-
-      if (response.status === 200 && Array.isArray(response.data.data) && response.data.data.length > 0) {
-        return response.data.data[0].id_ejercicio; 
-      } else {
-        console.error("El array de ejercicios está vacío o no tiene la estructura esperada.");
-      }
-    } catch (error) {
-      console.error("Error al obtener los ejercicios:", error);
-    }
-    return null;
-  };
-      
-        /**Guarda el ejercicio en la BD */
-    const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
-    try {
-        const response = await axios.post(
-            `${API_BASE_URL}/myapp/guardar_ejercicio/`,
-            {
-                usuario_id: usuario_id,
-                ejercicio_id: ejercicio_id,
-                fecha_asignacion: new Date().toISOString().split("T")[0], 
-            },
-            { withCredentials: true }
-        );
-  
-        console.log("Respuesta del servidor:", response.data);
-        return response.data;
-    } catch (error) {
-        console.error("Error al guardar el ejercicio:", error.response ? error.response.data : error.message);
-    }
-  };
-  
 //Permite avanzar entre ejercicios
   const handleNext = async () => {
     if (!userInfo || !userInfo.id) {
@@ -112,12 +77,9 @@ const Treintaseis = () => {
             } else {
                 console.error("No se encontró un nivel asignado.");
             }
-  
-        // 🔹 Actualizar el estado
         setNumerosUsados((prev) => [...prev, proximoEjercicio]);
         setShowModal(false);
   
-        // 🔹 Redirigir al enunciado del próximo ejercicio
         redirigirAEnunciado(proximoEjercicio, navigate);
   
       } catch (error) {
@@ -139,16 +101,12 @@ const Treintaseis = () => {
     setIsModalOpen(false); // Cerrar el modal
   };
 
-  // Estado para manejar el ítem arrastrado
   const [droppedItem, setDroppedItem] = useState(null);
 
-  // Estado para manejar la verificación del resultado
   const [isCorrect, setIsCorrect] = useState(null);
 
-  // Estado para manejar la visibilidad del botón 'Siguiente'
   const [showNextButton, setShowNextButton] = useState(false);
 
-  // Función para manejar el evento de arrastrar
   const handleDragStart = (e, option) => {
     e.dataTransfer.setData("text/plain", option);
   };
@@ -160,7 +118,6 @@ const Treintaseis = () => {
     setDroppedItem(data);
   };
 
-  const navigate = useNavigate();
 
 //Verifica respuesta ejercicio
 const handleVerify = async () => {
@@ -234,74 +191,6 @@ const handleVerify = async () => {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
   }
 };
-  const getCSRFToken = () => {
-    const cookies = document.cookie.split("; ");
-    const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
-    return csrfCookie ? csrfCookie.split("=")[1] : "";
-  };
-//Verifica y otorga los logros
-const verificarYOtorgarLogro = async (usuario_id) => {
-  try {
-    const csrfToken = getCSRFToken();
-    const response = await axios.post(
-      `${API_BASE_URL}/myapp/otorgar_logros/`,
-      { usuario_id },
-      { headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrfToken,
-    },
-    withCredentials: true }
-    );
-
-    console.log("Logros verificados:", response.data);
-    
-    if (response.data.nuevo_logro) {
-      Swal.fire({
-        title: "🎉 ¡Felicidades!",
-        text: `Has desbloqueado un nuevo logro: ${response.data.nuevo_logro.nombre}`,
-        icon: "success",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "#007bff" 
-      });        
-      // Opcional: actualizar la lista de insignias en el frontend
-      setInsignias((prev) => [...prev, response.data.nuevo_logro]);
-    }
-  } catch (error) {
-    console.error("Error al verificar logros:", error.response?.data || error.message);
-  }
-};
-//Verificar nivel
-const verificarNivel = async (nivelId) => {
-  const csrfToken = getCSRFToken(); // Obtener el token dinámico
-
-    try {
-        const response = await axios.post(
-            `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
-            { nivel_id: nivelId },
-            { 
-                withCredentials: true,
-                headers: {
-                  "Content-Type": "application/json",
-                  "X-CSRFToken": csrfToken, // Se obtiene dinámicamente
-              },  
-            }
-        );
-        if (response.status === 200 && response.data.mensaje) {
-          console.log("Respuesta de la api de verificar nivel:", response.data); 
-          Swal.fire({
-            title: "¡Verificación de Nivel!",
-            text: response.data.mensaje,  // Mensaje que viene del backend
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#007bff" 
-          });
-        }
-    
-    } catch (error) {
-        console.error("Error al verificar nivel:", error);
-    }
-};
-
 
   return (
     <div className="nivel1-page">
