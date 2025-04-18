@@ -63,7 +63,7 @@
     border: 1px solid #ccc; /* Borde opcional */
     border-radius: 5px;
     margin-top: 20px; /* Ajusta el espacio superior para separar del contenido de la tarjeta */
-    position: center; /* Asegura que el fondo blanco se alinee correctamente */
+    /* position: center;  Asegura que el fondo blanco se alinee correctamente */
     z-index: 1; /* Asegura que el fondo blanco esté por debajo de otros elementos */
   }
   
