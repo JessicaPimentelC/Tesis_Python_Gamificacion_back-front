@@ -132,4 +132,3 @@
 .achievement-box:active {
     transform: scale(0.9); /* Reducimos ligeramente el tamaño de los iconos de logros cuando se hace clic */
 }
-

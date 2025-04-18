@@ -1,7 +1,6 @@
 /* Fondo solo para el módulo Lecciones */
 .lecciones-container {
   display: flex;
-  background-image: url('/public/fondoweb.jpg'); /* Ruta de la imagen */
   background-size: cover; /* Asegura que la imagen cubra toda el área */
   background-position: center; /* Centra la imagen */
   background-repeat: no-repeat; /* Evita que la imagen se repita */
