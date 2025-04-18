@@ -69,7 +69,7 @@ class Foro(models.Model):
 class Participacion_foro(models.Model):
     id_participacion_foro = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    foro_id = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name='participaciones_foro')
+    foro = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name='participaciones_foro')
     fecha_participacion = models.DateField()
     comentario = models.CharField(max_length=500)
     resultado = models.BooleanField()

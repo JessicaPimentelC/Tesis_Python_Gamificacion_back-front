@@ -234,8 +234,8 @@ const Foro = () => {
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroParti_foro/`,
         {
-          usuario_id: userId,
-          foro_id: questions[currentQuestionIndex].id_foro, // Usar 'id_foro' según tu estructura
+          usuario: userId,
+          foro: questions[currentQuestionIndex].id_foro, // Usar 'id_foro' según tu estructura
           fecha_participacion: new Date().toISOString().split("T")[0],
           comentario: responseText,
           resultado: true,

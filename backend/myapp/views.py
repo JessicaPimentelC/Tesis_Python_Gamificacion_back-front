@@ -134,33 +134,32 @@ def google_login(request):
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':
-        print("Datos recibidos en la API:", request.data) 
-
-        usuario_id = request.data.get("usuario_id")
+        print("Datos recibidos en la API:", request.data)  # Verifica los datos en la consola 
+        usuario_id = request.data.get("usuario")
         if not usuario_id:
             return Response({'error': 'El usuario_id es obligatorio'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             usuario = User.objects.get(id=usuario_id)
-        except User.DoesNotExist:
-            return Response({'error': 'El usuario no existe'}, status=status.HTTP_400_BAD_REQUEST)
+            print(f"Usuario encontrado: {usuario} (ID: {usuario.id})")  # Depuración
 
+        except User.DoesNotExist: 
+            return Response({'error': 'El usuario no existe'}, status=status.HTTP_400_BAD_REQUEST)
+        # Verificar el tipo de usuario antes de asignarlo
         if not isinstance(usuario, User):
             print(f"Error: usuario no es una instancia de User, es {type(usuario)}")
             return Response({'error': 'El usuario no es válido'}, status=status.HTTP_400_BAD_REQUEST)
 
         foro = Foro(
-            usuario_id=usuario.id,  
+            usuario_id=usuario.id,  # Asignamos la instancia real del usuario
             tema=request.data.get("tema"),
             descripcion=request.data.get("descripcion"),
             fecha_creacion=request.data.get("fecha_creacion"),
         )
 
-        foro.save()
+        foro.save() 
         print(f"Foro guardado con ID: {foro.id_foro}")  # Confirmación
-
         serializer = ForoSerializer(foro)
         return Response({'message': 'Foro creado exitosamente', 'foro': serializer.data}, status=status.HTTP_201_CREATED)
-
     elif request.method == 'GET':
         foros = Foro.objects.all()
         serializer = ForoSerializer(foros, many=True)
@@ -169,28 +168,63 @@ def RegistroForo(request):
 @api_view(['GET','DELETE'])
 def eliminarRegistroForo(request, id_foro):
     try:
-        print(f"Intentando eliminar foro con ID: {id_foro}")  # 🛠️ Debug
+        print(f"Intentando eliminar foro con ID: {id_foro}")  
         participacion = Foro.objects.get(id_foro=id_foro)
-        print(f"Registro encontrado: {participacion}")  # 🛠️ Debug
+        print(f"Registro encontrado: {participacion}") 
         participacion.delete()
         return Response({'message': 'Pregunta eliminada exitosamente'}, status=status.HTTP_200_OK)
     except Foro.DoesNotExist:
         return Response({'error': 'Pregunta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
-@api_view(['GET', 'POST'])
+@api_view(['GET','POST'])
 def ParticipacionForo(request):
     if request.method == 'POST':
-        serializer = ParticipacionForoSerializer(data=request.data)
-        if serializer.is_valid():
-            participacionForo = serializer.save()
-            return Response({'message': 'Respuesta foro creada exitosamente'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print("Datos recibidos:", request.data)
 
+        usuario_id = request.data.get('usuario')
+        print("usuario_id",usuario_id)
+        foro_id = request.data.get('foro')
+        print("foro_id",foro_id)
+
+        if not usuario_id or not foro_id:
+            return Response({'error': 'usuario_id y foro son requeridos'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            usuario = User.objects.get(id=usuario_id)
+            print("instancia usuario", usuario)
+        except User.DoesNotExist:
+            return Response({'error': f'El usuario con ID {usuario_id} no existe'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            foro = Foro.objects.get(id_foro=foro_id)
+            print("instancia foro", foro)
+        except Foro.DoesNotExist:
+            return Response({'error': f'El foro con ID {foro_id} no existe'}, status=status.HTTP_400_BAD_REQUEST)
+
+        participacion = Participacion_foro.objects.create(
+            usuario_id=usuario.id,
+            foro=foro,
+            fecha_participacion=request.data.get('fecha_participacion'),
+            comentario=request.data.get('comentario'),
+            resultado=request.data.get('resultado')
+        )
+
+        serializer = ParticipacionForoSerializer(participacion)
+        return Response({'message': 'Respuesta foro creada exitosamente', 'data': serializer.data}, status=status.HTTP_201_CREATED)
     elif request.method == 'GET':
-        participacion = Participacion_foro.objects.all()
-        serializer = ParticipacionForoSerializer(participacion, many=True)
+        usuario_id = request.GET.get('usuario')
+        foro_id = request.GET.get('foro')
+
+        participaciones = Participacion_foro.objects.all()
+        if usuario_id:
+            participaciones = participaciones.filter(usuario_id=usuario_id)
+        if foro_id:
+            participaciones = participaciones.filter(foro__id_foro=foro_id)
+
+        serializer = ParticipacionForoSerializer(participaciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 @api_view(['GET','DELETE'])
 def eliminarPartiForo(request, id_participacion_foro):

@@ -50,22 +50,28 @@ class UsuarioEditarSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'last_name', 'email'] 
 
 class ParticipacionForoSerializer(serializers.ModelSerializer):
-    usuario = serializers.StringRelatedField()  # O usa serializers.PrimaryKeyRelatedField() si prefieres el ID
-    foro = serializers.StringRelatedField()  # O usa serializers.PrimaryKeyRelatedField() si prefieres el ID
+    usuario = serializers.StringRelatedField(read_only=True)
+    foro = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Participacion_foro
-        fields = '__all__'
+        fields = [
+            'id_participacion_foro',
+            'usuario',
+            'foro',
+            'fecha_participacion',
+            'comentario',
+            'resultado'
+        ]
 
 class ForoSerializer(serializers.ModelSerializer):
-    usuario_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source="usuario", write_only=True)
-    usuario = serializers.StringRelatedField(read_only=True)  # Para devolver el nombre del usuario
+    usuario = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
 
     participaciones_foro = ParticipacionForoSerializer(many=True, read_only=True)  
 
     class Meta:
         model = Foro
-        fields = ['id_foro', 'usuario_id', 'usuario', 'tema', 'descripcion', 'fecha_creacion', 'participaciones_foro']
+        fields = ['id_foro', 'usuario', 'tema', 'descripcion', 'fecha_creacion', 'participaciones_foro']
 
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:
