@@ -2,6 +2,8 @@ print("Señales cargadas")
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import Intento, VidasUsuario, User
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 @receiver(post_save, sender=Intento)
 def actualizar_vidas(sender, instance, created, **kwargs):
@@ -9,3 +11,4 @@ def actualizar_vidas(sender, instance, created, **kwargs):
         vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=instance.usuario)
         vidas_usuario.vidas_restantes = max(0, vidas_usuario.vidas_restantes - 1)  # No permite valores negativos
         vidas_usuario.save()
+

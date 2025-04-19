@@ -272,7 +272,7 @@ const Foro = () => {
     }
 
     try {
-      console.log(`Intentando eliminar pregunta con ID: ${id_foro}`); // 🛠️ Debug
+      console.log(`Intentando eliminar pregunta con ID: ${id_foro}`); 
       const response = await axios.delete(
         `${API_BASE_URL}/myapp/eliminarRegistro_foro/${id_foro}`
       );

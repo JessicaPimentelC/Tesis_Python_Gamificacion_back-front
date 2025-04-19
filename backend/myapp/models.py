@@ -35,7 +35,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['username']
 
 class Puntaje(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     puntos = models.IntegerField(default=0)
     def __str__(self):
         return f"{self.usuario.username} - {self.puntos} puntos"
@@ -64,11 +64,11 @@ class Foro(models.Model):
     tema = models.CharField(max_length=200)
     descripcion = models.CharField(max_length=200)
     fecha_creacion = models.DateField()
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
 class Participacion_foro(models.Model):
     id_participacion_foro = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     foro = models.ForeignKey(Foro, on_delete=models.CASCADE, related_name='participaciones_foro')
     fecha_participacion = models.DateField()
     comentario = models.CharField(max_length=500)
@@ -94,14 +94,14 @@ class Logro(models.Model):
 
 class Intento(models.Model):
     id_intento = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_intentos')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='usuario_intentos')
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE, related_name='intentos_ejercicios')
     fecha = models.DateField()
     resultado = models.BooleanField()
     errores = models.IntegerField()
 
 class VidasUsuario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='vidas_usuario')
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vidas_usuario')
     vidas_restantes = models.IntegerField(default=5)
     ultima_actualizacion = models.DateTimeField(default=timezone.now) 
     def __str__(self):
@@ -109,25 +109,25 @@ class VidasUsuario(models.Model):
 
 class Usuario_insignia(models.Model):
     id_usuario_insignia = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_insignia')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='usuario_insignia')
     insignia_id = models.ForeignKey(Insignia, on_delete=models.CASCADE, related_name='insignias')
     fecha_otorgada = models.DateField()
 
 class UsuarioEjercicioInsignia(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
     insignia = models.ForeignKey('Insignia', on_delete=models.CASCADE)
     fecha_obtenida = models.DateTimeField(auto_now_add=True)
 
 class Usuario_logro(models.Model):
     id_usuario_logro = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_logro')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='usuario_logro')
     logro_id = models.ForeignKey(Logro, on_delete=models.CASCADE, related_name='logros')
     fecha_completado = models.DateField()
     
 class Usuario_recompensa(models.Model):
     id_usuario_recompensa = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='usuario_recompensa')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='usuario_recompensa')
     recompensa_id = models.ForeignKey(Recompensa, on_delete=models.CASCADE, related_name='recompensas')
     fecha_otorgada = models.DateField()
 

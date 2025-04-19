@@ -58,7 +58,8 @@ def Registro(request):
     
     elif request.method == 'GET':
         return Response({'message': 'Debe enviar ua peticion POST'}, status=status.HTTP_200_OK)
-    
+
+
 @api_view(['GET'])
 def obtenerUsuario(request):
     if request.user.is_authenticated:
@@ -115,6 +116,10 @@ def google_login(request):
         last_name = name_parts[1] if len(name_parts) > 1 else ""  
 
         user, created = User.objects.get_or_create(email=email, defaults={"username": email, "first_name": first_name,"last_name":last_name })
+        if created:
+            VidasUsuario.objects.create(
+            usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
+            )
 
         from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(user)
@@ -144,7 +149,6 @@ def RegistroForo(request):
 
         except User.DoesNotExist: 
             return Response({'error': 'El usuario no existe'}, status=status.HTTP_400_BAD_REQUEST)
-        # Verificar el tipo de usuario antes de asignarlo
         if not isinstance(usuario, User):
             print(f"Error: usuario no es una instancia de User, es {type(usuario)}")
             return Response({'error': 'El usuario no es válido'}, status=status.HTTP_400_BAD_REQUEST)
@@ -182,22 +186,18 @@ def ParticipacionForo(request):
         print("Datos recibidos:", request.data)
 
         usuario_id = request.data.get('usuario')
-        print("usuario_id",usuario_id)
         foro_id = request.data.get('foro')
-        print("foro_id",foro_id)
 
         if not usuario_id or not foro_id:
             return Response({'error': 'usuario_id y foro son requeridos'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             usuario = User.objects.get(id=usuario_id)
-            print("instancia usuario", usuario)
         except User.DoesNotExist:
             return Response({'error': f'El usuario con ID {usuario_id} no existe'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             foro = Foro.objects.get(id_foro=foro_id)
-            print("instancia foro", foro)
         except Foro.DoesNotExist:
             return Response({'error': f'El foro con ID {foro_id} no existe'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -306,6 +306,8 @@ def actualizar_puntaje_usuario(usuario, puntos_a_sumar):
 
 @api_view(['POST'])
 def guardar_intento(request):
+    print("request user",request.data)
+    print("autenticado user",request.user)
     if not request.user.is_authenticated:
         return Response({'error': 'Usuario no autenticado'}, status=401)
     serializer = IntentoSerializer(data=request.data)
@@ -817,7 +819,10 @@ def crear_usuario(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save() 
-
+        VidasUsuario.objects.create(
+            usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
+        )
+        
         return Response({
             'message': 'Usuario creado exitosamente',
             'user_id': user.id,
