@@ -5,6 +5,8 @@ import Sidebar from './Sidebar';
 import '../styles/Editar-usuario.css';
 import Header from './Header';
 import API_BASE_URL from "../config";
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import Swal from 'sweetalert2';
 
 const EditarUsuario = () => {
     const navigate = useNavigate();
@@ -20,31 +22,74 @@ const EditarUsuario = () => {
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/editar-usuario/${user_id}/`, {
-                    withCredentials: true,
-                });
-
-                console.log("Usuario recibido:", response.data);
-                setUser(response.data); // Cargar los datos en el formulario
+                const headers = {
+                'Content-Type': 'application/json'
+                };
+        
+                const csrfToken = getCSRFToken();
+                if (csrfToken) {
+                headers['X-CSRFToken'] = csrfToken;
+                }
+        
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+    
+            const response = await axios.get(
+                `${API_BASE_URL}/myapp/editar-usuario/${user_id}/`, 
+                {
+                headers,
+                withCredentials: true
+                }
+            );
+    
+            console.log("Usuario recibido:", response.data);
+            setUser(response.data);
+    
             } catch (error) {
-                console.error("Error al obtener usuario:", error);
+            console.error("Error al obtener usuario:", error);
+            
+            if (error.response?.status === 401) {
+                try {
+                const newToken = await refreshAccessToken();
+                
+                const retryResponse = await axios.get(
+                    `${API_BASE_URL}/myapp/editar-usuario/${user_id}/`,
+                    {
+                    headers: {
+                        'Authorization': `Bearer ${newToken}`,
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    withCredentials: true
+                    }
+                );
+                
+                setUser(retryResponse.data);
+                return;
+                } catch (refreshError) {
+                console.error("Error al renovar token:", refreshError);
+                navigate('/login', { state: { from: 'edit-user' } });
+                return;
+                }
+            }
+    
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudieron cargar los datos del usuario',
+                icon: 'error'
+            });
             }
         };
-
+    
         if (user_id) {
             fetchUsuario();
-        }
-    }, [user_id]);
+        }}, [user_id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
-    };
-
-    const getCSRFToken = () => {
-        const cookies = document.cookie.split("; ");
-        const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
-        return csrfCookie ? csrfCookie.split("=")[1] : "";
     };
 
     const handleSubmit = async (e) => {

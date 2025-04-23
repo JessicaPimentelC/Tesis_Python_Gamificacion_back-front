@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
 import useVidasStore from "./vidasStore";
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import Swal from 'sweetalert2';
 
 const Puntaje = () => {
     const [score, setScore] = useState(0);
@@ -20,34 +22,61 @@ const Puntaje = () => {
         const fetchUsuarioYVidas = async () => {
             
             try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
                 const csrfToken = getCSRFToken();
+                if (csrfToken) {
+                    headers['X-CSRFToken'] = csrfToken;
+                }
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
                 const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-                    headers: {
-                    "X-CSRFToken": csrfToken,
-                },
+                    headers,
                     withCredentials: true,
                 });
                 setUserInfo(userResponse.data);
                 const usuario_id = userResponse.data.id;
                 const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
+                    headers,
                     withCredentials: true,
                 });
-                console.log("Vidas iniciales desde la API:", vidasResponse.data.vidas_restantes); // Verificamos el valor de las vidas
-                const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`);
+                console.log("Vidas iniciales desde la API:", vidasResponse.data.vidas_restantes); 
+                const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`, {
+                    headers,
+                    withCredentials: true
+                })
                 setVidas(vidasResponse.data.vidas_restantes);
-                setScore(response.data.score); // Asumiendo que también devuelves el puntaje desde la API
+                setScore(response.data.score); 
             } catch (error) {
-                console.error("Error al obtener usuario o vidas:", error);
+                console.error("Error al obtener datos:", error);
+                
+                if (error.response?.status === 401) {
+                    try {
+                        const newToken = await refreshAccessToken();
+                        
+                        await fetchUsuarioYVidas();
+                        return;
+                    } catch (refreshError) {
+                        console.error("Error al renovar token:", refreshError);
+                        localStorage.removeItem('access_token');
+                        navigate('/');
+                        return;
+                    }
+                }
+                
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudieron cargar los datos del usuario',
+                    icon: 'error'
+                });
             }
         };
+    
         fetchUsuarioYVidas();
-    }, [setVidas]); // Asegúrate de que el useEffect se ejecute solo una vez al montar el componente
-
-    const getCSRFToken = () => {
-        const cookies = document.cookie.split("; ");
-        const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
-        return csrfCookie ? csrfCookie.split("=")[1] : "";
-        };
+    }, [setVidas, navigate]); 
 
     if (error) {
         return <div className="text-content"><p>{error}</p></div>;

@@ -3,7 +3,7 @@ from .views import ApiView, Login
 from . import views
 from rest_framework import routers
 from django.contrib import admin
-
+from rest_framework_simplejwt.views import TokenRefreshView
 router = routers.DefaultRouter()
 router.register('api', ApiView, basename='UserManager')
 
@@ -17,7 +17,8 @@ urlpatterns = [
     path('eliminarParti_foro/<int:id_participacion_foro>/', views.eliminarPartiForo, name='eliminarParti_foro'),
     path('eliminarRegistro_foro/<int:id_foro>/', views.eliminarRegistroForo, name='eliminarRegistroForo'),    
     path("participaciones/", views.ParticipacionForo, name="participaciones"),
-
+    path("logout/", views.logout, name="logout"),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('login/', views.Login, name='login'),
     path("google-login/", views.google_login, name="google-login"),
     path('usuario/<username>/', views.obtenerUsuario, name='usuario'),    

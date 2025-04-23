@@ -100,10 +100,10 @@ def google_login(request):
         return JsonResponse({"error": "No se recibió el token"}, status=400)
 
     try:
-        print("Token recibido en backend:", token)  # Verifica que el token llega correctamente
+        print("Token recibido en backend:", token) 
 
         google_user = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
-        print("Usuario de Google:", google_user)  # Verifica qué datos devuelve Google
+        print("Usuario de Google:", google_user)  
 
         if not google_user:
             return JsonResponse({"error": "Token inválido"}, status=400)
@@ -120,7 +120,15 @@ def google_login(request):
             VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
             )
-
+            try:
+                ejercicio = Ejercicio.objects.get(id_ejercicio=1)
+                EjercicioAsignado.objects.create(
+                    usuario=user,
+                    ejercicio=ejercicio
+                )
+            except Ejercicio.DoesNotExist:
+                print("El ejercicio con ID 1 no existe")
+                
         from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(user)
 
@@ -130,11 +138,21 @@ def google_login(request):
             "refresh_token": str(refresh),
             "user": {"id": user.id, "email": user.email, "name": user.first_name},
         })
-
+    
     except Exception as e:
         print("Error en la autenticación:", e)  
         return JsonResponse({"error": str(e)}, status=400)
 
+from django.views.decorators.http import require_POST
+from django.contrib.auth import logout
+@require_POST
+@csrf_exempt
+def logout(request):
+    logout(request)
+    response = JsonResponse({'success': True})
+    response.delete_cookie('sessionid')
+    response.delete_cookie('csrftoken')
+    return response
 
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
@@ -299,10 +317,21 @@ def ejercicio_python(request):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-def actualizar_puntaje_usuario(usuario, puntos_a_sumar):
-    puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
-    puntaje.puntos += puntos_a_sumar
-    puntaje.save()
+from django.db import IntegrityError
+def actualizar_puntaje_usuario(usuario_id, puntos_a_sumar):
+    try:
+        usuario = get_object_or_404(User, id=usuario_id)
+        
+        puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
+        puntaje.puntos += puntos_a_sumar
+        puntaje.save()
+        
+    except IntegrityError:
+        return Puntaje.objects.create(
+            usuario=usuario,
+            puntos=puntos_a_sumar,
+            id=None 
+        )
 
 @api_view(['POST'])
 def guardar_intento(request):
@@ -822,7 +851,17 @@ def crear_usuario(request):
         VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
         )
-        
+        try:
+            ejercicio = Ejercicio.objects.get(id_ejercicio=1)
+            EjercicioAsignado.objects.create(
+                usuario=user,
+                ejercicio=ejercicio
+            )
+        except Ejercicio.DoesNotExist:
+            return Response(
+                {'error': 'El ejercicio con ID 1 no existe'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         return Response({
             'message': 'Usuario creado exitosamente',
             'user_id': user.id,

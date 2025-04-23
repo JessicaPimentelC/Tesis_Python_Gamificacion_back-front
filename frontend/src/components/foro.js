@@ -6,6 +6,7 @@ import Header from "./Header";
 import API_BASE_URL from "../config";
 import { esAdmin } from "../utils/validacionUsuario"; 
 import Swal from 'sweetalert2';
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
 
 const Foro = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,15 +109,6 @@ const Foro = () => {
       alert("Por favor, completa todos los campos.");
     }
   };
-  useEffect(() => {
-    fetchUsuario();
-  }, []);
-
-  const getCSRFToken = () => {
-    const cookies = document.cookie.split("; ");
-    const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
-    return csrfCookie ? csrfCookie.split("=")[1] : "";
-  };
 
   const handleVote = async (participacionId, tipoVoto) => {
 
@@ -173,53 +165,98 @@ const Foro = () => {
     fetchParticipaciones();
   }, []);
 
+  const fetchUsuario = async () => {
+    try {
+      const csrfToken = getCSRFToken();
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+          },
+          withCredentials: true
+      };
+      const googleToken = localStorage.getItem("access_token");
+      if (googleToken) {
+          config.headers.Authorization = `Bearer ${googleToken}`;
+      }
+      const userResponse = await axios.get(
+        `${API_BASE_URL}/myapp/usuario-info/`,config);
+
+      console.log("Usuario:", userResponse.data.username);
+      const usuario_id = userResponse.data.id; 
+      setUsername(userResponse.data.username);
+      setUsuarioId(userResponse.data.id);
+
+      return userResponse.data.id;
+    } catch (error) {
+      console.error("Error al obtener el usuario:", error.response?.data || error.message);
+      
+      if (error.response?.status === 401) {
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("user");
+          navigate('/');
+      }
+      return null
+  }
+  };
+  useEffect(() => {
+    const hasSession = document.cookie.includes('sessionid') || localStorage.getItem("access_token");
+    if (hasSession) {
+      fetchUsuario(); // Ahora fetchUsuario está disponible
+    } else {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const handleRegistroForo = async () => {
-    console.log("Usuario ID:", usuarioId);  // 🔍 Verifica si usuarioId tiene un valor correcto
+    console.log("Usuario ID:", usuarioId);
+  
     if (!usuarioId) {
       alert("Error: usuario_id no definido");
       return;
     }
+  
+    // Obtenemos el token desde localStorage
+    const token = localStorage.getItem("access_token");
+  
+    if (!token) {
+      alert("No estás autenticado. Iniciá sesión nuevamente.");
+      return;
+    }
+  
     try {
-
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroForo/`,
-        { usuario_id: usuarioId, tema, descripcion, fecha_creacion }
+        {
+          usuario: usuarioId,
+          tema,
+          descripcion,
+          fecha_creacion
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          }
+        }
       );
-
+  
       console.log("Success:", response.data);
       fetchQuestions();
     } catch (error) {
-      console.error("Error:", error);
-      alert(
-        "Ocurrió un error al registrar el foro. Por favor, intenta de nuevo."
-      );
-    }
-  };
-  const fetchUsuario = async () => {
-    try {
-      const userResponse = await axios.get(
-        `${API_BASE_URL}/myapp/usuario-info/`,
-        {
-          withCredentials: true, // Incluir cookies en la petición
-        }
-      );
-
-      console.log("Usuario:", userResponse.data.username);
-      const usuario_id = userResponse.data.id; // Ajusta según la respuesta de tu API
-      setUsername(userResponse.data.username);
-      setUsuarioId(userResponse.data.id);
-
-      if (!usuario_id) {
-        alert("Error: Usuario no identificado.");
-        return;
+      console.error("Error:", error.response?.data || error.message);
+      if (error.response?.status === 401) {
+        alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        navigate('/');
+      } else {
+        alert("Ocurrió un error al registrar el foro. Por favor, intenta de nuevo.");
       }
-      return userResponse.data.id;
-      // Llamar a fetchScore con el usuario_id
-    } catch (error) {
-      console.error("Error al obtener usuario:", error);
     }
   };
-
+  
+  
   const handleRegistroRespuestaForo = async () => {
     try {
       console.log("responseUsername:", responseUsername);
@@ -342,7 +379,7 @@ const Foro = () => {
                 <div className="question-header">
                     <p className="question-info">
                     Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
-                    Pregunta de: {username}
+                    Pregunta de: <span className="username" >{username}</span>
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -364,8 +401,8 @@ const Foro = () => {
                         >
                         {" "}
                         <div className="answer-header">
-                            <p className="answer-info">
-                            Respuesta de {username} en {a.fecha_participacion}
+                            <p className="answer-info"> <span className="username" >
+                            Respuesta de {username} </span><br></br><span> en {a.fecha_participacion} </span>
                             </p>
                         </div>
                         <p className="answer-text">{a.comentario}</p>

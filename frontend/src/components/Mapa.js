@@ -3,29 +3,56 @@ import { redirigirAEnunciado } from "../utils/utils";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import API_BASE_URL from "../config";
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
 
 const Mapa = () => {
     const navigate = useNavigate();
     const [ejercicios, setEjercicios] = useState([]);
     const [userInfo, setUserInfo] = useState(null);
 
-    // Cargar usuario
     useEffect(() => {
         const fetchUsuario = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-                    withCredentials: true,
-                });
+                const csrfToken = getCSRFToken();
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                    withCredentials: true
+                };
+    
+                const googleToken = localStorage.getItem("access_token");
+                if (googleToken) {
+                    config.headers.Authorization = `Bearer ${googleToken}`;
+                }
+    
+                const response = await axios.get(
+                    `${API_BASE_URL}/myapp/usuario-info/`,
+                    config
+                );
+    
                 setUserInfo(response.data);
                 console.log("Usuario recibido:", response.data);
+                
             } catch (error) {
                 console.error("Error al obtener el usuario:", error.response?.data || error.message);
+                
+                if (error.response?.status === 401) {
+                    localStorage.removeItem("access_token");
+                    localStorage.removeItem("user");
+                    navigate('/');
+                }
             }
         };
-
-        fetchUsuario();
-    }, []); // Se ejecuta solo una vez al montar el componente
-
+    
+        const hasSession = document.cookie.includes('sessionid') || localStorage.getItem("access_token");
+        if (hasSession) {
+            fetchUsuario();
+        } else {
+            navigate('/');
+        }
+    }, [navigate]); 
     // Cargar ejercicios cuando userInfo esté disponible
     useEffect(() => {
         if (userInfo) {
@@ -40,23 +67,9 @@ const Mapa = () => {
 
             obtenerEjerciciosDesdeBD();
         }
-    }, [userInfo]); // Se ejecuta cuando userInfo cambia
+    }, [userInfo]); 
 
-   /* const positions = [
-        { top: 50, left: 50, icon: "/colombia.png" },
-        { top: 50, left: 110, icon: "/cohetee.png" },
-        { top: 50, left: 170, icon: "/empresario.png" },
-        { top: 50, left: 230, icon: "/tres.png" },
-        { top: 50, left: 290, icon: "/libero.png" },
-        { top: 110, left: 290, icon: "/ed.png" },
-        { top: 170, left: 290, icon: "/geometrico.png" },
-        { top: 230, left: 290, icon: "/41.png" },
-        { top: 290, left: 290, icon: "/42.png" },
-        { top: 290, left: 50, icon: "/43.png" },
-        { top: 290, left: 110, icon: "/44.png" },
-        { top: 290, left: 170, icon: "/45.png" },
-        { top: 290, left: 230, icon: "/46.png" },
-    ];*/
+
     const generarEspiralVertical = (numElementos, centroX, centroY, radioInicial, factorExp) => {
         return Array.from({ length: numElementos }, (_, i) => {
             const angle = i * 0.6; // Ajuste del ángulo para separación horizontal

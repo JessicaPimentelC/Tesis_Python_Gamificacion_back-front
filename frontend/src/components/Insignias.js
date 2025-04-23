@@ -1,63 +1,129 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Insignias.css";
-import Usuario from "./Usuario";
-import Sidebar from "./Sidebar";
 import axios from "axios";
 import API_BASE_URL from "../config";
 import Header from "./Header";
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
 
 const Insignias = () => {
   const navigate = useNavigate(); // Hook para la redirección
   const [selectedInsignia, setSelectedInsignia] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [hoveredInsignia, setHoveredInsignia] = useState(null);
+  const [error, setError] = useState(null);
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   // Función para manejar el click en una insignia (si necesitas alguna acción)
   const handleInsigniaClick = (insigniaNombre) => {
     console.log(`Insignia clickeada: ${insigniaNombre}`);
   };
 
-  // Estado para controlar el modal
   useEffect(() => {
     const fetchUsuario = async () => {
-      try {
-        const response = await axios.get(
-          `${API_BASE_URL}/myapp/usuario-info/`,
-          {
-            withCredentials: true,
-          }
-        );
-        setUserInfo(response.data);
-        console.log("Usuario recibido:", response.data);
-      } catch (error) {
-        console.error(
-          "Error al obtener el usuario:",
-          error.response?.data || error.message
-        );
-      }
+        try {
+            const csrfToken = getCSRFToken();
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                withCredentials: true
+            };
+  
+            const googleToken = localStorage.getItem("access_token");
+            if (googleToken) {
+                config.headers.Authorization = `Bearer ${googleToken}`;
+            }
+  
+            const response = await axios.get(
+                `${API_BASE_URL}/myapp/usuario-info/`,
+                config
+            );
+  
+            setUserInfo(response.data);
+            console.log("Usuario recibido:", response.data);
+            
+        } catch (error) {
+            console.error("Error al obtener el usuario:", error.response?.data || error.message);
+            
+            if (error.response?.status === 401) {
+                localStorage.removeItem("access_token");
+                localStorage.removeItem("user");
+                navigate('/');
+            }
+        }
     };
+  
+    const hasSession = document.cookie.includes('sessionid') || localStorage.getItem("access_token");
+    if (hasSession) {
+        fetchUsuario();
+    } else {
+        navigate('/');
+    }
+  }, [navigate]); 
+useEffect(() => {
+  const fetchInsignias = async () => {
+    try {
+      const headers = {
+        'Content-Type': 'application/json'
+      };
 
-    fetchUsuario();
-  }, []);
-  useEffect(() => {
-    const fetchInsignias = async () => {
-      try {
-        const response = await axios.get(
-          `${API_BASE_URL}/myapp/insignias/`,
-          {
-            withCredentials: true, // Para incluir cookies si las usas
-          }
-        );
-        console.log("insignias obtenidas", response.data.insignias);
-        setInsignias(response.data.insignias);
-      } catch (error) {
-        console.error("Error al obtener las insignias:", error);
+      const csrfToken = getCSRFToken();
+      if (csrfToken) {
+        headers['X-CSRFToken'] = csrfToken;
       }
-    };
-    fetchInsignias();
-  }, []);
 
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await axios.get(
+        `${API_BASE_URL}/myapp/insignias/`,
+        {
+          headers,
+          withCredentials: true
+        }
+      );
+
+      console.log("Insignias obtenidas:", response.data);
+      setInsignias(response.data.insignias);
+
+    } catch (error) {
+      console.error("Error al obtener insignias:", error);
+
+      if (error.response?.status === 401) {
+        try {
+          const newToken = await refreshAccessToken();
+          
+          const retryResponse = await axios.get(
+            `${API_BASE_URL}/myapp/insignias/`,
+            {
+              headers: {
+                'Authorization': `Bearer ${newToken}`,
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+              },
+              withCredentials: true
+            }
+          );
+          
+          setInsignias(retryResponse.data.insignias);
+          return;
+        } catch (refreshError) {
+          console.error("Error al renovar token:", refreshError);
+          // Redirigir a login si no se puede renovar
+          navigate('/insignias');
+          return;
+        }
+      }
+
+      setError('No se pudieron cargar las insignias. Intenta recargar la página.');
+    }
+  };
+
+  fetchInsignias();
+}, [navigate]); 
   // Función para abrir el modal con la información de la insignia seleccionada
   const openModal = (insignia) => {
     setSelectedInsignia(insignia);

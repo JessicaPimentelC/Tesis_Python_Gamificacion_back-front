@@ -5,6 +5,7 @@ import Header from './Header';
 import '../styles/Editar-usuario.css';
 import { useParams,useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
+import {getCSRFToken } from "../utils/validacionesGenerales.js";
 
 const ListarUsuario = () => {
     const navigate = useNavigate(); // Hook para la redirección
@@ -33,22 +34,25 @@ const ListarUsuario = () => {
             timeZone: "America/Argentina/Buenos_Aires",
             });
         };
-    useEffect(() => {
-        const listarUsuarios = async () => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
-                    withCredentials: true,  
-                });
-                setUsuarios(response.data); 
-                setLoading(false); 
-            } catch (error) {
-                console.error("Error al obtener los usuarios:", error.response?.data || error.message);
-                setLoading(false);
-            }
-        };
-
-    listarUsuarios();
-}, []);
+        useEffect(() => {
+            const listarUsuarios = async () => {
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                            'Content-Type': 'application/json'
+                        }
+                        });
+                        setUsuarios(response.data);
+                        setLoading(false); 
+                    } catch (error) {
+                        console.error('Error:', error);
+                        setLoading(false);
+                    }
+                };
+        
+            listarUsuarios();
+        }, [navigate]); 
     
     const handleBackClick = () => {
         navigate("/perfil");

@@ -4,6 +4,7 @@ import '../styles/HeaderBody.css';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import API_BASE_URL from "../config";
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
 
 const HeaderBody = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -11,7 +12,7 @@ const HeaderBody = () => {
     const [showModal, setShowModal] = React.useState(false);
     const [hoveredInsignia, setHoveredInsignia] = useState(null);
     const [insignias, setInsignias] = useState([]);  // Asegurar que es un array
-
+    const [error, setError] = useState(null);
     const handleControlPanelClick = () => {
         // Logic for the control panel
     };
@@ -22,36 +23,61 @@ const HeaderBody = () => {
 
     useEffect(() => {
         const fetchInsignias = async () => {
-            try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/insignias/`, {
-                    withCredentials: true,
-                });
-    
+                try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                const csrfToken = getCSRFToken();
+                if (csrfToken) {
+                    headers['X-CSRFToken'] = csrfToken;
+                }
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                const response = await axios.get(
+                    `${API_BASE_URL}/myapp/insignias/`,
+                    {
+                        headers,
+                        withCredentials: true
+                    }
+                );
+        
                 console.log("Insignias obtenidas:", response.data);
-                
-                // Verificar que la respuesta contenga 'insignias'
-                if (response.data && Array.isArray(response.data.insignias)) {
-                    setInsignias(response.data.insignias);
-                } else {
-                    setInsignias([]);  // Evitar errores si la API no devuelve un array
+                setInsignias(response.data.insignias);
+        
+                } catch (error) {
+                console.error("Error al obtener insignias:", error);
+                if (error.response?.status === 401) {
+                    try {
+                    const newToken = await refreshAccessToken();
+                    
+                const retryResponse = await axios.get(
+                    `${API_BASE_URL}/myapp/insignias/`,
+                    {
+                    headers: {
+                        'Authorization': `Bearer ${newToken}`,
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken()
+                    },
+                    withCredentials: true
+                    }
+                    );
+                    
+                    setInsignias(retryResponse.data.insignias);
+                return;
+                } catch (refreshError) {
+                console.error("Error al renovar token:", refreshError);
+                // Redirigir a login si no se puede renovar
+                navigate('/perfil');
+                return;
                 }
-    
-                // Mostrar mensaje si hay una nueva insignia
-                if (response.status === 200 && response.data.nuevas_insignias && response.data.mensaje) {
-                    Swal.fire({
-                        title: "¡Nueva Insignia!",
-                        text: response.data.mensaje, 
-                        icon: "success",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#007bff"
-                    });
-                }
-            } catch (error) {
-                console.error("Error al obtener las insignias:", error);
-                setInsignias([]);  // Evita que el estado quede como 'undefined'
+            }
+        
+            setError('No se pudieron cargar las insignias. Intenta recargar la página.');
             }
         };
-
+        
         fetchInsignias();
 
         const interval = setInterval(() => {

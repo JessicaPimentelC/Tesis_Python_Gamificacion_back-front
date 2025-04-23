@@ -4,6 +4,9 @@ import "../styles/Header.css";
 import PinguinoModal from "./PinguinoModal";
 import Mapa from "./Mapa";
 import Chatbot from "./Chatbot";
+import API_BASE_URL from "../config";
+import axios from "axios";
+import {getCSRFToken } from "../utils/validacionesGenerales.js";
 
 
 const Header = () => {
@@ -42,6 +45,21 @@ const Header = () => {
     const handleMouseEnter = () => {
         setDropdownOpen(true);
     };
+    const handleLogout = async () => {
+        try {
+            await axios.post(`${API_BASE_URL}/logout/`, {}, {
+                headers: {
+                "X-CSRFToken": getCSRFToken(),
+                },
+                withCredentials: true
+            });
+            } catch (error) {
+            console.error("Error en logout:", error);
+            } finally {
+            localStorage.clear();
+            navigate('/', { replace: true });
+            }
+        };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -162,7 +180,7 @@ const Header = () => {
                         >
                             Perfil
                         </button>
-                        <button onClick={handleCerrarSesionClick} className="dropdown-item">
+                        <button onClick={handleLogout} className="dropdown-item">
                             Cerrar Sesión
                         </button>
                     </div>
