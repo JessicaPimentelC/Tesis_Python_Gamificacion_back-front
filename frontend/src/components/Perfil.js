@@ -114,7 +114,6 @@ useEffect(() => {
             return;
           } catch (refreshError) {
             console.error("Error al renovar token:", refreshError);
-            // Redirigir a login si no se puede renovar
             navigate('/perfil');
             return;
           }

@@ -7,6 +7,7 @@ import API_BASE_URL from "../config";
 import { esAdmin } from "../utils/validacionUsuario"; 
 import Swal from 'sweetalert2';
 import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import useUsuario from "../utils/useUsuario.js";
 
 const Foro = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,11 +28,12 @@ const Foro = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [usuarioId, setUsuarioId] = useState(null);
   const [score, setScore] = useState(0);
-  
+  const { usuario, fetchUsuario } = useUsuario();//para hook de useUsuario
+
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/myapp/registroForo/`
+        `${API_BASE_URL}/myapp/registroForo/`,
       );
       if (Array.isArray(response.data)) {
         const questionsWithAnswers = response.data.map((q) => ({
@@ -165,65 +167,33 @@ const Foro = () => {
     fetchParticipaciones();
   }, []);
 
-  const fetchUsuario = async () => {
-    try {
-      const csrfToken = getCSRFToken();
-      const config = {
-          headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrfToken,
-          },
-          withCredentials: true
-      };
-      const googleToken = localStorage.getItem("access_token");
-      if (googleToken) {
-          config.headers.Authorization = `Bearer ${googleToken}`;
-      }
-      const userResponse = await axios.get(
-        `${API_BASE_URL}/myapp/usuario-info/`,config);
 
-      console.log("Usuario:", userResponse.data.username);
-      const usuario_id = userResponse.data.id; 
-      setUsername(userResponse.data.username);
-      setUsuarioId(userResponse.data.id);
-
-      return userResponse.data.id;
-    } catch (error) {
-      console.error("Error al obtener el usuario:", error.response?.data || error.message);
-      
-      if (error.response?.status === 401) {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("user");
-          navigate('/');
-      }
-      return null
-  }
-  };
   useEffect(() => {
     const hasSession = document.cookie.includes('sessionid') || localStorage.getItem("access_token");
     if (hasSession) {
-      fetchUsuario(); // Ahora fetchUsuario está disponible
+      fetchUsuario(); 
     } else {
       navigate('/');
     }
   }, [navigate]);
 
   const handleRegistroForo = async () => {
+    const user = await fetchUsuario();
+    const usuarioId = user?.id;
     console.log("Usuario ID:", usuarioId);
-  
+
     if (!usuarioId) {
       alert("Error: usuario_id no definido");
       return;
     }
   
-    // Obtenemos el token desde localStorage
     const token = localStorage.getItem("access_token");
   
     if (!token) {
       alert("No estás autenticado. Iniciá sesión nuevamente.");
       return;
     }
-  
+    const fecha_creacion = new Date().toISOString().split("T")[0];
     try {
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroForo/`,
@@ -257,16 +227,16 @@ const Foro = () => {
   };
   
   
-  const handleRegistroRespuestaForo = async () => {
-    try {
-      console.log("responseUsername:", responseUsername);
-      const userId = await fetchUsuario(responseUsername);
-      console.log("id", userId);
+    const handleRegistroRespuestaForo = async () => {
+      try {
+        const user = await fetchUsuario();
+        const userId = user?.id;
+        console.log("id", userId);
 
-      if (!userId) {
-        alert("Usuario no encontrado.");
-        return;
-      }
+        if (!userId) {
+          alert("Usuario no encontrado.");
+          return;
+        }
 
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroParti_foro/`,
@@ -285,7 +255,6 @@ const Foro = () => {
         fetchQuestions();
         fetchParticipaciones();
       }, 300);
-      // Resetea los campos y cierra el modal
       setResponseUsername("");
       setResponseText("");
       closeModal();
@@ -296,7 +265,10 @@ const Foro = () => {
       );
     }
   };
-
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setFecha_creacion(today);
+  }, []);
   const openResponseModal = (index) => {
     setCurrentQuestionIndex(index);
     setIsResponseModalOpen(true);
@@ -379,7 +351,7 @@ const Foro = () => {
                 <div className="question-header">
                     <p className="question-info">
                     Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
-                    Pregunta de: <span className="username" >{username}</span>
+                    Pregunta de: <span className="username" >{usuario.username}</span>
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -402,7 +374,7 @@ const Foro = () => {
                         {" "}
                         <div className="answer-header">
                             <p className="answer-info"> <span className="username" >
-                            Respuesta de {username} </span><br></br><span> en {a.fecha_participacion} </span>
+                            Respuesta de {usuario.username} </span><br></br><span> en {a.fecha_participacion} </span>
                             </p>
                         </div>
                         <p className="answer-text">{a.comentario}</p>
@@ -496,7 +468,7 @@ const Foro = () => {
                 <input
                 type="date"
                 value={fecha_creacion}
-                onChange={(e) => setFecha_creacion(e.target.value)}
+                readOnly
                 className="modal-input"
                 />
                 <button onClick={handleSubmit} className="modal-button">
