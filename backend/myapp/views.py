@@ -68,6 +68,7 @@ def obtenerUsuario(request):
     else:
         return Response({'message': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
 
+from rest_framework_simplejwt.tokens import AccessToken
 @api_view(['POST'])
 @csrf_exempt
 def Login(request):
@@ -86,7 +87,11 @@ def Login(request):
 
     if user is not None:
         login(request, user)
-        return Response({'message': 'Inicio de sesión exitoso'}, status=status.HTTP_200_OK)
+        token = AccessToken.for_user(user)
+        return Response({
+            'message': 'Inicio de sesión exitoso',
+            'access_token': str(token),  
+        }, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 

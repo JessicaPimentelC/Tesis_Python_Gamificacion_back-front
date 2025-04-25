@@ -173,6 +173,7 @@ const Foro = () => {
     if (hasSession) {
       fetchUsuario(); 
     } else {
+      console.log("error que redirige a login")
       navigate('/');
     }
   }, [navigate]);
@@ -219,7 +220,7 @@ const Foro = () => {
         alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        navigate('/');
+        navigate('/perfil');
       } else {
         alert("Ocurrió un error al registrar el foro. Por favor, intenta de nuevo.");
       }
@@ -351,7 +352,7 @@ const Foro = () => {
                 <div className="question-header">
                     <p className="question-info">
                     Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
-                    Pregunta de: <span className="username" >{usuario.username}</span>
+                    Pregunta de: <span className="username" >{usuario?.username}</span>
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -374,7 +375,7 @@ const Foro = () => {
                         {" "}
                         <div className="answer-header">
                             <p className="answer-info"> <span className="username" >
-                            Respuesta de {usuario.username} </span><br></br><span> en {a.fecha_participacion} </span>
+                            Respuesta de {usuario?.username} </span><br></br><span> en {a.fecha_participacion} </span>
                             </p>
                         </div>
                         <p className="answer-text">{a.comentario}</p>

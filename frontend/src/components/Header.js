@@ -113,15 +113,19 @@ const Header = () => {
     };
     const openModalPinguino = () => {
         setIsModalOpenPinguino(!isModalOpenPinguino);
-      };
-      
+    };
+    
     const handlePenguinClick = () => {
         setShowChatbot(true);
     };
 
     const handleCloseChatbot = () => {
         setShowChatbot(false);
-      };
+    };
+    const handlePositionsClick = () => {
+        // Logic to handle click on positions box
+        navigate("/ranking");
+    };
     return (
         <div className="dashboard-header">
             <div className="header-buttons">
@@ -152,7 +156,7 @@ const Header = () => {
             </div>
             </div>
         )}
-                <button className="icon-button-mapa" onClick={handleInsigniasIconClick}>
+                <button className="icon-button-mapa" onClick={handlePositionsClick}>
                     <img src="/bandera_header.png" alt="Icono Insignias" className="header-icon" />
                 </button>
                 <button className="icon-button-mapa" onClick={handlePenguinClick}>

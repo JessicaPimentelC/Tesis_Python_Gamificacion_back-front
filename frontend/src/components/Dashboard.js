@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import PinguinoModal from "./PinguinoModal";
-import Ruleta from "./Ruleta";
+
 const Dashboard = () => {
   const [loadingProgress2, setLoadingProgress2] = React.useState(0);
   const [showModal, setShowModal] = React.useState(false);
@@ -104,11 +103,6 @@ const Dashboard = () => {
   const handlePositionsClick = () => {
     // Logic to handle click on positions box
     navigate("/ranking");
-  };
-
-  const handleChallengesClick = () => {
-    // Logic to handle click on challenges box
-    navigate("/challenges");
   };
 
   const handlePythonIconClick = () => {
@@ -332,7 +326,7 @@ const Dashboard = () => {
               </div>
             </div>
             </div>
-            <div className="dashboard-right">
+            {/**<div className="dashboard-right">
             <button
               className="info-box-lesson lesson-box"
               onClick={handlePositionsClick}
@@ -349,10 +343,8 @@ const Dashboard = () => {
               <ProgressBar />
             </button>
 
-          {/* <Ruleta></Ruleta>*/}
-          </div>
+          </div> */}
         </div>
-           {/* Integración del Chatbot */}
 
         {showModal && (
           <div className="modal-overlay" onClick={handleCancelCerrarSesion}>

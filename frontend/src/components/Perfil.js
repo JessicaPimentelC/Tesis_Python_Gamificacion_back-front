@@ -51,7 +51,7 @@ useEffect(() => {
           if (error.response?.status === 401) {
               localStorage.removeItem("access_token");
               localStorage.removeItem("user");
-              navigate('/');
+              navigate('/perfil');
           }
       }
   };

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ranking.css';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from './Sidebar';
 import Header from './Header';
 import API_BASE_URL from "../config";
 import axios from 'axios';
+import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+
 
 const Ranking = () => {
     const [loadingProgress2, setLoadingProgress2] = React.useState(0);
@@ -32,23 +33,54 @@ const Ranking = () => {
         clearInterval(interval2);
         };
     }, []);
-
+    
     useEffect(() => {
         const listarUsuarios = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
-                    withCredentials: true,  
-                });
-                setUsuarios(response.data); 
-                setLoading(false); 
+            let token = localStorage.getItem("access_token");
+    
+            if (!token) {
+                alert("No estás autenticado.");
+                navigate("/login");
+                return;
+            }
+    
+            const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                },
+                withCredentials: true, 
+            });
+    
+            setUsuarios(response.data);
+            setLoading(false);
+    
             } catch (error) {
+            if (error.response?.status === 401) {
+                const newToken = await refreshAccessToken();
+                if (newToken) {
+                    const retryResponse = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
+                    headers: {
+                    Authorization: `Bearer ${newToken}`,
+                    "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                });
+    
+                setUsuarios(retryResponse.data);
+                setLoading(false);
+                }
+            } else {
                 console.error("Error al obtener los usuarios:", error.response?.data || error.message);
                 setLoading(false);
             }
-        };
-
-    listarUsuarios();
-    }, []);
+            }
+        };  
+    
+        listarUsuarios();
+    }, [navigate]);
+    
     useEffect(() => {
         const obtenerPuntaje = async () => {
             try {
