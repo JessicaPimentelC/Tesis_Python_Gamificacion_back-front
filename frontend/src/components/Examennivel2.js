@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Examennivel1.css";
 import Sidebar from "./Sidebar";
@@ -11,26 +11,80 @@ function Examennivel2() {
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [codeOutput, setCodeOutput] = useState("");
-  const [verificationMessage, setVerificationMessage] = useState(""); // Mensaje de verificación
-  const [outputVisible, setOutputVisible] = useState(false); // Controla la visibilidad del mensaje flotante
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  const [randomExercise, setRandomExercise] = useState(null);
   const navigate = useNavigate();
+
+  const exerciseOptions = [
+    {
+      id: "exercise1",
+      text: `Objetivo:
+Crea una función en Python que determine si un número es par o impar.
+
+1. Función:
+Define una función llamada es_par(numero) que reciba un número entero.
+
+2. Lógica:
+La función debe devolver:
+- "Par" si el número es divisible por 2 sin residuo.
+- "Impar" si el número no es divisible por 2.
+
+3. Ejemplo de uso:
+\`\`\`python
+print(es_par(4))  # Debería imprimir: Par
+\`\`\`
+
+⚠️ Restricciones:
+- La función debe manejar tanto números positivos como negativos.
+- El parámetro numero siempre será un número entero.`,
+      validationText: "es_par"
+    },
+    {
+      id: "exercise2",
+      text: `Objetivo:
+Crea una función en Python que determine si un número es positivo, negativo o cero.
+
+1. Función:
+Define una función llamada clasificar_numero(numero) que reciba un número entero.
+
+2. Lógica:
+La función debe devolver:
+- "Positivo" si el número es mayor que 0.
+- "Negativo" si el número es menor que 0.
+- "Cero" si el número es igual a 0.
+
+3. Ejemplo de uso:
+\`\`\`python
+print(clasificar_numero(5))   # Debería imprimir: Positivo
+print(clasificar_numero(-3))  # Debería imprimir: Negativo
+print(clasificar_numero(0))   # Debería imprimir: Cero
+\`\`\``,
+      validationText: "clasificar_numero"
+    }
+  ];
 
   const questions = [
     { id: "question1", text: "¿Cuál es la forma correcta de usar una estructura if en Python?", options: { A: "if x > 5 { print('Mayor a 5') }", B: "if (x > 5) print('Mayor a 5')", C: "if x > 5: print('Mayor a 5')", D: "if x > 5 then print('Mayor a 5')" }, correct: "C" },
     { id: "question2", text: "¿Qué palabra clave se usa para agregar una condición alternativa en un if?", options: { A: "otherwise", B: "else", C: "elif", D: "except" }, correct: "B" },
-    { id: "question3", text: `Si x = 10 y y = 5, ¿qué valor imprimirá el siguiente código?\n\n\`\`\`python\nif x > y:\n    print('X es mayor')\nelse:\n    print('Y es mayor')\n\`\`\``, options: { A: "X es mayor", B: "Y es mayor", C: "Error", D: "No imprime nada" }, correct: "A" },
+    { id: "question3", text: `Si x = 10 y y = 5, ¿qué valor imprimirá el siguiente código?
+
+\`\`\`python
+if x > y:
+    print('X es mayor')
+else:
+    print('Y es mayor')
+\`\`\``, options: { A: "X es mayor", B: "Y es mayor", C: "Error", D: "No imprime nada" }, correct: "A" },
     { id: "question4", text: "¿Cuál es el operador lógico correcto para verificar si dos condiciones son verdaderas en Python?", options: { A: "&&", B: "||", C: "and", D: "or" }, correct: "C" },
-    { id: "question5", text: `Enunciado del ejercicio:
-    Crea una función llamada \`es_par(numero)\` que reciba un número entero como parámetro y determine si dicho número es par o impar. La función debe devolver una cadena de texto:
-    
-    - \"Par"\ si el número es divisible por 2 sin dejar residuo.
-    - \"Impar"\ si el número no es divisible por 2 sin dejar residuo.
-  
-    Restricciones:
-    - El parámetro \`numero\` debe ser un número entero.
-    - La función debe ser capaz de manejar tanto números positivos como negativos.`, 
-    type: "code"},
+    { id: "question5", type: "code" }
   ];
+
+  useEffect(() => {
+    if (questions[currentQuestion].id === "question5") {
+      const randomIndex = Math.floor(Math.random() * exerciseOptions.length);
+      setRandomExercise(exerciseOptions[randomIndex]);
+    }
+  }, [currentQuestion]);
 
   const handleChange = (value) => {
     const questionId = questions[currentQuestion].id;
@@ -45,11 +99,9 @@ function Examennivel2() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     let correct = 0, incorrect = 0;
-    console.log("Respuestas:", answers);
     
-    // Si las respuestas ya están listas, continuamos el proceso
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
       if (q.type !== "code" && answers[q.id] === q.correct) {
@@ -63,7 +115,6 @@ function Examennivel2() {
     setIncorrectCount(incorrect);
     setShowModal(true);
   };
-  
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -74,27 +125,17 @@ function Examennivel2() {
     const userCode = answers[questions[currentQuestion].id] || "";
     const isPregunta5 = questions[currentQuestion].id === "question5";
 
-    // Normaliza la indentación del código del usuario
     let codigoNormalizado = userCode.replace(/\t/g, "    ");
     codigoNormalizado = codigoNormalizado
       .split("\n")
       .map(line => line.replace(/\s+$/, ""))
       .join("\n");
 
-    let codigoEjecutable = codigoNormalizado;
-
-    if (isPregunta5) {
-      if (!codigoEjecutable.includes("def es_par")) {
-        setCodeOutput("⚠ Debes definir la función 'es_par' para resolver este ejercicio.");
-        setVerificationMessage("");
-        return;
-      }
-
-      // Añadimos pruebas automáticamente
-      codigoEjecutable += `
-print(es_par(4))
-print(es_par(8))
-print(es_par(2))`;
+    if (isPregunta5 && randomExercise && !codigoNormalizado.includes(`def ${randomExercise.validationText}`)) {
+      setCodeOutput(`⚠ Debes definir la función '${randomExercise.validationText}' para resolver este ejercicio.`);
+      setVerificationMessage("");
+      setOutputVisible(true);
+      return;
     }
 
     try {
@@ -104,24 +145,21 @@ print(es_par(2))`;
         body: JSON.stringify({
           language: "python",
           version: "3.10.0",
-          files: [{ content: codigoEjecutable }]
+          files: [{ content: codigoNormalizado }]
         })
       });
 
       const result = await response.json();
       const salida = result.run.stdout?.trim() || result.run.stderr?.trim() || "⚠ No se recibió salida.";
 
+      setCodeOutput(`🖨 Salida:\n${salida}`);
+
       if (isPregunta5) {
-        const esperado = "Par\nPar\nPar";
-        if (salida === esperado) {
-          setCodeOutput(`🖨 Salida:\n${salida}`);
-          setVerificationMessage("✅ ¡Correcto! Tu función pasó todas las pruebas.");
+        if (salida.includes("Par") || salida.includes("Impar") || salida.includes("Positivo") || salida.includes("Negativo") || salida.includes("Cero")) {
+          setVerificationMessage("✅ ¡Función ejecutada correctamente!");
         } else {
-          setCodeOutput(`🖨 Salida recibida:\n${salida}`);
-          setVerificationMessage("❌ Tu función no pasó todas las pruebas.");
+          setVerificationMessage("❌ La salida no es la esperada.");
         }
-      } else {
-        setCodeOutput(`🖨 Salida:\n${salida}`);
       }
 
       setOutputVisible(true);
@@ -145,13 +183,20 @@ print(es_par(2))`;
         <h1>EXAMEN NIVEL 2</h1>
         <div className="exam-form">
           <div className="form-group">
-            <label>{currentQuestion + 1}. {questions[currentQuestion].text}</label>
+            <label>{currentQuestion + 1}. {questions[currentQuestion].type === "code" ? randomExercise?.text : questions[currentQuestion].text}</label>
             {questions[currentQuestion].type === "code" ? (
               <>
-                <textarea className="code-input" value={answers[questions[currentQuestion].id] || ""} onChange={(e) => handleChange(e.target.value)} placeholder="Escribe tu código aquí..." />
-                <button className="run-button" onClick={ejecutarCodigo}>Ejecutar Código</button>
+                <textarea
+                  className="code-input"
+                  value={answers[questions[currentQuestion].id] || ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                  placeholder="Escribe tu código aquí..."
+                />
+                <button className="run-button" onClick={ejecutarCodigo}>
+                  Ejecutar Código
+                </button>
 
-                {outputVisible && verificationMessage && (
+                {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (
                       <img src="/exa.gif" alt="Correcto" className="verification-gif" />
@@ -159,7 +204,7 @@ print(es_par(2))`;
                     {verificationMessage.includes("❌") && (
                       <img src="/exam.gif" alt="Incorrecto" className="verification-gif" />
                     )}
-                    {verificationMessage}
+                    <span>{verificationMessage}</span>
                   </div>
                 )}
 
@@ -172,12 +217,26 @@ print(es_par(2))`;
             ) : (
               <div className="button-group">
                 {Object.entries(questions[currentQuestion].options).map(([key, value]) => (
-                  <button key={key} type="button" className={`btn ${answers[questions[currentQuestion].id] === key ? "primary" : "secondary"}`} onClick={() => handleChange(key)}>{key}) {value}</button>
+                  <button
+                    key={key}
+                    type="button"
+                    className={`btn ${answers[questions[currentQuestion].id] === key ? "primary" : "secondary"}`}
+                    onClick={() => handleChange(key)}
+                  >
+                    {key}) {value}
+                  </button>
                 ))}
               </div>
             )}
           </div>
-          <button type="button" className="submit-button" onClick={handleNext} disabled={!answers[questions[currentQuestion].id] && questions[currentQuestion].type !== "code"}>{currentQuestion < questions.length - 1 ? "Siguiente" : "Enviar Examen"}</button>
+          <button
+            type="button"
+            className="submit-button"
+            onClick={handleNext}
+            disabled={!answers[questions[currentQuestion].id] && questions[currentQuestion].type !== "code"}
+          >
+            {currentQuestion < questions.length - 1 ? "Siguiente" : "Enviar Examen"}
+          </button>
         </div>
       </div>
     </div>
