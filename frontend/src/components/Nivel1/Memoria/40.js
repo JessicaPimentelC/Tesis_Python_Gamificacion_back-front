@@ -1,16 +1,27 @@
-import React, { useState, useEffect} from 'react';
-import '../../../styles/1.css';
+import React, { useState, useEffect } from "react";
+import "../../../styles/1.css";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../Sidebar";
 import HeaderBody from "../../HeaderBody";
 import HeaderInfo from "../../HeaderInfo";
 import Puntaje from "../../Puntaje";
-import { obtenerEjercicioAleatorioEnunciado, redirigirAEnunciado } from '../../../utils/utils';	
+import {
+  obtenerEjercicioAleatorioEnunciado,
+  redirigirAEnunciado,
+} from "../../../utils/utils";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
-import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
+import {
+  verificarYOtorgarLogro,
+  getCSRFToken,
+  verificarNivel,
+  guardarEjercicioEnBD,
+  obtenerEjercicioId,
+  refreshAccessToken,
+} from "../../../utils/validacionesGenerales";
+import { fetchUserInfo } from "../../../utils/userService";
 
 const Cuarenta = () => {
   const [flippedCards, setFlippedCards] = useState([]); // Tarjetas volteadas
@@ -22,105 +33,114 @@ const Cuarenta = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [score, setScore] = useState(0);
-  const [errores, setErrores] = useState(0); 
-  const [successMessage,setSuccessMessage] = useState(null);
-  const [errorMessage,setErrorMessage] = useState(null);
+  const [errores, setErrores] = useState(0);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [insignias, setInsignias] = useState([]);
   const [showNext, setShowNext] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const setVidas = useVidasStore((state) => state.setVidas); 
+  const setVidas = useVidasStore((state) => state.setVidas);
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState("");
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
 
-  
-useEffect(() => {
-    const fetchUsuario = async () => {
+  useEffect(() => {
+    const loadUser = async () => {
       try {
-        const csrfToken = getCSRFToken();
-        const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-          headers: {
-            "X-CSRFToken": csrfToken,
-        },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-        console.log("Usuario recibido:", response.data);
+        const userData = await fetchUserInfo();
+        setUserInfo(userData);
+        console.log("Usuario:", userData);
       } catch (error) {
-        console.error("Error al obtener el usuario:", error.response?.data || error.message);
+        console.error("Error al cargar usuario:", error);
       }
     };
-    fetchUsuario();
-  },[]);
-  
-//Permite avanzar entre ejercicios
+    loadUser();
+  }, []);
+
+  //Permite avanzar entre ejercicios
   const handleNext = async () => {
     if (!userInfo || !userInfo.id) {
       console.error("No se encontró el ID del usuario");
       return;
     }
-  
+
     const usuario_id = userInfo.id;
     const proximoEjercicio = obtenerEjercicioAleatorioEnunciado();
     const ejercicio_id = await obtenerEjercicioId();
-    console.log("ejercicio id en handle next",ejercicio_id)
+    console.log("ejercicio id en handle next", ejercicio_id);
     if (!ejercicio_id) {
-        console.error("No se pudo obtener el ejercicio_id");
-        return;
+      console.error("No se pudo obtener el ejercicio_id");
+      return;
     }
     if (proximoEjercicio) {
       try {
         await guardarEjercicioEnBD(usuario_id, proximoEjercicio);
-  
-        const nivelResponse = await axios.get(`${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`, { withCredentials: true });
-            
-            if (nivelResponse.status === 200) {
-                const nivelId = nivelResponse.data.nivel_id;
-                await verificarNivel(nivelId);  // Llamar a la función con el nivel correcto
-            } else {
-                console.error("No se encontró un nivel asignado.");
-            }
-  
+
+        const nivelResponse = await axios.get(
+          `${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`,
+          { withCredentials: true }
+        );
+
+        if (nivelResponse.status === 200) {
+          const nivelId = nivelResponse.data.nivel_id;
+          await verificarNivel(nivelId); // Llamar a la función con el nivel correcto
+        } else {
+          console.error("No se encontró un nivel asignado.");
+        }
+
         setNumerosUsados((prev) => [...prev, proximoEjercicio]);
         setShowModal(false);
-  
+
         redirigirAEnunciado(proximoEjercicio, navigate);
-  
       } catch (error) {
         console.error("Error al avanzar al siguiente ejercicio:", error);
-        }
-      } else {
-        console.log("No quedan ejercicios disponibles.");
       }
-    };
-    const cards = [
+    } else {
+      console.log("No quedan ejercicios disponibles.");
+    }
+  };
+  const cards = [
     { id: 1, value: "num1", pairId: 1 },
     { id: 2, value: "num2", pairId: 2 },
     { id: 3, value: "=", pairId: 3 },
     { id: 4, value: "=", pairId: 3 },
     { id: 5, value: "/ 2", pairId: 2 },
-    { id: 6, value: "(num1 + num2)", pairId: 1 }, // Par para el "="
+    { id: 6, value: "/ 2", pairId: 1 }, // Par para el "="
   ];
 
   const handleCardClick = (card) => {
     if (flippedCards.length === 2) return;
-
     if (flippedCards.find((flippedCard) => flippedCard.id === card.id)) return;
-
+  
     setFlippedCards([...flippedCards, card]);
-
+  
     if (flippedCards.length === 1) {
       const firstCard = flippedCards[0];
       if (firstCard.pairId === card.pairId) {
-        setMatchedPairs([...matchedPairs, firstCard.id, card.id]);
-        setFlippedCards([]); // Restablecer las cartas volteadas
-        if (card.value === "=") {  // Verifica si el signo es "="
-          setIsCorrect(true);
+        // Cartas coinciden
+        const newMatchedPairs = [...matchedPairs, firstCard.id, card.id];
+        setMatchedPairs(newMatchedPairs);
+        setFlippedCards([]);
+        
+        const printCardsMatched = cards.filter(c => 
+          c.value === "=" && newMatchedPairs.includes(c.id)
+        ).length === 2; 
+        
+        if (printCardsMatched) {
+          console.log("Cartas objetivo emparejadas - Llamando a handleVerify(true)");
+          setShowNextButton(true); 
+          handleVerify(true); 
+          setIsCorrect(true); 
         }
       } else {
-        // Si las cartas no coinciden, voltear de nuevo después de un corto retraso
-        setTimeout(() => setFlippedCards([]), 1000); // Esperar 1 segundo para voltear las cartas
+        // Cartas no coinciden
+        setTimeout(() => {
+          setFlippedCards([]);
+          setShowNextButton(false);
+          setIsCorrect(false);
+          handleVerify(false); 
+        }, 1000);
       }
     }
   };
@@ -132,86 +152,80 @@ useEffect(() => {
     );
   };
 
-  /**const handleNext = () => {
-    if (isCorrect) {
-      navigate("/enunciado41"); // Cambia "/otro-modulo" a la ruta deseada
-    }
-  };**/
-
-  const checkAnswer = () => {
-    if (matchedPairs.includes(3)) { // Si el signo "=" está emparejado correctamente
-      setIsCorrect(true);
-    } else {
-      setIsCorrect(false);
-    }
-  };
   //Verifica respuesta ejercicio
-  const handleVerify = async () => {
-    const isCorrect = matchedPairs.includes(3);
-
-    setIsCorrect(isCorrect);
-    setShowNext(isCorrect); 
-
-    if (!isCorrect) {
-      new Audio("/perder.mp3").play();
-      setOutput(''); 
-      return; 
-    }
-  
+  const handleVerify = async (result) => {
+    console.log("Verificando con resultado:", result); 
+    const verificationResult = Boolean(result); 
+    setIsCorrect(verificationResult);
+    console.log("is correct",isCorrect)
     try {
-      const ejercicio_id = 40; 
-  
-      const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
-      const usuario_id = userResponse.data.id;
-      console.log("Respuesta del usuario obtenida:", userResponse.data);
-  
-      if (!usuario_id) {
-        alert("Error: Usuario no identificado.");
-        return;
-      }
+      const headers = {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
+      };
+
+      const token = localStorage.getItem("access_token");
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const usuario_id = userInfo?.id;
+      if (!usuario_id) throw new Error("Usuario no identificado");
+
       const requestData = {
         usuario: usuario_id,
-        ejercicio: ejercicio_id,
+        ejercicio: 40,
         fecha: new Date().toISOString().split("T")[0],
-        resultado: isCorrect,
-        errores: isCorrect ? 0 : errores + 1,
+        resultado: verificationResult,
+        errores: verificationResult ? 0 : errores + 1,
       };
-  
-      console.log("Datos enviados:", requestData);
-      const csrfToken = getCSRFToken();
-      const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
-          headers: {
-              "X-CSRFToken": csrfToken,
-          },
-          withCredentials: true,
-          });
-      const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
-      if (response.status === 201) {
-  
-        if (isCorrect) {
-          setShowNextButton(true);
-          setScore(score + 10);
-          new Audio("/ganar.mp3").play();
-        }
-  
-        if (vidasRestantes === 0) {
-          Swal.fire({
-            title: "Oh oh!",
-            text: "No tienes más vidas. Espera o recarga vidas",
-            icon: "warning",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#007bff",
-          });
+      const response = await axios.post(
+        `${API_BASE_URL}/myapp/guardar-intento/`,
+        requestData,
+        { headers, withCredentials: true }
+      );
+
+      if (response.status !== 201) {
+        throw new Error("Respuesta inesperada de la API");
+      }
+
+    if (!verificationResult) {
+      setErrores(prev => prev + 1);
+    }
+
+    if (verificationResult) {
+      console.log("entro a ganar")
+      setShowNextButton(true);
+      setScore(prevScore => prevScore + 10);
+      new Audio("/ganar.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
+    } else {
+      setShowNextButton(false);
+      new Audio("/perder.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
+    }
+
+      verificarYOtorgarLogro(usuario_id).catch((e) =>
+        console.error("Error verificando logros:", e)
+      );
+    } catch (error) {
+      console.error(
+        "Error al guardar el intento:",
+        error.response ? error.response.data : error.message
+      );
+      if (error.response?.status === 401) {
+        try {
+          const newToken = await refreshAccessToken();
+          localStorage.setItem("access_token", newToken);
+          return handleVerify();
+        } catch (refreshError) {
+          localStorage.removeItem("access_token");
+          navigate("/");
           return;
         }
-  
-        await verificarYOtorgarLogro(usuario_id);
-      } else {
-        console.error("Error en la respuesta de la API:", response.data);
       }
-    } catch (error) {
-      console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
+
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error",
+      });
     }
   };
 
@@ -223,15 +237,18 @@ useEffect(() => {
           <div className="white-background">
             <HeaderBody></HeaderBody>
             <div className="header-title">
-                <h2>NIVEL 1</h2>
-                <HeaderInfo></HeaderInfo>
-              </div>
+              <h2>NIVEL 1</h2>
+              <HeaderInfo></HeaderInfo>
+            </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
                 <span>Ejercicio promedio</span>
               </div>
               <div className="nivel1-card-body">
-                <p>Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejercicio sea el correcto .</p>
+                <p>
+                  Encuentra la pareja relacionada con el cálculo del promedio en
+                  Python para que el ejercicio sea el correcto .
+                </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
                   <div className="code">
@@ -239,7 +256,8 @@ useEffect(() => {
                       <code>
                         num1 ___ int(input("Ingrese el primer número ")){"\n"}
                         num2 ___ int(input("Ingrese el segundo número ")){"\n"}
-                        print("El promedio de los números es: ", (num1+num2)/2){"\n"}
+                        print("El promedio de los números es: ", (num1+num2)/2)
+                        {"\n"}
                       </code>
                     </pre>
                   </div>
@@ -251,24 +269,33 @@ useEffect(() => {
                       className={`card ${isCardFlipped(card) ? "flipped" : ""}`}
                       onClick={() => handleCardClick(card)}
                     >
-                      {isCardFlipped(card) ? <span>{card.value}</span> : <span>?</span>}
+                      {isCardFlipped(card) ? (
+                        <span>{card.value}</span>
+                      ) : (
+                        <span>?</span>
+                      )}
                     </div>
                   ))}
                 </div>
 
                 <div className="verify-container">
-      {isCorrect === true && <p className="result correct">¡Correcto! El signo es "="</p>}
-      {isCorrect === false && <p className="incorrect-message">¡Inténtalo de nuevo!</p>}
-      <button className="next-button" onClick={handleVerify}>
-        Verificar
-      </button>
-      <button
-        className={`nivel1-card-button next-button ${isCorrect ? "show" : ""}`}
-        onClick={handleNext}
-        disabled={isCorrect === null || !isCorrect} // Desactiva el botón hasta que sea correcto
-      >
-        Continuar
-      </button>
+                  {showNextButton === true && (
+                    <div>
+                      <p className="result correct">
+                        ¡Correcto! Has emparejado "
+                        {cards.find((c) => c.id === 3)?.value}"
+                      </p>
+                      <button 
+                          className={`next-button ${showNextButton ? "show" : ""}`} 
+                          onClick={handleNext}
+                        >
+                          Siguiente
+                        </button>
+                    </div>
+                  )}
+                  {showNextButton === false && errores > 0 && (
+                    <p className="incorrect-message">¡Inténtalo de nuevo!</p>
+                  )}
                 </div>
               </div>
             </div>

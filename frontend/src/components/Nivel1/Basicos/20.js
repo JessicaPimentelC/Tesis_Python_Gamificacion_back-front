@@ -13,7 +13,7 @@ import useVidasStore from "../../vidasStore";
 import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
 import { fetchUserInfo } from '../../../utils/userService';
 
-const Enunciado20 = () => {
+const Veinte = () => {
   const [inputValue, setInputValue] = useState('');
   const [output, setOutput] = useState('');
   const [showNext, setShowNext] = useState(false);
@@ -256,4 +256,4 @@ const handleVerify = async () => {
   );
 };
 
-export default Enunciado20;
+export default Veinte;

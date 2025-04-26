@@ -93,24 +93,20 @@ const Once = () => {
     setCurrentTime(now.toLocaleString()); // Ajusta el formato según tus necesidades
   };
 
-  // Actualiza la hora y fecha al cargar el componente
   useEffect(() => {
     updateTime();
 
-    // Actualiza la hora y fecha cada minuto
     const intervalId = setInterval(updateTime, 60000);
 
-    // Limpia el intervalo cuando el componente se desmonte
     return () => clearInterval(intervalId);
   }, []);
 
   const checkAnswer = () => {
-    // Verifica si el valor de entrada es un número válido
     const estatura = parseFloat(inputValue);
     if (!isNaN(estatura)) {
       setOutput(estatura);
       setShowNext(true);
-      setScore(score + 10); // Incrementa el puntaje si la respuesta es correcta
+      setScore(score + 10);
     } else {
       setOutput('Por favor, ingrese un número válido.');
       setShowNext(false);
@@ -119,27 +115,31 @@ const Once = () => {
 
   //Verifica respuesta ejercicio
     const handleVerify = async () => {
-      // Validar la respuesta antes de continuar
-      const userInput = inputValue.trim().toLowerCase();
-      if (!userInput) { // Verifica si el input está vacío
+      const userInput = inputValue.trim();
+  
+      if (!userInput) {
         setErrorMessage("No puedes dejar la respuesta vacía.");
         setSuccessMessage("");
+        setIsCorrect(false);
         setShowNext(false);
         return;
       }
-      const isNumber = !isNaN(userInput) && !isNaN(parseFloat(userInput));
-      if (!isNumber) {
-        setErrorMessage("Por favor ingresa un número válido.");
+
+      const estatura = parseFloat(userInput);
+      if (isNaN(estatura)) {
+        setErrorMessage("Por favor ingresa un número válido (ej. 1.75)");
         setSuccessMessage("");
+        setIsCorrect(false);
         setShowNext(false);
         return;
       }
-      setOutput(inputValue); 
+      setIsCorrect(true);
+      setOutput(estatura.toString());
+      setErrorMessage("");
+      setSuccessMessage("¡Número válido!");
+      setShowNext(true);
       const isCorrect = true; 
 
-      setResult('correct');    
-      setOutput(userInput); 
-      setResult(isCorrect ? 'correct' : 'incorrect');
 
       try {
         const headers = {
@@ -164,7 +164,7 @@ const Once = () => {
           usuario: usuario_id,
           ejercicio: 11,
           fecha: new Date().toISOString().split("T")[0],
-          resultado: isCorrect,
+          resultado: true,
           errores: isCorrect ? 0 : errores + 1,
         };
     

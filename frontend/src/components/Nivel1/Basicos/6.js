@@ -32,6 +32,9 @@ const Seis = () => {
   const setVidas = useVidasStore((state) => state.setVidas);   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [errorMessage,setErrorMessage] = useState(null);
 
   useEffect(() => {
       const loadUser = async () => {
@@ -87,12 +90,24 @@ const handleNext = async () => {
 };
 
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  // Validar la respuesta antes de continuar
-  const isCorrect = draggedNumber === '37';
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
+    return;
+  }
 
+  const isCorrect = answer === "37"; 
+  if (isCorrect) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
   setResult(isCorrect ? 'correct' : 'incorrect');
-  setShowNext(isCorrect); // Mostrar o ocultar el botón "Siguiente"
+  setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
 
   try {
     const headers = {
@@ -104,13 +119,13 @@ const handleVerify = async () => {
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-      
+
     const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
       headers,
       withCredentials: true
-    });    
+    });
+
     const usuario_id = userResponse.data.id;
-    console.log("Respuesta del usuario obtenida:", userResponse.data);
     if (!usuario_id) throw new Error("Usuario no identificado");
 
     const requestData = {
@@ -125,20 +140,22 @@ const handleVerify = async () => {
       requestData,
       { headers, withCredentials: true }
     );
+
     if (response.status !== 201) {
       throw new Error("Respuesta inesperada de la API");
     }
     const vidasRestantes = response.data.vidas;
     setVidas(vidasRestantes);
+
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
         new Audio("/ganar.mp3").play();
-      }
-      else {
+      }else {
         setShowNextButton(false);
         new Audio("/perder.mp3").play();
       }
+
       if (vidasRestantes === 0) {
         Swal.fire({
           title: "Oh oh!",
@@ -149,30 +166,30 @@ const handleVerify = async () => {
         });
         return;
       }
-
       verificarYOtorgarLogro(usuario_id).catch(e => 
         console.error("Error verificando logros:", e)
+        
       );
-      
+  
   } catch (error) {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
-  // Manejo específico para token expirado
     if (error.response?.status === 401) {
-      try {
-        const newToken = await refreshAccessToken();
-        localStorage.setItem("access_token", newToken);
-        return handleVerify(); 
-      } catch (refreshError) {
-        localStorage.removeItem("access_token");
-        navigate("/");
-        return;
+        try {
+          const newToken = await refreshAccessToken();
+          localStorage.setItem("access_token", newToken);
+          return handleVerify(); 
+        } catch (refreshError) {
+          localStorage.removeItem("access_token");
+          navigate("/");
+          return;
+        }
       }
-    }
-    Swal.fire({
-      title: "Error",
-      text: error.response?.data?.message || "Ocurrió un error al verificar",
-      icon: "error"
-    });
+  
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error"
+      });
   }
 };
 
@@ -238,73 +255,34 @@ const handleVerify = async () => {
               </div>
 
               <div className="options">
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('37')}
-                  onMouseEnter={playSound} // Reproduce el sonido cuando el cursor está sobre el número
-                >
-                  37
-                </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('12')}
-                  onMouseEnter={playSound} // Reproduce el sonido cuando el cursor está sobre el número
-                >
-                  12
-                </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('29')}
-                  onMouseEnter={playSound} // Reproduce el sonido cuando el cursor está sobre el número
-                >
-                  29
-                </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('45')}
-                  onMouseEnter={playSound} // Reproduce el sonido cuando el cursor está sobre el número
-                >
-                  45
-                </div>
-              </div>
-
-              {result === 'correct' && (
-                <div className="code-box">
-                  <div className="code-header">SALIDA</div>
-                  <input
-                    type="text"
-                    value={output}
-                    className="code-input-inline"
-                    readOnly
-                  />
-                </div>
-              )}
-
-              <div className="button-container">
-                {showNext && (
-                  <button
-                    className="nivel1-card-button"
-                    onClick={handleNext} // Ajusta el número de vista siguiente si es necesario
-                  >
-                    Siguiente
-                  </button>
-                )}
-              </div>
-              <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${
-                        isCorrect ? "correct" : "incorrect"
-                      }`}
+                  {["40", "37", "20", "27"].map((option) => (
+                    <div
+                      key={option}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
+                      {option}
+                    </div>
+                  ))}
                 </div>
+
+                {showNext && (
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               
             </div>
           </div>

@@ -28,12 +28,13 @@ const Nueve = () => {
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const [errores, setErrores] = useState(0); 
   const [userInfo, setUserInfo] = useState(null);
-  const [errorMessage,setErrorMessage] = useState(null);
   const [insignias, setInsignias] = useState([]);
   const [successMessage,setSuccessMessage] = useState(null);
   const setVidas = useVidasStore((state) => state.setVidas); 
   const [showNextButton, setShowNextButton] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [errorMessage,setErrorMessage] = useState(null);
   
   useEffect(() => {
       const loadUser = async () => {
@@ -103,13 +104,24 @@ const Nueve = () => {
     }
   };
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  if (!draggedNumber) {
-    alert("Por favor, selecciona una palabra antes de verificar.");
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
     return;
-}
-  const isCorrectAnswer = draggedNumber === "46";
-  setIsCorrect(isCorrectAnswer);
+  }
+
+  const isCorrect = answer === "46"; 
+  if (isCorrect) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
+  setResult(isCorrect ? 'correct' : 'incorrect');
+  setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
 
   try {
     const headers = {
@@ -134,22 +146,22 @@ const handleVerify = async () => {
       usuario: usuario_id,
       ejercicio: 9,
       fecha: new Date().toISOString().split("T")[0],
-      resultado: isCorrectAnswer,
-      errores: isCorrectAnswer ? 0 : errores + 1,
+      resultado: isCorrect,
+      errores: isCorrect ? 0 : errores + 1,
     };
     const response = await axios.post(
       `${API_BASE_URL}/myapp/guardar-intento/`,
       requestData,
       { headers, withCredentials: true }
     );
+
     if (response.status !== 201) {
       throw new Error("Respuesta inesperada de la API");
     }
-
     const vidasRestantes = response.data.vidas;
     setVidas(vidasRestantes);
 
-      if (isCorrectAnswer) {
+      if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
         new Audio("/ganar.mp3").play();
@@ -168,30 +180,31 @@ const handleVerify = async () => {
         });
         return;
       }
-
-  
       verificarYOtorgarLogro(usuario_id).catch(e => 
         console.error("Error verificando logros:", e)
+        
       );
-    } catch (error) {
+  
+  } catch (error) {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
     if (error.response?.status === 401) {
-      try {
-        const newToken = await refreshAccessToken();
-        localStorage.setItem("access_token", newToken);
-        return handleVerify(); 
-      } catch (refreshError) {
-        localStorage.removeItem("access_token");
-        navigate("/");
-        return;
+        try {
+          const newToken = await refreshAccessToken();
+          localStorage.setItem("access_token", newToken);
+          return handleVerify(); 
+        } catch (refreshError) {
+          localStorage.removeItem("access_token");
+          navigate("/");
+          return;
+        }
       }
-    }
-    Swal.fire({
-      title: "Error",
-      text: error.response?.data?.message || "Ocurrió un error al verificar",
-      icon: "error"
-    });
-}
+  
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error"
+      });
+  }
 };
   const handleDragStart = (number) => {
     setDraggedNumber(number);
@@ -249,63 +262,33 @@ const handleVerify = async () => {
               </div>
 
               <div className="options">
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('46')}
-                >
-                  46
+                  {["23", "46", "82", "29"].map((option) => (
+                    <div
+                      key={option}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
                 </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('23')}
-                >
-                  23
-                </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('82')}
-                >
-                  82
-                </div>
-                <div
-                  className="option"
-                  draggable
-                  onDragStart={() => handleDragStart('59')}
-                >
-                  59
-                </div>
-              </div>
 
-              {result === 'correct' && (
-                <div className="code-box">
-                  <div className="code-header">SALIDA</div>
-                  <input
-                    type="text"
-                    value={output}
-                    className="code-input"
-                    readOnly
-                  />
-                </div>
-              )}
-
-              <div className="nivel1-card-button-container">
                 {showNext && (
-                  <button
-                    className="nivel1-card-button"
-                    onClick={handleNext} // Ajusta el número de vista siguiente si es necesario
-                  >
-                    Siguiente
-                  </button>
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  </div>
                 )}
-              </div>
-              {result && (
-                <div className={`result ${result}`}>
-                  {result === 'correct' ? 'Correcto' : 'Inténtalo de nuevo'}
-                </div>
-              )}
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               
             </div>
           </div>

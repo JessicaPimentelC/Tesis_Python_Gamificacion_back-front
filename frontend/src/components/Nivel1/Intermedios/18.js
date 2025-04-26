@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
-import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
+import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
+import { fetchUserInfo } from '../../../utils/userService';
 
 const Dieciocho = () => {
   const [areaInput, setAreaInput] = useState('');
@@ -32,25 +33,18 @@ const Dieciocho = () => {
   const [result, setResult] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   
-
   useEffect(() => {
-    const fetchUsuario = async () => {
-      try {
-        const csrfToken = getCSRFToken();
-        const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-          headers: {
-            "X-CSRFToken": csrfToken,
-        },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-        console.log("Usuario recibido:", response.data);
-      } catch (error) {
-        console.error("Error al obtener el usuario:", error.response?.data || error.message);
-      }
-    };
-    fetchUsuario();
-  },[]);
+      const loadUser = async () => {
+        try {
+          const userData = await fetchUserInfo();
+          setUserInfo(userData);
+          console.log("Usuario:", userData);
+        } catch (error) {
+          console.error("Error al cargar usuario:", error);
+        }
+      };
+      loadUser();
+    }, []);
 
 //Permite avanzar entre ejercicios
   const handleNext = async () => {
@@ -140,46 +134,51 @@ const handleVerify = async () => {
 
   setResult(isCorrect ? "correct" : "incorrect");
   setShowNext(isCorrect); // Mostrar u ocultar el botón "Siguiente"
-
-  if (!isCorrect) {
-    new Audio("/perder.mp3").play();
-    setOutput(''); // Limpia la salida si la respuesta es incorrecta
-    return; // Si la respuesta es incorrecta, no continuar con la solicitud
-  }
-
   try {
-    const ejercicio_id = 18; 
+    const headers = {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCSRFToken()
+    };
 
-    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
-    const usuario_id = userResponse.data.id;
-    console.log("Respuesta del usuario obtenida:", userResponse.data);
-
-    if (!usuario_id) {
-      alert("Error: Usuario no identificado.");
-      return;
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
+
+    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
+      headers,
+      withCredentials: true
+    });
+
+    const usuario_id = userResponse.data.id;
+    if (!usuario_id) throw new Error("Usuario no identificado");
+
     const requestData = {
       usuario: usuario_id,
-      ejercicio: ejercicio_id,
+      ejercicio: 18,
       fecha: new Date().toISOString().split("T")[0],
       resultado: isCorrect,
       errores: isCorrect ? 0 : errores + 1,
     };
     console.log("Datos enviados:", requestData);
-    const csrfToken = getCSRFToken();
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
-        headers: {
-            "X-CSRFToken": csrfToken,
-        },
-        withCredentials: true,
-        });
+    const response = await axios.post(
+      `${API_BASE_URL}/myapp/guardar-intento/`,
+      requestData,
+      { headers, withCredentials: true }
+    );
+
+    if (response.status !== 201) {
+      throw new Error("Respuesta inesperada de la API");
+    }
     const vidasRestantes = response.data.vidas;
     setVidas(vidasRestantes);
-    if (response.status === 201) {
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
         new Audio("/ganar.mp3").play();
+      }else {
+        setShowNextButton(false);
+        new Audio("/perder.mp3").play();
       }
 
       if (vidasRestantes === 0) {
@@ -192,13 +191,28 @@ const handleVerify = async () => {
         });
         return;
       }
-
-      await verificarYOtorgarLogro(usuario_id);
-    } else {
-      console.error("Error en la respuesta de la API:", response.data);
-    }
+      verificarYOtorgarLogro(usuario_id).catch(e => 
+        console.error("Error verificando logros:", e)
+      );
   } catch (error) {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
+    if (error.response?.status === 401) {
+            try {
+              const newToken = await refreshAccessToken();
+              localStorage.setItem("access_token", newToken);
+              return handleVerify(); 
+            } catch (refreshError) {
+              localStorage.removeItem("access_token");
+              navigate("/");
+              return;
+            }
+          }
+      
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error"
+            });    
   }
 };
   return (
@@ -219,7 +233,7 @@ const handleVerify = async () => {
             <div className="nivel1-card-body">
               <p>Completa el código para calcular el área del cuadrado. Usa los campos de entrada para ingresar las respuestas:</p>
               <ul>
-                <li>Para calcular el área, escribe `lado ** 2` en el primer campo.</li>
+                <li>Para calcular el área, escribe `lado**2` en el primer campo.</li>
                 <li>Para imprimir el resultado, escribe `print` en el segundo campo.</li>
               </ul>
               <div className="code-box">
@@ -239,7 +253,7 @@ const handleVerify = async () => {
                       type="text"
                       value={printInput}
                       onChange={(e) => setPrintInput(e.target.value)}
-                      placeholder="print"
+                      placeholder="funcion"
                       style={{ width: '100px', marginRight: '5px' }}
                     />
                     ("El área del cuadrado es:", area)

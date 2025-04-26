@@ -37,17 +37,17 @@ const Uno = () => {
   const options = ["Mundo", "Hola", "Print"];
 
   useEffect(() => {
-      const loadUser = async () => {
-        try {
-          const userData = await fetchUserInfo();
-          setUserInfo(userData);
-          console.log("Usuario:", userData);
-        } catch (error) {
-          console.error("Error al cargar usuario:", error);
-        }
-      };
-      loadUser();
-    }, []);
+    const loadUser = async () => {
+      try {
+        const userData = await fetchUserInfo();
+        setUserInfo(userData);
+        console.log("Usuario:", userData);
+      } catch (error) {
+        console.error("Error al cargar usuario:", error);
+      }
+    };
+    loadUser();
+  }, []);
 
     useEffect(() => {
 
