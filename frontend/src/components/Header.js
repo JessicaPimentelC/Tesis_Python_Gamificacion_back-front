@@ -47,18 +47,35 @@ const Header = () => {
     };
     const handleLogout = async () => {
         try {
-            await axios.post(`${API_BASE_URL}/logout/`, {}, {
-                headers: {
-                "X-CSRFToken": getCSRFToken(),
-                },
-                withCredentials: true
-            });
-            } catch (error) {
-            console.error("Error en logout:", error);
-            } finally {
-            localStorage.clear();
-            navigate('/', { replace: true });
-            }
+        // 1. Obtener el CSRF token antes de hacer logout
+        const csrfToken = getCSRFToken();
+        
+        // 2. Hacer la petición de logout al backend
+        await axios.post(`${API_BASE_URL}/logout/`, {}, {
+            headers: {
+                "X-CSRFToken": csrfToken,
+                "Content-Type": "application/json"
+            },
+            withCredentials: true
+        });
+        
+    } catch (error) {
+        console.error("Error en logout:", error);
+    } finally {
+        // 3. Limpiar todo en el frontend
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // 4. Borrar manualmente las cookies relacionadas con la sesión
+        document.cookie = 'sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'csrftoken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        
+        // 5. Redirigir al inicio
+        navigate('/', { replace: true });
+        
+        // 6. Recargar la página para asegurar limpieza completa
+        window.location.reload();
+    }
         };
 
     useEffect(() => {

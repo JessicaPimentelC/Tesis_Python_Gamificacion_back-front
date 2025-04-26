@@ -31,10 +31,10 @@ export const fetchUserInfo = async () => {
       try {
         const newToken = await refreshAccessToken();
         localStorage.setItem('access_token', newToken);
-        return await fetchUserInfo(); // Reintentar
+        return await fetchUserInfo(); 
       } catch (refreshError) {
         localStorage.removeItem('access_token');
-        window.location.href = '/login'; // Redirección directa
+        window.location.href = '/'; 
         throw refreshError;
       }
     }

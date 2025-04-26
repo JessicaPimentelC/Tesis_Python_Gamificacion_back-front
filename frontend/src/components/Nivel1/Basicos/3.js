@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
-import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
+import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
+import { fetchUserInfo } from '../../../utils/userService';
 
 const Tres = () => {
   const [num1, setNum1] = useState('');
@@ -30,23 +31,17 @@ const Tres = () => {
   
 
   useEffect(() => {
-    const fetchUsuario = async () => {
-      try {
-        const csrfToken = getCSRFToken();
-        const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-          headers: {
-            "X-CSRFToken": csrfToken,
-        },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-        console.log("Usuario recibido:", response.data);
-      } catch (error) {
-        console.error("Error al obtener el usuario:", error.response?.data || error.message);
-      }
-    };
-    fetchUsuario();
-  },[]);
+      const loadUser = async () => {
+        try {
+          const userData = await fetchUserInfo();
+          setUserInfo(userData);
+          console.log("Usuario:", userData);
+        } catch (error) {
+          console.error("Error al cargar usuario:", error);
+        }
+      };
+      loadUser();
+    }, []);
 
   //Permite avanzar entre ejercicios
 const handleNext = async () => {
@@ -76,11 +71,9 @@ const handleNext = async () => {
               console.error("No se encontró un nivel asignado.");
           }
 
-      // 🔹 Actualizar el estado
       setNumerosUsados((prev) => [...prev, proximoEjercicio]);
       setShowModal(false);
 
-      // 🔹 Redirigir al enunciado del próximo ejercicio
       redirigirAEnunciado(proximoEjercicio, navigate);
 
     } catch (error) {
@@ -121,45 +114,50 @@ const handleVerify = async () => {
   setResult(isCorrect ? 'correct' : 'incorrect');
   setShowNext(isCorrect); 
 
-  if (!isCorrect) {
-    new Audio("/perder.mp3").play();
-    return; // Si la respuesta es incorrecta, no continuar con la solicitud
-  }
-
   try {
-    const ejercicio_id = 3; 
+      const headers = {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      };
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
+        headers,
+        withCredentials: true
+      });
+      const usuario_id = userResponse.data.id;
+      if (!usuario_id) throw new Error("Usuario no identificado");
 
-    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
-    const usuario_id = userResponse.data.id;
-    console.log("Respuesta del usuario obtenida:", userResponse.data);
+      const requestData = {
+        usuario: usuario_id,
+        ejercicio: 3,
+        fecha: new Date().toISOString().split("T")[0],
+        resultado: isCorrect,
+        errores: isCorrect ? 0 : errores + 1,
+      };
 
-    if (!usuario_id) {
-      alert("Error: Usuario no identificado.");
-      return;
-    }
-    const requestData = {
-      usuario: usuario_id,
-      ejercicio: ejercicio_id,
-      fecha: new Date().toISOString().split("T")[0],
-      resultado: isCorrect,
-      errores: isCorrect ? 0 : errores + 1,
-    };
+      const response = await axios.post(
+        `${API_BASE_URL}/myapp/guardar-intento/`,
+        requestData,
+        { headers, withCredentials: true }
+      );
+      if (response.status !== 201) {
+        throw new Error("Respuesta inesperada de la API");
+      }
 
-    console.log("Datos enviados:", requestData);
-    const csrfToken = getCSRFToken();
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
-      headers: {
-        "X-CSRFToken": csrfToken,
-    },
-        withCredentials: true,
-    });
-    const vidasRestantes = response.data.vidas;
-    setVidas(vidasRestantes);
-    if (response.status === 201) {
+      const vidasRestantes = response.data.vidas;
+      setVidas(vidasRestantes);
+
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
         new Audio("/ganar.mp3").play();
+      }
+      else{
+        setShowNextButton(false);
+        new Audio("/perder.mp3").play();
       }
 
       if (vidasRestantes === 0) {
@@ -173,12 +171,28 @@ const handleVerify = async () => {
         return;
       }
 
-      await verificarYOtorgarLogro(usuario_id);
-    } else {
-      console.error("Error en la respuesta de la API:", response.data);
-    }
+      verificarYOtorgarLogro(usuario_id).catch(e => 
+        console.error("Error verificando logros:", e)
+      );
+      
   } catch (error) {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
+    if (error.response?.status === 401) {
+      try {
+        const newToken = await refreshAccessToken();
+        localStorage.setItem("access_token", newToken);
+        return handleVerify(); 
+      } catch (refreshError) {
+        localStorage.removeItem("access_token");
+        navigate("/");
+        return;
+      }
+  }
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error"
+      });
   }
 };
 

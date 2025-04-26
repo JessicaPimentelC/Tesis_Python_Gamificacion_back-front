@@ -345,17 +345,18 @@ def guardar_intento(request):
     if not request.user.is_authenticated:
         return Response({'error': 'Usuario no autenticado'}, status=401)
     serializer = IntentoSerializer(data=request.data)
-    usuario = request.user.id
+    usuario = request.user
     if serializer.is_valid():
         intento = serializer.save()
 
         if intento.resultado:
-            actualizar_puntaje_usuario(usuario, 10) 
+            actualizar_puntaje_usuario(usuario.id, 10) 
 
         vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=usuario)
         if intento.resultado is False:
             print("vidas",vidas_usuario.vidas_restantes)
             if vidas_usuario.vidas_restantes > 0:
+                #vidas_usuario.vidas_restantes -= 1
                 vidas_usuario.save() 
 
         if vidas_usuario.vidas_restantes == 0:
@@ -378,7 +379,7 @@ def obtener_vidas(request, user_id):
         usuario = request.user.id 
         
         vidas_usuario, _ = VidasUsuario.objects.get_or_create(usuario=usuario)
-        print("vidas_en OBTENER vidas",vidas_usuario.vidas_restantes)
+        print("vidas_en OBTENER vidas",vidas_usuario.vidas_restantes,"USUARIO", usuario)
         actualizar_vidas_si_corresponde(vidas_usuario)
         
         return Response({'vidas_restantes': vidas_usuario.vidas_restantes}, status=status.HTTP_200_OK)
@@ -387,7 +388,7 @@ def obtener_vidas(request, user_id):
 
 def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
-    intervalo = timedelta(minutes=10)  
+    intervalo = timedelta(minutes=15)  
 
     if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes < 5:
         vidas_usuario.vidas_restantes += 1 

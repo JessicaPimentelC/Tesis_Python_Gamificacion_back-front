@@ -48,10 +48,10 @@ const Uno = () => {
       };
       loadUser();
     }, []);
+
     useEffect(() => {
 
     const handleClickOutside = (event) => {
-      // Si se hace clic fuera de los iconos, se oculta el nombre
       if (!event.target.closest(".circular-icon-container")) {
         setHoveredInsignia(null);
       }
@@ -169,7 +169,6 @@ const Uno = () => {
         new Audio("/perder.mp3").play();
       }
   
-      // 8. Manejo de vidas agotadas
       if (vidasRestantes === 0) {
         await Swal.fire({
           title: "¡Vidas agotadas!",
@@ -181,7 +180,6 @@ const Uno = () => {
         return;
       }
   
-      // 9. Verificar logros (en segundo plano)
       verificarYOtorgarLogro(usuario_id).catch(e => 
         console.error("Error verificando logros:", e)
       );
@@ -194,10 +192,10 @@ const Uno = () => {
         try {
           const newToken = await refreshAccessToken();
           localStorage.setItem("access_token", newToken);
-          return handleVerify(); // Reintentar
+          return handleVerify(); 
         } catch (refreshError) {
           localStorage.removeItem("access_token");
-          navigate("/login");
+          navigate("/");
           return;
         }
       }

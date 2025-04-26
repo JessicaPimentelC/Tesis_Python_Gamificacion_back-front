@@ -1,65 +1,115 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
-import { useNavigate } from 'react-router-dom'; 
 
+// Función mejorada para obtener CSRF token
 export const getCSRFToken = () => {
-    const cookies = document.cookie.split("; ");
-    const csrfCookie = cookies.find((cookie) => cookie.startsWith("csrftoken="));
-    return csrfCookie ? csrfCookie.split("=")[1] : "";
+    const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+    const csrfCookie = cookies.find(cookie => cookie.startsWith('csrftoken='));
+    return csrfCookie ? csrfCookie.split('=')[1] : null;
 };
-//verificarlogros
-export const verificarYOtorgarLogro = async (usuario_id) => {
-    try {
+
+// Función para determinar el tipo de autenticación
+const getAuthType = () => {
+    return document.cookie.includes('sessionid') ? 'traditional' : 'jwt';
+};
+
+// Configuración dinámica de autenticación
+export const getAuthConfig = async () => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    };
+
+    const authType = getAuthType();
+    const authToken = localStorage.getItem('access_token');
+
+    if (!authToken) {
+        throw new Error('Usuario no autenticado');
+    }
+
+    if (authType === 'traditional') {
         const csrfToken = getCSRFToken();
         if (!csrfToken) {
-            console.warn('CSRF token no encontrado, intentando sin él');
-        
+            throw new Error('CSRF token requerido para autenticación tradicional');
         }
-        const headers = {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        };
-        const authToken = localStorage.getItem('access_token');
-        if (authToken) {
-            headers['Authorization'] = `Bearer ${authToken}`;
-        }
+        config.headers['X-CSRFToken'] = csrfToken;
+    } else {
+        config.headers['Authorization'] = `Bearer ${authToken}`;
+    }
 
+    return config;
+};
+
+// Función mejorada para verificar logros
+export const verificarYOtorgarLogro = async (usuario_id) => {
+    try {
+        const config = await getAuthConfig();
+        
         const response = await axios.post(
             `${API_BASE_URL}/myapp/otorgar_logros/`,
             { usuario_id },
-            {
-                headers,
-                withCredentials: true,
-              timeout: 5000, // 5 segundos de timeout
-            }
+            config
         );
-        if (!response.data) {
-            throw new Error('Respuesta vacía del servidor');
-        }
-        console.log("Logros verificados:", response.data);
 
         if (response.data.nuevo_logro) {
-        Swal.fire({
-            title: "🎉 ¡Felicidades!",
-            text: `Has desbloqueado un nuevo logro: ${response.data.nuevo_logro.nombre}`,
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#007bff",
-        });
+            await Swal.fire({
+                title: "🎉 ¡Felicidades!",
+                text: `Has desbloqueado: ${response.data.nuevo_logro.nombre}`,
+                icon: "success",
+            });
         }
-        return response.data
+        return response.data;
     } catch (error) {
-    console.error("Error en verificarYOtorgarLogro:", {
-        error: error.response?.data || error.message,
-        stack: error.stack
-    });
+        console.error("Error en verificarYOtorgarLogro:", error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+            try {
+                const newToken = await refreshAccessToken();
+                localStorage.setItem('access_token', newToken);
+                return await verificarYOtorgarLogro(usuario_id);
+            } catch (refreshError) {
+                localStorage.removeItem('access_token');
+                window.location.href = '/';
+                return null;
+            }
+        }
+        return null;
+    }
+};
 
-    return null;
-}
-    };
-
-
+export const refreshAccessToken = async () => {
+    try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) throw new Error('No refresh token available');
+    
+        const response = await axios.post(
+            `${API_BASE_URL}/token/refresh/`,
+            { refresh: refreshToken },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                withCredentials: true
+            }
+        );
+    
+        if (!response.data.access) {
+            throw new Error('Invalid token refresh response');
+        }
+    
+        localStorage.setItem('access_token', response.data.access);
+        return response.data.access;
+    } catch (error) {
+        console.error('Token refresh failed:', error);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        throw error;
+    }
+};
     //Verificar nivel
     export const verificarNivel = async (nivelId) => {
     const csrfToken = getCSRFToken(); // Obtener el token dinámico
@@ -134,37 +184,3 @@ export const obtenerEjercicioId = async () => {
     }
     return null;
 };
-
-export const refreshAccessToken = async () => {
-    try {
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (!refreshToken) throw new Error('No refresh token available');
-    
-        const response = await axios.post(
-        `${API_BASE_URL}/token/refresh/`,
-        { refresh: refreshToken },
-        {
-            headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-            },
-            withCredentials: true
-        }
-        );
-    
-        if (!response.data.access) {
-        throw new Error('Invalid token refresh response');
-        }
-    
-        localStorage.setItem('access_token', response.data.access);
-        return response.data.access;
-    
-    } catch (error) {
-        console.error('Token refresh failed:', error);
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        throw { ...error, isAuthError: true };
-        
-    }
-    };
-    

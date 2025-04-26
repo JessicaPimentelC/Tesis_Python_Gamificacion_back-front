@@ -5,6 +5,7 @@ import axios from "axios";
 import API_BASE_URL from "../config";
 import Header from "./Header";
 import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import { fetchUserInfo } from '../utils/userService';
 
 const Insignias = () => {
   const navigate = useNavigate(); // Hook para la redirección
@@ -19,48 +20,20 @@ const Insignias = () => {
   };
 
   useEffect(() => {
-    const fetchUsuario = async () => {
-        try {
-            const csrfToken = getCSRFToken();
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken,
-                },
-                withCredentials: true
-            };
-  
-            const googleToken = localStorage.getItem("access_token");
-            if (googleToken) {
-                config.headers.Authorization = `Bearer ${googleToken}`;
-            }
-  
-            const response = await axios.get(
-                `${API_BASE_URL}/myapp/usuario-info/`,
-                config
-            );
-  
-            setUserInfo(response.data);
-            console.log("Usuario recibido:", response.data);
-            
-        } catch (error) {
-            console.error("Error al obtener el usuario:", error.response?.data || error.message);
-            
-            if (error.response?.status === 401) {
-                localStorage.removeItem("access_token");
-                localStorage.removeItem("user");
-                navigate('/');
-            }
+    const loadUserData = async () => {
+      try {
+        const userData = await fetchUserInfo(); // Usa la función centralizada
+        setUserInfo(userData);
+      } catch (error) {
+        console.error("Error en insignias.js:", error);
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          navigate('/');
         }
+      }
     };
   
-    const hasSession = document.cookie.includes('sessionid') || localStorage.getItem("access_token");
-    if (hasSession) {
-        fetchUsuario();
-    } else {
-        navigate('/');
-    }
-  }, [navigate]); 
+    loadUserData();
+  }, [navigate]);
 useEffect(() => {
   const fetchInsignias = async () => {
     try {

@@ -23,55 +23,55 @@ const HeaderBody = () => {
 
     useEffect(() => {
         const fetchInsignias = async () => {
-                try {
-                const headers = {
-                    'Content-Type': 'application/json'
-                };
-                const csrfToken = getCSRFToken();
-                if (csrfToken) {
-                    headers['X-CSRFToken'] = csrfToken;
-                }
-                const token = localStorage.getItem('access_token');
-                if (token) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
-                const response = await axios.get(
-                    `${API_BASE_URL}/myapp/insignias/`,
-                    {
-                        headers,
-                        withCredentials: true
-                    }
-                );
-        
-                console.log("Insignias obtenidas:", response.data);
-                setInsignias(response.data.insignias);
-        
-                } catch (error) {
-                console.error("Error al obtener insignias:", error);
-                if (error.response?.status === 401) {
-                    try {
-                    const newToken = await refreshAccessToken();
-                    
-                const retryResponse = await axios.get(
-                    `${API_BASE_URL}/myapp/insignias/`,
-                    {
-                    headers: {
-                        'Authorization': `Bearer ${newToken}`,
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()
-                    },
+            try {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            const csrfToken = getCSRFToken();
+            if (csrfToken) {
+                headers['X-CSRFToken'] = csrfToken;
+            }
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            const response = await axios.get(
+                `${API_BASE_URL}/myapp/insignias/`,
+                {
+                    headers,
                     withCredentials: true
-                    }
-                    );
-                    
-                    setInsignias(retryResponse.data.insignias);
-                return;
-                } catch (refreshError) {
-                console.error("Error al renovar token:", refreshError);
-                // Redirigir a login si no se puede renovar
-                navigate('/perfil');
-                return;
                 }
+            );
+    
+            console.log("Insignias obtenidas:", response.data);
+            setInsignias(response.data.insignias);
+    
+            } catch (error) {
+            console.error("Error al obtener insignias:", error);
+            if (error.response?.status === 401) {
+                try {
+                const newToken = await refreshAccessToken();
+                
+            const retryResponse = await axios.get(
+                `${API_BASE_URL}/myapp/insignias/`,
+                {
+                headers: {
+                    'Authorization': `Bearer ${newToken}`,
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                withCredentials: true
+                }
+                );
+                
+                setInsignias(retryResponse.data.insignias);
+            return;
+            } catch (refreshError) {
+            console.error("Error al renovar token:", refreshError);
+            // Redirigir a login si no se puede renovar
+            navigate('/perfil');
+            return;
+            }
             }
         
             setError('No se pudieron cargar las insignias. Intenta recargar la página.');
