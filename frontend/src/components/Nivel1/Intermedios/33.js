@@ -14,7 +14,7 @@ import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioE
 import { fetchUserInfo } from '../../../utils/userService';
 
 const Treintatres = () => {
-  const [options, setOptions] = useState(["int", "float", "import","Modal"]);
+  const [options, setOptions] = useState(["int", "float", "import", "modal"]);
   const [hoveredInsignia, setHoveredInsignia] = useState(null); // Estado para mostrar los nombres al hacer hover
   const [isModalOpenPinguino, setIsModalOpenPinguino] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);

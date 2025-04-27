@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Header.css";
-import PinguinoModal from "./PinguinoModal";
 import Mapa from "./Mapa";
 import Chatbot from "./Chatbot";
 import API_BASE_URL from "../config";
