@@ -42,6 +42,7 @@ const Puntaje = () => {
                 const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
                     headers,
                     withCredentials: true,
+                    
                 });
                 console.log("Vidas iniciales desde la API:", vidasResponse.data.vidas_restantes); 
                 const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`, {

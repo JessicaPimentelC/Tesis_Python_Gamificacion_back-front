@@ -357,6 +357,7 @@ import EditarUsuario from './components/EditarUsuario';
 import ListarUsuario from './components/ListarUsuario';
 import RegistroUsuario from './components/RegistroUsuario';
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Desafios from './components/Desafios/DesafiosNivel1';
 
 const App = () => {
 
@@ -713,6 +714,7 @@ const App = () => {
         <Route path="/editar-usuario/:user_id" element={<EditarUsuario />} />
         <Route path="/listar-usuarios" element={<ListarUsuario />} />
         <Route path="/crear-usuario" element={<RegistroUsuario />} />
+        <Route path="/desafios" element={<Desafios />} />
 
       </Routes>
     </Router>

@@ -173,7 +173,7 @@ const Header = () => {
             </div>
         )}
                 <button className="icon-button-mapa" onClick={handlePositionsClick}>
-                    <img src="/bandera_header.png" alt="Icono Insignias" className="header-icon" />
+                    <img src="/ranking.png" alt="Icono Insignias" className="header-icon" />
                 </button>
                 <button className="icon-button-mapa" onClick={handlePenguinClick}>
                     <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>

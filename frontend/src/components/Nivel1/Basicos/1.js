@@ -123,7 +123,8 @@ const Uno = () => {
     try {
       const headers = {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCSRFToken()
+        "X-CSRFToken": getCSRFToken(),
+        "Authorization": `Bearer ${localStorage.getItem("access_token")}`
       };
   
       const token = localStorage.getItem("access_token");

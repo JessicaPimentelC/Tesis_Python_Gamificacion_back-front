@@ -21,6 +21,7 @@ from google.oauth2 import id_token
 from datetime import timedelta
 from django.utils import timezone
 User = get_user_model()
+from django.db import IntegrityError
 
 #class ApiView(generics.ListCreateAPIView):
 class ApiView(viewsets.ModelViewSet):
@@ -322,21 +323,45 @@ def ejercicio_python(request):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-from django.db import IntegrityError
-def actualizar_puntaje_usuario(usuario_id, puntos_a_sumar):
-    try:
-        usuario = get_object_or_404(User, id=usuario_id)
+@csrf_exempt
+def actualizar_puntaje_usuario(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # Parsear el cuerpo JSON
+            print("data",data)
+
+            usuario_id = data.get('usuario')
+            puntos_a_sumar = data.get('puntos')
+            
+            if usuario_id is None or puntos_a_sumar is None:
+                return JsonResponse({'error': 'Faltan datos'}, status=400)
+            
+            usuario = get_object_or_404(User, id=usuario_id)
+            
+            puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
+            puntaje.puntos += puntos_a_sumar
+            puntaje.save()
+            
+            return JsonResponse({'mensaje': 'Puntaje actualizado', 'nuevo_puntaje': puntaje.puntos}, status=200)
         
-        puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
-        puntaje.puntos += puntos_a_sumar
-        puntaje.save()
+        except IntegrityError:
+            puntaje = Puntaje.objects.create(
+                usuario=usuario,
+                puntos=puntos_a_sumar
+            )
+            return JsonResponse({'mensaje': 'Puntaje creado', 'nuevo_puntaje': puntaje.puntos}, status=200)
         
-    except IntegrityError:
-        return Puntaje.objects.create(
-            usuario=usuario,
-            puntos=puntos_a_sumar,
-            id=None 
-        )
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def sumar_puntaje(usuario, puntos_a_sumar):
+    puntaje, creado = Puntaje.objects.get_or_create(usuario=usuario)
+    puntaje.puntos += puntos_a_sumar
+    puntaje.save()
+    return puntaje.puntos
 
 @api_view(['POST'])
 def guardar_intento(request):
@@ -350,7 +375,7 @@ def guardar_intento(request):
         intento = serializer.save()
 
         if intento.resultado:
-            actualizar_puntaje_usuario(usuario.id, 10) 
+            sumar_puntaje(usuario.id, 10) 
 
         vidas_usuario, created = VidasUsuario.objects.get_or_create(usuario=usuario)
         if intento.resultado is False:
@@ -390,7 +415,7 @@ def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
     intervalo = timedelta(minutes=15)  
 
-    if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes < 5:
+    if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes == 0:
         vidas_usuario.vidas_restantes += 1 
         vidas_usuario.ultima_actualizacion = ahora 
         vidas_usuario.save()
