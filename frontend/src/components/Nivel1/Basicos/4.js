@@ -33,7 +33,9 @@ const Cuatro = () => {
   const [droppedItem, setDroppedItem] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -148,6 +150,9 @@ const handleVerify = async () => {
     if (isCorrectAnswer) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
         new Audio("/ganar.mp3").play();
     } else {
         setShowNextButton(false);
@@ -288,7 +293,25 @@ const options = ["print", "else", "while"];
                     ? `${droppedItem}("70 / 2"))`
                     : "Arrastra aquí la palabra correcta"}
                 </div>
-
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <div className="nivel1-card-button-container">
                 <button className="nivel1-card-button" onClick={handleVerify}>
                   Verificar

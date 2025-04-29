@@ -356,8 +356,9 @@ import Perfil from './components/Perfil';
 import EditarUsuario from './components/EditarUsuario';
 import ListarUsuario from './components/ListarUsuario';
 import RegistroUsuario from './components/RegistroUsuario';
-import ProtectedRoute from "./routes/ProtectedRoute";
-import Desafios from './components/Desafios/DesafiosNivel1';
+import DesafiosNivel1 from './components/Desafios/DesafiosNivel1';
+import DesafiosNivel2 from './components/Desafios/DesafiosNivel2';
+import DesafiosNivel3 from './components/Desafios/DesafiosNivel3';
 
 const App = () => {
 
@@ -714,7 +715,9 @@ const App = () => {
         <Route path="/editar-usuario/:user_id" element={<EditarUsuario />} />
         <Route path="/listar-usuarios" element={<ListarUsuario />} />
         <Route path="/crear-usuario" element={<RegistroUsuario />} />
-        <Route path="/desafios" element={<Desafios />} />
+        <Route path="/desafionivel1" element={<DesafiosNivel1 />} />
+        <Route path="/desafionivel2" element={<DesafiosNivel2 />} />
+        <Route path="/desafionivel3" element={<DesafiosNivel3 />} />
 
       </Routes>
     </Router>

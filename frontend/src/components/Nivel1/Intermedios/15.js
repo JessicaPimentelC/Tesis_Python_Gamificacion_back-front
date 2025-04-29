@@ -32,7 +32,9 @@ const Quince = () => {
   const [currentTime, setCurrentTime] = useState('');
   const navigate = useNavigate(); // Hook para la redirección
   const [score, setScore] = useState(0); // Estado para el puntaje
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
  
   useEffect(() => {
       const loadUser = async () => {
@@ -111,22 +113,19 @@ const Quince = () => {
     // Lógica del ejercicio: convierte centímetros a metros
     const centimetrosValue = parseFloat(centimetros);
 
-    // Validar que el valor ingresado en centímetros sea un número válido
     if (isNaN(centimetrosValue) || centimetrosValue === '') {
       setOutput('1.0');
       return;
     }
 
-    // Realizar la conversión de centímetros a metros
     const correctMeters = centimetrosValue / 100;
 
-    // Verifica si los campos son correctos
     if (
-      printFunction.trim() === 'print' && // Verificar que se haya ingresado 'print'
-      centimetrosValue === 100 // Verificar que el valor de centímetros es 100
+      printFunction.trim() === 'print' && 
+      centimetrosValue === 100 
     ) {
       setOutput(`¡Correcto! La conversión es: ${correctMeters} metros`);
-      setScore(score + 10); // Incrementa el puntaje si la respuesta es correcta
+      setScore(score + 10); 
       setShowNext(true); // Muestra el botón de siguiente
     } else {
       setOutput('Inténtalo de nuevo. Asegúrate de que la función y el valor son correctos.');
@@ -202,6 +201,9 @@ const handleVerify = async () => {
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000); 
         new Audio("/ganar.mp3").play();
       }
       else {
@@ -281,8 +283,26 @@ if (error.response?.status === 401) {
                     (metros)
                   </pre>
               </div>
+              {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <div className="button-container">
-
               <button className="nivel1-card-button" onClick={handleVerify}>
                 Verificar
               </button>

@@ -53,6 +53,7 @@ urlpatterns = [
     path('guardar-intento/', views.guardar_intento, name="guardar_intento"),
     path('score/<int:user_id>/', views.get_score, name='get_score'),
     path('actualizar-puntaje/', views.actualizar_puntaje_usuario, name='actualizar_score'),
+    path('actualizar-vida-desafio/', views.actualizar_vida_desafio, name='actualizar_vida'),
 
     path('run_code/', views.run_code, name='run_code'),
     path('progreso/', views.ProgresoVersionNueva, name='progreso'),

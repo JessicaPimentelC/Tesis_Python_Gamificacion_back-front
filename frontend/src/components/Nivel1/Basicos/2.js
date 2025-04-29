@@ -27,7 +27,9 @@ const Dos = () => {
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
   const [result, setResult] = useState(null);
   const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
 useEffect(() => {
       const loadUser = async () => {
         try {
@@ -132,6 +134,9 @@ const handleVerify = async () => {
     if (isCorrect) {
       setShowNextButton(true);
       setScore(score + 10);
+      setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+      setOutputVisible(true);
+      setTimeout(() => setOutputVisible(false), 3000);
       new Audio("/ganar.mp3").play();
     } else {
       setShowNextButton(false);
@@ -210,6 +215,25 @@ const handleVerify = async () => {
                   </code>
                 </pre>
               </div>
+              {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <div className="nivel1-card-button-container">
                 <button className="nivel1-card-button" onClick={handleVerify}>
                   Verificar

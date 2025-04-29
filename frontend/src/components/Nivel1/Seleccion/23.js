@@ -33,7 +33,9 @@ const Veintidos = () => {
   const [isCorrect, setIsCorrect] = useState(null);
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [errores, setErrores] = useState(0); 
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -160,6 +162,9 @@ const Veintidos = () => {
         if (isCorrect) {
           setShowNextButton(true);
           setScore(score + 10);
+          setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+          setOutputVisible(true);
+          setTimeout(() => setOutputVisible(false), 3000);
           new Audio("/ganar.mp3").play();
         }else {
           setShowNextButton(false);
@@ -256,7 +261,25 @@ const Veintidos = () => {
             </div>
           ))}
         </div>
-
+        {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 {showNext && (
               <div className="button-container">
 

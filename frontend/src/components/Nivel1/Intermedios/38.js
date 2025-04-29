@@ -34,7 +34,9 @@ const Treintaocho = () => {
   const [output, setOutput] = useState('');
   const [numerosUsados, setNumerosUsados] = useState([]); // Almacena los números ya utilizados
   const navigate = useNavigate();
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -161,6 +163,9 @@ const handleVerify = async () => {
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000); 
         new Audio("/ganar.mp3").play();
       }
       else {
@@ -258,6 +263,25 @@ const handleVerify = async () => {
                     ? `import ${droppedItem}`
                     : "Arrastra aquí la palabra correcta"}
                 </div>
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="button-container">
                   <button className="nivel1-card-button" onClick={handleVerify}>
                     Verificar

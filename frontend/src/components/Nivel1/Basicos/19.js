@@ -31,7 +31,9 @@ const Diecinueve = () => {
   const [result, setResult] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const setVidas = useVidasStore((state) => state.setVidas); 
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -165,6 +167,9 @@ const Diecinueve = () => {
         if (isCorrect) {
           setShowNextButton(true);
           setScore(score + 10);
+          setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+          setOutputVisible(true);
+          setTimeout(() => setOutputVisible(false), 3000);
           new Audio("/ganar.mp3").play();
         }else {
           setShowNextButton(false);
@@ -263,7 +268,25 @@ const Diecinueve = () => {
                 placeholder="Ingresa grados Celsius"
                 style={{ width: '250px', marginTop: '10px' }}
               />
-
+{outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <button className="nivel1-card-button" onClick={handleVerify}>
                 Verificar
               </button>

@@ -34,7 +34,9 @@ const Cuarentatres = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState('');
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -189,6 +191,9 @@ const Cuarentatres = () => {
       console.log("entro a ganar")
       setShowNextButton(true);
       setScore(prevScore => prevScore + 10);
+      setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+      setOutputVisible(true);
+      setTimeout(() => setOutputVisible(false), 3000);
       new Audio("/ganar.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
     } else {
       setShowNextButton(false);
@@ -269,7 +274,25 @@ const Cuarentatres = () => {
                     </div>
                   ))}
                 </div>
-
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="verify-container">
                   {isCorrect === true && (
                     <div>

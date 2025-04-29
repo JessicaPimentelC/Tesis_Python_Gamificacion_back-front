@@ -34,6 +34,8 @@ const Cuarentanueve = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState('');
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
   
   useEffect(() => {
     const loadUser = async () => {
@@ -180,6 +182,9 @@ const Cuarentanueve = () => {
       console.log("entro a ganar")
       setShowNextButton(true);
       setScore(prevScore => prevScore + 10);
+      setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+      setOutputVisible(true);
+      setTimeout(() => setOutputVisible(false), 3000);
       new Audio("/ganar.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
     } else {
       setShowNextButton(false);
@@ -262,7 +267,25 @@ const Cuarentanueve = () => {
                     </div>
                   ))}
                 </div>
-
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="verify-container">
                   {showNextButton === true && (
                     <div>

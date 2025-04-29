@@ -35,7 +35,9 @@ const Seis = () => {
   const [successMessage,setSuccessMessage] = useState(null);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [errorMessage,setErrorMessage] = useState(null);
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -150,6 +152,9 @@ const handleVerify = async (answer) => {
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
         new Audio("/ganar.mp3").play();
       }else {
         setShowNextButton(false);
@@ -253,7 +258,25 @@ const handleVerify = async (answer) => {
                   </pre>
                 </div>
               </div>
-
+              {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <div className="options">
                   {["40", "37", "20", "27"].map((option) => (
                     <div

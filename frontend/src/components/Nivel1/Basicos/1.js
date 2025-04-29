@@ -33,7 +33,9 @@ const Uno = () => {
   const [issModalOpenPinguino,setIsModalOpenPinguino] =useState(false);
   const setVidas = useVidasStore((state) => state.setVidas); // Asegúrate de que este acceso es correcto
   const toggleSidebar = () => setIsOpen(!isOpen);
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   const options = ["Mundo", "Hola", "Print"];
 
   useEffect(() => {
@@ -164,7 +166,11 @@ const Uno = () => {
       if (isCorrectAnswer) {
         setShowNextButton(true);
         setScore(prevScore => prevScore + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
         new Audio("/ganar.mp3").play();
+
       } else {
         setShowNextButton(false);
         new Audio("/perder.mp3").play();
@@ -317,6 +323,25 @@ const handleTouchEnd = (e) => {
                     ? `print("Hola, ${droppedItem}!")`
                     : "Arrastra aquí la palabra correcta"}
                 </div>
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="nivel1-card-button-container">
                   <button className="nivel1-card-button" onClick={handleVerify}>
                     Verificar

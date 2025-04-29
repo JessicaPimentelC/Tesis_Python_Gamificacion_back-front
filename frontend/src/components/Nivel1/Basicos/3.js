@@ -28,8 +28,9 @@ const Tres = () => {
   const [userInfo, setUserInfo] = useState(null);
   const setVidas = useVidasStore((state) => state.setVidas); // Asegúrate de que este acceso es correcto
   const [showNextButton, setShowNextButton] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
   
-
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -153,6 +154,9 @@ const handleVerify = async () => {
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
         new Audio("/ganar.mp3").play();
       }
       else{
@@ -256,6 +260,25 @@ const handleVerify = async () => {
                   readOnly
                 />
               </div>
+              {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
               <div className="nivel1-card-button-container">
                 <button className="nivel1-card-button" onClick={handleVerify}>
                   Verificar

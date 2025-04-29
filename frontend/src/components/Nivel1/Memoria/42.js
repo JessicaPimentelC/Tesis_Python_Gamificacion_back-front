@@ -23,9 +23,6 @@ const Cuarentados = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [score, setScore] = useState(0);
   const [errores, setErrores] = useState(0); 
-  const [successMessage,setSuccessMessage] = useState(null);
-  const [errorMessage,setErrorMessage] = useState(null);
-  const [insignias, setInsignias] = useState([]);
   const [showNext, setShowNext] = useState(false);
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
   const [numerosUsados, setNumerosUsados] = useState([]);
@@ -34,7 +31,9 @@ const Cuarentados = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState('');
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -197,6 +196,9 @@ const Cuarentados = () => {
       console.log("entro a ganar")
       setShowNextButton(true);
       setScore(prevScore => prevScore + 10);
+      setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+      setOutputVisible(true);
+      setTimeout(() => setOutputVisible(false), 3000);
       new Audio("/ganar.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
     } else {
       setShowNextButton(false);
@@ -276,7 +278,25 @@ return (
                     </div>
                   ))}
                 </div>
-
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="verify-container">
                   {showNextButton === true && (
                     <div>

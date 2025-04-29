@@ -33,6 +33,8 @@ const Veintiocho = () => {
   const setVidas = useVidasStore((state) => state.setVidas); 
   const [showNextButton, setShowNextButton] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
   
   useEffect(() => {
     const loadUser = async () => {
@@ -96,6 +98,9 @@ const Veintiocho = () => {
       const raiz = Math.sqrt(numero);
       setOutput("Respuesta correcta: La raíz cuadrada es: " + raiz);
       setScore(score + 10);
+      setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+      setOutputVisible(true);
+      setTimeout(() => setOutputVisible(false), 3000);
       setShowNext(true);
     } else {
       setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
@@ -275,6 +280,25 @@ const handleVerify = async (answer) => {
             </div>
           ))}
         </div>
+        {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 {showNext && (
                   <div className="button-container">
 

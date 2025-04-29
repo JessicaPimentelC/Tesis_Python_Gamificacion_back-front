@@ -395,6 +395,35 @@ def guardar_intento(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#Desafios
+@api_view(['POST','GET'])
+def actualizar_vida_desafio(request):
+    try:
+        if not request.user.is_authenticated:
+            return Response({'error': 'Usuario no autenticado'}, status=401)
+
+        usuario = request.user.id 
+        resultado = request.data.get("resultado")
+
+        if resultado is False or resultado == "false":
+            vidas_usuario, _ = VidasUsuario.objects.get_or_create(usuario=usuario)
+            if vidas_usuario.vidas_restantes > 0:
+                vidas_usuario.vidas_restantes -= 1
+                vidas_usuario.save()
+
+            if vidas_usuario.vidas_restantes == 0:
+                return Response({
+                    'message': 'Te quedaste sin vidas',
+                    'vidas': vidas_usuario.vidas_restantes
+                }, status=400)
+
+        return Response({
+            'message': 'Resultado procesado',
+            'vidas': VidasUsuario.objects.get(usuario=usuario).vidas_restantes
+        })
+    except User.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['GET'])
 def obtener_vidas(request, user_id):
     try:
