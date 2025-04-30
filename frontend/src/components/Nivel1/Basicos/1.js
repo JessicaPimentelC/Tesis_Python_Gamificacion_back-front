@@ -277,7 +277,7 @@ const handleTouchEnd = (e) => {
             </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>EJERCICIO #1</span>
+                <span>Ejercicio de impresión de datos</span>
               </div>
               <div className="nivel1-card-body">
                 <p>

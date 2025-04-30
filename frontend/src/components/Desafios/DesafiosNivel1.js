@@ -153,11 +153,10 @@ function DesafiosNivel1() {
             });
     
             if (vidasResponse.data.vidas_restantes <= 0) {
-                setVerificationMessage("❌ No tienes vidas disponibles");
                 setOutputVisible(true);
                 await Swal.fire({
                     title: "¡Vidas agotadas!",
-                    text: "Espera 15 minutos para recuperar una vida",
+                    text: "Espera 15 minutos para recuperar tus vidas",
                     icon: "warning"
                 });
                 return;
@@ -191,18 +190,17 @@ function DesafiosNivel1() {
                     usuario: userInfo.id,
                     puntos: 50
                 }, { headers, withCredentials: true });
-    
-                setScore(puntajeResponse.data.nuevo_puntaje);
-                setVerificationMessage("✅ ¡Correcto! +50 puntos");
-                new Audio("/ganar.mp3").play();
-            } else {
                 const vidasUpdate = await axios.post(`${API_BASE_URL}/myapp/actualizar-vida-desafio/`, 
-                    {resultado: false },{
+                    {resultado: true },{
                     headers,
                     withCredentials: true,
                 });
                 setVidas(vidasUpdate.data.vidas);
-                setVerificationMessage(`❌ Incorrecto. Vidas restantes: ${vidasUpdate.data.vidas}`);
+                setScore(puntajeResponse.data.nuevo_puntaje);
+                setVerificationMessage("✅ ¡Correcto! +50 puntos");
+                new Audio("/ganar.mp3").play();
+            } else {
+                setVerificationMessage(`❌ Incorrecto!`);
                 new Audio("/perder.mp3").play();
             }
     

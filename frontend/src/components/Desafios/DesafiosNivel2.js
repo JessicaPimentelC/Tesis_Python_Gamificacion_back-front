@@ -22,51 +22,45 @@ function DesafiosNivel2() {
     const [userInfo, setUserInfo] = useState(null);
 
     const exercises = [
-    {
-        id: "exercise1",
-        text: `Objetivo:
-Crea una función en Python que determine si un número es par o impar.
-
-1. Función:
-Define una función llamada es_par(numero) que reciba un número entero.
-
-2. Lógica:
-La función debe devolver:
-- "Par" si el número es divisible por 2 sin residuo.
-- "Impar" si el número no es divisible por 2.
-
-3. Ejemplo de uso:
-\`\`\`python
-print(es_par(4))  # Debería imprimir: Par
-\`\`\`
-
-⚠️ Restricciones:
-- La función debe manejar tanto números positivos como negativos.
-- El parámetro numero siempre será un número entero.`,
-        validationText: "es_par",
-    },
-    {
-        id: "exercise2",
-        text: `Objetivo:
-Crea una función en Python que determine si un número es positivo, negativo o cero.
-
-1. Función:
-Define una función llamada clasificar_numero(numero) que reciba un número entero.
-
-2. Lógica:
-La función debe devolver:
-- "Positivo" si el número es mayor que 0.
-- "Negativo" si el número es menor que 0.
-- "Cero" si el número es igual a 0.
-
-3. Ejemplo de uso:
-\`\`\`python
-print(clasificar_numero(5))   # Debería imprimir: Positivo
-print(clasificar_numero(-3))  # Debería imprimir: Negativo
-print(clasificar_numero(0))   # Debería imprimir: Cero
-\`\`\``,
-        validationText: "clasificar_numero",
-    },
+        {
+            id: "ejercicio1",
+            text: `Objetivo:
+        Crea una función que convierta una cantidad de dólares a euros.
+        
+        1. Función:
+        Define una función llamada convertir_dolares_a_euros().
+        
+        2. Lógica:
+        - Solicita al usuario que ingrese una cantidad en dólares (usa input()).
+        - Convierte esa cantidad a euros. Supón que 1 dólar = 0.85 euros.
+        - Imprime el resultado en este formato: "Equivalente en euros: X".
+        
+        3. Ejemplo de uso:
+        \`\`\`python
+        # El usuario ingresa:
+        # 100
+        # El programa imprime:
+        Equivalente en euros: 85.0
+        \`\`\`
+        
+        ⚠️ Restricciones:
+        - No uses parámetros en la función.
+        - El valor ingresado puede ser decimal.
+        - Usa únicamente input() y print().`,
+            validationText: "convertir_dolares_a_euros",
+        },{
+            id: "ejercicio2",
+            title: "Calculadora de área de un rectángulo",
+            description: "Escribe un programa que solicite al usuario la base y la altura de un rectángulo y calcule su área.",
+            solution: `
+        base = float(input("Ingrese la base: "))
+        altura = float(input("Ingrese la altura: "))
+        area = base * altura
+        print("El área del rectángulo es:", area)
+            `,
+            stdin: "5\n10\n", // base = 5, altura = 10
+        },
+        
     ];
 
     const handleNextExercise = () => {
@@ -82,67 +76,6 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
     }
     };
 
-    const ejecutarCodigoVanterior = async () => {
-    const userCode = code || "";
-    const currentEx = exercises[currentExercise];
-
-    let codigoNormalizado = userCode.replace(/\t/g, "    ");
-    codigoNormalizado = codigoNormalizado
-    .split("\n")
-    .map((line) => line.replace(/\s+$/, ""))
-    .join("\n");
-
-    if (!codigoNormalizado.includes(`def ${currentEx.validationText}`)) {
-    setCodeOutput(
-        `⚠ Debes definir la función '${currentEx.validationText}' para resolver este ejercicio.`
-    );
-    setVerificationMessage("");
-    setOutputVisible(true);
-    return;
-    }
-
-    try {
-    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-        language: "python",
-        version: "3.10.0",
-        files: [{ content: codigoNormalizado }],
-    }),
-    });
-
-    const result = await response.json();
-    const salida =
-    result.run.stdout?.trim() ||
-    result.run.stderr?.trim() ||
-    "⚠ No se recibió salida.";
-
-    setCodeOutput(`🖨 Salida:\n${salida}`);
-
-    if (
-    salida.includes("Par") ||
-    salida.includes("Impar") ||
-    salida.includes("Positivo") ||
-    salida.includes("Negativo") ||
-    salida.includes("Cero")
-    ) {
-    setVerificationMessage("✅ ¡Función ejecutada correctamente!");
-    } else {
-    setVerificationMessage("❌ La salida no es la esperada.");
-    }
-
-    setOutputVisible(true);
-
-    setTimeout(() => {
-    setOutputVisible(false);
-    }, 3000);
-} catch (error) {
-    setCodeOutput("🚨 Error al ejecutar el código.");
-    setVerificationMessage("❌ Hubo un error al ejecutar el código.");
-    setOutputVisible(true);
-}
-};
     useEffect(() => {
         const loadUser = async () => {
         try {
@@ -155,6 +88,34 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
         };
         loadUser();
     }, []);
+
+    const getStdinForExercise = (exerciseIndex) => {
+        const currentEx = exercises[exerciseIndex];
+        switch (currentEx.id) {
+            case "ejercicio1":
+            return "100\n"; 
+            case "ejercicio2": 
+                return "-3\n"; 
+            default:
+                return "";
+        }
+    };
+    
+    const validarSalida = (salida, exerciseIndex) => {
+        const currentEx = exercises[exerciseIndex];
+        switch (currentEx.id) {
+            case "ejercicio1":
+                const expected = "85.0"; 
+                return salida.includes(expected)
+            case "ejercicio2":
+                const expectedArea = "50.0";
+                return salida.includes(expectedArea);
+            default:
+                return false;
+        }
+    };
+    
+    /*validacion de codigo */
     const ejecutarCodigo = async () => {
         if (!userInfo || !userInfo.id) {
             console.error("Usuario no cargado");
@@ -164,14 +125,14 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
         const userCode = code || "";
         const currentEx = exercises[currentExercise];
     
-        // 1. Normalización del código
+        // Normalizar el código (quita tabs y espacios innecesarios)
         let codigoNormalizado = userCode.replace(/\t/g, "    ");
         codigoNormalizado = codigoNormalizado
             .split("\n")
             .map((line) => line.replace(/\s+$/, ""))
             .join("\n");
     
-        // 2. Verificar función requerida
+        // Validar que el usuario definió la función esperada
         if (!codigoNormalizado.includes(`def ${currentEx.validationText}`)) {
             setCodeOutput(`⚠ Debes definir la función '${currentEx.validationText}'`);
             setVerificationMessage("");
@@ -180,31 +141,31 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
         }
     
         try {
-            // 3. Configurar headers
             const headers = {
                 "Content-Type": "application/json",
                 "X-CSRFToken": getCSRFToken(),
                 "Authorization": `Bearer ${localStorage.getItem("access_token")}`
             };
     
-            // 4. Verificar vidas disponibles
             const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${userInfo.id}/`, {
                 headers,
                 withCredentials: true
             });
     
             if (vidasResponse.data.vidas_restantes <= 0) {
-                setVerificationMessage("❌ No tienes vidas disponibles");
                 setOutputVisible(true);
                 await Swal.fire({
                     title: "¡Vidas agotadas!",
-                    text: "Espera 15 minutos para recuperar una vida",
+                    text: "Espera 15 minutos para recuperar tus vidas",
                     icon: "warning"
                 });
                 return;
             }
     
-            // 5. Ejecutar código en Piston
+            // 👇 Aquí agregamos el stdin dinámico
+            const stdin = getStdinForExercise(currentExercise);
+    
+            // Ejecutar código en Piston
             const pistonResponse = await fetch("https://emkc.org/api/v2/piston/execute", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -212,6 +173,7 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
                     language: "python",
                     version: "3.10.0",
                     files: [{ content: codigoNormalizado }],
+                    stdin: stdin  // 👉 se pasa el input simulado
                 }),
             });
     
@@ -220,42 +182,25 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
     
             setCodeOutput(`🖨 Salida:\n${salida}`);
     
-            // 6. Determinar si es correcto
-            const esCorrecto = (
-                salida.includes("Par") ||
-                salida.includes("Impar") ||
-                salida.includes("Positivo") ||
-                salida.includes("Negativo") ||
-                salida.includes("Cero")
-            );
+            // Lógica para verificar si la salida es correcta
+            const esCorrecto = validarSalida(salida, currentExercise);
     
             if (esCorrecto) {
-                console.log('Mandando datos:', {
-                    usuario_id: userInfo.id,
-                    puntos: 50
-                });
                 const puntajeResponse = await axios.post(`${API_BASE_URL}/myapp/actualizar-puntaje/`, {
                     usuario: userInfo.id,
                     puntos: 50
-                }, {
-                    headers,
-                    withCredentials: true
-                });
-    
-                // Actualizar estado local con la respuesta del backend
-                setScore(puntajeResponse.data.nuevo_puntaje);
-                console.log("Puntos actualizados:", puntajeResponse.data.nuevo_puntaje);
-                setVerificationMessage("✅ ¡Correcto! +50 puntos");
-                new Audio("/ganar.mp3").play();
-            } else {
-                // 8. Actualizar vidas
-                const vidasUpdate = await axios.get(`${API_BASE_URL}/myapp/vidas/${userInfo.id}/`, {
+                }, { headers, withCredentials: true });
+                const vidasUpdate = await axios.post(`${API_BASE_URL}/myapp/actualizar-vida-desafio/`, 
+                    {resultado: true },{
                     headers,
                     withCredentials: true,
                 });
-                // Actualizar estado local con la respuesta del backend
-                setVidas(vidasUpdate.data.vidas_restantes);
-                setVerificationMessage(`❌ Incorrecto. Vidas restantes: ${vidasUpdate.data.vidas_restantes}`);
+                setVidas(vidasUpdate.data.vidas);
+                setScore(puntajeResponse.data.nuevo_puntaje);
+                setVerificationMessage("✅ ¡Correcto! +50 puntos");
+                new Audio("/ganar.mp3").play();
+            } else {
+                setVerificationMessage(`❌ Incorrecto!`);
                 new Audio("/perder.mp3").play();
             }
     
@@ -264,25 +209,25 @@ print(clasificar_numero(0))   # Debería imprimir: Cero
     
         } catch (error) {
             console.error("Error completo:", error.response || error);
-            
-            // Manejo de token expirado
+    
             if (error.response?.status === 401) {
                 try {
                     const newToken = await refreshAccessToken();
                     localStorage.setItem("access_token", newToken);
-                    return ejecutarCodigo(); // Reintentar
+                    return ejecutarCodigo();
                 } catch (refreshError) {
                     localStorage.removeItem("access_token");
                     navigate("/login");
                     return;
                 }
             }
-            
+    
             setVerificationMessage("❌ Error en el sistema");
             setCodeOutput(error.response?.data?.error || "Error desconocido");
             setOutputVisible(true);
         }
     };
+    
 return (
     <div className="exam-container">
         <Header></Header>

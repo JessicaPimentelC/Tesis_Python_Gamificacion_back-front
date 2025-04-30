@@ -188,7 +188,6 @@ const Cuarentatres = () => {
     }
 
     if (result) {
-      console.log("entro a ganar")
       setShowNextButton(true);
       setScore(prevScore => prevScore + 10);
       setVerificationMessage("✅ ¡Ganaste 10 puntos!");

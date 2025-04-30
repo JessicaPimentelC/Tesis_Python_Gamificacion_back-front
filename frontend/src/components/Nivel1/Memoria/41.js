@@ -121,7 +121,6 @@ const Cuarentauno = () => {
           handleVerify(true); // Pasar true porque es correcto
         }
       } else {
-        // Cartas no coinciden
         setTimeout(() => {
           setFlippedCards([]);
           setIsCorrect(false);
@@ -138,14 +137,6 @@ const Cuarentauno = () => {
     );
   };
 
-  const checkAnswer = () => {
-    if (matchedPairs.includes(3)) {
-      // Si el signo "=" está emparejado correctamente
-      setIsCorrect(true);
-    } else {
-      setIsCorrect(false);
-    }
-  };
 //Verifica respuesta ejercicio
   const handleVerify = async (result) => {
     console.log("Verificando con resultado:", result); 
@@ -178,10 +169,6 @@ const Cuarentauno = () => {
       if (response.status !== 201) {
         throw new Error("Respuesta inesperada de la API");
       }
-
-    if (!result) {
-      setErrores(prev => prev + 1);
-    }
 
     if (result) {
       console.log("entro a ganar")

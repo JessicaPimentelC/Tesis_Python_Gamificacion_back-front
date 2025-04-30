@@ -405,15 +405,15 @@ def actualizar_vida_desafio(request):
         usuario = request.user.id 
         resultado = request.data.get("resultado")
 
-        if resultado is False or resultado == "false":
+        if resultado is True or resultado == "true":
             vidas_usuario, _ = VidasUsuario.objects.get_or_create(usuario=usuario)
-            if vidas_usuario.vidas_restantes > 0:
-                vidas_usuario.vidas_restantes -= 1
+            if vidas_usuario.vidas_restantes < 5:
+                vidas_usuario.vidas_restantes += 1
                 vidas_usuario.save()
 
             if vidas_usuario.vidas_restantes == 0:
                 return Response({
-                    'message': 'Te quedaste sin vidas',
+                    'message': 'Se reestableció una vida',
                     'vidas': vidas_usuario.vidas_restantes
                 }, status=400)
 
@@ -442,10 +442,10 @@ def obtener_vidas(request, user_id):
 
 def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
-    intervalo = timedelta(minutes=15)  
+    intervalo = timedelta(seconds=15)  
 
     if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes == 0:
-        vidas_usuario.vidas_restantes += 1 
+        vidas_usuario.vidas_restantes = 5
         vidas_usuario.ultima_actualizacion = ahora 
         vidas_usuario.save()
         print("🟢 Se restauró 1 vida. Total ahora:", vidas_usuario.vidas_restantes)

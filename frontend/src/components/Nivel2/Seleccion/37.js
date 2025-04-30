@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
-import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
+import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
+import { fetchUserInfo } from '../../../utils/userService';
 
 const Nivel2Treintaseite = () => {
   const [output, setOutput] = useState("");
@@ -29,26 +30,21 @@ const Nivel2Treintaseite = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [errores, setErrores] = useState(0); 
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
   
   useEffect(() => {
-    const fetchUsuario = async () => {
+    const loadUser = async () => {
       try {
-        const csrfToken = getCSRFToken();
-        const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-          headers: {
-            "X-CSRFToken": csrfToken,
-        },
-          withCredentials: true,
-        });
-        setUserInfo(response.data);
-        console.log("Usuario recibido:", response.data);
+        const userData = await fetchUserInfo();
+        setUserInfo(userData);
+        console.log("Usuario:", userData);
       } catch (error) {
-        console.error("Error al obtener el usuario:", error.response?.data || error.message);
+        console.error("Error al cargar usuario:", error);
       }
     };
-    fetchUsuario();
-  },[]);
-
+    loadUser();
+  }, []);
 //Permite avanzar entre ejercicios
   const handleNext = async () => {
     if (!userInfo || !userInfo.id) {
@@ -110,53 +106,67 @@ const handleVerify = async (answer) => {
     return;
   }
 
-  const isCorrect = answer === "split";  
-  setOutput("¡Correcto! La función 'split' es la correcta.");
+  const isCorrect = answer === "split"; 
+  if (isCorrect) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
   setResult(isCorrect ? 'correct' : 'incorrect');
   setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
 
-  if (!isCorrect) {
-    new Audio("/perder.mp3").play();
-    setOutput(''); // Limpia la salida si la respuesta es incorrecta
-    return; // Si la respuesta es incorrecta, no continuar con la solicitud
-  }
 
   try {
-    const ejercicio_id = 87; 
+    const headers = {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCSRFToken()
+    };
 
-    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
-    const usuario_id = userResponse.data.id;
-    console.log("Respuesta del usuario obtenida:", userResponse.data);
-
-    if (!usuario_id) {
-      alert("Error: Usuario no identificado.");
-      return;
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
+
+    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
+      headers,
+      withCredentials: true
+    });
+
+    const usuario_id = userResponse.data.id;
+    if (!usuario_id) throw new Error("Usuario no identificado");
+
     const requestData = {
       usuario: usuario_id,
-      ejercicio: ejercicio_id,
+      ejercicio: 87,
       fecha: new Date().toISOString().split("T")[0],
       resultado: isCorrect,
       errores: isCorrect ? 0 : errores + 1,
     };
-    console.log("Datos enviados:", requestData);
-    const csrfToken = getCSRFToken();
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
-        headers: {
-            "X-CSRFToken": csrfToken,
-        },
-            withCredentials: true,
-        });
+    const response = await axios.post(
+      `${API_BASE_URL}/myapp/guardar-intento/`,
+      requestData,
+      { headers, withCredentials: true }
+    );
+
+    if (response.status !== 201) {
+      throw new Error("Respuesta inesperada de la API");
+    }
     const vidasRestantes = response.data.vidas;
     setVidas(vidasRestantes);
-    if (response.status === 201) {
 
       if (isCorrect) {
         setShowNextButton(true);
         setScore(score + 10);
+        setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
         new Audio("/ganar.mp3").play();
       }
-
+      else {
+        setShowNextButton(false);
+        new Audio("/perder.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
+      }
       if (vidasRestantes === 0) {
         Swal.fire({
           title: "Oh oh!",
@@ -167,13 +177,28 @@ const handleVerify = async (answer) => {
         });
         return;
       }
-
-      await verificarYOtorgarLogro(usuario_id);
-    } else {
-      console.error("Error en la respuesta de la API:", response.data);
-    }
+      verificarYOtorgarLogro(usuario_id).catch(e => 
+        console.error("Error verificando logros:", e) 
+      );
   } catch (error) {
     console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
+    if (error.response?.status === 401) {
+        try {
+          const newToken = await refreshAccessToken();
+          localStorage.setItem("access_token", newToken);
+          return handleVerify(); 
+        } catch (refreshError) {
+          localStorage.removeItem("access_token");
+          navigate("/");
+          return;
+        }
+      }
+  
+      Swal.fire({
+        title: "Error",
+        text: error.response?.data?.message || "Ocurrió un error al verificar",
+        icon: "error"
+      });    
   }
 };
 
@@ -227,6 +252,25 @@ const handleVerify = async (answer) => {
                     </div>
                   ))}
                 </div>
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 {showNext && (
                   <div className="button-container">
                     <button

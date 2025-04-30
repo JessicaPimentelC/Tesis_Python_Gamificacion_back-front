@@ -185,8 +185,7 @@ const handleVerify = async (answer) => {
         return;
       }
       verificarYOtorgarLogro(usuario_id).catch(e => 
-        console.error("Error verificando logros:", e)
-        
+        console.error("Error verificando logros:", e) 
       );
   
   } catch (error) {

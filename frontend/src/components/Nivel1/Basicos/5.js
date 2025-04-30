@@ -217,7 +217,7 @@ const handleVerify = async () => {
           </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <span>EJERCICIO #5</span>
+            <span>Ejercicio de entrada de datos</span>
             </div>
             <div className="nivel1-card-body">
               <p>Crea un algoritmo que permita ingresar el siguiente texto = 'python'</p>

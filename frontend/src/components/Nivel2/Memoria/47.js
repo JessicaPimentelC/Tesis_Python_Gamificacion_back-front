@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../../../config";
 import axios from "axios";
 import useVidasStore from "../../vidasStore";
-import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId } from "../../../utils/validacionesGenerales";
+import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
+import { fetchUserInfo } from '../../../utils/userService';
 
 const CuarentaSieteNivel2 = () => {
   const [flippedCards, setFlippedCards] = useState([]); // Tarjetas volteadas
@@ -28,25 +29,21 @@ const CuarentaSieteNivel2 = () => {
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
   const [score, setScore] = useState(0);
   const [errores, setErrores] = useState(0);
-
-    useEffect(() => {
-      const fetchUsuario = async () => {
-        try {
-          const csrfToken = getCSRFToken();
-          const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-            headers: {
-              "X-CSRFToken": csrfToken,
-          },
-            withCredentials: true,
-          });
-          setUserInfo(response.data);
-          console.log("Usuario recibido:", response.data);
-        } catch (error) {
-          console.error("Error al obtener el usuario:", error.response?.data || error.message);
-        }
-      };
-      fetchUsuario();
-    },[]);
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userData = await fetchUserInfo();
+        setUserInfo(userData);
+        console.log("Usuario:", userData);
+      } catch (error) {
+        console.error("Error al cargar usuario:", error);
+      }
+    };
+    loadUser();
+  }, []);
   
   //Permite avanzar entre ejercicios
     const handleNext = async () => {
@@ -102,19 +99,37 @@ const CuarentaSieteNivel2 = () => {
   const handleCardClick = (card) => {
     if (flippedCards.length === 2) return;
     if (flippedCards.find((flippedCard) => flippedCard.id === card.id)) return;
-
+  
     setFlippedCards([...flippedCards, card]);
-
+  
     if (flippedCards.length === 1) {
       const firstCard = flippedCards[0];
       if (firstCard.pairId === card.pairId) {
-        setMatchedPairs([...matchedPairs, firstCard.id, card.id]);
+        // Cartas coinciden
+        const newMatchedPairs = [...matchedPairs, firstCard.id, card.id];
+        setMatchedPairs(newMatchedPairs);
         setFlippedCards([]);
+        
+        // Verificar si se completó el objetivo (emparejar "print")
+        const printCardsMatched = cards.filter(c => 
+          c.value === "<=" && newMatchedPairs.includes(c.id)
+        ).length === 2; // Asumiendo que hay 2 cartas "print"
+        
+        if (printCardsMatched) {
+          setIsCorrect(true);
+          handleVerify(true); // Pasar true porque es correcto
+        }
       } else {
-        setTimeout(() => setFlippedCards([]), 1000);
+        // Cartas no coinciden
+        setTimeout(() => {
+          setFlippedCards([]);
+          setIsCorrect(false);
+          handleVerify(false); // Pasar false porque es incorrecto
+        }, 1000);
       }
     }
   };
+
 
   const isCardFlipped = (card) => {
     return (
@@ -129,72 +144,75 @@ const CuarentaSieteNivel2 = () => {
     }
   }, [matchedPairs]);  
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  const isCorrect = matchedPairs.includes(3);
-  console.log("iscorrect", isCorrect);
-  setIsCorrect(isCorrect);
-  setShowNext(isCorrect);
+const handleVerify = async (result) => {
+    const verificationResult = Boolean(result); 
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
+      };
 
-  if (!isCorrect) {
-    new Audio("/perder.mp3").play();
-    setOutput(''); // Limpia la salida si la respuesta es incorrecta
-    return; // Si la respuesta es incorrecta, no continuar con la solicitud
-  }
+      const token = localStorage.getItem("access_token");
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  try {
-    const ejercicio_id = 97; 
+      const usuario_id = userInfo?.id;
+      if (!usuario_id) throw new Error("Usuario no identificado");
 
-    const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, { withCredentials: true });
-    const usuario_id = userResponse.data.id;
-    console.log("Respuesta del usuario obtenida:", userResponse.data);
-
-    if (!usuario_id) {
-      alert("Error: Usuario no identificado.");
-      return;
-    }
     const requestData = {
       usuario: usuario_id,
-      ejercicio: ejercicio_id,
+      ejercicio: 97,
       fecha: new Date().toISOString().split("T")[0],
-      resultado: isCorrect,
-      errores: isCorrect ? 0 : errores + 1,
+      resultado: verificationResult,
+      errores: verificationResult ? 0 : errores + 1,
     };
-    console.log("Datos enviados:", requestData);
-    const csrfToken = getCSRFToken();
-    const response = await axios.post(`${API_BASE_URL}/myapp/guardar-intento/`, requestData,{
-        headers: {
-            "X-CSRFToken": csrfToken,
-        },
-            withCredentials: true,
-        });
-    const vidasRestantes = response.data.vidas;
-    setVidas(vidasRestantes);
-    if (response.status === 201) {
-      if (isCorrect) {
-        setShowNextButton(true);
-        setScore(score + 10);
-        new Audio("/ganar.mp3").play();
-      }
+    const response = await axios.post(
+      `${API_BASE_URL}/myapp/guardar-intento/`,
+      requestData,
+      { headers, withCredentials: true }
+    );
 
-      if (vidasRestantes === 0) {
-        Swal.fire({
-          title: "Oh oh!",
-          text: "No tienes más vidas. Espera o recarga vidas",
-          icon: "warning",
-          confirmButtonText: "Aceptar",
-          confirmButtonColor: "#007bff",
-        });
+    if (response.status !== 201) {
+      throw new Error("Respuesta inesperada de la API");
+    }
+
+  if (result) {
+    setShowNextButton(true);
+    setScore(prevScore => prevScore + 10);
+    setVerificationMessage("✅ ¡Ganaste 10 puntos!");
+    setOutputVisible(true);
+    setTimeout(() => setOutputVisible(false), 3000);
+    new Audio("/ganar.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
+  } else {
+    setShowNextButton(false);
+    new Audio("/perder.mp3").play().catch(e => console.error("Error al reproducir sonido:", e));
+  }
+
+    verificarYOtorgarLogro(usuario_id).catch((e) =>
+      console.error("Error verificando logros:", e)
+    );
+  } catch (error) {
+    console.error(
+      "Error al guardar el intento:",
+      error.response ? error.response.data : error.message
+    );
+    if (error.response?.status === 401) {
+      try {
+        const newToken = await refreshAccessToken();
+        localStorage.setItem("access_token", newToken);
+        return handleVerify();
+      } catch (refreshError) {
+        localStorage.removeItem("access_token");
+        navigate("/");
         return;
       }
-
-      await verificarYOtorgarLogro(usuario_id);
-    } else {
-      console.error("Error en la respuesta de la API:", response.data);
     }
-  } catch (error) {
-    console.error("Error al guardar el intento:", error.response ? error.response.data : error.message);
-  }
-};
+
+    Swal.fire({
+      title: "Error",
+      text: error.response?.data?.message || "Ocurrió un error al verificar",
+      icon: "error",
+    });
+  }};
 
   return (
     <div className="nivel1-page">
@@ -238,7 +256,25 @@ const handleVerify = async () => {
                     </div>
                   ))}
                 </div>
-
+                {outputVisible && (
+                  <div className="output-message">
+                    {verificationMessage.includes("✅") && (
+                      <img
+                        src="/exa.gif"
+                        alt="Correcto"
+                        className="verification-gif"
+                      />
+                    )}
+                    {verificationMessage.includes("❌") && (
+                      <img
+                        src="/exam.gif"
+                        alt="Incorrecto"
+                        className="verification-gif"
+                      />
+                    )}
+                    <span>{verificationMessage}</span>
+                  </div>
+                )}
                 <div className="verify-container">
                   {isCorrect === true && (
                     <p className="result correct">¡Correcto! La condición numérica es válida.</p>
