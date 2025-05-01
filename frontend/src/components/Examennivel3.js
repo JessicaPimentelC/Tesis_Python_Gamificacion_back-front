@@ -50,8 +50,8 @@ print(contar_pares(10))  # Debería imprimir: 5
   ];
 
   const expectedOutputs = [
-    { function: "contar_impares", outputs: ["Impares: 5", "Impares: 6"] },  // Resultado esperado para contar_impares(10) y contar_impares(12)
-    { function: "contar_pares", outputs: ["Pares: 5", "Pares: 6"] }, // Resultado esperado para contar_pares(10) y contar_pares(12)
+    { function: "contar_impares", outputs: ["Impares: 5", "Impares: 6"] },
+    { function: "contar_pares", outputs: ["Pares: 5", "Pares: 6"] }
   ];
 
   const questions = [
@@ -65,7 +65,7 @@ print(contar_pares(10))  # Debería imprimir: 5
   useEffect(() => {
     if (questions[currentQuestion].id === "question5") {
       const randomIndex = Math.floor(Math.random() * exerciseOptions.length);
-      setRandomExercise(exerciseOptions[randomIndex]); // Asignar ejercicio aleatorio
+      setRandomExercise(exerciseOptions[randomIndex]);
     }
   }, [currentQuestion]);
 
@@ -84,7 +84,6 @@ print(contar_pares(10))  # Debería imprimir: 5
 
   const handleSubmit = () => {
     let correct = 0, incorrect = 0;
-    
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
       if (q.type !== "code" && answers[q.id] === q.correct) {
@@ -93,7 +92,6 @@ print(contar_pares(10))  # Debería imprimir: 5
         incorrect++;
       }
     }
-  
     setCorrectCount(correct);
     setIncorrectCount(incorrect);
     setShowModal(true);
@@ -101,7 +99,7 @@ print(contar_pares(10))  # Debería imprimir: 5
 
   const handleCloseModal = () => {
     setShowModal(false);
-    navigate("/Dashboard"); // Redirigir al Dashboard
+    navigate("/Dashboard");
   };
 
   const ejecutarCodigo = async () => {
@@ -137,7 +135,6 @@ print(contar_pares(10))  # Debería imprimir: 5
 
       setCodeOutput(`🖨 Salida:\n${salida}`);
 
-      // Verificación de código
       if (isPregunta5) {
         const expectedOutput = expectedOutputs.find(e => e.function === randomExercise.validationText);
         if (expectedOutput && expectedOutput.outputs.includes(salida)) {
@@ -146,7 +143,6 @@ print(contar_pares(10))  # Debería imprimir: 5
           setVerificationMessage("❌ La salida no es la esperada.");
         }
       }
-      
 
       setOutputVisible(true);
 
@@ -226,15 +222,26 @@ print(contar_pares(10))  # Debería imprimir: 5
         </div>
       </div>
 
-      {/* Modal de confirmación */}
+      {/* MODAL PERSONALIZADO */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>&times;</span>
             <h2>Examen Enviado Correctamente</h2>
-            <p><strong>Nombre:</strong> [Nombre del Estudiante]</p>
-            <p><strong>Hora y Fecha:</strong> [Hora del Examen]</p>
-            <p><strong>Resultado:</strong> {correctCount} Correctos, {incorrectCount} Incorrectos</p>
-            <button onClick={handleCloseModal}>Cerrar</button>
+            <p><strong>Nombre:</strong> Eduardo Jose Daza Palencia</p>
+            <p><strong>Fecha y Hora:</strong> {new Date().toLocaleString()}</p>
+            <p><strong>Calificación:</strong> {correctCount}/{questions.length - 1}</p>
+            <div className="result-summary">
+              <div className="result-item">
+                <img src="si.png" alt="Icono de respuesta correcta" />
+                <span>Respuestas Buenas: {correctCount}</span>
+              </div>
+              <div className="result-item">
+                <img src="borrar.png" alt="Icono de respuesta incorrecta" />
+                <span>Respuestas Malas: {incorrectCount}</span>
+              </div>
+            </div>
+            <img src="2dv.gif" alt="GIF de resultado" className="result-gif" />
           </div>
         </div>
       )}
