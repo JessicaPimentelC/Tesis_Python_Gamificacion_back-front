@@ -97,7 +97,6 @@ def Login(request):
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
 CLIENT_ID="567858506235-sd9fvbkheo3rnggdfpmnfjp63t6rgej3.apps.googleusercontent.com"
-@csrf_exempt
 @api_view(["POST"])
 def google_login(request):
     token = request.data.get("token")
@@ -125,6 +124,10 @@ def google_login(request):
         if created:
             VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
+            )
+            Puntaje.objects.create(
+                usuario=user,
+                puntos=0
             )
             try:
                 ejercicio = Ejercicio.objects.get(id_ejercicio=1)
@@ -910,6 +913,10 @@ def crear_usuario(request):
         user = serializer.save() 
         VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
+        )
+        Puntaje.objects.create(
+            usuario=user,
+            puntos=0
         )
         try:
             ejercicio = Ejercicio.objects.get(id_ejercicio=1)
