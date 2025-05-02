@@ -83,24 +83,24 @@ export const verificarYOtorgarLogro = async (usuario_id) => {
 export const refreshAccessToken = async () => {
     try {
         const refreshToken = localStorage.getItem('refresh_token');
-        if (!refreshToken) throw new Error('No refresh token available');
-    
+        if (!refreshToken) {
+            throw new Error('No refresh token available');
+        }
+
         const response = await axios.post(
-            `${API_BASE_URL}/token/refresh/`,
-            { refresh: refreshToken },
+            `${API_BASE_URL}/myapp/token/refresh/`,
+            { refresh: refreshToken },  
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
-                },
-                withCredentials: true
+                }
             }
         );
-    
+
         if (!response.data.access) {
             throw new Error('Invalid token refresh response');
         }
-    
+
         localStorage.setItem('access_token', response.data.access);
         return response.data.access;
     } catch (error) {
@@ -110,6 +110,8 @@ export const refreshAccessToken = async () => {
         throw error;
     }
 };
+
+
     //Verificar nivel
     export const verificarNivel = async (nivelId) => {
     const csrfToken = getCSRFToken(); // Obtener el token dinámico

@@ -27,6 +27,7 @@ const Login = () => {
       );
       if (response.data.access_token) {
         localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh); 
       }
       Swal.fire({
         title: "¡Login Exitoso!",

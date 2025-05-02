@@ -21,7 +21,6 @@ const Register = () => {
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
 };
-
   const handleSubmit = async (e) => {
     e.preventDefault();  
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,12 +48,17 @@ const Register = () => {
     console.log('Respuesta completa del servidor:', response.data);
 
     if (response.status === 201) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      
+      if (response.data.access_token && response.data.refresh_token) {
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("refresh_token", response.data.refresh_token);
+      }
+    
       console.log("Registro exitoso, redirigiendo...");
-      navigate('/dashboard');  
-      //window.location.href = "/dashboard";
-
+      navigate('/dashboard');
     }
+    
 
     } 
 

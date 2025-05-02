@@ -60,6 +60,11 @@ def Registro(request):
     elif request.method == 'GET':
         return Response({'message': 'Debe enviar ua peticion POST'}, status=status.HTTP_200_OK)
 
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 @api_view(['GET'])
 def obtenerUsuario(request):
@@ -69,7 +74,7 @@ def obtenerUsuario(request):
     else:
         return Response({'message': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
 
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 @api_view(['POST'])
 @csrf_exempt
 def Login(request):
@@ -88,10 +93,12 @@ def Login(request):
 
     if user is not None:
         login(request, user)
+        refresh = RefreshToken.for_user(user)
         token = AccessToken.for_user(user)
         return Response({
             'message': 'Inicio de sesión exitoso',
             'access_token': str(token),  
+            'refresh': str(refresh), 
         }, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -138,12 +145,12 @@ def google_login(request):
             except Ejercicio.DoesNotExist:
                 print("El ejercicio con ID 1 no existe")
                 
-        from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
 
         return JsonResponse({
             "message": "Inicio de sesión exitoso",
-            "access_token": str(refresh.access_token),
+            "access_token": str(access),
             "refresh_token": str(refresh),
             "user": {"id": user.id, "email": user.email, "name": user.first_name},
         })
@@ -939,13 +946,17 @@ def crear_usuario(request):
                 {'error': 'El ejercicio con ID 1 no existe'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
         return Response({
             'message': 'Usuario creado exitosamente',
             'user_id': user.id,
             'username': user.username,
             'email': user.email,
             'first_name':user.first_name,
-            'last_name':user.last_name
+            'last_name':user.last_name,
+            'access_token': str(access),
+            'refresh_token': str(refresh),
         
         }, status=status.HTTP_201_CREATED)
 
