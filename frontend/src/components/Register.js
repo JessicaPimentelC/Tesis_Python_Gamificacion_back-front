@@ -44,11 +44,18 @@ const Register = () => {
                 "Content-Type": "application/json",
             },
         }
+        
     );
-      //const data = await response.json();
-      alert('Registro exitoso.');
-      console.log('Success:', response.data);
-      navigate('/dashboard');
+    console.log('Respuesta completa del servidor:', response.data);
+
+    if (response.status === 201) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log("Registro exitoso, redirigiendo...");
+      navigate('/dashboard');  
+      //window.location.href = "/dashboard";
+
+    }
+
     } 
 
     catch (error) {

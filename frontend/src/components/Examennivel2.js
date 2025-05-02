@@ -100,7 +100,7 @@ else:
 
   const handleSubmit = () => {
     let correct = 0, incorrect = 0;
-    
+
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
       if (q.type !== "code" && answers[q.id] === q.correct) {
@@ -109,7 +109,7 @@ else:
         incorrect++;
       }
     }
-  
+
     setCorrectCount(correct);
     setIncorrectCount(incorrect);
     setShowModal(true);
@@ -237,6 +237,30 @@ else:
             {currentQuestion < questions.length - 1 ? "Siguiente" : "Enviar Examen"}
           </button>
         </div>
+
+        {/* MODAL DE RESULTADOS */}
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={handleCloseModal}>&times;</span>
+              <h2>Examen Enviado Correctamente</h2>
+              <p><strong>Nombre:</strong> Eduardo Jose Daza Palencia</p>
+              <p><strong>Fecha y Hora:</strong> {new Date().toLocaleString()}</p>
+              <p><strong>Calificación:</strong> {correctCount}/{questions.length - 1}</p>
+              <div className="result-summary">
+                <div className="result-item">
+                  <img src="si.png" alt="Icono de respuesta correcta" />
+                  <span>Respuestas Buenas: {correctCount}</span>
+                </div>
+                <div className="result-item">
+                  <img src="borrar.png" alt="Icono de respuesta incorrecta" />
+                  <span>Respuestas Malas: {incorrectCount}</span>
+                </div>
+              </div>
+              <img src="2dv.gif" alt="GIF de resultado" className="result-gif" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

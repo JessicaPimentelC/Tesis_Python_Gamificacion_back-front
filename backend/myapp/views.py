@@ -544,6 +544,12 @@ def cumple_condicion_insignia(usuario_id, insignia_id):
     """
     Verifica si un usuario cumple la condición para obtener una insignia.
     """
+    ranking = Puntaje.objects.select_related('usuario').order_by('-puntos')
+    usuario_ranking = None
+    for idx, puntaje in enumerate(ranking):
+        if puntaje.usuario.id == usuario_id:
+            usuario_ranking = idx + 1  # La posición es 1-based
+            break
     if insignia_id == 1:  # Junior - Completar Nivel 1
         return completar_nivel(usuario_id, 1)
     elif insignia_id == 2:  # Semi Senior - Completar Nivel 2
@@ -552,8 +558,12 @@ def cumple_condicion_insignia(usuario_id, insignia_id):
         return completar_nivel(usuario_id, 3)
     elif insignia_id == 4:  # Rapidez - Completar ejercicios en menos de cierto tiempo
         return verificar_rapidez(usuario_id)  
-    elif insignia_id == 5:  # 20_Ejercicios - Completar 20 ejercicios correctos únicos
+    elif insignia_id == 5:  # Constante - Completar 20 ejercicios correctos únicos
         return contar_ejercicios_realizados(usuario_id) >= 20
+    elif insignia_id == 6:  # Primer lugar del ranking
+        return usuario_ranking == 1
+    elif insignia_id == 7:  # Segundo lugar del ranking
+        return usuario_ranking ==2
 
     return False  
 
