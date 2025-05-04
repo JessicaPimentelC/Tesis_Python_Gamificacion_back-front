@@ -29,7 +29,9 @@ const Foro = () => {
   const [usuarioId, setUsuarioId] = useState(null);
   const [score, setScore] = useState(0);
   const { usuario, fetchUsuario } = useUsuario();//para hook de useUsuario
-
+  const [verificationMessage, setVerificationMessage] = useState("");
+  const [outputVisible, setOutputVisible] = useState(false);
+  
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
@@ -163,7 +165,7 @@ const Foro = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchParticipaciones();
   }, []);
 
@@ -216,14 +218,35 @@ const Foro = () => {
       fetchQuestions();
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
-      if (error.response?.status === 401) {
-        alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        navigate('/perfil');
+      if (error.response?.status === 401 || error.response.data.code === "token_not_valid") {
+        try {
+          const newToken = await refreshAccessToken();
+          const retryResponse = await axios.post(
+            `${API_BASE_URL}/myapp/registroForo/`,
+            {
+              usuario: usuarioId,
+              tema,
+              descripcion,
+              fecha_creacion,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          console.log("Retry Success:", retryResponse.data);
+          fetchQuestions();
+        } catch (refreshError) {
+          alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
+          navigate('/perfil');
+        }
       } else {
+        console.error("Error:", error.response?.data || error.message);
         alert("Ocurrió un error al registrar el foro. Por favor, intenta de nuevo.");
       }
+    
     }
   };
   
@@ -289,7 +312,10 @@ const Foro = () => {
 
       if (response.status === 200) {
         setQuestions(questions.filter((_, i) => i !== index));
-        alert("Pregunta eliminada exitosamente");
+        setVerificationMessage("✅ Pregunta eliminada exitosamente");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 3000);
+       // alert("Pregunta eliminada exitosamente");
       }
       fetchParticipaciones();
     } catch (error) {
@@ -305,9 +331,8 @@ const Foro = () => {
       console.log("Eliminar:", response.data);
 
       if (response.status === 200) {
-        // Actualiza el estado en el frontend
         setQuestions(questions.filter((_, i) => i !== index));
-        alert("Respuesta eliminada exitosamente");
+      //  alert("Respuesta eliminada exitosamente");
       }
       fetchParticipaciones();
     } catch (error) {
@@ -343,6 +368,16 @@ const Foro = () => {
             <div className="foro-title">
             Únete a la conversación en nuestro foro
             </div>
+            <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Buscar por tema o descripción..."
+              value={searchText}
+              onChange={handleSearchChange}
+              className="foro-search-input"
+            />
+          </div>
+          <br></br>
             {successMessage && (
             <div className="success-message">{successMessage}</div>
             )}
@@ -352,7 +387,7 @@ const Foro = () => {
                 <div className="question-header">
                     <p className="question-info">
                     Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
-                    Pregunta de: <span className="username" >{usuario?.username}</span>
+                    Pregunta de: {usuario?.username}
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -402,7 +437,7 @@ const Foro = () => {
                                 alt="Eliminar"
                                 className="action-icon"
                                 onClick={  () =>{
-                                  if (esAdmin(userInfo)) {
+                                  if (esAdmin(usuario)) {
                                   handleDeleteRespuesta(
                                     a.id_participacion_foro,
                                     index
@@ -429,7 +464,7 @@ const Foro = () => {
                         alt="Eliminar"
                         className="action-icon"
                         onClick={() =>{
-                          if (esAdmin(userInfo)) {
+                          if (esAdmin(usuario)) {
                             handleDeletePregunta(q.id_foro, index)
                           }else {
                             Swal.fire({
@@ -449,9 +484,9 @@ const Foro = () => {
         </div>
         {/* Modales */}
         {isModalOpen && (
-            <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>Publicar Nueva Pregunta</h2>
+            <div className="modal-overlay-foro">
+            <div className="modal-content-foro">
+                <h2 className="titulo-foro">Publicar Nueva Pregunta</h2>
 
                 <input
                 type="text"
@@ -482,9 +517,9 @@ const Foro = () => {
             </div>
         )}
         {isResponseModalOpen && (
-            <div className="modal-overlay">
-            <div className="modal-content">
-                <h2>Responder Pregunta</h2>
+            <div className="modal-overlay-foro">
+            <div className="modal-content-foro">
+                <h2 className="titulo-foro">Responder Pregunta</h2>
                 <textarea
                 placeholder="Descripción de la Respuesta"
                 value={responseText}

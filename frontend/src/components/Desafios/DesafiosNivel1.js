@@ -253,9 +253,9 @@ return (
         <div className="exam-form">
             <div className="form-group">
             <label>
-                Desafío {currentExercise + 1} de {exercises.length}
+            Desafío {currentExercise + 1} de {exercises.length}
             </label>
-            <label>
+            <label className="exercise-label">
                 {exercises[currentExercise].text}
             </label>
             <textarea

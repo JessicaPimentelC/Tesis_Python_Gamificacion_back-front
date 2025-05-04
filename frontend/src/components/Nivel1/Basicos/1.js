@@ -167,9 +167,14 @@ const Uno = () => {
       setVidas(vidasRestantes);
 
       if (vidasIlimitadas) {
-        setVerificationMessage("🛡️ ¡Tienes vidas ilimitadas por 10 minutos!");
-        setOutputVisible(true);
-        setTimeout(() => setOutputVisible(false), 4000);
+        await Swal.fire({
+          title: "¡Vidas Ilimitadas!",
+          text: "🛡️ ¡Tienes vidas ilimitadas por 10 minutos!",
+          icon: "info",
+          confirmButtonText: "Entendido",
+          confirmButtonColor: "#007bff"
+        });
+        return;
       }
 
       if (isCorrectAnswer) {

@@ -438,10 +438,9 @@ def actualizar_vida_desafio(request):
 
         # Verificar si el usuario ha hecho al menos 10 ejercicios
         ejercicios = EjercicioAsignado.objects.filter(usuario=usuario).order_by('-fecha_asignacion')
-
+        print("ejercicios", ejercicios.count());
         if ejercicios.count() >= 10:
-            # Tomamos el décimo ejercicio más reciente
-            decimo = ejercicios[9]  # índice 9 es el décimo
+            decimo = ejercicios[9]  
             tiempo_transcurrido = ahora - decimo.fecha_asignacion
 
             if tiempo_transcurrido <= timedelta(minutes=10):
@@ -509,7 +508,7 @@ def obtener_vidas(request, user_id):
 
 def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
-    intervalo = timedelta(seconds=15)  
+    intervalo = timedelta(minutes=15)  
 
     if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes == 0:
         vidas_usuario.vidas_restantes = 5
@@ -879,8 +878,8 @@ def cumple_condicion_logro(usuario_id, logro_id):
         return Participacion_foro.objects.filter(usuario_id=usuario_id).exists()
     elif logro_id == 6:  # Completar 20 ejercicios
         return EjercicioAsignado.objects.filter(usuario_id=usuario_id).count() >= 3
-    elif logro_id == 7:  # Alcanzar un puntaje de 200
-        return obtener_puntaje_total(usuario_id) >= 200
+    elif logro_id == 7:  # Alcanzar un puntaje de 100
+        return obtener_puntaje_total(usuario_id) >= 100
     elif logro_id == 8:  # Primeros lugares del ranking
         top_ids = Puntaje.objects.order_by('-puntos').values_list('usuario_id', flat=True)[:3]
         return usuario_id in top_ids   
@@ -923,7 +922,7 @@ def completar_nivel(usuario_id, nivel_id):
         logro_id__in=logros_requeridos
     ).count()
 
-    if ejercicios_completados >= 3 and logros_obtenidos >= len(logros_requeridos):
+    if ejercicios_completados >= 20 and logros_obtenidos >= len(logros_requeridos):
         otorgar_insignia(usuario_id, nombre_insignia)
         return True  
     return False  
