@@ -1,7 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import User, Foro, Participacion_foro, Ejercicio, Intento, Insignia, UsuarioEjercicioInsignia, Usuario_logro, Logro
+from .models import User, Foro, Participacion_foro, Ejercicio, Intento, Insignia, Usuario_insignia, Usuario_logro, Logro
 from django.contrib.auth import get_user_model
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -90,12 +90,11 @@ class InsigniaSerializer(serializers.ModelSerializer):
         model = Insignia
         fields = ['id_insignia', 'nombre', 'descripcion']
 
-class InsigniaConFechaSerializer(serializers.ModelSerializer):
-
+class UsuarioInsigniaSerializer(serializers.ModelSerializer):
+    insignia = InsigniaSerializer(source='insignia_id')  # Aquí accedemos al campo insignia_id
     class Meta:
-        model = UsuarioEjercicioInsignia
-        fields = ['insignia', 'fecha_obtenida']  # Incluimos la insignia y la fecha obtenida
-        depth = 1  # Para incluir automáticamente los detalles de la insignia
+        model = Usuario_insignia
+        fields = ['id_usuario_insignia', 'usuario', 'insignia', 'fecha_otorgada']
 
 class LogroSerializer(serializers.ModelSerializer):
     class Meta:

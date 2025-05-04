@@ -1,4 +1,4 @@
-from .models import Insignia, UsuarioEjercicioInsignia
+from .models import Insignia, Usuario_insignia
 
 def evaluar_insignias(usuario):
     insignias_ganadas = []
@@ -9,8 +9,8 @@ def evaluar_insignias(usuario):
             nombre="Comienzo Prometedor",
             descripcion="Completaste tu primer ejercicio"
         )
-        if not UsuarioEjercicioInsignia.objects.filter(usuario=usuario, insignia=insignia).exists():
-            UsuarioEjercicioInsignia.objects.create(usuario=usuario, insignia=insignia)
+        if not Usuario_insignia.objects.filter(usuario=usuario, insignia=insignia).exists():
+            Usuario_insignia.objects.create(usuario=usuario, insignia=insignia)
             insignias_ganadas.append(insignia)
 
     # Ejemplo: Insignia por completar 5 ejercicios exitosamente
@@ -20,8 +20,8 @@ def evaluar_insignias(usuario):
             nombre="Perseverancia",
             descripcion="Resolvió 5 ejercicios sin errores"
         )
-        if not UsuarioEjercicioInsignia.objects.filter(usuario=usuario, insignia=insignia).exists():
-            UsuarioEjercicioInsignia.objects.create(usuario=usuario, insignia=insignia)
+        if not Usuario_insignia.objects.filter(usuario=usuario, insignia=insignia).exists():
+            Usuario_insignia.objects.create(usuario=usuario, insignia=insignia)
             insignias_ganadas.append(insignia)
 
     return insignias_ganadas

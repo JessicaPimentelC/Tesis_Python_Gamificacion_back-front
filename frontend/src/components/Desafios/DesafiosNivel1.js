@@ -20,7 +20,13 @@ function DesafiosNivel1() {
     const setVidas = useVidasStore((state) => state.setVidas); 
     const [score, setScore] = useState(0);
     const [userInfo, setUserInfo] = useState(null);
-
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+    
+    useEffect(() => {
+        setStartTime(Date.now());
+    }, []);
+    
     const exercises = [
         {
             id: "ejercicio1",
@@ -184,12 +190,22 @@ function DesafiosNivel1() {
     
             // Lógica para verificar si la salida es correcta
             const esCorrecto = validarSalida(salida, currentExercise);
-    
+            const start = Date.now();      
             if (esCorrecto) {
+                const end = Date.now();  
+                const tiempoResolucionSegundos = Math.floor((end - start) / 1000); // Tiempo en segundos
+                
+                await axios.post(`${API_BASE_URL}/myapp/verificar_rapidez/`, {
+                    resultado: true,
+                    tiempo_resolucion: tiempoResolucionSegundos
+                }, { headers, withCredentials: true });
+                
                 const puntajeResponse = await axios.post(`${API_BASE_URL}/myapp/actualizar-puntaje/`, {
                     usuario: userInfo.id,
-                    puntos: 50
+                    puntos: 50,
+                    errores: 0
                 }, { headers, withCredentials: true });
+
                 const vidasUpdate = await axios.post(`${API_BASE_URL}/myapp/actualizar-vida-desafio/`, 
                     {resultado: true },{
                     headers,

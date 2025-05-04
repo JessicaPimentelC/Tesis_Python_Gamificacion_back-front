@@ -113,7 +113,14 @@ export const refreshAccessToken = async () => {
 
 
     //Verificar nivel
+    let nivelVerificadoGlobal = false;
+
     export const verificarNivel = async (nivelId) => {
+    if (nivelVerificadoGlobal) {
+        // Si ya se ha verificado el nivel, no hacer nada
+        console.log("El nivel ya ha sido verificado.");
+        return;
+        }
     const csrfToken = getCSRFToken(); // Obtener el token dinámico
 
     try {
@@ -137,6 +144,7 @@ export const refreshAccessToken = async () => {
             confirmButtonText: "Aceptar",
             confirmButtonColor: "#007bff",
         });
+        nivelVerificadoGlobal = true;
         }
     } catch (error) {
         console.error("Error al verificar nivel:", error);

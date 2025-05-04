@@ -247,11 +247,14 @@ const positions = generarEspiralVertical(20, 100, 20, 20, 15);
                         <div className="espiral-container">
                             {positions.map((pos, index) => {
                                 const ejercicio = ejercicios[index];
+                                const isAssigned = Boolean(ejercicio);
                                 return (
                                     <div
                                         key={`nivel1-${index}`}
-                                        className="map-circle circle-nivel1"
-                                        style={{
+                                        className={`map-circle circle-nivel1 ${
+                                          !isAssigned ? 'circle-disabled' : ''
+                                          }`}
+                                          style={{
                                             top: `${pos.top}px`,
                                             left: `${pos.left}px`,
                                             cursor: ejercicio ? "pointer" : "default",

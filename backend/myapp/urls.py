@@ -30,6 +30,8 @@ urlpatterns = [
     path("insigniasPrueba/", views.otorgar_insignia_20_ejercicios, name="insignias-usuario"),
     path("verificar_nivel_completado/", views.verificar_nivel_completado, name="nivel_completado"),
 
+    path("verificar_rapidez/", views.verificar_rapidez, name="verificar_rapidez"),
+
     path('intentos/<int:usuario_id>/', views.obtener_intentos, name="obtener_intentos"),
 
     path("guardar_ejercicio/", views.guardar_ejercicio, name="guardar_ejercicio"),

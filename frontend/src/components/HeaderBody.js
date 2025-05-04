@@ -123,13 +123,13 @@ const HeaderBody = () => {
     
     return (
         <div className="header">
-            <div className="icons-container" style={{ display: 'flex', gap: '20px' }}>
+            <div className="insignias-container">
                 {insignias.map((item, index) => (
                 <div key={index} className="circular-icon-container">
                     <button
-                    className="circular-icon"
-                    onClick={() => handleInsigniaClick(item.insignia)}
-                    onMouseEnter={() => handleMouseEnter(item.insignia)}
+                    className="circular-icono"
+                    onClick={() => handleInsigniaClick(item)}
+                    onMouseEnter={() => handleMouseEnter(item.insignia.nombre)}
                     onMouseLeave={handleMouseLeave}
                     >
                     <img

@@ -68,7 +68,9 @@ const Uno = () => {
 
 
   //Permite avanzar entre ejercicios
+  
   const handleNext = async () => {
+
     if (!userInfo || !userInfo.id) {
       console.error("No se encontró el ID del usuario");
       return;
@@ -98,7 +100,7 @@ const Uno = () => {
         setShowModal(false);
   
         redirigirAEnunciado(proximoEjercicio, navigate);
-  
+
       } catch (error) {
         console.error("Error al avanzar al siguiente ejercicio:", error);
       }
@@ -161,8 +163,15 @@ const Uno = () => {
       }
   
       const vidasRestantes = response.data.vidas;
+      const vidasIlimitadas = response.data.vidas_ilimitadas; 
       setVidas(vidasRestantes);
-  
+
+      if (vidasIlimitadas) {
+        setVerificationMessage("🛡️ ¡Tienes vidas ilimitadas por 10 minutos!");
+        setOutputVisible(true);
+        setTimeout(() => setOutputVisible(false), 4000);
+      }
+
       if (isCorrectAnswer) {
         setShowNextButton(true);
         setScore(prevScore => prevScore + 10);
@@ -176,7 +185,7 @@ const Uno = () => {
         new Audio("/perder.mp3").play();
       }
   
-      if (vidasRestantes === 0) {
+      if (vidasRestantes === 0 && !vidasIlimitadas) {
         await Swal.fire({
           title: "¡Vidas agotadas!",
           text: "No tienes más vidas disponibles",
