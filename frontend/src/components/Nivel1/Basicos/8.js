@@ -146,7 +146,19 @@ const Ocho = () => {
         throw new Error("Respuesta inesperada de la API");
       }
       const vidasRestantes = response.data.vidas;
-      setVidas(vidasRestantes);
+    const vidasIlimitadas = response.data.vidas_ilimitadas; 
+    setVidas(vidasRestantes);
+
+      if (vidasIlimitadas) {
+        await Swal.fire({
+          title: "¡Vidas Ilimitadas!",
+          text: "🛡️ ¡Tienes vidas ilimitadas por 10 minutos!",
+          icon: "info",
+          confirmButtonText: "Entendido",
+          confirmButtonColor: "#007bff"
+        });
+        return;
+      }
         if (isCorrect) {
           setShowNextButton(true);
           setScore(score + 10);
@@ -160,7 +172,7 @@ const Ocho = () => {
           new Audio("/perder.mp3").play();
         }
   
-        if (vidasRestantes === 0) {
+        if (vidasRestantes === 0 && !vidasIlimitadas) {
           Swal.fire({
             title: "Oh oh!",
             text: "No tienes más vidas. Espera o recarga vidas",

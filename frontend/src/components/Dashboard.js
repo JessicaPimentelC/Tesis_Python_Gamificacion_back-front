@@ -11,7 +11,6 @@ import { redirigirAEnunciado } from "../utils/utils";
 const Dashboard = () => {
   const [loadingProgress2, setLoadingProgress2] = React.useState(0);
   const [showModal, setShowModal] = React.useState(false);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(true); // NUEVO
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -19,7 +18,15 @@ const Dashboard = () => {
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
   const [ejercicios, setEjercicios] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-
+  const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
+    const hasSeenWelcome = localStorage.getItem("hasSeenWelcomeModal");
+    return !hasSeenWelcome;
+  });
+  
+  const handleCloseWelcomeModal = () => {
+    setShowWelcomeModal(false);
+    localStorage.setItem("hasSeenWelcomeModal", "true");
+  };
   useEffect(() => {
     const interval2 = setInterval(() => {
       setLoadingProgress2((oldProgress) => {
@@ -206,7 +213,7 @@ const positions = generarEspiralVertical(20, 100, 20, 20, 15);
               ¡Supera los retos, gana puntos y demuestra tu lógica como nunca antes!
             </p>
             <h3>¿Listo para comenzar? Tu camino hacia la programación comienza ahora. 💻🔥</h3>
-            <button onClick={() => setShowWelcomeModal(false)}>Comenzar</button>
+            <button onClick={() => handleCloseWelcomeModal(false)}>Comenzar</button>
           </div>
         </div>
       )}
