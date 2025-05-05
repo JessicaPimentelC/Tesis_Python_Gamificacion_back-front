@@ -297,7 +297,7 @@ const Cuarentatres = () => {
                     <div>
                       <p className="result correct">
                         ¡Correcto! Has emparejado "
-                        {cards.find((c) => c.id === 3)?.value}"
+                        {cards.find((c) => c.id === 4)?.value}"
                       </p>
                       <button className="next-button" onClick={handleNext}>
                         Siguiente

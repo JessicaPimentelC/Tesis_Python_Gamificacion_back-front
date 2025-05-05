@@ -70,7 +70,7 @@ const Enunciado5 = () => {
               </div>
 
               <div className="code-box">
-                <div className="code-header">Ejemplo con print</div>
+                <div className="code-header">Ejemplo al imprimir</div>
                 <pre className="code">
                   <code>
                     {`print("Hola, mundo!")`}

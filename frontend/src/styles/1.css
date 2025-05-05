@@ -451,18 +451,7 @@
       text-align: center;
   }
 }
- /* Opciones arrastrables */
- .drag-option {
-  background-color: #ffb23f;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: grab;
-  font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, transform 0.3s;
-  touch-action: none; /* Evita el desplazamiento de la página */
-  cursor: grab;
-}
+
 #dragging {
   position: absolute;
   z-index: 1000;
@@ -471,24 +460,54 @@
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-/* Cambios en la opción arrastrable al pasar el ratón por encima */
-.drag-option:hover {
-  background-color: #5c3700;
-  transform: scale(1.05);
+ /* Opciones arrastrables */
+.drag-option {
+  padding: 10px 15px;
+  background-color: #ffb23f;
+  border-radius: 5px;
+  cursor: grab;
+  font-size: 16px;
+  user-select: none;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
 }
- /* Zona de drop */
 
- .drop-zone {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #e3e3e3;
+.drag-option:active {
+  cursor: grabbing;
+}
+
+.drag-option.dragging-active {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+
+.drop-zone {
+  min-height: 80px;
   border: 2px dashed #ccc;
   border-radius: 5px;
-  text-align: center;
+  padding: 15px;
+  margin: 15px 0;
+  background-color: #e3e3e3;
+  text-align: center;;
   font-size: 16px;
   color: #777;
 }
 
+.drop-zone.drop-zone-active {
+  border-color: #42a5f5;
+  background-color: #e3f2fd;
+  box-shadow: inset 0 0 8px rgba(66, 165, 245, 0.2);
+}
+
+.drag-ghost {
+  background-color: white;
+  padding: 10px 15px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border: 1px solid #e0e0e0;
+  pointer-events: none;
+}
   
   /* Contenedor para los botones */
   .button-container {

@@ -103,6 +103,8 @@ def Login(request):
     else:
         return Response({'message': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
+from django.utils.text import slugify
+import random
 CLIENT_ID="567858506235-sd9fvbkheo3rnggdfpmnfjp63t6rgej3.apps.googleusercontent.com"
 @api_view(["POST"])
 def google_login(request):
@@ -125,9 +127,19 @@ def google_login(request):
 
         name_parts = name.split(" ", 1)  
         first_name = name_parts[0]  
-        last_name = name_parts[1] if len(name_parts) > 1 else ""  
+        last_name = name_parts[1] if len(name_parts) > 1 else ""
 
-        user, created = User.objects.get_or_create(email=email, defaults={"username": email, "first_name": first_name,"last_name":last_name })
+        base_username = slugify(first_name)
+        random_number = random.randint(10, 99)
+        username = f"{base_username}{random_number}"
+
+        contador = 1
+        while User.objects.filter(username=username).exists():
+            random_number = random.randint(10, 99)  
+            username = f"{base_username}{random_number}"
+            contador += 1
+
+        user, created = User.objects.get_or_create(email=email, defaults={"username": username, "first_name": first_name,"last_name":last_name })
         if created:
             VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
@@ -1021,6 +1033,17 @@ def crear_usuario(request):
         }, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','DELETE'])
+def eliminarUsuario(request, user_id):
+    try:
+        print(f"Intentando eliminar usuario con ID: {user_id}")  
+        usuario = User.objects.get(id=user_id)
+        print(f"Registro encontrado: {usuario}") 
+        usuario.delete()
+        return Response({'message': 'Usuario eliminado exitosamente'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
 #Ranking
 @api_view(['GET'])

@@ -57,14 +57,6 @@ const Chatbot = ({ onClose }) => {
   };
 
   const handleSendMessage = async () => {
-    if (selectedHelp.length === 0) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: "Debes seleccionar al menos una opción de ayuda antes de escribir.", sender: "bot" }
-      ]);
-      return;
-    }
-
     if (input.trim() === "") return;
 
     const newMessages = [...messages, { text: input, sender: "user" }];
@@ -102,26 +94,6 @@ const Chatbot = ({ onClose }) => {
                 {msg.text}
               </div>
             ))}
-          </div>
-          <div className="modal-icons">
-            <button
-              className={`modal-icon-button ${selectedHelp.includes("idea") ? "selected" : ""}`}
-              onClick={() => handleHelpOption("idea", "💡 Idea: Piensa en dividir el problema en pasos más pequeños.")}
-            >
-              <img src="/idea.gif" alt="Idea" className="modal-icon" />
-            </button>
-            <button
-              className={`modal-icon-button ${selectedHelp.includes("apoyo") ? "selected" : ""}`}
-              onClick={() => handleHelpOption("apoyo", "🤝 Apoyo: No te preocupes, revisa el enunciado con calma.")}
-            >
-              <img src="/apoyo.gif" alt="Apoyo" className="modal-icon" />
-            </button>
-            <button
-              className={`modal-icon-button ${selectedHelp.includes("cuaderno") ? "selected" : ""}`}
-              onClick={() => handleHelpOption("cuaderno", "📖 Cuaderno: Revisa tus apuntes para encontrar ideas.")}
-            >
-              <img src="/cuaderno.gif" alt="Cuaderno" className="modal-icon" />
-            </button>
           </div>
           <div className="chatbot-input">
             <input

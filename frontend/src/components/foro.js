@@ -114,8 +114,16 @@ const Foro = () => {
     }
   };
 
-  const handleVote = async (participacionId, tipoVoto) => {
-
+  const handleVote = async (participacionId, tipoVoto,autorRespuesta) => {
+    console.log(usuario?.id)
+    if (usuario?.username === autorRespuesta) {
+      Swal.fire({
+        icon: "warning",
+        title: "No puedes votar en tu propia respuesta",
+        text: "Votar en tu propia participación no está permitido.",
+      });
+      return;
+    }
     try {
       const csrfToken = getCSRFToken();
       const response = await axios.post(
@@ -387,7 +395,7 @@ const Foro = () => {
                 <div className="question-header">
                     <p className="question-info">
                     Tema: {q.tema} <br></br>Fecha: {q.fecha_creacion}<br></br>
-                    Pregunta de: {usuario?.username}
+                    Pregunta de: {q.usuario_data?.username}
                     </p>
                 </div>
                 <p className="question-text">{q.descripcion}</p>
@@ -410,17 +418,18 @@ const Foro = () => {
                         {" "}
                         <div className="answer-header">
                             <p className="answer-info"> <span className="username" >
-                            Respuesta de {usuario?.username} </span><br></br><span> en {a.fecha_participacion} </span>
+                            Respuesta de {a.usuario} </span><br></br><span> en {a.fecha_participacion} </span>
                             </p>
                         </div>
                         <p className="answer-text">{a.comentario}</p>
                         <div className="actions">
                             <div className="like-dislike">
+                              {console.log("respuesta",a.usuario)}
                             <img
                                 src="/like.png"
                                 alt="Like"
                                 className="like-icon"
-                                onClick={() => handleVote(a.id_participacion_foro, "like")}
+                                onClick={() => handleVote(a.id_participacion_foro, 'like', a.usuario)}
                                 style={{ cursor: "pointer" }}
                             />
                             <img

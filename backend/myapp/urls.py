@@ -50,6 +50,7 @@ urlpatterns = [
     path('editar-usuario/<int:user_id>/', views.editar_usuario, name='actualizar-user'),
     path('usuario/<int:user_id>/', views.obtener_usuario, name='obtener_usuario'), 
     path('crear-usuario/', views.crear_usuario, name='crear_usuario'), 
+    path('eliminar-usuario/<int:user_id>', views.eliminarUsuario, name='eliminar-usuario'), 
 
 
     path('guardar-intento/', views.guardar_intento, name="guardar_intento"),

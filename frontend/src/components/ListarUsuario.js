@@ -5,7 +5,8 @@ import Header from './Header';
 import '../styles/Editar-usuario.css';
 import { useParams,useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
-import {getCSRFToken } from "../utils/validacionesGenerales.js";
+import {getCSRFToken, refreshAccessToken} from "../utils/validacionesGenerales.js";
+import Swal from 'sweetalert2';
 
 const ListarUsuario = () => {
     const navigate = useNavigate(); // Hook para la redirección
@@ -34,26 +35,43 @@ const ListarUsuario = () => {
             timeZone: "America/Argentina/Buenos_Aires",
             });
         };
-        useEffect(() => {
-            const listarUsuarios = async () => {
+    const listarUsuarios = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            setUsuarios(response.data);
+            setLoading(false); 
+        }catch (error) {
+            if (error.response && error.response.status === 401) {
                 try {
-                    const response = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
+                    const newAccessToken = await refreshAccessToken(); 
+                    localStorage.setItem('access_token', newAccessToken);
+                    
+                    const retryResponse = await axios.get(`${API_BASE_URL}/myapp/usuarios/`, {
                         headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                            'Authorization': `Bearer ${newAccessToken}`,
                             'Content-Type': 'application/json'
                         }
-                        });
-                        setUsuarios(response.data);
-                        setLoading(false); 
-                    } catch (error) {
-                        console.error('Error:', error);
-                        setLoading(false);
-                    }
-                };
+                    });
+                    setUsuarios(retryResponse.data);
+                } catch (refreshError) {
+                    console.error('Error al refrescar token:', refreshError);
+                }
+            } else {
+                console.error('Error al listar usuarios:', error);
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
         
-            listarUsuarios();
-        }, [navigate]); 
-    
+    useEffect(() => {
+        listarUsuarios();
+    }, [navigate]);        
     const handleBackClick = () => {
         navigate("/perfil");
     };
@@ -61,8 +79,23 @@ const ListarUsuario = () => {
         navigate(`/editar-usuario/${user_id}`);
     };
 
-    const handleEliminar = () => {
-        navigate("/editar-usuario");
+    const handleEliminar = async (usuarioId) => {
+        try {
+            const response = await axios.delete(`${API_BASE_URL}/myapp/eliminar-usuario/${usuarioId}`);
+            
+            if (response.status === 200) {
+                Swal.fire({
+                icon: "success",
+                title: "Usuario eliminado",
+                text: "Usuario eliminado correctamente.",
+                });
+                listarUsuarios();  
+                
+            }
+        } catch (error) {
+            console.error('Error al eliminar el usuario:', error);
+            alert('Error al eliminar el usuario');
+        }
     };
     return (
         <div className="editar-container">
