@@ -94,7 +94,7 @@ print("El volumen del cilindro es", volumen)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="50.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

@@ -91,7 +91,7 @@ print("La cantidad en mililitros es", mililitros)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="45.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

@@ -90,7 +90,7 @@ print("El área del cuadrado es”, area)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="47.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

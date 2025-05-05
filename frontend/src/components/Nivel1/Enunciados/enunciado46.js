@@ -91,7 +91,7 @@ print(minutos “son: ”, horas)
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="46+.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
