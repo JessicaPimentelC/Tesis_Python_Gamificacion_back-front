@@ -73,11 +73,11 @@ const Enunciado49 = () => {
                 <div className="code-header">Python</div>
                 <code>
                   {`
-    import math 
-    radio = input("Introduce el radio del cilindro: ") 
-    altura = input("Introduce la altura del cilindro: ")
-    area_total = 2 * math.pi * float(radio) * (float(radio) + float(altura)) 
-                print("El área total del cilindro es”, area_total
+   import math 
+radio = input("Introduce el radio del cilindro: ") 
+altura = input("Introduce la altura del cilindro: ")
+area_total = 2 * math.pi * float(radio) * (float(radio) + float(altura)) 
+print("El área total del cilindro es", area_total)
 
 
 
@@ -98,7 +98,7 @@ const Enunciado49 = () => {
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="49.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 

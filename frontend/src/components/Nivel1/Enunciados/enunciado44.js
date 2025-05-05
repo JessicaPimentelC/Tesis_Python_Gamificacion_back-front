@@ -93,7 +93,7 @@ const Enunciado44 = () => {
 
               {showGif && (
                 <div className="gif-container">
-                  <img src=".gif" alt="GIF" className="gif-image" />
+                  <img src="44+.gif" alt="GIF" className="gif-image" />
                 </div>
               )}
 
