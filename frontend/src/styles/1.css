@@ -441,7 +441,7 @@
 }
 
 /* Ajustes para pantallas muy pequeñas (ejemplo: 400px o menos) */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .drag-container {
       flex-direction: column; /* Apila los elementos en móviles */
       align-items: center; /* Centra los elementos */
@@ -449,6 +449,7 @@
   .drag-option {
       width: 80%; /* Ocupa más espacio en pantalla */
       text-align: center;
+      touch-action: none; /* importante para evitar conflictos con el scroll */
   }
 }
 
@@ -460,26 +461,47 @@
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
- /* Opciones arrastrables */
+/* Estilos para el drag and drop */
 .drag-option {
-  padding: 10px 15px;
-  background-color: #ffb23f;
-  border-radius: 5px;
-  cursor: grab;
-  font-size: 16px;
+  cursor: move;
   user-select: none;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  user-select: none;
+  touch-action: none;
+  transition: opacity 0.2s;
 }
 
-.drag-option:active {
-  cursor: grabbing;
+.drag-option.dragging {
+  opacity: 0.5;
 }
 
-.drag-option.dragging-active {
-  opacity: 0.4;
-  transform: scale(0.95);
+.code-box.drop-active {
+  border: 2px dashed #4CAF50;
+  background-color: #f8fff8;
+}
+
+/* Estilos para el feedback visual */
+.result.correct {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.result.incorrect {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.output-message {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.verification-gif {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .drop-zone {

@@ -12,6 +12,7 @@ import axios from "axios";
 import useVidasStore from "../../vidasStore";
 import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
 import { fetchUserInfo } from '../../../utils/userService';
+import { useDrag, useDrop } from 'react-dnd';
 
 const Cuatro = () => {
   const [droppedWords, setDroppedWords] = useState([]);
@@ -31,7 +32,6 @@ const Cuatro = () => {
   const [result, setResult] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
   const [droppedItem, setDroppedItem] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
@@ -207,47 +207,27 @@ const handleVerify = async () => {
     });
   }
 };
-/**PARA ARRASTRAR LAS PALABRAS*/
-const handleDragStart = (e, item) => {
-  e.dataTransfer.setData("text/plain", item);
-  e.dataTransfer.effectAllowed = "move";
-  setDraggedItem(item);
-};
-const handleDrop = (e) => {
-  e.preventDefault();
-  const droppedText = e.dataTransfer.getData("text/plain");
-  setDroppedItem(droppedText);
-
-  // Limpiar el estado del item arrastrado
-  setDraggedItem(null);
-};
-
-const handleTouchStart = (e, item) => {
-  setDraggedItem(item);
-  setIsDragging(true);
-};
-const handleDragOver = (e) => {
-e.preventDefault(); // Permite el drop
-};
-const handleTouchMove = (e) => {
-  if (!isDragging) return;
-  const touch = e.touches[0];
-  const element = document.getElementById("dragging");
-  if (element) {
-      element.style.position = "absolute";
-      element.style.left = `${touch.clientX}px`;
-      element.style.top = `${touch.clientY}px`;
-  }
-};
-const handleDragEnd = () => {
-setDraggedItem(null);
-};
-const handleTouchEnd = (e) => {
-  setIsDragging(false);
-  setDroppedItem(draggedItem);
-};
 const options = ["print", "else", "while"];
 
+/**PARA ARRASTRAR LAS PALABRAS*/
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'CODE_WORD',
+    item: { type: 'CODE_WORD' },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: 'CODE_WORD',
+    drop: (item, monitor) => {
+      const droppedWord = monitor.getItem().word;
+      setDroppedItem(droppedWord);
+      return { name: 'codeBox' };
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
 
   return (
     <div className="nivel1-page">
@@ -268,9 +248,9 @@ const options = ["print", "else", "while"];
             <div className="nivel1-card-body">
               <p>Arrastra la palabra correcta al cuadro de código y verifica tu respuesta.</p>
             </div>
-              <div className="code-box"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
+            <div 
+                ref={drop}
+                className={`code-box ${isOver ? 'drop-active' : ''}`}
               >
                 <div className="code-header">Código:</div>
                 <div className="code">
@@ -280,32 +260,31 @@ const options = ["print", "else", "while"];
                 </div>
               </div>
               <div className="drag-container">
-                  {options.map((option) => (
-                    <div
-                      key={option}
-                      className="drag-option"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
-                        onTouchStart={(e) => handleTouchStart(e, option)}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
-                        onDragEnd={handleDragEnd}
-                        id={isDragging && draggedItem === option ? "dragging" : ""}
-                    >
-                      {option}
-                    </div>
-                  ))}
-                </div>
-                <div
-                  className="drop-zone"
-                  onDrop={handleDrop}
-                  onTouchEnd={(e) => handleTouchEnd(e)} // Móviles
-                  onDragOver={handleDragOver}
+                {options.map((option) => (
+                  <div
+                    key={option}
+                    ref={drag}
+                    className={`drag-option ${isDragging ? 'dragging' : ''}`}
+                    style={{ opacity: isDragging ? 0.5 : 1 }}
+                    onClick={() => setDroppedItem(option)}
                   >
-                  {droppedItem
-                    ? `${droppedItem}("70 / 2"))`
-                    : "Arrastra aquí la palabra correcta"}
+                    {option}
+                  </div>
+                ))}
+              </div>
+                <div 
+                ref={drop}
+                className={`code-box ${isOver ? 'drop-active' : ''}`}
+              >
+                <div className="code-header">Código:</div>
+                <div className="code">
+                  <pre>
+                    <code>
+                      {droppedItem ? `${droppedItem}("70 / 2")` : '________("70 / 2")'}
+                    </code>
+                  </pre>
                 </div>
+              </div>
                 {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (

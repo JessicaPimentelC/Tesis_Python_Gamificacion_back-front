@@ -12,6 +12,9 @@ import API_BASE_URL from "../../../config";
 import useVidasStore from "../../vidasStore";
 import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
 import { fetchUserInfo } from '../../../utils/userService';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 
 const Uno = () => {
   const [draggedItem, setDraggedItem] = useState(null);
@@ -42,6 +45,12 @@ const Uno = () => {
   const dropZoneRef = useRef(null);
   const options = ["Mundo", "Hola", "Print"];
 
+  const isTouchDevice = () => {
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  };
+  
+  const backend = isTouchDevice() ? TouchBackend : HTML5Backend;
+  
   useEffect(() => {
     const loadUser = async () => {
       try {
