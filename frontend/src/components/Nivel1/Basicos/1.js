@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../../styles/1.css";
 import { useNavigate } from "react-router-dom";
 import HeaderBody from "../../HeaderBody";
@@ -38,7 +38,8 @@ const Uno = () => {
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
-  
+  const dragOptionsRef = useRef([]);
+  const dropZoneRef = useRef(null);
   const options = ["Mundo", "Hola", "Print"];
 
   useEffect(() => {
@@ -239,134 +240,89 @@ const Uno = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-  const handleDragStart = (e, item) => {
-    // Crear elemento fantasma para Chrome
-    const dragIcon = document.createElement('div');
-    dragIcon.innerHTML = item;
-    dragIcon.style.position = 'absolute';
-    dragIcon.style.top = '-9999px';
-    document.body.appendChild(dragIcon);
-    e.dataTransfer.setDragImage(dragIcon, 0, 0);
+
+  const handleDragStart = (e, item, index) => {
+    // Para eventos de mouse (desktop)
+    if (e.dataTransfer) {
+      e.dataTransfer.setData("text/plain", item);
+      e.dataTransfer.effectAllowed = "move";
+    }
     
-    // Calcular offset para posicionamiento preciso
-    const rect = e.target.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-    
-    e.dataTransfer.setData("text/plain", item);
+    // Para eventos táctiles y desktop
     setDraggedItem(item);
     
-    // Efecto visual durante arrastre
-    e.target.classList.add('dragging-active');
-    setTimeout(() => {
-      e.target.style.opacity = '0.4';
-    }, 0);
-  };
+    // Efecto visual
+    if (dragOptionsRef.current[index]) {
+      dragOptionsRef.current[index].style.opacity = "0.4";
+    }
   
-  const handleDrag = (e) => {
-    // Actualizar posición durante arrastre
-    setDragPosition({
-      x: e.clientX,
-      y: e.clientY
-    });
-  };
-  
-  const handleDragEnd = (e) => {
-    e.target.style.opacity = '1';
-    e.target.classList.remove('dragging-active');
-    setDraggedItem(null);
-    
-    // Limpiar elementos fantasmas
-    document.querySelectorAll('[data-drag-icon]').forEach(el => el.remove());
-  };
-  
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-    e.currentTarget.classList.add('drop-zone-active');
-  };
-  
-  const handleDragLeave = (e) => {
-    e.currentTarget.classList.remove('drop-zone-active');
-  };
-  
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.currentTarget.classList.remove('drop-zone-active');
-    
-    const droppedText = e.dataTransfer.getData("text/plain") || draggedItem;
-    setDroppedItem(droppedText);
-    setDraggedItem(null);
-  };
-  
-  // Manejo de touch para móviles
-  const handleTouchStart = (e, item) => {
-    const touch = e.touches[0];
-    const rect = e.target.getBoundingClientRect();
-    
-    setDraggedItem(item);
-    setIsDragging(true);
-    setDragPosition({
-      x: touch.clientX,
-      y: touch.clientY
-    });
-    setDragOffset({
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top
-    });
-    
-    // Crear elemento visual para arrastre táctil
-    const ghost = document.createElement('div');
-    ghost.className = 'drag-ghost';
-    ghost.textContent = item;
-    ghost.style.position = 'fixed';
-    ghost.style.left = `${touch.clientX}px`;
-    ghost.style.top = `${touch.clientY}px`;
-    ghost.id = 'touch-ghost';
-    document.body.appendChild(ghost);
-  };
-  
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    const touch = e.touches[0];
-    setDragPosition({
-      x: touch.clientX,
-      y: touch.clientY
-    });
-    
-    const ghost = document.getElementById('touch-ghost');
-    if (ghost) {
-      ghost.style.left = `${touch.clientX - dragOffset.x}px`;
-      ghost.style.top = `${touch.clientY - dragOffset.y}px`;
+    // Crear elemento fantasma para móviles
+    if (e.type.includes('touch')) {
+      const touch = e.touches[0];
+      const ghost = document.createElement('div');
+      ghost.textContent = item;
+      ghost.style.position = 'absolute';
+      ghost.style.left = `${touch.clientX}px`;
+      ghost.style.top = `${touch.clientY}px`;
+      ghost.style.pointerEvents = 'none';
+      ghost.style.zIndex = '9999';
+      ghost.id = 'drag-ghost';
+      document.body.appendChild(ghost);
     }
   };
   
-  const handleTouchEnd = (e) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    
-    // Verificar si se soltó en la zona de drop
-    const touch = e.changedTouches[0];
-    const dropZone = document.querySelector('.drop-zone');
+  const handleTouchMove = (e) => {
+    if (!draggedItem) return;
+    const touch = e.touches[0];
+    const ghost = document.getElementById('drag-ghost');
+    if (ghost) {
+      ghost.style.left = `${touch.clientX}px`;
+      ghost.style.top = `${touch.clientY}px`;
+    }
+  };
+
+// Cuando se suelta en el área de destino (¡Corregido!)
+const handleDrop = (e) => {
+  e.preventDefault();
+  const data = e.dataTransfer?.getData("text/plain"); // Desktop
+  setDroppedItem(data || draggedItem);               // Usa datos del arrastre o el estado
+};
+const handleDragEnd = (e, index) => {
+  // Restaurar opacidad
+  if (dragOptionsRef.current[index]) {
+    dragOptionsRef.current[index].style.opacity = "1";
+  }
+  
+  // Limpiar elemento fantasma
+  const ghost = document.getElementById('drag-ghost');
+  if (ghost) ghost.remove();
+  
+  setDraggedItem(null);
+};
+// Para móviles: manejo táctil al soltar (¡Esencial!)
+const handleTouchEnd = (e) => {
+  const touch = e.changedTouches[0];
+  const dropZone = dropZoneRef.current;
+  
+  if (dropZone) {
     const dropRect = dropZone.getBoundingClientRect();
-    
-    if (
+    const isInsideDropZone = (
       touch.clientX >= dropRect.left &&
       touch.clientX <= dropRect.right &&
       touch.clientY >= dropRect.top &&
       touch.clientY <= dropRect.bottom
-    ) {
-      setDroppedItem(draggedItem);
-    }
+    );
     
-    // Limpiar
-    const ghost = document.getElementById('touch-ghost');
-    if (ghost) ghost.remove();
-    setDraggedItem(null);
+    if (isInsideDropZone && draggedItem) {
+      setDroppedItem(draggedItem);  // ¡Fija la palabra en el área!
+    }
+  }
   
+  // Limpia el estado
+  setDraggedItem(null);
 };
+
+
   return (
     <div className="nivel1-page">
       <Sidebar></Sidebar>
@@ -402,17 +358,16 @@ const Uno = () => {
                   </div>
                 </div>
                 <div className="drag-container">
-                  {options.map((option) => (
+                  {options.map((option, index) => (
                     <div
-                      key={option}
-                      className={`drag-option ${draggedItem === option ? 'dragging-active' : ''}`}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
-                      onDrag={handleDrag}
-                      onDragEnd={handleDragEnd}
-                      onTouchStart={(e) => handleTouchStart(e, option)}
-                      onTouchMove={handleTouchMove}
-                      onTouchEnd={handleTouchEnd}
+                    ref={(el) => (dragOptionsRef.current[index] = el)}
+                    className="drag-option"
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, option, index)}
+                    onTouchStart={(e) => handleDragStart(e, option, index)}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onDragEnd={handleDragEnd}
                     >
                       {option}
                     </div>
@@ -420,10 +375,10 @@ const Uno = () => {
                 </div>
                 <div
                     className="drop-zone"
+                    ref={dropZoneRef}
                     onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onTouchEnd={handleTouchEnd}
+                    onDragOver={(e) => e.preventDefault()}
+                    onTouchEnd={handleTouchEnd}  // ¡Importante para móviles!
                   >
                   {droppedItem
                     ? `print("Hola, ${droppedItem}!")`
