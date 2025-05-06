@@ -591,11 +591,13 @@ def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
     intervalo = timedelta(minutes=15)  
 
-    if ahora - vidas_usuario.ultima_actualizacion >= intervalo and vidas_usuario.vidas_restantes == 0:
+    if vidas_usuario.vidas_restantes == 0 and ahora - vidas_usuario.ultima_actualizacion >= intervalo:
         vidas_usuario.vidas_restantes = 5
         vidas_usuario.ultima_actualizacion = ahora 
         vidas_usuario.save()
-        print("🟢 Se restauró 1 vida. Total ahora:", vidas_usuario.vidas_restantes)
+        print("🟢 Se restauraron las vidas. Total ahora:", vidas_usuario.vidas_restantes)
+    else:
+        print("❌ No se restauraron vidas. Condición no cumplida.")
 
 @api_view(['GET'])
 def ProgresoVersionNueva(request):

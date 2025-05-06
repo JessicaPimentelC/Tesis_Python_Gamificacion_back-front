@@ -37,8 +37,15 @@ const HeaderInfo = () => {
     return (
     <div className="header-status">
         <span></span>
+        <button className="icon-button-mapa" onClick={() => navigate('/dashboard')}>
+            <img 
+                className="header-icon" 
+                src="/inicio.png" 
+                alt="Icono"  
+            />
+            </button>
         <button className="icon-button-mapa" onClick={handlePenguinClick}>
-                            <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
+            <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
         </button>           
             {showChatbot && (
             <Chatbot onClose={handleCloseChatbot} />
@@ -46,7 +53,11 @@ const HeaderInfo = () => {
         <button className="icon-button-mapa" onClick={openModalMapa}>
             <img src="/colombia.png" alt="Icono Mapa" className="info-icon" />
         </button>
-        {isModalOpenMapa && (
+           
+            {/**<button onClick={handleBackClick} className="button-atras">
+                <img src="/atrasa.png" alt="Back" className="header-icon" onClick={handleBackClick}/>
+            </button>**/}
+            {isModalOpenMapa && (
             <div className="modal-mapa">
             <div className="modal-content-mapa">
                 <h2 style={{ textAlign: "center" }}>Mapa</h2>
