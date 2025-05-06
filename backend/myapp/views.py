@@ -517,6 +517,32 @@ def verificar_desafio(request):
     habilitar_desafio = mostrar_desafio(usuario_id)
     return Response({'mostrar_desafio': habilitar_desafio})
 
+#mostrar examen final 
+def mostrar_examen_por_nivel(usuario_id, nivel_id):
+    try:
+        ejercicios_completados = EjercicioAsignado.objects.filter(
+            usuario_id=usuario_id,
+            ejercicio__nivel=nivel_id
+        ).count()
+        return ejercicios_completados >= 20  # o el umbral que definas por nivel
+    except Exception as e:
+        print(f"Error al verificar ejercicios completados: {e}")
+        return False
+    
+@api_view(['GET'])
+def verificar_examen(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "No autenticado"}, status=401)
+
+    usuario_id = request.user.id
+    nivel_id = request.query_params.get('nivel_id') 
+
+    if nivel_id is None:
+        return Response({"error": "nivel_id requerido"}, status=400)
+
+    habilitar_examen = mostrar_examen_por_nivel(usuario_id, int(nivel_id))
+    return Response({'mostrar_examen': habilitar_examen})
+
 #verificar insignia rapidez desafio
 @api_view(['POST','GET'])
 def verificar_rapidez(request):
@@ -940,6 +966,7 @@ def verificar_nivel_completado(request):
     ).count()
 
     if total_logros > 0 and logros_usuario == total_logros:
+        
         if usuario.nivel_actual < int(nivel_id) + 1:
             usuario.nivel_actual = int(nivel_id) + 1
             usuario.save()

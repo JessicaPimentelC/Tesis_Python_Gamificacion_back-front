@@ -59,6 +59,8 @@ urlpatterns = [
     path('actualizar-vida-desafio/', views.actualizar_vida_desafio, name='actualizar_vida'),
     path('verificar_desafio/', views.verificar_desafio, name='verificar_desafio'),
 
+    path('mostrar_examen/', views.verificar_examen, name='mostrar_examen'),
+
     path('run_code/', views.run_code, name='run_code'),
     path('progreso/', views.ProgresoVersionNueva, name='progreso'),
 

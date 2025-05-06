@@ -123,9 +123,8 @@ export const refreshAccessToken = async () => {
 
 
     //Verificar nivel
-
     export const verificarNivel = async (nivelId) => {
-        const csrfToken = getCSRFToken(); // Obtener el token dinámico
+        const csrfToken = getCSRFToken();
 
         try {
             const response = await axios.post(
@@ -135,7 +134,7 @@ export const refreshAccessToken = async () => {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken, // Se obtiene dinámicamente
+                        "X-CSRFToken": csrfToken, 
                     },
                 }
             );
@@ -144,15 +143,25 @@ export const refreshAccessToken = async () => {
                 console.log("Respuesta de la API de verificar nivel:", response.data);
                 Swal.fire({
                     title: "¡Verificación de Nivel!",
-                    text: response.data.mensaje, // Mensaje que viene del backend
+                    text: response.data.mensaje,
                     icon: "success",
                     confirmButtonText: "Aceptar",
                     confirmButtonColor: "#007bff",
                 });
-                // Después de verificar el nivel, se activa la asignación del siguiente nivel
                 if (response.data.mensaje.includes("Ejercicio del Nivel")) {
-                    // Si se asignó un nuevo ejercicio, puedes hacer algo adicional aquí
                     console.log("Nuevo ejercicio asignado.");
+                }
+                try {
+                    const examenResponse = await axios.get(
+                        `${API_BASE_URL}/myapp/verificar_examen?nivel_id=${nivelId}`,
+                        { withCredentials: true }
+                    );
+    
+                    if (examenResponse.data.mostrar_desafio) {
+                        navigate(`/examennivel${nivelId}`);
+                    }
+                } catch (ex) {
+                    console.error("Error al verificar si mostrar el examen:", ex);
                 }
             }
         } catch (error) {
