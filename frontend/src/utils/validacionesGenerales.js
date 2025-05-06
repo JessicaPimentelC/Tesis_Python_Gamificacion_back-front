@@ -1,6 +1,8 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
+import { useNavigate } from "react-router-dom";
+
 
 // Función mejorada para obtener CSRF token
 export const getCSRFToken = () => {
@@ -123,7 +125,7 @@ export const refreshAccessToken = async () => {
 
 
     //Verificar nivel
-    export const verificarNivel = async (nivelId) => {
+    export const verificarNivel = async (nivelId, navigate) => {
         const csrfToken = getCSRFToken();
 
         try {
