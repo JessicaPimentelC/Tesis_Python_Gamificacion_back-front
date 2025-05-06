@@ -239,7 +239,7 @@ const Doce = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #12</h2>
+            <h2>Ejercicio de completar</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Llena los espacios en blanco para completar el saludo.</p>

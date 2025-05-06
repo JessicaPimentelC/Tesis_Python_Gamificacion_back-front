@@ -34,6 +34,7 @@ const Treinta = () => {
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [showNextButton, setShowNextButton] = useState(false);
   
   useEffect(() => {
       const loadUser = async () => {
@@ -89,9 +90,6 @@ const Treinta = () => {
       }
     };
 
-  const [isCorrect, setIsCorrect] = useState(null);
-
-  const [showNextButton, setShowNextButton] = useState(false);
 
 //Verifica respuesta ejercicio
 const handleVerify = async (answer) => {
@@ -109,7 +107,8 @@ const handleVerify = async (answer) => {
   else{
     setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
   }
-  setIsCorrect(isCorrect);
+  setResult(isCorrect ? 'correct' : 'incorrect');
+  setShowNext(isCorrect); 
 
   try {
       const headers = {
@@ -223,7 +222,7 @@ const handleVerify = async (answer) => {
             </div>
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-              <span>EJERCICIO #30</span>
+              <span>Ejercicio de impresión </span>
 
               </div>
               <div className="nivel1-card-body">

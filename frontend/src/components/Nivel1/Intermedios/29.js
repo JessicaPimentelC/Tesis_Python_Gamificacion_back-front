@@ -278,7 +278,7 @@ const handleVerify = async (answer) => {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-{showNext && (
+              {showNext && (
                   <div className="button-container">
                     <button
                       className="nivel1-card-button"

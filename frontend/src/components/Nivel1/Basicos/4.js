@@ -228,7 +228,7 @@ const handleVerify = async (answer) => {
             </div>
             <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #4</h2>
+            <h2>Ejercicio de impresión</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Seleeciona la palabra correcta al cuadro de código y verifica tu respuesta.</p>

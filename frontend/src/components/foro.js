@@ -6,7 +6,7 @@ import Header from "./Header";
 import API_BASE_URL from "../config";
 import { esAdmin } from "../utils/validacionUsuario"; 
 import Swal from 'sweetalert2';
-import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import {getCSRFToken,refreshAccessToken, verificarYOtorgarLogro } from "../utils/validacionesGenerales.js";
 import useUsuario from "../utils/useUsuario.js";
 
 const Foro = () => {
@@ -224,6 +224,7 @@ const Foro = () => {
   
       console.log("Success:", response.data);
       fetchQuestions();
+      await verificarYOtorgarLogro(usuarioId);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       if (error.response?.status === 401 || error.response.data.code === "token_not_valid") {
@@ -248,7 +249,7 @@ const Foro = () => {
           fetchQuestions();
         } catch (refreshError) {
           alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
-          navigate('/perfil');
+          navigate('/');
         }
       } else {
         console.error("Error:", error.response?.data || error.message);
@@ -282,7 +283,7 @@ const Foro = () => {
       );
 
       console.log("Success:", response.data);
-
+      await verificarYOtorgarLogro(userId);
       setTimeout(() => {
         fetchQuestions();
         fetchParticipaciones();

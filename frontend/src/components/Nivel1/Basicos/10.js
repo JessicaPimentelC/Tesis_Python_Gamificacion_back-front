@@ -230,7 +230,7 @@ const Diez = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #10</h2>
+            <h2>Ejercicio de entrada de datos</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Ingrese el nombre "python" en el campo de abajo.</p>

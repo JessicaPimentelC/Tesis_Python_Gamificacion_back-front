@@ -228,7 +228,7 @@ const handleVerify = async (answer) => {
           <div className="white-background">
             <HeaderBody></HeaderBody>
             <div className="header-title">
-              <h2>NIVEL 21</h2>
+              <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>
             <div className="nivel1-card">

@@ -252,7 +252,7 @@ const headers = {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <span>EJERCICIO #13</span>
+            <span>Ejercicio de suma</span>
             </div>
             <div className="nivel1-card-body">
               <p>Llena los espacios en blanco para completar el código que realiza una suma básica en Python con números decimales.</p>

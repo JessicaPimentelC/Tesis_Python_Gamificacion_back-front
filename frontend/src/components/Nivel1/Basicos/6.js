@@ -251,7 +251,7 @@ const handleVerify = async (answer) => {
             
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #6</h2>
+            <h2>Ejercicio de variables</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Crea una variable de tipo numérico que almacene el número 37</p>

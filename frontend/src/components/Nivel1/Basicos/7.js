@@ -218,7 +218,7 @@ const checkAnswer = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #7</h2>
+            <h2>Ejercicio de tipos de datos</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Crea un algoritmo que permita ingresar un número con decimales = 45.78</p>

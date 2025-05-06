@@ -222,7 +222,7 @@ const Ocho = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #8</h2>
+            <h2>Ejercicio de variable</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Cree una variable de tipo texto que almacene la palabra “programacion”</p>

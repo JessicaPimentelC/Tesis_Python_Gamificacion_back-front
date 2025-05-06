@@ -255,7 +255,7 @@ const Once = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #11</h2>
+            <h2>Ejercicio de entrada de datos</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Ingrese su estatura en el campo de abajo y presione "verificar".</p>

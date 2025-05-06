@@ -230,7 +230,7 @@ const handleVerify = async () => {
           </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-            <h2>EJERCICIO #3</h2>
+            <h2>Ejercicio de impresión</h2>
             </div>
             <div className="nivel1-card-body">
               <p>Imprima el resultado de 56 multiplicado por 3</p>
