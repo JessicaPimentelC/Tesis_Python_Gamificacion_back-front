@@ -140,6 +140,9 @@ def google_login(request):
             contador += 1
 
         user, created = User.objects.get_or_create(email=email, defaults={"username": username, "first_name": first_name,"last_name":last_name })
+        user.last_login = timezone.now()
+        user.save(update_fields=["last_login"])
+
         if created:
             VidasUsuario.objects.create(
             usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
@@ -164,7 +167,9 @@ def google_login(request):
             "message": "Inicio de sesión exitoso",
             "access_token": str(access),
             "refresh_token": str(refresh),
-            "user": {"id": user.id, "email": user.email, "name": user.first_name},
+            "user": {"id": user.id, "email": user.email, "name": user.first_name, 
+                "last_login": f"Última fecha de login: {user.last_login.strftime('%d/%m/%Y')}" if user.last_login else "Última fecha de login: No disponible"
+},
         })
     
     except Exception as e:

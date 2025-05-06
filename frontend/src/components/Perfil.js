@@ -136,7 +136,8 @@ useEffect(() => {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      timeZone: "America/Argentina/Buenos_Aires",
+      hour12: true,
+      timeZone: "America/Bogota",
     });
   };
   const handleBackClick = () => {
@@ -231,16 +232,11 @@ useEffect(() => {
           <h2>Perfil de Usuario</h2>
         </div>
         <div className="perfil-info">
-          <img
-            src="foto_usuario.jpg"
-            alt="Foto de usuario"
-            className="perfil-picture"
-          />
           <div className="text-content">
             <h3>¡Bienvenido!</h3>
             {userInfo ? (
               <div>
-                <p>
+                <p className="texto-usuario">
                   <strong>Nombre de usuario:</strong> {userInfo.username}
                 </p>
                 <p>
