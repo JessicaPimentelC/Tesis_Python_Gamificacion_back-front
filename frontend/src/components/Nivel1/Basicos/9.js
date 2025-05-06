@@ -262,7 +262,7 @@ const handleVerify = async (answer) => {
             <h2>EJERCICIO #9</h2>
             </div>
             <div className="nivel1-card-body">
-              <p>Cree una variable de tipo numérico que almacene el número 46</p>
+              <p>Seleccione la respuesta correcta para crear una variable de tipo numérico que almacene el número 46</p>
             </div>
             <div className="nivel1-card-body">
               <div className="code-box">

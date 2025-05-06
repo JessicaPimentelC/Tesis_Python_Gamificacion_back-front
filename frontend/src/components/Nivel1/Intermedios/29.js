@@ -28,14 +28,18 @@ const Veintiocho = () => {
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const setVidas = useVidasStore((state) => state.setVidas);
-  const [result, setResult] = useState(null);
-  const [output, setOutput] = useState('');
   const [score, setScore] = useState(0);
   const [errores, setErrores] = useState(0); 
   const [insignias, setInsignias] = useState([]);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [errorMessage,setErrorMessage] = useState(null);
+  const [showNext, setShowNext] = useState(false);
+  const [output, setOutput] = useState("");
+  const [result, setResult] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -91,30 +95,28 @@ const Veintiocho = () => {
       }
     };
 
-
-  const handleDragStart = (e, option) => {
-    e.dataTransfer.setData("text/plain", option);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
-    setDroppedItem(data);
-  };
-
   const navigate = useNavigate();
   
 
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  if (!droppedItem) {
-    alert("Por favor, selecciona una palabra antes de verificar.");
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
     return;
-}
+  }
 
-  const isCorrect = droppedItem === ",";
-
-  setIsCorrect(isCorrect);
+  const isCorrectAnswer = answer === ",";
+  if (isCorrectAnswer) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
+  setResult(isCorrectAnswer ? 'correct' : 'incorrect');
+  setShowNext(isCorrectAnswer); // Muestra u oculta el botón "Siguiente"
 
   try {
     const headers = {
@@ -140,7 +142,7 @@ const handleVerify = async () => {
       usuario: usuario_id,
       ejercicio: 29,
       fecha: new Date().toISOString().split("T")[0],
-      resultado: isCorrect,
+      resultado: isCorrectAnswer,
       errores: isCorrect ? 0 : errores + 1,
     };
     const response = await axios.post(
@@ -167,7 +169,7 @@ const handleVerify = async () => {
         return;
       }
 
-      if (isCorrect) {
+      if (isCorrectAnswer) {
         setShowNextButton(true);
         setScore(score + 10);
         setVerificationMessage("✅ ¡Ganaste 10 puntos!");
@@ -233,7 +235,7 @@ const handleVerify = async () => {
                 <span>EJERCICIO #1</span>
               </div>
               <div className="nivel1-card-body">
-                <p>En este ejercicio, debes arrastrar el signo correcto para imprimir las dos variables</p>
+                <p>En este ejercicio, debes seleccionar el signo correcto para imprimir las dos variables</p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
                   <div className="code">
@@ -246,15 +248,16 @@ const handleVerify = async () => {
                     </pre>
                   </div>
                 </div>
-                <div className="drag-container">
-                  {options.map((option) => (
-                    <div key={option} className="drag-option" draggable onDragStart={(e) => handleDragStart(e, option)}>
+                <div className="options">
+                  {[",", "+", "'"].map((option) => (
+                    <div
+                      key={option}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
+                    >
                       {option}
                     </div>
                   ))}
-                </div>
-                <div className="drop-zone" onDragOver={(e) => e.preventDefault()} onDrop={handleDrop}>
-                  {droppedItem ? `(${droppedItem})` : "Arrastra aquí el signo igual"}
                 </div>
                 {outputVisible && (
                   <div className="output-message">
@@ -275,23 +278,23 @@ const handleVerify = async () => {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
-                    <button className="nivel1-card-button next-button show" onClick={handleNext}>
+{showNext && (
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
                       Siguiente
                     </button>
-                  )}
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p className={`result ${isCorrect ? "correct" : "incorrect"}`}>
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

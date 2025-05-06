@@ -230,9 +230,7 @@ const handleVerify = async (answer) => {
             <div className="header-title">
               <h2>NIVEL 21</h2>
               <HeaderInfo></HeaderInfo>
-              
             </div>
-
             <div className="nivel1-card">
             <div className="nivel1-card-header">
             <span>Ejercicio de Cálculo del Área de un Rectángulo</span>
@@ -305,42 +303,6 @@ const handleVerify = async (answer) => {
           <Puntaje></Puntaje>
         </div>
       </div>
-
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>¡Hola, soy pingui jessica!</h2>
-            <p>
-              Aquí podrás encontrar todas las ayudas que necesites para
-              completar los ejercicios. ¡No dudes en consultarlo cuando lo
-              necesites!
-            </p>
-
-            <div className="modal-icons">
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 1: Idea")}
-              >
-                <img src="idea.gif" alt="Icono 1" className="modal-icon" />
-              </button>
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 2: Apoyo")}
-              >
-                <img src="apoyo.gif" alt="Icono 2" className="modal-icon" />
-              </button>
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 3: Cuaderno")}
-              >
-                <img src="cuaderno.gif" alt="Icono 3" className="modal-icon" />
-              </button>
-            </div>
-
-            <button onClick={closeModal}>Cerrar</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

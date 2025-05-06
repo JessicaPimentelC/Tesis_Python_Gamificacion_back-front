@@ -12,14 +12,9 @@ import axios from "axios";
 import useVidasStore from "../../vidasStore";
 import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
 import { fetchUserInfo } from '../../../utils/userService';
-import { useDrag, useDrop } from 'react-dnd';
 
 const Cuatro = () => {
-  const [droppedWords, setDroppedWords] = useState([]);
-  const [showNext, setShowNext] = useState(false);
-  const [score, setScore] = useState(0);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para el mensaje de éxito
+ const [score, setScore] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
@@ -29,13 +24,19 @@ const Cuatro = () => {
   const [showModal, setShowModal] = useState([]); // Almacena los números ya utilizados
   const [errores, setErrores] = useState(0);
   const [insignias, setInsignias] = useState([]); // Insignias dinámicas
-  const [result, setResult] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
   const [droppedItem, setDroppedItem] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [errorMessage,setErrorMessage] = useState(null);
+  const [showNext, setShowNext] = useState(false);
+  const [output, setOutput] = useState("");
+  const [result, setResult] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -97,18 +98,23 @@ if (proximoEjercicio) {
 
 
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  if (!droppedItem) {
-    Swal.fire({
-      title: "Atención",
-      text: "Por favor, selecciona una palabra antes de verificar.",
-      icon: "warning",
-      confirmButtonColor: "#3085d6"
-    });
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
     return;
   }
-  const isCorrectAnswer = droppedItem === "print";
-  setIsCorrect(isCorrectAnswer);
+  const isCorrectAnswer = answer === "print";
+  if (isCorrectAnswer) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
+  setResult(isCorrectAnswer ? 'correct' : 'incorrect');
+  setShowNext(isCorrectAnswer); // Muestra u oculta el botón "Siguiente"
 
   try {
     const headers = {
@@ -207,32 +213,11 @@ const handleVerify = async () => {
     });
   }
 };
-const options = ["print", "else", "while"];
 
-/**PARA ARRASTRAR LAS PALABRAS*/
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'CODE_WORD',
-    item: { type: 'CODE_WORD' },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'CODE_WORD',
-    drop: (item, monitor) => {
-      const droppedWord = monitor.getItem().word;
-      setDroppedItem(droppedWord);
-      return { name: 'codeBox' };
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
 
   return (
     <div className="nivel1-page">
       <Sidebar></Sidebar>
-
     <div className="nivel1-container">
       <div className="content">
         <div className="white-background">
@@ -246,12 +231,8 @@ const options = ["print", "else", "while"];
             <h2>EJERCICIO #4</h2>
             </div>
             <div className="nivel1-card-body">
-              <p>Arrastra la palabra correcta al cuadro de código y verifica tu respuesta.</p>
-            </div>
-            <div 
-                ref={drop}
-                className={`code-box ${isOver ? 'drop-active' : ''}`}
-              >
+              <p>Seleeciona la palabra correcta al cuadro de código y verifica tu respuesta.</p>
+              <div className="code-box">
                 <div className="code-header">Código:</div>
                 <div className="code">
                   <pre>
@@ -259,32 +240,18 @@ const options = ["print", "else", "while"];
                   </pre>
                 </div>
               </div>
-              <div className="drag-container">
-                {options.map((option) => (
-                  <div
-                    key={option}
-                    ref={drag}
-                    className={`drag-option ${isDragging ? 'dragging' : ''}`}
-                    style={{ opacity: isDragging ? 0.5 : 1 }}
-                    onClick={() => setDroppedItem(option)}
-                  >
-                    {option}
-                  </div>
-                ))}
-              </div>
-                <div 
-                ref={drop}
-                className={`code-box ${isOver ? 'drop-active' : ''}`}
-              >
-                <div className="code-header">Código:</div>
-                <div className="code">
-                  <pre>
-                    <code>
-                      {droppedItem ? `${droppedItem}("70 / 2")` : '________("70 / 2")'}
-                    </code>
-                  </pre>
+              <div className="options">
+                  {["while", "print", "else"].map((option) => (
+                    <div
+                      key={option}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
+                    >
+                      {option}
+                    </div>
+                  ))}
                 </div>
-              </div>
+                
                 {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (
@@ -304,37 +271,30 @@ const options = ["print", "else", "while"];
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-              <div className="nivel1-card-button-container">
-                <button className="nivel1-card-button" onClick={handleVerify}>
-                  Verificar
-                </button>
-                {showNextButton && (
-                  <button
-                    className="nivel1-card-button"
-                    onClick={handleNext}
-                  >
-                    Siguiente
-                  </button>
+              {showNext && (
+                  <div className="button-container">
+                    <button
+                      className="nivel1-card-button"
+                      onClick={handleNext}
+                    >
+                      Siguiente
+                    </button>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
                 )}
               </div>
-
-              <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${
-                        isCorrect ? "correct" : "incorrect"
-                      }`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
             </div>
           </div>
           <Puntaje></Puntaje>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 

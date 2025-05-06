@@ -33,6 +33,7 @@ const Treinta = () => {
   const navigate = useNavigate();
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   
   useEffect(() => {
       const loadUser = async () => {
@@ -88,37 +89,30 @@ const Treinta = () => {
       }
     };
 
-  const [droppedItem, setDroppedItem] = useState(null);
-
   const [isCorrect, setIsCorrect] = useState(null);
 
   const [showNextButton, setShowNextButton] = useState(false);
 
-  const handleDragStart = (e, option) => {
-    e.dataTransfer.setData("text/plain", option);
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
-    setDroppedItem(data);
-  };
-
-
-
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  if (!droppedItem) {
-    alert("Por favor, selecciona una palabra antes de verificar.");
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
     return;
-}
-
-  const isCorrect = droppedItem === "=";
-
+  }
+  const isCorrect = answer === "=";
+  if (isCorrect) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
   setIsCorrect(isCorrect);
 
   try {
-const headers = {
+      const headers = {
         "Content-Type": "application/json",
         "X-CSRFToken": getCSRFToken()
       };
@@ -249,27 +243,18 @@ const headers = {
                     </pre>
                   </div>
                 </div>
-                <div className="drag-container">
-                  {options.map((option) => (
+                <div className="options">
+                  {["<>", "=", "*","''"].map((option) => (
                     <div
                       key={option}
-                      className="drag-option"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
                       {option}
                     </div>
                   ))}
                 </div>
-                <div
-                  className="drop-zone"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={handleDrop}
-                >
-                  {droppedItem
-                    ? `("${droppedItem}")`
-                    : "Arrastra aquí el signo correcto"}
-                </div>
+
                 {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (
@@ -289,28 +274,23 @@ const headers = {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
+                {showNext && (
+                  <div className="button-container">
                     <button
-                      className="nivel1-card-button next-button show"
+                      className="nivel1-card-button"
                       onClick={handleNext}
                     >
                       Siguiente
                     </button>
-                  )}
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${isCorrect ? "correct" : "incorrect"}`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

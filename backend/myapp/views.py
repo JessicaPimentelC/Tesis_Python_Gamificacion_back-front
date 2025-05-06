@@ -311,6 +311,33 @@ def obtener_nivel_ejercicio_asignado(request, ejercicio_id):
     except Exception as e:
         return Response({"error": str(e)}, status=500)
 
+@api_view(["POST"])
+def asignar_ejercicio_siguiente_nivel(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "No estás autenticado"}, status=401)
+
+    usuario = request.user
+    nivel_completado = request.data.get("nivel_completado")  # Nivel que el usuario acaba de completar
+
+    if nivel_completado == 1:
+        # Asignar el primer ejercicio del nivel 2
+        try:
+            ejercicio_nivel_2 = Ejercicio.objects.get(nivel=2)  # Obtener ejercicio del nivel 2
+            EjercicioAsignado.objects.create(usuario=usuario, ejercicio=ejercicio_nivel_2)
+            return JsonResponse({"message": "Ejercicio del nivel 2 asignado"})
+        except Ejercicio.DoesNotExist:
+            return JsonResponse({"error": "No se encontró el ejercicio del nivel 2"}, status=400)
+
+    elif nivel_completado == 2:
+        # Asignar el primer ejercicio del nivel 3
+        try:
+            ejercicio_nivel_3 = Ejercicio.objects.get(nivel=3)  # Obtener ejercicio del nivel 3
+            EjercicioAsignado.objects.create(usuario=usuario, ejercicio=ejercicio_nivel_3)
+            return JsonResponse({"message": "Ejercicio del nivel 3 asignado"})
+        except Ejercicio.DoesNotExist:
+            return JsonResponse({"error": "No se encontró el ejercicio del nivel 3"}, status=400)
+
+    return JsonResponse({"error": "Nivel no válido"}, status=400)
 
 @api_view(['GET', 'POST'])
 def ejercicio_python(request):
@@ -473,6 +500,22 @@ def actualizar_vida_desafio(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+def mostrar_desafio(usuario_id):
+    try:
+        ejercicios_completados = EjercicioAsignado.objects.filter(
+            usuario_id=usuario_id,
+        ).count()
+        
+        return ejercicios_completados >= 10
+    except Exception as e:
+        print(f"Error al verificar ejercicios completados: {e}")
+        return False
+    
+@api_view(['GET'])
+def verificar_desafio(request):
+    usuario_id = request.user.id
+    habilitar_desafio = mostrar_desafio(usuario_id)
+    return Response({'mostrar_desafio': habilitar_desafio})
 
 #verificar insignia rapidez desafio
 @api_view(['POST','GET'])
@@ -860,20 +903,67 @@ def verificar_y_otorgar_logros(request):
     logros = Logro.objects.all()
     for logro in logros:
         if Usuario_logro.objects.filter(usuario_id=usuario_id, logro_id=logro.id_logro).exists():
-            print(f"El usuario ya tiene el logro {logro.nombre}")
             continue 
 
         if cumple_condicion_logro(usuario_id, logro.id_logro):
-            print(f"El usuario cumple las condiciones para el logro {logro.nombre}")
             Usuario_logro.objects.create(usuario_id=usuario_id, logro_id=logro, fecha_completado=date.today())
-            logros_obtenidos.append(logro.nombre)
+            logros_obtenidos.append({"id": logro.id_logro, "nombre": logro.nombre})
 
     if logros_obtenidos:
-        return Response({"message": f"¡Logros otorgados: {', '.join(logros_obtenidos)}!"}, status=201)
-
-    return Response({"message": "No se han cumplido los requisitos para otorgar logros."}, status=400)
-
+        return Response(
+            {"nuevo_logro": logros_obtenidos[0]}, 
+            status=201
+        )
     
+    return Response(
+        {"message": "No se han cumplido los requisitos para otorgar logros."}, 
+        status=200 
+    )
+#habilitacion de nivel
+@api_view(['POST'])
+def verificar_nivel_completado(request):
+    if not request.user.is_authenticated:
+        return Response({"error": "No estás autenticado"}, status=401)
+
+    usuario = request.user
+    nivel_id = request.data.get('nivel_id')
+    if nivel_id is None:
+        return Response({"error": "nivel_id es requerido"}, status=400)
+
+    # Verifica cuántos logros hay en ese nivel
+    total_logros = Logro.objects.filter(nivel=nivel_id).count()
+
+    # Cuántos logros del nivel ha obtenido el usuario
+    logros_usuario = Usuario_logro.objects.filter(
+        usuario_id=usuario.id,
+        logro_id__nivel=nivel_id
+    ).count()
+
+    if total_logros > 0 and logros_usuario == total_logros:
+        if usuario.nivel_actual < int(nivel_id) + 1:
+            usuario.nivel_actual = int(nivel_id) + 1
+            usuario.save()
+
+        # Asignar el primer ejercicio del siguiente nivel
+        siguiente_nivel = usuario.nivel_actual
+        try:
+            # Obtén el primer ejercicio del siguiente nivel
+            siguiente_ejercicio = Ejercicio.objects.filter(nivel_id=siguiente_nivel).first()
+            if siguiente_ejercicio:
+                EjercicioAsignado.objects.create(usuario=usuario, ejercicio=siguiente_ejercicio)
+                return Response({
+                    "mensaje": f"¡Felicidades! Has completado todos los logros del nivel {nivel_id}. Ahora puedes acceder al nivel {usuario.nivel_actual}. El ejercicio {siguiente_ejercicio.id_ejercicio} ha sido asignado."
+                }, status=200)
+            else:
+                return Response({"mensaje": f"No hay ejercicios disponibles para el nivel {siguiente_nivel}."}, status=200)
+        except Ejercicio.DoesNotExist:
+            return Response({"error": "No se pudo encontrar el ejercicio para el siguiente nivel."}, status=400)
+    
+    return Response({
+        "mensaje": f"Aún te faltan logros para completar el nivel {nivel_id}."
+    }, status=200)
+
+
 def cumple_condicion_logro(usuario_id, logro_id):
     """
     Verifica si un usuario cumple la condición para obtener un logro.
@@ -889,14 +979,13 @@ def cumple_condicion_logro(usuario_id, logro_id):
     elif logro_id == 5:  # Responder en el foro
         return Participacion_foro.objects.filter(usuario_id=usuario_id).exists()
     elif logro_id == 6:  # Completar 20 ejercicios
-        return EjercicioAsignado.objects.filter(usuario_id=usuario_id).count() >= 3
+        return EjercicioAsignado.objects.filter(usuario_id=usuario_id).count() >= 20
     elif logro_id == 7:  # Alcanzar un puntaje de 100
         return obtener_puntaje_total(usuario_id) >= 100
     elif logro_id == 8:  # Primeros lugares del ranking
         top_ids = Puntaje.objects.order_by('-puntos').values_list('usuario_id', flat=True)[:3]
         return usuario_id in top_ids   
     return False 
-
 
 def obtener_puntaje_total(usuario_id):
     """
@@ -962,7 +1051,7 @@ def otorgar_insignia(usuario_id, nombre_insignia):
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def verificar_nivel_completado(request):
+def verificar_nivel_completado_probar(request):
     if not request.user.is_authenticated:
         return Response({"error": "No estás autenticado"}, status=401)
 

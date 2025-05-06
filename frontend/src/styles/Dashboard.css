@@ -200,6 +200,86 @@
   width: 35px;
 }
 
+/* Contenedor del desafío */
+.desafio-container {
+  margin: 20px 0;
+  text-align: center;
+  padding: 15px;
+  margin-top: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Botón de desafíos habilitado */
+.btn-desafio {
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(110, 142, 251, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+}
+
+.btn-desafio:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(110, 142, 251, 0.6);
+  background: linear-gradient(135deg, #a777e3, #6e8efb);
+}
+
+.btn-desafio:active {
+  transform: translateY(1px);
+}
+
+.btn-desafio::after {
+  content: "→";
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.btn-desafio:hover::after {
+  transform: translateX(4px);
+}
+
+/* Texto cuando los desafíos no están disponibles */
+.desafio-container p {
+  color: #ff6b6b;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+  border-left: 4px solid #ff6b6b;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Icono de candado (opcional) */
+.desafio-container p::before {
+  content: "🔒";
+  margin-right: 8px;
+}
 /*Diseño menu desplegable perfil*/
 .user-profile {
   position: relative;

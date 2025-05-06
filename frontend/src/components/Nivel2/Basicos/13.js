@@ -34,7 +34,13 @@ const TreceNivel2 = () => {
   const setVidas = useVidasStore((state) => state.setVidas);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [result, setResult] = useState(null);
+  const [output, setOutput] = useState('');
+  const [errorMessage,setErrorMessage] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+  const [showNext, setShowNext] = useState(false);
+
   useEffect(() => {
       const loadUser = async () => {
         try {
@@ -111,18 +117,23 @@ const TreceNivel2 = () => {
     setDroppedItem(draggedItem);
   };
 
-  const handleVerify = async () => {
-    if (!droppedItem) {
-      Swal.fire({
-        title: "Atención",
-        text: "Por favor, selecciona una palabra antes de verificar.",
-        icon: "warning",
-        confirmButtonColor: "#3085d6"
-      });
+  const handleVerify = async (answer) => {
+    setSelectedAnswer(answer);
+    if (!answer.trim()) { 
+      setErrorMessage("No puedes dejar la respuesta vacía.");
+      setSuccessMessage("");
+      setShowNext(false);
       return;
     }
-    const isCorrectAnswer = droppedItem === "else";
-    setIsCorrect(isCorrectAnswer);
+    const isCorrectAnswer = answer === "else";
+    if (isCorrectAnswer) {
+      setOutput("Respuesta correcta");
+    }
+    else{
+      setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+    }
+    setResult(isCorrectAnswer ? 'correct' : 'incorrect');
+    setShowNext(isCorrectAnswer);
 
       try {
         const headers = {
@@ -252,7 +263,7 @@ const TreceNivel2 = () => {
                   
                   <br />
              
-                  Arrastra el signo  correcto al espacio en blanco _______ en el siguiente código:
+                  Selecciona el signo  correcto al espacio en blanco _______ en el siguiente código:
                                   </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
@@ -272,27 +283,17 @@ _____:
     </code>
   </pre>
 </div>                </div>
-                <div className="drag-container">
-                  {options.map((option) => (
+<div className="options">
+                  {["else", "elif", "break"].map((option) => (
                     <div
                       key={option}
-                      className="drag-option"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
                       {option}
                     </div>
                   ))}
-                </div>
-                <div
-                  className="drop-zone"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={handleDrop}
-                >
-                  {droppedItem
-                    ? `El operador es ${droppedItem}`
-                    : "Arrastra aquí la palabra correcta"}
-                </div>
+                  </div>
                 {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (
@@ -312,30 +313,23 @@ _____:
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
+                {showNext && (
+                  <div className="button-container">
                     <button
-                      className={`nivel1-card-button next-button show`}
+                      className="nivel1-card-button"
                       onClick={handleNext}
                     >
                       Siguiente
                     </button>
-                  )}
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${
-                        isCorrect ? "correct" : "incorrecto"
-                      }`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

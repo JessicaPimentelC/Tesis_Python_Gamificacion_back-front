@@ -30,7 +30,7 @@ const Tres = () => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
   useEffect(() => {
       const loadUser = async () => {
         try {

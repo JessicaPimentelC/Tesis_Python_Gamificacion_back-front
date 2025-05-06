@@ -47,24 +47,32 @@ export const getAuthConfig = async () => {
 export const verificarYOtorgarLogro = async (usuario_id) => {
     try {
         const config = await getAuthConfig();
-        
         const response = await axios.post(
             `${API_BASE_URL}/myapp/otorgar_logros/`,
             { usuario_id },
             config
         );
 
-        if (response.data.nuevo_logro) {
+        // Caso 1: Logro otorgado (status 201)
+        if (response.status === 201 && response.data.nuevo_logro) {
             await Swal.fire({
                 title: "🎉 ¡Felicidades!",
                 text: `Has desbloqueado: ${response.data.nuevo_logro.nombre}`,
                 icon: "success",
             });
+            return response.data;
         }
+
+        // Caso 2: No hay logros nuevos (status 200)
+        if (response.status === 200) {
+            console.log(response.data.message); // "No se han cumplido los requisitos..."
+            return response.data;
+        }
+
         return response.data;
+
     } catch (error) {
-        console.error("Error en verificarYOtorgarLogro:", error);
-        
+        // Solo manejar errores reales (401, 403, 500, etc.)
         if (error.response?.status === 401 || error.response?.status === 403) {
             try {
                 const newToken = await refreshAccessToken();
@@ -76,6 +84,8 @@ export const verificarYOtorgarLogro = async (usuario_id) => {
                 return null;
             }
         }
+
+        console.error("Error en verificarYOtorgarLogro:", error);
         return null;
     }
 };
@@ -113,42 +123,41 @@ export const refreshAccessToken = async () => {
 
 
     //Verificar nivel
-    let nivelVerificadoGlobal = false;
 
     export const verificarNivel = async (nivelId) => {
-    if (nivelVerificadoGlobal) {
-        // Si ya se ha verificado el nivel, no hacer nada
-        console.log("El nivel ya ha sido verificado.");
-        return;
-        }
-    const csrfToken = getCSRFToken(); // Obtener el token dinámico
+        const csrfToken = getCSRFToken(); // Obtener el token dinámico
 
-    try {
-        const response = await axios.post(
-        `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
-        { nivel_id: nivelId },
-        {
-            withCredentials: true,
-            headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken, // Se obtiene dinámicamente
-            },
+        try {
+            const response = await axios.post(
+                `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
+                { nivel_id: nivelId },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken, // Se obtiene dinámicamente
+                    },
+                }
+            );
+    
+            if (response.status === 200 && response.data.mensaje) {
+                console.log("Respuesta de la API de verificar nivel:", response.data);
+                Swal.fire({
+                    title: "¡Verificación de Nivel!",
+                    text: response.data.mensaje, // Mensaje que viene del backend
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#007bff",
+                });
+                // Después de verificar el nivel, se activa la asignación del siguiente nivel
+                if (response.data.mensaje.includes("Ejercicio del Nivel")) {
+                    // Si se asignó un nuevo ejercicio, puedes hacer algo adicional aquí
+                    console.log("Nuevo ejercicio asignado.");
+                }
+            }
+        } catch (error) {
+            console.error("Error al verificar el nivel:", error);
         }
-        );
-        if (response.status === 200 && response.data.mensaje) {
-        console.log("Respuesta de la api de verificar nivel:", response.data);
-        Swal.fire({
-            title: "¡Verificación de Nivel!",
-            text: response.data.mensaje, // Mensaje que viene del backend
-            icon: "success",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#007bff",
-        });
-        nivelVerificadoGlobal = true;
-        }
-    } catch (error) {
-        console.error("Error al verificar nivel:", error);
-    }
     };
     /**Guarda el ejercicio en la BD */
     export const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
@@ -193,4 +202,20 @@ export const obtenerEjercicioId = async () => {
         console.error("Error al obtener los ejercicios:", error);
     }
     return null;
+};
+
+
+export const verificarDesafioHabilitado = async (usuario_id) => {
+    try {
+        const config = await getAuthConfig();
+        const response = await axios.get(
+            `${API_BASE_URL}/myapp/verificar_desafio/`,
+            config
+        );
+        
+        return response.data.mostrar_desafio;
+    } catch (error) {
+        console.error("Error verificando estado de desafío:", error);
+        return false;
+    }
 };

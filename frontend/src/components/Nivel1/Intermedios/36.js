@@ -33,7 +33,9 @@ const Treintaseis = () => {
   const navigate = useNavigate();
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [result, setResult] = useState(null);
+
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -117,19 +119,24 @@ const Treintaseis = () => {
 
 
 //Verifica respuesta ejercicio
-const handleVerify = async () => {
-  if (!droppedItem) {
-    Swal.fire({
-      title: "Atención",
-      text: "Por favor, selecciona una palabra antes de verificar.",
-      icon: "warning",
-      confirmButtonColor: "#3085d6"
-    });
+const handleVerify = async (answer) => {
+  setSelectedAnswer(answer);
+  if (!answer.trim()) { 
+    setErrorMessage("No puedes dejar la respuesta vacía.");
+    setSuccessMessage("");
+    setShowNext(false);
     return;
   }
 
-  const isCorrect = droppedItem === "()";
-  setIsCorrect(isCorrect);
+  const isCorrect = answer === "()";
+    if (isCorrect) {
+    setOutput("Respuesta correcta");
+  }
+  else{
+    setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+  }
+  setResult(isCorrect ? 'correct' : 'incorrect');
+  setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
 
   try {
     const headers = {
@@ -247,7 +254,9 @@ const handleVerify = async () => {
               </div>
               <div className="nivel1-card-body">
                 <p>
-                    Operadores                </p>
+                En este ejercicio, debes seleccionar la palabra correcta.
+
+                    </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
                   <div className="code">
@@ -262,26 +271,16 @@ const handleVerify = async () => {
                     </pre>
                   </div>
                 </div>
-                <div className="drag-container">
-                  {options.map((option) => (
+                <div className="options">
+                  {["{}", "()", "[]"].map((option) => (
                     <div
                       key={option}
-                      className="drag-option"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
                       {option}
                     </div>
                   ))}
-                </div>
-                <div
-                  className="drop-zone"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={handleDrop}
-                >
-                  {droppedItem
-                    ? `${droppedItem}`
-                    : "Arrastra aquí la función correcta"}
                 </div>
                 {outputVisible && (
                   <div className="output-message">
@@ -302,28 +301,23 @@ const handleVerify = async () => {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
+                {showNext && (
+                  <div className="button-container">
                     <button
-                      className="nivel1-card-button next-button show"
+                      className="nivel1-card-button"
                       onClick={handleNext}
                     >
                       Siguiente
                     </button>
-                  )}
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${isCorrect ? "correct" : "incorrect"}`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

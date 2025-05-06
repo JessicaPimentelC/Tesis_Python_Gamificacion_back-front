@@ -360,33 +360,6 @@ import DesafiosNivel1 from './components/Desafios/DesafiosNivel1';
 import DesafiosNivel2 from './components/Desafios/DesafiosNivel2';
 import DesafiosNivel3 from './components/Desafios/DesafiosNivel3';
 
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend';
-
-const isTouchDevice = () => {
-  return (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0
-  );
-};
-const touchBackendOptions = {
-  enableMouseEvents: true,
-  delayTouchStart: 200,
-  touchSlop: 5
-};
-const DnDWrapper = ({ children }) => {
-  return (
-    <DndProvider 
-      backend={isTouchDevice() ? TouchBackend : HTML5Backend}
-      options={isTouchDevice() ? touchBackendOptions : null}
-    >
-      {children}
-    </DndProvider>
-  );
-};
-
 const App = () => {
 
   return (
@@ -407,7 +380,7 @@ const App = () => {
         <Route path="/basicos/1" element={<Uno />} />
         <Route path="/basicos/2" element={<Dos />} />
         <Route path="/basicos/3" element={<Tres />} />
-        <Route path="/basicos/4" element={<DnDWrapper><Cuatro /></DnDWrapper>} />
+        <Route path="/basicos/4" element={<Cuatro />}/>
         <Route path="/basicos/5" element={<Cinco />} />
         <Route path="/basicos/6" element={<Seis />} />
         <Route path="/basicos/7" element={<Siete />} />

@@ -31,7 +31,13 @@ const UnoNivel2 = () => {
   const [showModal, setShowModal] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [result, setResult] = useState(null);
+  const [errorMessage,setErrorMessage] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+  const [output, setOutput] = useState('');
+  const [showNext, setShowNext] = useState(false);
+
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -110,19 +116,25 @@ const UnoNivel2 = () => {
     setDroppedItem(draggedItem);
   };
 
-  const handleVerify = async () => {
-  if (!droppedItem) {
-      Swal.fire({
-        title: "Atención",
-        text: "Por favor, selecciona una palabra antes de verificar.",
-        icon: "warning",
-        confirmButtonColor: "#3085d6"
-      });
+  const handleVerify = async (answer) => {
+    setSelectedAnswer(answer);
+    if (!answer.trim()) { 
+      setErrorMessage("No puedes dejar la respuesta vacía.");
+      setSuccessMessage("");
+      setShowNext(false);
       return;
     }
     
-    const isCorrectAnswer = droppedItem === ">= 18";
-    setIsCorrect(isCorrectAnswer);
+    const isCorrectAnswer = answer === ">= 18";
+    if (isCorrectAnswer) {
+      setOutput("Respuesta correcta");
+    }
+    else{
+      setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+    }
+    setResult(isCorrectAnswer ? 'correct' : 'incorrect');
+    setShowNext(isCorrectAnswer); // Muestra u oculta el botón "Siguiente"
+  
 
       try {
         const headers = {
@@ -230,7 +242,7 @@ const UnoNivel2 = () => {
               </div>
               <div className="nivel1-card-body">
                 <p>
-                  A continuación, te presentamos nuestro primer ejercicio de nivel 2. El ejercicio consiste en completar el siguiente algoritmo para determinar si una persona es mayor de edad. ¡Buena suerte!
+                  El ejercicio consiste en completar el siguiente algoritmo para determinar si una persona es mayor de edad. ¡Buena suerte!
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>
@@ -240,26 +252,16 @@ const UnoNivel2 = () => {
                     </pre>
                   </div>
                 </div>
-                <div className="drag-container">
-                  {options.map((option) => (
+                <div className="options">
+                  {[">= 18", "< 18"].map((option) => (
                     <div
                       key={option}
-                      className="drag-option"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, option)}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
                       {option}
                     </div>
                   ))}
-                </div>
-                <div
-                  className="drop-zone"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={handleDrop}
-                >
-                  {droppedItem
-                    ? `if edad ${droppedItem}:`
-                    : "Arrastra aquí la condición correcta"}
                 </div>
                 {outputVisible && (
                   <div className="output-message">
@@ -280,32 +282,23 @@ const UnoNivel2 = () => {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
+                {showNext && (
+                  <div className="button-container">
                     <button
-                      className={`nivel1-card-button next-button show`}
+                      className="nivel1-card-button"
                       onClick={handleNext}
                     >
                       Siguiente
                     </button>
-                  )}
+                  </div>
+                )}
 
-                  
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${
-                        isCorrect ? "correct" : "incorrect"
-                      }`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
-                </div>
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -313,49 +306,6 @@ const UnoNivel2 = () => {
           <Puntaje></Puntaje>
         </div>
       </div>
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>¡Hola, soy pingui jessica!</h2>
-            <p>
-              Aquí podrás encontrar todas las ayudas que necesites para
-              completar los ejercicios. ¡No dudes en consultarlo cuando lo
-              necesites!
-            </p>
-
-            <div className="nivel1-card-header">
-              <p>Seleccione una Ayuda:</p>
-            </div>
-
-            {/* Contenedor de los iconos en forma vertical */}
-            <div className="modal-icons">
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 1: Idea")}
-              >
-                <img src="idea.gif" alt="Icono 1" className="modal-icon" />
-              </button>
-
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 2: Apoyo")}
-              >
-                <img src="apoyo.gif" alt="Icono 2" className="modal-icon" />
-              </button>
-
-              <button
-                className="modal-icon-button"
-                onClick={() => alert("Ayuda 3: Cuaderno")}
-              >
-                <img src="cuaderno.gif" alt="Icono 3" className="modal-icon" />
-              </button>
-            </div>
-
-            <button onClick={closeModal}>Cerrar</button>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 };

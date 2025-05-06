@@ -31,28 +31,18 @@ function DesafiosNivel1() {
         {
             id: "ejercicio1",
             text: `Objetivo:
-        Crea una función que convierta una cantidad de dólares a euros.
+Crea una función que convierta una cantidad de dólares a euros.
         
-        1. Función:
-        Define una función llamada convertir_dolares_a_euros().
+    1. Función:
+Define una función llamada convertir_dolares_a_euros().
         
-        2. Lógica:
-        - Solicita al usuario que ingrese una cantidad en dólares (usa input()).
-        - Convierte esa cantidad a euros. Supón que 1 dólar = 0.85 euros.
-        - Imprime el resultado en este formato: "Equivalente en euros: X".
+    2. Lógica:
+- Convierte esa cantidad a euros. 1 dólar equivale a 0.85 euros.
         
-        3. Ejemplo de uso:
-        \`\`\`python
-        # El usuario ingresa:
-        # 100
-        # El programa imprime:
-        Equivalente en euros: 85.0
-        \`\`\`
-        
-        ⚠️ Restricciones:
-        - No uses parámetros en la función.
-        - El valor ingresado puede ser decimal.
-        - Usa únicamente input() y print().`,
+    3. Ejemplo de uso:
+#Se crea una variable con la cantidad de dolares = 250.
+#Al final del codigo imprima 'print(convertir_dolares_a_euros())' para probar el código
+        .`,
             validationText: "convertir_dolares_a_euros",
         },{
             id: "ejercicio2",
@@ -99,7 +89,7 @@ function DesafiosNivel1() {
         const currentEx = exercises[exerciseIndex];
         switch (currentEx.id) {
             case "ejercicio1":
-            return "100\n"; 
+            return "250\n"; 
             case "ejercicio2": 
                 return "-3\n"; 
             default:
@@ -111,7 +101,7 @@ function DesafiosNivel1() {
         const currentEx = exercises[exerciseIndex];
         switch (currentEx.id) {
             case "ejercicio1":
-                const expected = "85.0"; 
+                const expected = "212.5"; 
                 return salida.includes(expected)
             case "ejercicio2":
                 const expectedArea = "50.0";
@@ -252,9 +242,7 @@ return (
         <h1>DESAFÍOS DE CÓDIGO</h1>
         <div className="exam-form">
             <div className="form-group">
-            <label>
-            Desafío {currentExercise + 1} de {exercises.length}
-            </label>
+
             <label className="exercise-label">
                 {exercises[currentExercise].text}
             </label>

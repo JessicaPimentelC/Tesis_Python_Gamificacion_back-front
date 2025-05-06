@@ -29,8 +29,8 @@ const Dos = () => {
   const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  
-useEffect(() => {
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  useEffect(() => {
       const loadUser = async () => {
         try {
           const userData = await fetchUserInfo();

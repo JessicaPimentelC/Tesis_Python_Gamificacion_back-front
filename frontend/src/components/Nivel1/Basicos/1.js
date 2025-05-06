@@ -12,15 +12,8 @@ import API_BASE_URL from "../../../config";
 import useVidasStore from "../../vidasStore";
 import { verificarYOtorgarLogro, getCSRFToken, verificarNivel, guardarEjercicioEnBD, obtenerEjercicioId, refreshAccessToken } from "../../../utils/validacionesGenerales";
 import { fetchUserInfo } from '../../../utils/userService';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend';
 
 const Uno = () => {
-  const [draggedItem, setDraggedItem] = useState(null);
-  const [droppedItem, setDroppedItem] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [score, setScore] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
@@ -33,24 +26,17 @@ const Uno = () => {
   const navigate = useNavigate();
   const [numerosUsados, setNumerosUsados] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  const [issModalOpenPinguino,setIsModalOpenPinguino] =useState(false);
   const setVidas = useVidasStore((state) => state.setVidas); // Asegúrate de que este acceso es correcto
   const toggleSidebar = () => setIsOpen(!isOpen);
   const [verificationMessage, setVerificationMessage] = useState("");
   const [outputVisible, setOutputVisible] = useState(false);
-  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
-  const dragOptionsRef = useRef([]);
-  const dropZoneRef = useRef(null);
-  const options = ["Mundo", "Hola", "Print"];
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [errorMessage,setErrorMessage] = useState(null);
+  const [showNext, setShowNext] = useState(false);
+  const [output, setOutput] = useState("");
+  const [result, setResult] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
 
-  const isTouchDevice = () => {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  };
-  
-  const backend = isTouchDevice() ? TouchBackend : HTML5Backend;
-  
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -123,19 +109,24 @@ const Uno = () => {
   };
   
   //Verifica respuesta ejercicio
-  const handleVerify = async () => {
-    if (!droppedItem) {
-      Swal.fire({
-        title: "Atención",
-        text: "Por favor, selecciona una palabra antes de verificar.",
-        icon: "warning",
-        confirmButtonColor: "#3085d6"
-      });
+  const handleVerify = async (answer) => {
+    setSelectedAnswer(answer);
+    if (!answer.trim()) { 
+      setErrorMessage("No puedes dejar la respuesta vacía.");
+      setSuccessMessage("");
+      setShowNext(false);
       return;
     }
   
-    const isCorrectAnswer = droppedItem === "Mundo";
-    setIsCorrect(isCorrectAnswer);
+    const isCorrectAnswer = answer === "mundo";
+    if (isCorrectAnswer) {
+      setOutput("Respuesta correcta: Hola Mundo!");
+    }
+    else{
+      setOutput("Respuesta incorrecta. Inténtalo de nuevo.");
+    }
+    setResult(isCorrectAnswer ? 'correct' : 'incorrect');
+    setShowNext(isCorrectAnswer); 
   
     try {
       const headers = {
@@ -250,87 +241,6 @@ const Uno = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleDragStart = (e, item, index) => {
-    // Para eventos de mouse (desktop)
-    if (e.dataTransfer) {
-      e.dataTransfer.setData("text/plain", item);
-      e.dataTransfer.effectAllowed = "move";
-    }
-    
-    // Para eventos táctiles y desktop
-    setDraggedItem(item);
-    
-    // Efecto visual
-    if (dragOptionsRef.current[index]) {
-      dragOptionsRef.current[index].style.opacity = "0.4";
-    }
-  
-    // Crear elemento fantasma para móviles
-    if (e.type.includes('touch')) {
-      const touch = e.touches[0];
-      const ghost = document.createElement('div');
-      ghost.textContent = item;
-      ghost.style.position = 'absolute';
-      ghost.style.left = `${touch.clientX}px`;
-      ghost.style.top = `${touch.clientY}px`;
-      ghost.style.pointerEvents = 'none';
-      ghost.style.zIndex = '9999';
-      ghost.id = 'drag-ghost';
-      document.body.appendChild(ghost);
-    }
-  };
-  
-  const handleTouchMove = (e) => {
-    if (!draggedItem) return;
-    const touch = e.touches[0];
-    const ghost = document.getElementById('drag-ghost');
-    if (ghost) {
-      ghost.style.left = `${touch.clientX}px`;
-      ghost.style.top = `${touch.clientY}px`;
-    }
-  };
-
-// Cuando se suelta en el área de destino (¡Corregido!)
-const handleDrop = (e) => {
-  e.preventDefault();
-  const data = e.dataTransfer?.getData("text/plain"); // Desktop
-  setDroppedItem(data || draggedItem);               // Usa datos del arrastre o el estado
-};
-const handleDragEnd = (e, index) => {
-  // Restaurar opacidad
-  if (dragOptionsRef.current[index]) {
-    dragOptionsRef.current[index].style.opacity = "1";
-  }
-  
-  // Limpiar elemento fantasma
-  const ghost = document.getElementById('drag-ghost');
-  if (ghost) ghost.remove();
-  
-  setDraggedItem(null);
-};
-// Para móviles: manejo táctil al soltar (¡Esencial!)
-const handleTouchEnd = (e) => {
-  const touch = e.changedTouches[0];
-  const dropZone = dropZoneRef.current;
-  
-  if (dropZone) {
-    const dropRect = dropZone.getBoundingClientRect();
-    const isInsideDropZone = (
-      touch.clientX >= dropRect.left &&
-      touch.clientX <= dropRect.right &&
-      touch.clientY >= dropRect.top &&
-      touch.clientY <= dropRect.bottom
-    );
-    
-    if (isInsideDropZone && draggedItem) {
-      setDroppedItem(draggedItem);  // ¡Fija la palabra en el área!
-    }
-  }
-  
-  // Limpia el estado
-  setDraggedItem(null);
-};
-
 
   return (
     <div className="nivel1-page">
@@ -355,7 +265,7 @@ const handleTouchEnd = (e) => {
                   nivel 1.
                   <br />
                   <br />
-                  Por favor, arrastra la palabra que falta en el código para
+                  Por favor, selecciona la palabra que falta en el código para
                   poder imprimir “Hola, Mundo:”
                 </p>
                 <div className="code-box">
@@ -366,47 +276,18 @@ const handleTouchEnd = (e) => {
                     </pre>
                   </div>
                 </div>
-                <div className="drag-container">
-                  {options.map((option, index) => (
+                {/* Opciones de respuesta */}
+                <div className="options">
+                  {["hola", "print", "mundo"].map((option) => (
                     <div
-                    ref={(el) => (dragOptionsRef.current[index] = el)}
-                    className="drag-option"
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, option, index)}
-                    onTouchStart={(e) => handleDragStart(e, option, index)}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    onDragEnd={handleDragEnd}
+                      key={option}
+                      className={`option ${selectedAnswer === option ? "selected" : ""}`}
+                      onClick={() => handleVerify(option)}
                     >
                       {option}
                     </div>
                   ))}
                 </div>
-                <div
-                    className="drop-zone"
-                    ref={dropZoneRef}
-                    onDrop={handleDrop}
-                    onDragOver={(e) => e.preventDefault()}
-                    onTouchEnd={handleTouchEnd}  // ¡Importante para móviles!
-                  >
-                  {droppedItem
-                    ? `print("Hola, ${droppedItem}!")`
-                    : "Arrastra aquí la palabra correcta"}
-                </div>
-                {isDragging && (
-                  <div
-                    className="drag-ghost"
-                    style={{
-                      position: 'fixed',
-                      left: `${dragPosition.x - dragOffset.x}px`,
-                      top: `${dragPosition.y - dragOffset.y}px`,
-                      pointerEvents: 'none',
-                      zIndex: 9999
-                    }}
-                  >
-                    {draggedItem}
-                  </div>
-                )}
                 {outputVisible && (
                   <div className="output-message">
                     {verificationMessage.includes("✅") && (
@@ -426,36 +307,27 @@ const handleTouchEnd = (e) => {
                     <span>{verificationMessage}</span>
                   </div>
                 )}
-                <div className="nivel1-card-button-container">
-                  <button className="nivel1-card-button" onClick={handleVerify}>
-                    Verificar
-                  </button>
-                  {showNextButton && (
+                {showNext && (
+                  <div className="button-container">
                     <button
-                      className={"nivel1-card-button next-button show"}
+                      className="nivel1-card-button"
                       onClick={handleNext}
                     >
                       Siguiente
                     </button>
-                  )}
-                </div>
-                <div className="result-container">
-                  {isCorrect !== null && (
-                    <p
-                      className={`result ${
-                        isCorrect ? "correct" : "incorrect"
-                      }`}
-                    >
-                      {isCorrect ? "¡Correcto!" : "Inténtalo de nuevo"}
-                    </p>
-                  )}
+                  </div>
+                )}
+
+                {output && (
+                  <div className="code-box">
+                    <div className="code-header">SALIDA</div>
+                    <div className="code"><pre>{output}</pre></div>
+                  </div>
+                )}
                 </div>
               </div>
             </div>
-          </div>
           <Puntaje></Puntaje>
-
-
         </div>
       </div>
     </div>
