@@ -46,8 +46,8 @@ const RegistroUsuario = () => {
         } catch (error) {
             if (error.response && error.response.data) {
                 const errores = error.response.data;
-                const mensaje = Object.values(errores).flat().join('\n');
-            
+                const mensaje = errores.error || Object.values(errores).flat().join('\n');
+
                 Swal.fire({
                     title: "Error al registrar",
                     text: mensaje,

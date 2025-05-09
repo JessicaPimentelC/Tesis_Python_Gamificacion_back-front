@@ -1116,20 +1116,34 @@ def obtener_usuario(request, user_id):
     except User.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-User = get_user_model() 
+from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils import timezone
+
+User = get_user_model()
 
 @api_view(['POST'])
 def crear_usuario(request):
     serializer = UserSerializer(data=request.data)
+
     if serializer.is_valid():
-        user = serializer.save() 
+        user = serializer.save()
+
+        # Crear objetos relacionados
         VidasUsuario.objects.create(
-            usuario_id=user.id, vidas_restantes=5, ultima_actualizacion=timezone.now()
+            usuario_id=user.id,
+            vidas_restantes=5,
+            ultima_actualizacion=timezone.now()
         )
+
         Puntaje.objects.create(
             usuario=user,
             puntos=0
         )
+
         try:
             ejercicio = Ejercicio.objects.get(id_ejercicio=1)
             EjercicioAsignado.objects.create(
@@ -1141,21 +1155,28 @@ def crear_usuario(request):
                 {'error': 'El ejercicio con ID 1 no existe'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        # Generar tokens
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token
+
         return Response({
             'message': 'Usuario creado exitosamente',
             'user_id': user.id,
             'username': user.username,
             'email': user.email,
-            'first_name':user.first_name,
-            'last_name':user.last_name,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
             'access_token': str(access),
             'refresh_token': str(refresh),
-        
         }, status=status.HTTP_201_CREATED)
 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Personalización del mensaje si el email ya existe
+    if 'email' in serializer.errors:
+        return Response({'error': 'Este correo electrónico ya está registrado.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Otros errores de validación
+    return Response({'error': 'Datos inválidos.', 'detalles': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','DELETE'])
 def eliminarUsuario(request, user_id):

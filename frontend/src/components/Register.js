@@ -5,6 +5,7 @@ import Loginsesion from './Loginsesion';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from "../config";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -56,16 +57,42 @@ const Register = () => {
       }
     
       console.log("Registro exitoso, redirigiendo...");
+
+      Swal.fire({
+        title: "¡Usuario registrado!",
+        text: `El usuario "${response.data.username}" se ha creado correctamente.`,
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#007bff"
+
+      });
       navigate('/dashboard');
     }
     
 
-    } 
-
-    catch (error) {
-      console.error('Error:', error);
-      alert('Ocurrió un error al registrar. Por favor, intenta de nuevo.');
-    }
+    } catch (error) {
+                if (error.response && error.response.data) {
+                    const errores = error.response.data;
+                    const mensaje = errores.error || Object.values(errores).flat().join('\n');
+    
+                    Swal.fire({
+                        title: "Error al registrar",
+                        text: mensaje,
+                        icon: "error",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#007bff"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Ocurrió un error inesperado.",
+                        icon: "error",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#007bff"
+    
+                    });
+                }
+              }
   };
 
 
