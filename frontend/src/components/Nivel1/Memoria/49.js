@@ -93,8 +93,8 @@ const Cuarentanueve = () => {
   const cards = [
     { id: 1, value: "math", pairId: 3 },
     { id: 2, value: "else", pairId: 2 },
-    { id: 3, value: "math ", pairId: 3 },
-    { id: 4, value: "else ", pairId: 1 },
+    { id: 3, value: "math", pairId: 3 },
+    { id: 4, value: "else", pairId: 1 },
     { id: 5, value: "if", pairId: 2 },
     { id: 6, value: "if", pairId: 1 }, // Par para el "="
   ];
@@ -116,13 +116,15 @@ const Cuarentanueve = () => {
         // Verificar si se completó el objetivo (emparejar "print")
         const printCardsMatched = cards.filter(c => 
           c.value === "math" && newMatchedPairs.includes(c.id)
-        ).length === 2; // Asumiendo que hay 2 cartas "print"
+        ).length === 2; // Asumiendo que hay 2 cartas "math"
         
         if (printCardsMatched) {
+          console.log("coinciden")
           setIsCorrect(true);
           handleVerify(true); // Pasar true porque es correcto
         }
       } else {
+        console.log("no coinciden")
         // Cartas no coinciden
         setTimeout(() => {
           setFlippedCards([]);
