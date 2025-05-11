@@ -265,7 +265,7 @@ if (error.response?.status === 401) {
         <div className="white-background">
           <HeaderBody></HeaderBody>
             <div className="header-title">
-              <h2>nivel 1</h2>
+              <h2>NIVEL 1</h2>
               <HeaderInfo></HeaderInfo>
             </div>
           <div className="nivel1-card">
@@ -336,8 +336,9 @@ if (error.response?.status === 401) {
               )}
             </div>
           </div>
-          <Puntaje></Puntaje>
         </div>
+        <Puntaje></Puntaje>
+
       </div>
     </div>
   );
