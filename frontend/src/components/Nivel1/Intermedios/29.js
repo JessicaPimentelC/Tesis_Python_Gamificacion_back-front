@@ -154,9 +154,10 @@ const handleVerify = async (answer) => {
     if (response.status !== 201) {
       throw new Error("Respuesta inesperada de la API");
     }
-    const vidasRestantes = response.data.vidas;
-    const vidasIlimitadas = response.data.vidas_ilimitadas; 
-    setVidas(vidasRestantes);
+      const vidasRestantes = response.data.vidas;
+      setVidas(vidasRestantes);
+
+      /*const vidasIlimitadas = response.data.vidas_ilimitadas; 
 
       if (vidasIlimitadas) {
         await Swal.fire({
@@ -167,7 +168,7 @@ const handleVerify = async (answer) => {
           confirmButtonColor: "#007bff"
         });
         return;
-      }
+      }*/
 
       if (isCorrectAnswer) {
         setShowNextButton(true);
@@ -181,7 +182,7 @@ const handleVerify = async (answer) => {
         setShowNextButton(false);
         new Audio("/perder.mp3").play();
       }
-      if (vidasRestantes === 0 && !vidasIlimitadas) {
+      if (vidasRestantes === 0) {
         Swal.fire({
           title: "Oh oh!",
           text: "No tienes más vidas. Espera o recarga vidas",

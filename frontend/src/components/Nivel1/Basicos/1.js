@@ -167,8 +167,9 @@ const Uno = () => {
       }
   
       const vidasRestantes = response.data.vidas;
-      const vidasIlimitadas = response.data.vidas_ilimitadas; 
       setVidas(vidasRestantes);
+
+      /*const vidasIlimitadas = response.data.vidas_ilimitadas; 
 
       if (vidasIlimitadas) {
         await Swal.fire({
@@ -179,7 +180,7 @@ const Uno = () => {
           confirmButtonColor: "#007bff"
         });
         return;
-      }
+      }*/
 
       if (isCorrectAnswer) {
         setShowNextButton(true);
@@ -194,7 +195,7 @@ const Uno = () => {
         new Audio("/perder.mp3").play();
       }
   
-      if (vidasRestantes === 0 && !vidasIlimitadas) {
+      if (vidasRestantes === 0) {
         await Swal.fire({
           title: "¡Vidas agotadas!",
           text: "No tienes más vidas disponibles",

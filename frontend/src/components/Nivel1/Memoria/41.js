@@ -229,7 +229,7 @@ const Cuarentauno = () => {
               </div>
               <div className="nivel1-card-body">
                 <p>
-                Encuentra la pareja relacionada con el cálculo del promedio en Python para que el ejercicio sea el correcto .
+                Encuentra la pareja relacionada para que la sintaxis sea correcta
                 </p>
                 <div className="code-box">
                   <div className="code-header">Python</div>

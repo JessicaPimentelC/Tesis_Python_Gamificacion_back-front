@@ -166,19 +166,20 @@ const Doce = () => {
       }
   
       const vidasRestantes = response.data.vidas;
-      const vidasIlimitadas = response.data.vidas_ilimitadas; 
       setVidas(vidasRestantes);
 
-        if (vidasIlimitadas) {
-          await Swal.fire({
-            title: "¡Vidas Ilimitadas!",
-            text: "🛡️ ¡Tienes vidas ilimitadas por 10 minutos!",
-            icon: "info",
-            confirmButtonText: "Entendido",
-            confirmButtonColor: "#007bff"
-          });
-          return;
-        }
+      /*const vidasIlimitadas = response.data.vidas_ilimitadas; 
+
+      if (vidasIlimitadas) {
+        await Swal.fire({
+          title: "¡Vidas Ilimitadas!",
+          text: "🛡️ ¡Tienes vidas ilimitadas por 10 minutos!",
+          icon: "info",
+          confirmButtonText: "Entendido",
+          confirmButtonColor: "#007bff"
+        });
+        return;
+      }*/
         if (isCorrect) {
           setShowNextButton(true);
           setScore(score + 10);  
@@ -191,7 +192,7 @@ const Doce = () => {
           setShowNextButton(false);
           new Audio("/perder.mp3").play();
         }
-        if (vidasRestantes === 0 && !vidasIlimitadas) {
+      if (vidasRestantes === 0) {
           Swal.fire({
             title: "Oh oh!",
             text: "No tienes más vidas. Espera o recarga vidas",
