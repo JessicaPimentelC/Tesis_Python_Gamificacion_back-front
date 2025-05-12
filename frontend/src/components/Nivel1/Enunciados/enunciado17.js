@@ -72,7 +72,7 @@ const Enunciado17 = () => {
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">
-              <span>Ejercicio 16: Verificación de Números</span>
+              <span>Verificación de Números</span>
             </div>
             <div className="nivel1-card-body">
               <p>
