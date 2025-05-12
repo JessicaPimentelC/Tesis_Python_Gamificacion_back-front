@@ -455,7 +455,7 @@ def guardar_intento(request):
                     vidas_usuario.save() 
 
             if vidas_usuario.vidas_restantes == 0:
-                return Response({'message': 'No tienes más vidas', 'vidas': vidas_usuario.vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'No tienes más vidas. Espera 15 minutos', 'vidas': vidas_usuario.vidas_restantes}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
             'message': 'Intento guardado exitosamente',
@@ -594,8 +594,7 @@ def obtener_vidas(request, user_id):
 
 def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
-    intervalo = timedelta(minutes=15)  
-
+    intervalo = timedelta(minutes=10)  
     if vidas_usuario.vidas_restantes == 0 and ahora - vidas_usuario.ultima_actualizacion >= intervalo:
         vidas_usuario.vidas_restantes = 5
         vidas_usuario.ultima_actualizacion = ahora 
@@ -1014,8 +1013,8 @@ def cumple_condicion_logro(usuario_id, logro_id):
         return Participacion_foro.objects.filter(usuario_id=usuario_id).exists()
     elif logro_id == 6:  # Completar 20 ejercicios
         return EjercicioAsignado.objects.filter(usuario_id=usuario_id).count() >= 20
-    elif logro_id == 7:  # Alcanzar un puntaje de 100
-        return obtener_puntaje_total(usuario_id) >= 100
+    elif logro_id == 7:  # Alcanzar un puntaje de 200
+        return obtener_puntaje_total(usuario_id) >= 200
     elif logro_id == 8:  # Primeros lugares del ranking
         top_ids = Puntaje.objects.order_by('-puntos').values_list('usuario_id', flat=True)[:3]
         return usuario_id in top_ids   

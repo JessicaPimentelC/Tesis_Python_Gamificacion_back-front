@@ -154,8 +154,11 @@ const handleVerify = async () => {
 
   // Verificar si la respuesta es correcta
   const isCorrect = printFunction.trim() === "print" && centimetrosValue === 100;
-
-  setOutput(`¡Correcto! La conversión es: ${correctMeters} metros`);
+  if (isCorrect){
+    setOutput(`¡Correcto! La conversión es: ${correctMeters} metros`);
+  }else{
+    setOutput('Inténtalo de nuevo.');
+  }
   setResult(isCorrect ? 'correct' : 'incorrect');
   setShowNext(isCorrect); // Muestra u oculta el botón "Siguiente"
 
@@ -219,6 +222,7 @@ const handleVerify = async () => {
         new Audio("/ganar.mp3").play();
       }
       else {
+        console.log("error")
         setShowNextButton(false);
         new Audio("/perder.mp3").play();
       }
