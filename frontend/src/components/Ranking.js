@@ -121,7 +121,7 @@ const Ranking = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {ranking.map((usuario, index) => (
+                                {ranking.slice(0, 15).map((usuario, index) => (
                                     <tr key={index} className={`ranking-item ${index < 3 ? 'top3' : ''}`}>
                                         <td>{getMedalla(index)}</td>
                                         <td>{usuario.username}</td>
