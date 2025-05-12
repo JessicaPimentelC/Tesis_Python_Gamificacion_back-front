@@ -53,13 +53,45 @@ const Puntaje = () => {
                 setScore(response.data.score); 
             } catch (error) {
                 console.error("Error al obtener datos:", error);
-                
+
+                // Si la respuesta es 401 (token expirado), intentar renovar el token
                 if (error.response?.status === 401) {
                     try {
                         const newToken = await refreshAccessToken();
-                        
-                        await fetchUsuarioYVidas();
+                        localStorage.setItem('access_token', newToken); // ✅ IMPORTANTE
+
+                        // Si se renueva el token, actualizamos el encabezado con el nuevo token
+                        const headersWithNewToken = {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${newToken}`,
+                            'X-CSRFToken': getCSRFToken(),
+                        };
+
+                        // Volver a intentar la solicitud con el nuevo token
+                        const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
+                            headers: headersWithNewToken,
+                            withCredentials: true,
+                        });
+                        setUserInfo(userResponse.data);
+                        const usuario_id = userResponse.data.id;
+
+                        const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
+                            headers: headersWithNewToken,
+                            withCredentials: true,
+                        });
+
+                        console.log("Vidas después de renovación de token:", vidasResponse.data.vidas_restantes);
+
+                        const scoreResponse = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`, {
+                            headers: headersWithNewToken,
+                            withCredentials: true,
+                        });
+
+                        // Actualizar los estados con los nuevos datos
+                        setVidas(vidasResponse.data.vidas_restantes);
+                        setScore(scoreResponse.data.score);
                         return;
+
                     } catch (refreshError) {
                         console.error("Error al renovar token:", refreshError);
                         localStorage.removeItem('access_token');
@@ -67,7 +99,8 @@ const Puntaje = () => {
                         return;
                     }
                 }
-                
+
+                // Mostrar mensaje de error si no se puede obtener los datos
                 Swal.fire({
                     title: 'Error',
                     text: 'No se pudieron cargar los datos del usuario',

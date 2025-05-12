@@ -438,9 +438,9 @@ def guardar_intento(request):
         ejercicios = EjercicioAsignado.objects.filter(usuario=usuario).order_by('-fecha_asignacion')
         print("ejercicios hechos",ejercicios.count())
         vidas_ilimitadas_activadas = False
-        if ejercicios.count() >= 3:
+        if ejercicios.count() >= 10:
             # Tomamos el ejercicio número 10 más reciente
-            decimo = ejercicios[2]
+            decimo = ejercicios[9]
             tiempo_activacion = decimo.fecha_asignacion
             tiempo_actual = timezone.now()
 

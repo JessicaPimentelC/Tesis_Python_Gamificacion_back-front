@@ -69,26 +69,27 @@ useEffect(() => {
         try {
           const newToken = await refreshAccessToken();
           
-          const retryResponse = await axios.get(
-            `${API_BASE_URL}/myapp/insignias/`,
-            {
-              headers: {
-                'Authorization': `Bearer ${newToken}`,
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFToken()
-              },
-              withCredentials: true
-            }
-          );
-          
+          const headersWithNewToken = {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${newToken}`,
+              'X-CSRFToken': getCSRFToken(),
+          };
+
+          // Vuelve a realizar la solicitud con el nuevo token
+          const retryResponse = await axios.get(`${API_BASE_URL}/myapp/insignias/`, {
+              headers: headersWithNewToken,
+              withCredentials: true,
+          });
+
           setInsignias(retryResponse.data.insignias);
-          return;
-        } catch (refreshError) {
+          return; // Termina la ejecución si todo fue exitoso
+
+      } catch (refreshError) {
           console.error("Error al renovar token:", refreshError);
-          // Redirigir a login si no se puede renovar
-          navigate('/insignias');
+          localStorage.removeItem('access_token');
+          navigate('/'); // Redirige al login si no se puede renovar el token
           return;
-        }
+      }
       }
 
       setError('No se pudieron cargar las insignias. Intenta recargar la página.');

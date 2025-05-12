@@ -47,34 +47,35 @@ const HeaderBody = () => {
             setInsignias(response.data.insignias);
     
             } catch (error) {
-            console.error("Error al obtener insignias:", error);
-            if (error.response?.status === 401) {
-                try {
-                const newToken = await refreshAccessToken();
-                
-            const retryResponse = await axios.get(
-                `${API_BASE_URL}/myapp/insignias/`,
-                {
-                headers: {
-                    'Authorization': `Bearer ${newToken}`,
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
-                },
-                withCredentials: true
+                console.error("Error al obtener insignias:", error);
+
+                if (error.response?.status === 401) {
+                    // Si la respuesta es 401 (token expirado), intentar renovar el token
+                    try {
+                        const newToken = await refreshAccessToken();
+                        localStorage.setItem('access_token', newToken);
+                        // Reintentar la solicitud con el nuevo token
+                        const retryResponse = await axios.get(
+                            `${API_BASE_URL}/myapp/insignias/`,
+                            {
+                                headers: {
+                                    'Authorization': `Bearer ${newToken}`,
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': getCSRFToken()
+                                },
+                                withCredentials: true
+                            }
+                        );
+
+                        setInsignias(retryResponse.data.insignias);
+                    } catch (refreshError) {
+                        console.error("Error al renovar token:", refreshError);
+                        // Redirigir a login si no se puede renovar el token
+                        navigate('/');
+                    }
+                } else {
+                    setError('No se pudieron cargar las insignias. Intenta recargar la página.');
                 }
-                );
-                
-                setInsignias(retryResponse.data.insignias);
-            return;
-            } catch (refreshError) {
-            console.error("Error al renovar token:", refreshError);
-            // Redirigir a login si no se puede renovar
-            navigate('/perfil');
-            return;
-            }
-            }
-        
-            setError('No se pudieron cargar las insignias. Intenta recargar la página.');
             }
         };
         
@@ -89,7 +90,7 @@ const HeaderBody = () => {
 
     }, 
     
-    []);
+    [navigate]);
     // Función para manejar el click en una insignia (si necesitas alguna acción)
 
     const handleInsigniaClick = (insignia) => {

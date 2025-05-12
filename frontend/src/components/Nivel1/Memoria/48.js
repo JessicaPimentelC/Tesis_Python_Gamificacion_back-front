@@ -212,7 +212,7 @@ const Cuarentaocho = () => {
       }
 
       Swal.fire({
-        title: "Error",
+        title: "Oh oh",
         text: error.response?.data?.message || "Ocurrió un error al verificar",
         icon: "error",
       });
