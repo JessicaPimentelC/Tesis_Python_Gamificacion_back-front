@@ -594,7 +594,7 @@ def obtener_vidas(request, user_id):
 
 def actualizar_vidas_si_corresponde(vidas_usuario):
     ahora = timezone.now()
-    intervalo = timedelta(minutes=10)  
+    intervalo = timedelta(minutes=15)  
     if vidas_usuario.vidas_restantes == 0 and ahora - vidas_usuario.ultima_actualizacion >= intervalo:
         vidas_usuario.vidas_restantes = 5
         vidas_usuario.ultima_actualizacion = ahora 
