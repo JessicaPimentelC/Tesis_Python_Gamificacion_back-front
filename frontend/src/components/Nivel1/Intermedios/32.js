@@ -128,7 +128,7 @@ const handleVerify = async (answer) => {
     return;
   }
 
-  const isCorrect = answer === "float";
+  const isCorrect = answer === "float" || answer === "int";
   if (isCorrect) {
     setOutput("Respuesta correcta");
   }

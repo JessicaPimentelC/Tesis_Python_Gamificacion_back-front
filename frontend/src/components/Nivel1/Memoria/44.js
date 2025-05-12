@@ -93,8 +93,8 @@ const Cuarentacuatro = () => {
     { id: 1, value: "float", pairId: 1 },
     { id: 2, value: "float", pairId: 2 },
     { id: 3, value: "input", pairId: 3 },
-    { id: 4, value: "if", pairId: 2 },
-    { id: 5, value: "if", pairId: 1},
+    { id: 4, value: "print", pairId: 2 },
+    { id: 5, value: "print", pairId: 1},
     { id: 6, value: "input", pairId: 3 }, // Par para el "="
   ];
 

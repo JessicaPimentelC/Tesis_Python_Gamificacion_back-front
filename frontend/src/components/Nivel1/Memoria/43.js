@@ -93,12 +93,12 @@ const Cuarentatres = () => {
 
 
   const cards = [
-    { id: 1, value: "print", pairId: 2 },
-    { id: 2, value: "print", pairId: 1 },
-    { id: 3, value: "año", pairId: 2 },
+    { id: 1, value: "float", pairId: 2 },
+    { id: 2, value: "float", pairId: 1 },
+    { id: 3, value: "str", pairId: 2 },
     { id: 4, value: "int", pairId: 3 },
     { id: 5, value: "int", pairId: 3 },
-    { id: 6, value: "año", pairId: 1 }, // Par para el "="
+    { id: 6, value: "str", pairId: 1 }, // Par para el "="
   ];
 
   const handleCardClick = (card) => {
@@ -293,18 +293,21 @@ const Cuarentatres = () => {
                   </div>
                 )}
                 <div className="verify-container">
-                  {isCorrect === true && (
+                  {showNextButton === true && (
                     <div>
                       <p className="result correct">
                         ¡Correcto! Has emparejado "
-                        {cards.find((c) => c.id === 4)?.value}"
+                        {cards.find((c) => c.id === 3)?.value}"
                       </p>
-                      <button className="next-button" onClick={handleNext}>
-                        Siguiente
-                      </button>
+                      <button 
+                          className={`next-button ${showNextButton ? "show" : ""}`} 
+                          onClick={handleNext}
+                        >
+                          Siguiente
+                        </button>
                     </div>
                   )}
-                  {isCorrect === false && errores > 0 && (
+                  {showNextButton === false && errores > 0 && (
                     <p className="incorrect-message">¡Inténtalo de nuevo!</p>
                   )}
                 </div>
