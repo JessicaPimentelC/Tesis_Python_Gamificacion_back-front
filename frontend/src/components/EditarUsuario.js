@@ -112,7 +112,12 @@ const EditarUsuario = () => {
             );
 
             console.log("Usuario actualizado:", response.data);
-            alert("Perfil actualizado correctamente");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Perfil actualizado correctamente',
+                confirmButtonText: 'Aceptar'
+            });
             navigate("/listar-usuarios");
         } catch (error) {
             console.error("Error al actualizar el usuario:", error);
