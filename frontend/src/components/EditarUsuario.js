@@ -97,12 +97,14 @@ const EditarUsuario = () => {
 
         try {
             const csrfToken = getCSRFToken();
+            const token = localStorage.getItem('access_token'); 
             const response = await axios.put(
                 `${API_BASE_URL}/myapp/editar-usuario/${user_id}/`, 
                 user, 
                 {
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`, 
                         "X-CSRFToken": csrfToken,
                     },
                     withCredentials: true,
