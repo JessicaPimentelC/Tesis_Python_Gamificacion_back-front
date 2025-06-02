@@ -45,7 +45,13 @@ const HeaderBody = () => {
     
             console.log("Insignias obtenidas:", response.data);
             setInsignias(response.data.insignias);
-    
+                if (response.data.mensaje) {
+                await Swal.fire({
+                    title: "🏅 ¡Nueva insignia!",
+                    text: response.data.mensaje,
+                    icon: "success"
+                });
+            }
             } catch (error) {
                 console.error("Error al obtener insignias:", error);
 
@@ -68,6 +74,13 @@ const HeaderBody = () => {
                         );
 
                         setInsignias(retryResponse.data.insignias);
+                        if (retryResponse.data.mensaje) {
+                        await Swal.fire({
+                            title: "🏅 ¡Nueva insignia!",
+                            text: retryResponse.data.mensaje,
+                            icon: "success"
+                        });
+                    }
                     } catch (refreshError) {
                         console.error("Error al renovar token:", refreshError);
                         // Redirigir a login si no se puede renovar el token
@@ -94,17 +107,13 @@ const HeaderBody = () => {
     // Función para manejar el click en una insignia (si necesitas alguna acción)
 
     const handleInsigniaClick = (insignia) => {
-        console.log("Datos de la insignia clickeada:", insignia);
-        Swal.fire({
-            title: insignia.nombre,
-            text: insignia.descripcion,
-            icon: "info",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#007bff" 
-
-        });
+    Swal.fire({
+        title: `🏅 ${insignia.nombre}`,
+        text: insignia.descripcion,
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#007bff"
+    });
     };
-
     const handleMouseEnter = (insigniaNombre) => {
         setHoveredInsignia(insigniaNombre);
     };
@@ -129,9 +138,7 @@ const HeaderBody = () => {
                 <div key={index} className="circular-icon-container">
                     <button
                     className="circular-icono"
-                    onClick={() => handleInsigniaClick(item)}
-                    onMouseEnter={() => handleMouseEnter(item.insignia.nombre)}
-                    onMouseLeave={handleMouseLeave}
+                    onClick={() => handleInsigniaClick(item.insignia)}
                     >
                     <img
                         src={`/insignias/${item.insignia.nombre.toLowerCase()}.png`}

@@ -6,6 +6,7 @@ import Header from "./Header";
 import API_BASE_URL from "../config";
 import { esAdmin } from "../utils/validacionUsuario"; 
 import {getCSRFToken,refreshAccessToken } from "../utils/validacionesGenerales.js";
+import Swal from 'sweetalert2';
 
 const Perfil = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -16,9 +17,7 @@ const Perfil = () => {
   const [error, setError] = useState(null);
 
   // Función para manejar el click en una insignia (si necesitas alguna acción)
-  const handleInsigniaClick = (insigniaNombre) => {
-    console.log(`Insignia clickeada: ${insigniaNombre}`);
-  };
+
 
 useEffect(() => {
   const fetchUsuario = async () => {
@@ -207,9 +206,29 @@ useEffect(() => {
   
     fetchInsignias();
   }, [navigate]); 
+    const handleInsigniaClick = (insignia) => {
+    Swal.fire({
+      title: `🏅 ${insignia.nombre}`,
+      text: insignia.descripcion,
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#007bff"
+    });
+  };
+  const handleLogroClick = (logro, fecha) => {
+    Swal.fire({
+      title: `🏆 ${logro.nombre}`,
+      html: `
+        <img src="/logros/${logro.id_logro}.png" alt="${logro.nombre}" style="width: 100px; margin-bottom: 10px;" />
+        <p><strong>Descripción:</strong> ${logro.descripcion}</p>
+        <p><strong>Fecha completado:</strong> ${new Date(fecha).toLocaleDateString('es-ES')}</p>
+      `,
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: '#007bff'
+    });
+  };  
   const handleEditar = (user_id) => {
     navigate(`/editar-usuario/${user_id}`);
-};
+  };
   const handleListarUsuarios = () => {
     navigate("/listar-usuarios");
   };
@@ -270,8 +289,9 @@ useEffect(() => {
           {logros &&
             logros.map((item, index) =>
               item.logro ? ( // ✅ Verifica que 'logro' no sea undefined
-                <div key={index} className="perfil-stats-table">
-                  <div className="stat-box">
+                <div key={index} className="perfil-stats-table"
+                    onClick={() => handleLogroClick(item.logro, item.fecha_completado)}>
+                    <div className="stat-box">
                     <img
                       src={`/logros/${item.logro.id_logro}.png`} // Usa el ID del logro
                       alt={item.logro.nombre}
@@ -288,7 +308,7 @@ useEffect(() => {
             <div
               key={index}
               className="perfil-stats-table"
-              onClick={() => handleInsigniaClick(item.insignia.nombre)}
+              onClick={() => handleInsigniaClick(item.insignia)}
             >
               <div className="stat-box">
                 <img

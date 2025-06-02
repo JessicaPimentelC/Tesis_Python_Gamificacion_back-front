@@ -59,7 +59,7 @@ export const verificarYOtorgarLogro = async (usuario_id) => {
         if (response.status === 201 && response.data.nuevo_logro) {
             await Swal.fire({
                 title: "🎉 ¡Felicidades!",
-                text: `Has desbloqueado: ${response.data.nuevo_logro.nombre}`,
+                text: `Has desbloqueado un logro: ${response.data.nuevo_logro.nombre}`,
                 icon: "success",
             });
             return response.data;

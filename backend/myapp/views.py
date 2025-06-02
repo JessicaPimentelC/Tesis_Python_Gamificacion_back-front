@@ -720,7 +720,8 @@ def verificar_y_otorgar_insignia(usuario_id):
         2: 2,  # Logro "Completar Nivel 2" → Insignia "Semi senior"
         3: 3,  # Logro "Completar Nivel 3" → Insignia "Senior"
         7: 5,  # Logro "Alcanzar 20 ejercicios" → Insignia "20_Ejercicios"
-        4: 4   # Logro "Rapidez" → Insignia "Rapidez"
+        4: 4 ,  # Logro "Rapidez" → Insignia "Rapidez"
+        8: 6 #Ranking 
     }
 
     insignias_otorgadas = []
@@ -752,14 +753,14 @@ def obtener_insignias(request):
     serializer = UsuarioInsigniaSerializer(insignias_obtenidas, many=True)
 
     if insignias_otorgadas:
-        nombres = ", ".join([insignia.tipo for insignia in insignias_otorgadas])
+        nombres = ", ".join([insignia.nombre for insignia in insignias_otorgadas])
         mensaje = f"¡Has obtenido una nueva insignia! {nombres}"
     else:
         mensaje = ""
 
     return Response({
         "insignias": serializer.data,
-        "nuevas_insignias": [insignia.id for insignia in insignias_otorgadas],  # Puedes adaptar esto según tu frontend
+        "nuevas_insignias": [insignia.id_insignia for insignia in insignias_otorgadas],  # Puedes adaptar esto según tu frontend
         "mensaje": mensaje
     })
 
