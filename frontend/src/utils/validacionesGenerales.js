@@ -144,13 +144,15 @@ export const refreshAccessToken = async () => {
     
             if (response.status === 200 && response.data.mensaje) {
                 console.log("Respuesta de la API de verificar nivel:", response.data);
+                if (mensaje.includes("¡Felicidades!") || mensaje.includes("has sido asignado")) {
                 Swal.fire({
-                    title: "¡Verificación de Nivel!",
-                    text: response.data.mensaje,
+                    title: "¡Nivel completado!",
+                    text: mensaje,
                     icon: "success",
                     confirmButtonText: "Aceptar",
                     confirmButtonColor: "#007bff",
                 });
+            }
                 if (response.data.mensaje.includes("Ejercicio del Nivel")) {
                     console.log("Nuevo ejercicio asignado.");
                 }
