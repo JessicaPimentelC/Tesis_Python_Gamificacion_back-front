@@ -144,8 +144,7 @@ Define una función llamada convertir_dolares_a_euros().
             };
     
             const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${userInfo.id}/`, {
-                headers,
-                withCredentials: true
+                headers
             });
     
             if (vidasResponse.data.vidas_restantes <= 0) {
@@ -188,18 +187,17 @@ Define una función llamada convertir_dolares_a_euros().
                 await axios.post(`${API_BASE_URL}/myapp/verificar_rapidez/`, {
                     resultado: true,
                     tiempo_resolucion: tiempoResolucionSegundos
-                }, { headers, withCredentials: true });
+                }, { headers});
                 
                 const puntajeResponse = await axios.post(`${API_BASE_URL}/myapp/actualizar-puntaje/`, {
                     usuario: userInfo.id,
                     puntos: 50,
                     errores: 0
-                }, { headers, withCredentials: true });
+                }, { headers});
 
                 const vidasUpdate = await axios.post(`${API_BASE_URL}/myapp/actualizar-vida-desafio/`, 
                     {resultado: true },{
-                    headers,
-                    withCredentials: true,
+                    headers
                 });
                 setVidas(vidasUpdate.data.vidas);
                 setScore(puntajeResponse.data.nuevo_puntaje);

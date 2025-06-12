@@ -155,7 +155,7 @@ const Diecinueve = () => {
       const response = await axios.post(
         `${API_BASE_URL}/myapp/guardar-intento/`,
         requestData,
-        { headers, withCredentials: true }
+        { headers}
       );
   
       if (response.status !== 201) {

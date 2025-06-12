@@ -104,7 +104,7 @@
 
 .foro-content {
   margin-top: 50px;
-  width: 90%; /* Ajustado para ocupar todo el ancho disponible */
+  width: 100%; /* Ajustado para ocupar todo el ancho disponible */
   padding: 20px;
   background-color: #f4f4f4;
 }

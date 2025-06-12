@@ -11,35 +11,36 @@ export const getCSRFToken = () => {
     return csrfCookie ? csrfCookie.split('=')[1] : null;
 };
 
-// Función para determinar el tipo de autenticación
-const getAuthType = () => {
-    return document.cookie.includes('sessionid') ? 'traditional' : 'jwt';
-};
+export const getAuthType = () => localStorage.getItem("authType");
 
 // Configuración dinámica de autenticación
 export const getAuthConfig = async () => {
+    const authType = getAuthType(); // 'traditional' o 'jwt'
+    const authToken = localStorage.getItem('access_token');
     const config = {
         headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
+            'Content-Type': 'application/json',
+        }
     };
 
-    const authType = getAuthType();
-    const authToken = localStorage.getItem('access_token');
-
-    if (!authToken) {
-        throw new Error('Usuario no autenticado');
-    }
-
     if (authType === 'traditional') {
-        const csrfToken = getCSRFToken();
+        // Sesión: se necesita enviar cookies y CSRF token
+        config.withCredentials = true;
+
+        const csrfToken = getCSRFToken(); // asegúrate de que esta función lo obtenga bien de cookies
         if (!csrfToken) {
             throw new Error('CSRF token requerido para autenticación tradicional');
         }
         config.headers['X-CSRFToken'] = csrfToken;
-    } else {
+
+    } else if (authType === 'jwt') {
+        // JWT: se necesita enviar el token en el header Authorization
+        if (!authToken) {
+            throw new Error('Usuario no autenticado');
+        }
+
         config.headers['Authorization'] = `Bearer ${authToken}`;
+        // No se necesita withCredentials ni CSRF
     }
 
     return config;

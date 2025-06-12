@@ -17,9 +17,8 @@ const Loginsesion = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,
                     },
-                    withCredentials: true}
+                    }
             );
             if (res.data.message != "Inicio de sesión exitoso") {
                 console.error('Mensaje:', res.data.message);
@@ -29,6 +28,8 @@ const Loginsesion = () => {
             if (res.data.access_token && res.data.refresh_token) {
                 localStorage.setItem("access_token", res.data.access_token);
                 localStorage.setItem("refresh_token", res.data.refresh_token);
+                localStorage.setItem("authType", "jwt");
+
             }
             
             if (res.data.user) {

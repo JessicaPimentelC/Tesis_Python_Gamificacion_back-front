@@ -28,6 +28,8 @@ const Login = () => {
       if (response.data.access_token) {
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh); 
+        localStorage.setItem("authType", "traditional");
+
       }
       Swal.fire({
         title: "¡Login Exitoso!",
@@ -43,14 +45,12 @@ const Login = () => {
             let mensaje = "Credenciales incorrectas";
         
             if (error.response && error.response.data) {
-                // Si viene con un mensaje de error personalizado
-                if (typeof error.response.data === 'string') {
+                if (typeof error.response.data.message === 'string') {
+                    mensaje = error.response.data.message;
+                } else if (typeof error.response.data === 'string') {
                     mensaje = error.response.data;
-                } else if (error.response.data.error) {
-                    mensaje = error.response.data.error;
                 }
-            }
-        
+            }        
             Swal.fire({
                 title: "Error",
                 text: mensaje,

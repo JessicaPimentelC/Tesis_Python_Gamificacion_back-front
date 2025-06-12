@@ -118,11 +118,11 @@ const handleVerify = async () => {
       resultado: isCorrect,
       errores: isCorrect ? 0 : errores + 1,
     };
-    const response = await axios.post(
-      `${API_BASE_URL}/myapp/guardar-intento/`,
-      requestData,
-      { headers, withCredentials: true }
-    );
+      const response = await axios.post(
+        `${API_BASE_URL}/myapp/guardar-intento/`,
+        requestData,
+        { headers }
+      );
 
     if (response.status !== 201) {
       throw new Error("Respuesta inesperada de la API");

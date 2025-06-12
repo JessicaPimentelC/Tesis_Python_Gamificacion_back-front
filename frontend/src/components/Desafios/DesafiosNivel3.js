@@ -158,9 +158,7 @@ function DesafiosNivel3() {
             };
     
             const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${userInfo.id}/`, {
-                headers,
-                withCredentials: true
-            });
+                headers            });
     
             if (vidasResponse.data.vidas_restantes <= 0) {
                 setOutputVisible(true);
@@ -199,11 +197,10 @@ function DesafiosNivel3() {
                 const puntajeResponse = await axios.post(`${API_BASE_URL}/myapp/actualizar-puntaje/`, {
                     usuario: userInfo.id,
                     puntos: 50
-                }, { headers, withCredentials: true });
+                }, { headers});
                 const vidasUpdate = await axios.post(`${API_BASE_URL}/myapp/actualizar-vida-desafio/`, 
                     {resultado: true },{
-                    headers,
-                    withCredentials: true,
+                    headers
                 });
                 setScore(puntajeResponse.data.nuevo_puntaje);
                 setVidas(vidasUpdate.data.vidas);
