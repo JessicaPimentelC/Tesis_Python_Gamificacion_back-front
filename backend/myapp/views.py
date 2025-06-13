@@ -22,6 +22,10 @@ from datetime import timedelta
 from django.utils import timezone
 User = get_user_model()
 from django.db import IntegrityError
+from django.views.decorators.csrf import ensure_csrf_cookie
+@ensure_csrf_cookie
+def csrf_token_view(request):
+    return JsonResponse({'message': 'CSRF cookie set'})
 
 #class ApiView(generics.ListCreateAPIView):
 class ApiView(viewsets.ModelViewSet):
@@ -178,8 +182,9 @@ def google_login(request):
 
 from django.views.decorators.http import require_POST
 from django.contrib.auth import logout
-@require_POST
+
 @csrf_exempt
+@require_POST
 def logout(request):
     logout(request)
     response = JsonResponse({'success': True})
@@ -187,6 +192,7 @@ def logout(request):
     response.delete_cookie('csrftoken')
     return response
 
+@csrf_exempt
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':
@@ -231,6 +237,7 @@ def eliminarRegistroForo(request, id_foro):
     except Foro.DoesNotExist:
         return Response({'error': 'Pregunta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
 
+@csrf_exempt
 @api_view(['GET','POST'])
 def ParticipacionForo(request):
     if request.method == 'POST':

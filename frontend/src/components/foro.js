@@ -134,9 +134,7 @@ const Foro = () => {
         },
         {headers: {
           "X-CSRFToken": csrfToken,  // Incluir el token CSRF en el header
-        },
-        withCredentials: true,  // Asegurarse de incluir cookies de sesión
-      }
+        }      }
       );
   
       if (response.data.success) {
@@ -242,7 +240,9 @@ const Foro = () => {
               headers: {
                 Authorization: `Bearer ${newToken}`,
                 "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(), // asegúrate de enviar esto
               },
+              withCredentials: true
             }
           );
           console.log("Retry Success:", retryResponse.data);
@@ -262,6 +262,7 @@ const Foro = () => {
   
     const handleRegistroRespuestaForo = async () => {
       try {
+        await axios.get(`${API_BASE_URL}/myapp/csrf/`, { withCredentials: true });
         const user = await fetchUsuario();
         const userId = user?.id;
         console.log("id", userId);
@@ -270,7 +271,7 @@ const Foro = () => {
           alert("Usuario no encontrado.");
           return;
         }
-
+      const newToken = await refreshAccessToken();
       const response = await axios.post(
         `${API_BASE_URL}/myapp/registroParti_foro/`,
         {
@@ -279,7 +280,15 @@ const Foro = () => {
           fecha_participacion: new Date().toISOString().split("T")[0],
           comentario: responseText,
           resultado: true,
-        }
+        },
+          {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCSRFToken(), // asegúrate de enviar esto
+            },
+            withCredentials: true
+          }
       );
 
       console.log("Success:", response.data);
