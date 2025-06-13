@@ -17,10 +17,7 @@ const Mapa = () => {
             const config = {
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-            },
-            withCredentials: true,
-        };
+            }        };
 
         const googleToken = localStorage.getItem("access_token");
         if (googleToken) {

@@ -20,10 +20,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/myapp/login/`,
-        { email, password },
-        {
-          withCredentials: true,
-        }
+        { email, password }
       );
       if (response.data.access_token) {
         localStorage.setItem("access_token", response.data.access_token);

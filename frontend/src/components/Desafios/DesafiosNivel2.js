@@ -4,7 +4,7 @@ import Header from "../Header";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from "../../config";
-import { getCSRFToken, refreshAccessToken } from "../../utils/validacionesGenerales";
+import { refreshAccessToken } from "../../utils/validacionesGenerales";
 import useVidasStore from "../vidasStore";
 import Swal from "sweetalert2";
 import { fetchUserInfo } from "../../utils/userService";
@@ -143,7 +143,6 @@ function DesafiosNivel2() {
         try {
             const headers = {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(),
                 "Authorization": `Bearer ${localStorage.getItem("access_token")}`
             };
     

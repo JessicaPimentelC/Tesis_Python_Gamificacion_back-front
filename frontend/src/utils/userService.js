@@ -5,14 +5,10 @@ import API_BASE_URL from '../config';
 
 export const fetchUserInfo = async () => {
   try {
-    const csrfToken = getCSRFToken();
     const config = {
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-      },
-      withCredentials: true,
-    };
+      }    };
 
     // Añadir JWT si existe (para autenticación con Google)
     const token = localStorage.getItem('access_token');

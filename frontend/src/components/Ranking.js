@@ -49,9 +49,7 @@ const Ranking = () => {
                 headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                },
-                withCredentials: true, 
-            });
+                }            });
     
             setUsuarios(response.data);
             setLoading(false);
@@ -64,9 +62,7 @@ const Ranking = () => {
                     headers: {
                     Authorization: `Bearer ${newToken}`,
                     "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                });
+                    }                });
     
                 setUsuarios(retryResponse.data);
                 setLoading(false);

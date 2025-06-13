@@ -3,50 +3,22 @@ import Swal from "sweetalert2";
 import API_BASE_URL from "../config";
 import { useNavigate } from "react-router-dom";
 
-
-// Función mejorada para obtener CSRF token
-export const getCSRFToken = () => {
-    const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-    const csrfCookie = cookies.find(cookie => cookie.startsWith('csrftoken='));
-    return csrfCookie ? csrfCookie.split('=')[1] : null;
-};
-
-export const getAuthType = () => localStorage.getItem("authType");
-
-// Configuración dinámica de autenticación
+// Configuración de autenticación con JWT
 export const getAuthConfig = async () => {
-    const authType = getAuthType(); // 'traditional' o 'jwt'
     const authToken = localStorage.getItem('access_token');
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    };
-
-    if (authType === 'traditional') {
-        // Sesión: se necesita enviar cookies y CSRF token
-        config.withCredentials = true;
-
-        const csrfToken = getCSRFToken(); // asegúrate de que esta función lo obtenga bien de cookies
-        if (!csrfToken) {
-            throw new Error('CSRF token requerido para autenticación tradicional');
-        }
-        config.headers['X-CSRFToken'] = csrfToken;
-
-    } else if (authType === 'jwt') {
-        // JWT: se necesita enviar el token en el header Authorization
-        if (!authToken) {
-            throw new Error('Usuario no autenticado');
-        }
-
-        config.headers['Authorization'] = `Bearer ${authToken}`;
-        // No se necesita withCredentials ni CSRF
+    if (!authToken) {
+        throw new Error('Usuario no autenticado');
     }
 
-    return config;
+    return {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+        }
+    };
 };
 
-// Función mejorada para verificar logros
+// Verificar y otorgar logro
 export const verificarYOtorgarLogro = async (usuario_id) => {
     try {
         const config = await getAuthConfig();
@@ -56,63 +28,44 @@ export const verificarYOtorgarLogro = async (usuario_id) => {
             config
         );
 
-        // Caso 1: Logro otorgado (status 201)
         if (response.status === 201 && response.data.nuevo_logro) {
             await Swal.fire({
                 title: "🎉 ¡Felicidades!",
                 text: `Has desbloqueado un logro: ${response.data.nuevo_logro.nombre}`,
                 icon: "success",
             });
-            return response.data;
-        }
-
-        // Caso 2: No hay logros nuevos (status 200)
-        if (response.status === 200) {
-            console.log(response.data.message); // "No se han cumplido los requisitos..."
-            return response.data;
         }
 
         return response.data;
-
     } catch (error) {
-        // Solo manejar errores reales (401, 403, 500, etc.)
         if (error.response?.status === 401 || error.response?.status === 403) {
             try {
                 const newToken = await refreshAccessToken();
                 localStorage.setItem('access_token', newToken);
                 return await verificarYOtorgarLogro(usuario_id);
-            } catch (refreshError) {
+            } catch {
                 localStorage.removeItem('access_token');
                 window.location.href = '/';
-                return null;
             }
         }
-
         console.error("Error en verificarYOtorgarLogro:", error);
         return null;
     }
 };
 
+// Refrescar token JWT
 export const refreshAccessToken = async () => {
     try {
         const refreshToken = localStorage.getItem('refresh_token');
-        if (!refreshToken) {
-            throw new Error('No refresh token available');
-        }
+        if (!refreshToken) throw new Error('No refresh token available');
 
         const response = await axios.post(
             `${API_BASE_URL}/myapp/token/refresh/`,
-            { refresh: refreshToken },  
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }
+            { refresh: refreshToken },
+            { headers: { 'Content-Type': 'application/json' } }
         );
 
-        if (!response.data.access) {
-            throw new Error('Invalid token refresh response');
-        }
+        if (!response.data.access) throw new Error('Invalid token refresh response');
 
         localStorage.setItem('access_token', response.data.access);
         return response.data.access;
@@ -124,29 +77,20 @@ export const refreshAccessToken = async () => {
     }
 };
 
+// Verificar nivel completado
+export const verificarNivel = async (nivelId, navigate) => {
+    try {
+        const config = await getAuthConfig();
+        const response = await axios.post(
+            `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
+            { nivel_id: nivelId },
+            config
+        );
 
-    //Verificar nivel
-    export const verificarNivel = async (nivelId, navigate) => {
-        const csrfToken = getCSRFToken();
-
-        try {
-            const response = await axios.post(
-                `${API_BASE_URL}/myapp/verificar_nivel_completado/`,
-                { nivel_id: nivelId },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken, 
-                    },
-                }
-            );
-    
-            if (response.status === 200 && response.data.mensaje) {
+        if (response.status === 200 && response.data.mensaje) {
             const mensaje = response.data.mensaje;
             console.log("Respuesta de la API de verificar nivel:", mensaje);
 
-            // Solo mostrar Swal si el mensaje indica progreso real
             if (mensaje.includes("¡Felicidades!") || mensaje.includes("has sido asignado")) {
                 Swal.fire({
                     title: "¡Nivel completado!",
@@ -157,64 +101,62 @@ export const refreshAccessToken = async () => {
                 });
             }
 
-                if (response.data.mensaje.includes("Ejercicio del Nivel")) {
-                    console.log("Nuevo ejercicio asignado.");
-                }
-                try {
-                    const examenResponse = await axios.get(
-                        `${API_BASE_URL}/myapp/verificar_examen?nivel_id=${nivelId}`,
-                        { withCredentials: true }
-                    );
-    
-                    if (examenResponse.data.mostrar_desafio) {
-                        navigate(`/examennivel${nivelId}`);
-                    }
-                } catch (ex) {
-                    console.error("Error al verificar si mostrar el examen:", ex);
-                }
+            if (mensaje.includes("Ejercicio del Nivel")) {
+                console.log("Nuevo ejercicio asignado.");
             }
-        } catch (error) {
-            console.error("Error al verificar el nivel:", error);
-        }
-    };
-    /**Guarda el ejercicio en la BD */
-    export const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
-    try {
-        const response = await axios.post(
-        `${API_BASE_URL}/myapp/guardar_ejercicio/`,
-        {
-            usuario_id: usuario_id,
-            ejercicio_id: ejercicio_id,
-            fecha_asignacion: new Date().toISOString().split("T")[0],
-        },
-        { withCredentials: true }
-        );
 
+            try {
+                const examenResponse = await axios.get(
+                    `${API_BASE_URL}/myapp/verificar_examen?nivel_id=${nivelId}`,
+                    config
+                );
+                if (examenResponse.data.mostrar_desafio) {
+                    navigate(`/examennivel${nivelId}`);
+                }
+            } catch (ex) {
+                console.error("Error al verificar si mostrar el examen:", ex);
+            }
+        }
+    } catch (error) {
+        console.error("Error al verificar el nivel:", error);
+    }
+};
+
+// Guardar ejercicio
+export const guardarEjercicioEnBD = async (usuario_id, ejercicio_id) => {
+    try {
+        const config = await getAuthConfig();
+        const response = await axios.post(
+            `${API_BASE_URL}/myapp/guardar_ejercicio/`,
+            {
+                usuario_id,
+                ejercicio_id,
+                fecha_asignacion: new Date().toISOString().split("T")[0],
+            },
+            config
+        );
         console.log("Respuesta del servidor:", response.data);
         return response.data;
     } catch (error) {
-        console.error(
-        "Error al guardar el ejercicio:",
-        error.response ? error.response.data : error.message
-        );
+        console.error("Error al guardar el ejercicio:", error.response?.data || error.message);
     }
 };
-//obtiene el id del ejercicio
+
+// Obtener ejercicio ID
 export const obtenerEjercicioId = async () => {
     try {
-    const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`);
-    console.log("Datos completos recibidos:", response.data);
+        const config = await getAuthConfig();
+        const response = await axios.get(`${API_BASE_URL}/myapp/ejercicio/`, config);
+        console.log("Datos completos recibidos:", response.data);
 
-    if (
-        response.status === 200 &&
-        Array.isArray(response.data.data) &&
+        if (
+            response.status === 200 &&
+            Array.isArray(response.data.data) &&
             response.data.data.length > 0
         ) {
-        return response.data.data[0].id_ejercicio;
+            return response.data.data[0].id_ejercicio;
         } else {
-        console.error(
-            "El array de ejercicios está vacío o no tiene la estructura esperada."
-        );
+            console.error("El array de ejercicios está vacío o mal estructurado.");
         }
     } catch (error) {
         console.error("Error al obtener los ejercicios:", error);
@@ -222,7 +164,7 @@ export const obtenerEjercicioId = async () => {
     return null;
 };
 
-
+// Verificar si desafío está habilitado
 export const verificarDesafioHabilitado = async (usuario_id) => {
     try {
         const config = await getAuthConfig();
@@ -230,10 +172,14 @@ export const verificarDesafioHabilitado = async (usuario_id) => {
             `${API_BASE_URL}/myapp/verificar_desafio/`,
             config
         );
-        
         return response.data.mostrar_desafio;
     } catch (error) {
         console.error("Error verificando estado de desafío:", error);
         return false;
     }
+};
+export const getCSRFToken = () => {
+    const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+    const csrfCookie = cookies.find(cookie => cookie.startsWith('csrftoken='));
+    return csrfCookie ? csrfCookie.split('=')[1] : null;
 };

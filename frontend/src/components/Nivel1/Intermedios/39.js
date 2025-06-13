@@ -71,7 +71,7 @@ const Trientanueve = () => {
       try {
         await guardarEjercicioEnBD(usuario_id, proximoEjercicio);
   
-        const nivelResponse = await axios.get(`${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`, { withCredentials: true });
+        const nivelResponse = await axios.get(`${API_BASE_URL}/myapp/nivel_ejercicio_asignado/${ejercicio_id}/`);
             
             if (nivelResponse.status === 200) {
                 const nivelId = nivelResponse.data.nivel_id;
@@ -116,9 +116,7 @@ const handleVerify = async () => {
 
   try {
     const headers = {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCSRFToken()
-    };
+      "Content-Type": "application/json"    };
 
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -126,9 +124,7 @@ const handleVerify = async () => {
     }
 
     const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-      headers,
-      withCredentials: true
-    });
+      headers    });
 
     const usuario_id = userResponse.data.id;
     if (!usuario_id) throw new Error("Usuario no identificado");

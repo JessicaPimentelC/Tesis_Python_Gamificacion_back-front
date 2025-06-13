@@ -11,16 +11,12 @@ const useUsuario = () => {
 
     const fetchUsuario = async () => {
         try {
-        const csrfToken = getCSRFToken();
         const accessToken = localStorage.getItem("access_token");
 
         let config = {
             headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
-            },
-            withCredentials: true,
-        };
+            }        };
 
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -48,10 +44,7 @@ const useUsuario = () => {
                 headers: {
                 "Authorization": `Bearer ${newAccessToken}`,
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(),
-                },
-                withCredentials: true,
-            });
+                }            });
 
             setUsuario(retryResponse.data);
             setCargando(false);

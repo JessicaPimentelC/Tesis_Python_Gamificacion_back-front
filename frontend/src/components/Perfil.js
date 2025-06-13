@@ -25,11 +25,7 @@ useEffect(() => {
           const csrfToken = getCSRFToken();
           const config = {
               headers: {
-                  "Content-Type": "application/json",
-                  "X-CSRFToken": csrfToken,
-              },
-              withCredentials: true
-          };
+                  "Content-Type": "application/json"              }          };
 
           const googleToken = localStorage.getItem("access_token");
           if (googleToken) {
@@ -82,9 +78,7 @@ useEffect(() => {
         const response = await axios.get(
           `${API_BASE_URL}/myapp/logros-usuario/`,
           {
-            headers,
-            withCredentials: true
-          }
+            headers          }
         );
   
         console.log("Logros obtenidas:", response.data);
@@ -102,11 +96,7 @@ useEffect(() => {
               {
                 headers: {
                   'Authorization': `Bearer ${newToken}`,
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': getCSRFToken()
-                },
-                withCredentials: true
-              }
+                  'Content-Type': 'application/json'                }              }
             );
             
             setLogros(retryResponse.data);
@@ -163,9 +153,7 @@ useEffect(() => {
         const response = await axios.get(
           `${API_BASE_URL}/myapp/insignias/`,
           {
-            headers,
-            withCredentials: true
-          }
+            headers          }
         );
   
         console.log("Insignias obtenidas:", response.data);
@@ -183,11 +171,7 @@ useEffect(() => {
               {
                 headers: {
                   'Authorization': `Bearer ${newToken}`,
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': getCSRFToken()
-                },
-                withCredentials: true
-              }
+                  'Content-Type': 'application/json'                }              }
             );
             
             setInsignias(retryResponse.data.insignias);

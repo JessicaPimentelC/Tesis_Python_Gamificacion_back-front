@@ -52,11 +52,8 @@ const Header = () => {
         // 2. Hacer la petición de logout al backend
         await axios.post(`${API_BASE_URL}/logout/`, {}, {
             headers: {
-                "X-CSRFToken": csrfToken,
                 "Content-Type": "application/json"
-            },
-            withCredentials: true
-        });
+            }        });
         
     } catch (error) {
         console.error("Error en logout:", error);

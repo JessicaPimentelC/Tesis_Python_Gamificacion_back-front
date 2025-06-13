@@ -55,7 +55,6 @@ useEffect(() => {
         `${API_BASE_URL}/myapp/insignias/`,
         {
           headers,
-          withCredentials: true
         }
       );
 
@@ -71,14 +70,11 @@ useEffect(() => {
           
           const headersWithNewToken = {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${newToken}`,
-              'X-CSRFToken': getCSRFToken(),
-          };
+              'Authorization': `Bearer ${newToken}`            };
 
           // Vuelve a realizar la solicitud con el nuevo token
           const retryResponse = await axios.get(`${API_BASE_URL}/myapp/insignias/`, {
               headers: headersWithNewToken,
-              withCredentials: true,
           });
 
           setInsignias(retryResponse.data.insignias);

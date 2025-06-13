@@ -9,9 +9,7 @@ const Usuario = () => {
 useEffect(() => {
     const fetchUsuario = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-            withCredentials: true,
-            });
+            const response = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`);
             setUserInfo(response.data);
             console.log("Usuario recibido:", response.data);
         } catch (error) {

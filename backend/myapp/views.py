@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes, authentication_classes
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model, authenticate, login
 from .serializer import UserSerializer,UsuarioSerializer, ForoSerializer,ParticipacionForoSerializer, EjercicioSerializer, IntentoSerializer, UsuarioLogroSerializer,UsuarioInsigniaSerializer,UsuarioEditarSerializer
 from django.contrib.auth import get_user_model
@@ -33,7 +32,6 @@ class ApiView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
 
-@csrf_exempt  
 @api_view(['GET'])
 def get_user_info(request):
     username = request.GET.get('username') 
@@ -80,7 +78,6 @@ def obtenerUsuario(request):
 
 from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 @api_view(['POST'])
-@csrf_exempt
 def Login(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -183,7 +180,6 @@ def google_login(request):
 from django.views.decorators.http import require_POST
 from django.contrib.auth import logout
 
-@csrf_exempt
 @require_POST
 def logout(request):
     logout(request)
@@ -192,7 +188,6 @@ def logout(request):
     response.delete_cookie('csrftoken')
     return response
 
-@csrf_exempt
 @api_view(['GET', 'POST'])
 def RegistroForo(request):
     if request.method == 'POST':
@@ -237,7 +232,6 @@ def eliminarRegistroForo(request, id_foro):
     except Foro.DoesNotExist:
         return Response({'error': 'Pregunta no encontrada'}, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
 @api_view(['GET','POST'])
 def ParticipacionForo(request):
     if request.method == 'POST':
@@ -384,7 +378,6 @@ def ejercicio_python(request):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@csrf_exempt
 def actualizar_puntaje_usuario(request):
     if request.method == 'POST':
         try:
@@ -771,8 +764,6 @@ def obtener_insignias(request):
         "mensaje": mensaje
     })
 
-
-@csrf_exempt
 @api_view(['POST'])
 def otorgar_insignia_20_ejercicios(request):
     if not request.user.is_authenticated:
@@ -859,8 +850,6 @@ def votar_respuesta(request):
     except Participacion_foro.DoesNotExist:
         return Response({'success': False, 'error': 'Participación no encontrada'}, status=404)
 
-
-@csrf_exempt
 def guardar_ejercicio(request):
     if request.method == "POST":
         try:

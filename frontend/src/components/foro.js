@@ -240,10 +240,7 @@ const Foro = () => {
               headers: {
                 Authorization: `Bearer ${newToken}`,
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCSRFToken(), // asegúrate de enviar esto
-              },
-              withCredentials: true
-            }
+              }            }
           );
           console.log("Retry Success:", retryResponse.data);
           fetchQuestions();
@@ -262,7 +259,6 @@ const Foro = () => {
   
     const handleRegistroRespuestaForo = async () => {
       try {
-        await axios.get(`${API_BASE_URL}/myapp/csrf/`, { withCredentials: true });
         const user = await fetchUsuario();
         const userId = user?.id;
         console.log("id", userId);
@@ -285,10 +281,7 @@ const Foro = () => {
             headers: {
               Authorization: `Bearer ${newToken}`,
               "Content-Type": "application/json",
-              "X-CSRFToken": getCSRFToken(), // asegúrate de enviar esto
-            },
-            withCredentials: true
-          }
+            }          }
       );
 
       console.log("Success:", response.data);

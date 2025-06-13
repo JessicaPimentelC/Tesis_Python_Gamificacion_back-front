@@ -38,9 +38,7 @@ const HeaderBody = () => {
             const response = await axios.get(
                 `${API_BASE_URL}/myapp/insignias/`,
                 {
-                    headers,
-                    withCredentials: true
-                }
+                    headers                }
             );
     
             console.log("Insignias obtenidas:", response.data);
@@ -67,10 +65,7 @@ const HeaderBody = () => {
                                 headers: {
                                     'Authorization': `Bearer ${newToken}`,
                                     'Content-Type': 'application/json',
-                                    'X-CSRFToken': getCSRFToken()
-                                },
-                                withCredentials: true
-                            }
+                                }                            }
                         );
 
                         setInsignias(retryResponse.data.insignias);

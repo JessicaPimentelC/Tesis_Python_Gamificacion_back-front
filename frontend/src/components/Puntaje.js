@@ -34,21 +34,15 @@ const Puntaje = () => {
                     headers['Authorization'] = `Bearer ${token}`;
                 }
                 const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
-                    headers,
-                    withCredentials: true,
-                });
+                    headers                });
                 setUserInfo(userResponse.data);
                 const usuario_id = userResponse.data.id;
                 const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
-                    headers,
-                    withCredentials: true,
-                    
+                    headers                    
                 });
                 console.log("Vidas iniciales desde la API:", vidasResponse.data.vidas_restantes); 
                 const response = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`, {
-                    headers,
-                    withCredentials: true
-                })
+                    headers                })
                 setVidas(vidasResponse.data.vidas_restantes);
                 setScore(response.data.score); 
             } catch (error) {
@@ -63,29 +57,23 @@ const Puntaje = () => {
                         // Si se renueva el token, actualizamos el encabezado con el nuevo token
                         const headersWithNewToken = {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${newToken}`,
-                            'X-CSRFToken': getCSRFToken(),
-                        };
+                            'Authorization': `Bearer ${newToken}`                        };
 
                         // Volver a intentar la solicitud con el nuevo token
                         const userResponse = await axios.get(`${API_BASE_URL}/myapp/usuario-info/`, {
                             headers: headersWithNewToken,
-                            withCredentials: true,
                         });
                         setUserInfo(userResponse.data);
                         const usuario_id = userResponse.data.id;
 
                         const vidasResponse = await axios.get(`${API_BASE_URL}/myapp/vidas/${usuario_id}/`, {
                             headers: headersWithNewToken,
-                            withCredentials: true,
                         });
 
                         console.log("Vidas después de renovación de token:", vidasResponse.data.vidas_restantes);
 
                         const scoreResponse = await axios.get(`${API_BASE_URL}/myapp/score/${usuario_id}/`, {
-                            headers: headersWithNewToken,
-                            withCredentials: true,
-                        });
+                            headers: headersWithNewToken                        });
 
                         // Actualizar los estados con los nuevos datos
                         setVidas(vidasResponse.data.vidas_restantes);
