@@ -66,6 +66,7 @@ const Register = () => {
         confirmButtonColor: "#007bff"
 
       });
+      localStorage.removeItem("hasSeenWelcomeModal"); // ⚠️ solo se borra aquí tras registro
       navigate('/dashboard');
     }
     

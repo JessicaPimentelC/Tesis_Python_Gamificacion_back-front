@@ -40,6 +40,14 @@ const Dashboard = () => {
     }, 500);
     return () => clearInterval(interval2);
   }, []);
+  useEffect(() => {
+    const hasSeenModal = localStorage.getItem("hasSeenWelcomeModal");
+
+    if (!hasSeenModal) {
+      setShowWelcomeModal(true); // o el estado que uses para abrir el modal
+      localStorage.setItem("hasSeenWelcomeModal", "true"); // lo marca como mostrado
+    }
+  }, []);
 
   // Efecto para obtener información del usuario
   useEffect(() => {

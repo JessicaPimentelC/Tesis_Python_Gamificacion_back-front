@@ -548,30 +548,49 @@ def verificar_examen(request):
     habilitar_examen = mostrar_examen_por_nivel(usuario_id, int(nivel_id))
     return Response({'mostrar_examen': habilitar_examen})
 
-#verificar insignia rapidez desafio
-@api_view(['POST','GET'])
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils.timezone import now
+from .models import Usuario_insignia, Insignia
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+@api_view(['POST', 'GET'])
 def verificar_rapidez(request):
     try:
         if not request.user.is_authenticated:
-            return Response({'error': 'Usuario no autenticado'}, status=401)
+            return Response({'error': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        usuario = request.user.id 
+        usuario = request.user
         resultado = request.data.get("resultado")
         tiempo_resolucion = request.data.get("tiempo_resolucion")
 
-        if resultado is True or resultado == "true":
-            if tiempo_resolucion <= 300:
-                if not Usuario_insignia.objects.filter(usuario_id=usuario, insignia_id=4).exists():
-                    Usuario_insignia.objects.create(
-                    usuario_id=usuario,
-                    insignia_id=Insignia.objects.get(id_insignia=4),
+        # Convertir resultado y tiempo a tipos correctos
+        resultado = str(resultado).lower() == "true"
+        try:
+            tiempo_resolucion = int(tiempo_resolucion)
+        except (ValueError, TypeError):
+            return Response({'error': 'Tiempo inválido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if resultado and tiempo_resolucion <= 300:
+            if not Usuario_insignia.objects.filter(usuario=usuario, insignia_id=4).exists():
+                try:
+                    insignia_obj = Insignia.objects.get(id_insignia=4)
+                except Insignia.DoesNotExist:
+                    return Response({'error': 'Insignia no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+                Usuario_insignia.objects.create(
+                    usuario=usuario,
+                    insignia_id=insignia_obj,
                     fecha_otorgada=now().date()
                 )
-                    return Response({'message': '¡Insignia de Rapidez otorgada!'}, status=200)
-                else:
-                    return Response({'message': 'La insignia ya fue otorgada anteriormente'}, status=200)
+                return Response({'message': '¡Insignia de Rapidez otorgada!'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'La insignia ya fue otorgada anteriormente'}, status=status.HTTP_200_OK)
 
-        return Response({'message': 'No se cumple la condición de rapidez'}, status=200)
+        return Response({'message': 'No se cumple la condición de rapidez'}, status=status.HTTP_200_OK)
 
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
@@ -1118,6 +1137,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
+from django.contrib.auth.models import update_last_login
 
 User = get_user_model()
 
@@ -1155,6 +1175,7 @@ def crear_usuario(request):
         # Generar tokens
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token
+        update_last_login(None, user)
 
         return Response({
             'message': 'Usuario creado exitosamente',

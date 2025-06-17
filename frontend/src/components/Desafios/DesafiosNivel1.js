@@ -180,8 +180,7 @@ Define una función llamada convertir_dolares_a_euros().
             const esCorrecto = validarSalida(salida, currentExercise);
             const start = Date.now();      
             if (esCorrecto) {
-                const end = Date.now();  
-                const tiempoResolucionSegundos = Math.floor((end - start) / 1000); // Tiempo en segundos
+                const tiempoResolucionSegundos = Math.floor((Date.now() - startTime) / 1000);
                 
                 await axios.post(`${API_BASE_URL}/myapp/verificar_rapidez/`, {
                     resultado: true,
