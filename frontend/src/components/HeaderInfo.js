@@ -44,7 +44,7 @@ const HeaderInfo = () => {
                 alt="Icono"  
             />
             </button>
-        <button className="icon-button-mapa" onClick={handlePenguinClick}>
+        <button className="icon-button-mapa"   style={{ textAlign: 'left' }}  onClick={handlePenguinClick}>
             <img src="/muñeco.png" alt="Icono Moneda" className="header-icon"/>
         </button>           
             {showChatbot && (
