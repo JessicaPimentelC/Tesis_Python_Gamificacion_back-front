@@ -154,7 +154,7 @@ const Register = () => {
                     placeholder="Apellidos"
                 />
                 </div>
-                <button type="submit" className="login-button">Registarse</button>
+                <button type="submit" className="login-button">Registrarse</button>
                 </form>
           <div className="social-register">
           

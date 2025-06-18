@@ -110,7 +110,12 @@ Define una función llamada convertir_dolares_a_euros().
                 return false;
         }
     };
-    
+    const contieneModulosPeligrosos = (codigo) => {
+        const modulosProhibidos = ["os", "sys", "subprocess", "eval", "exec", "open", "importlib", "__import__"];
+        const regex = new RegExp(`\\b(${modulosProhibidos.join("|")})\\b`, "i");
+        return regex.test(codigo);
+    };
+
     /*validacion de codigo */
     const ejecutarCodigo = async () => {
         if (!userInfo || !userInfo.id) {
@@ -127,7 +132,12 @@ Define una función llamada convertir_dolares_a_euros().
             .split("\n")
             .map((line) => line.replace(/\s+$/, ""))
             .join("\n");
-    
+        if (contieneModulosPeligrosos(codigoNormalizado)) {
+            setCodeOutput("⚠ No se permite el uso de ciertos módulos o funciones peligrosas.");
+            setVerificationMessage("❌ Código no permitido");
+            setOutputVisible(true);
+            return;
+        }
         // Validar que el usuario definió la función esperada
         if (!codigoNormalizado.includes(`def ${currentEx.validationText}`)) {
             setCodeOutput(`⚠ Debes definir la función '${currentEx.validationText}'`);
@@ -219,7 +229,7 @@ Define una función llamada convertir_dolares_a_euros().
                     return ejecutarCodigo();
                 } catch (refreshError) {
                     localStorage.removeItem("access_token");
-                    navigate("/login");
+                    navigate("/");
                     return;
                 }
             }
@@ -248,6 +258,7 @@ return (
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="Escribe tu código aquí..."
             />
+
             <button className="run-button" onClick={ejecutarCodigo}>
                 Ejecutar Código
             </button>

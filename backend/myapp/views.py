@@ -378,6 +378,8 @@ def ejercicio_python(request):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 def actualizar_puntaje_usuario(request):
     if request.method == 'POST':
         try:
