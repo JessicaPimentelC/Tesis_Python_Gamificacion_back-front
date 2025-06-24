@@ -871,6 +871,7 @@ def votar_respuesta(request):
     except Participacion_foro.DoesNotExist:
         return Response({'success': False, 'error': 'Participación no encontrada'}, status=404)
 
+@csrf_exempt
 def guardar_ejercicio(request):
     if request.method == "POST":
         try:
@@ -970,6 +971,7 @@ def verificar_y_otorgar_logros(request):
         status=200 
     )
 #habilitacion de nivel
+@csrf_exempt
 @api_view(['POST'])
 def verificar_nivel_completado(request):
     if not request.user.is_authenticated:

@@ -249,6 +249,7 @@ const Once = () => {
           <HeaderBody></HeaderBody>
             <div className="header-title">
               <h2>NIVEL 1</h2>
+              <HeaderInfo></HeaderInfo>
             </div>
           <div className="nivel1-card">
             <div className="nivel1-card-header">

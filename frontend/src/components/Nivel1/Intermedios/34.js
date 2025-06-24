@@ -248,7 +248,7 @@ const handleVerify = async (answer) => {
 
             <div className="nivel1-card">
               <div className="nivel1-card-header">
-                <span>EJERCICIO #1</span>
+                <span>Ejercicio de capital</span>
               </div>
               <div className="nivel1-card-body">
                 <p>
