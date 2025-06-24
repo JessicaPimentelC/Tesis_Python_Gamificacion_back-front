@@ -424,6 +424,7 @@ def sumar_puntaje(usuario, puntos_a_sumar):
     return puntaje.puntos
 
 @api_view(['POST'])
+@csrf_exempt
 def guardar_intento(request):
     print("request user",request.data)
     print("autenticado user",request.user)
@@ -565,11 +566,14 @@ def verificar_rapidez(request):
         if not request.user.is_authenticated:
             return Response({'error': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
 
+        tipo = request.data.get("tipo")
+        if tipo != "desafio":
+            return Response({'error': 'Este endpoint solo puede ser llamado desde desafíos'}, status=status.HTTP_403_FORBIDDEN)
+
         usuario = request.user
         resultado = request.data.get("resultado")
         tiempo_resolucion = request.data.get("tiempo_resolucion")
 
-        # Convertir resultado y tiempo a tipos correctos
         resultado = str(resultado).lower() == "true"
         try:
             tiempo_resolucion = int(tiempo_resolucion)
@@ -596,6 +600,7 @@ def verificar_rapidez(request):
 
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['GET'])
 def obtener_vidas(request, user_id):
@@ -971,8 +976,9 @@ def verificar_y_otorgar_logros(request):
         status=200 
     )
 #habilitacion de nivel
-@csrf_exempt
+
 @api_view(['POST'])
+@csrf_exempt
 def verificar_nivel_completado(request):
     if not request.user.is_authenticated:
         return Response({"error": "No estás autenticado"}, status=401)

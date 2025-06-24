@@ -194,7 +194,8 @@ Define una función llamada convertir_dolares_a_euros().
                 
                 await axios.post(`${API_BASE_URL}/myapp/verificar_rapidez/`, {
                     resultado: true,
-                    tiempo_resolucion: tiempoResolucionSegundos
+                    tiempo_resolucion: tiempoResolucionSegundos,
+                    tipo: "desafio"
                 }, { headers});
                 
                 const puntajeResponse = await axios.post(`${API_BASE_URL}/myapp/actualizar-puntaje/`, {
